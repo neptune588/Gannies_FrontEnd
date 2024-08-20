@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from '@/layouts/Header/Header';
+import Header from '@/layouts/header';
 
 function Main() {
  return (
