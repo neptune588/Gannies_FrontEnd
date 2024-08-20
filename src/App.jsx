@@ -3,7 +3,7 @@ import { ThemeProvider } from 'styled-components';
 import { RouterProvider } from 'react-router-dom';
 import { theme } from '@/styles/theme';
 import { router } from '@/routes/router';
-import Main from './pages/Main';
+import Main from './pages/Home';
 
 function App() {
   return (
