@@ -1,6 +1,6 @@
 import React from 'react';
-import { Wrapper, Logo, LogoImage, LoginButton, SignUpButton} from './style';
-import logo from '../../assets/images/logo.png';
+import { Wrapper, Logo, LogoImage, LoginButton, SignUpButton} from '@/layouts/header/style';
+import logo from '@/assets/images/logo.png';
 
 function Header() {
   return (
