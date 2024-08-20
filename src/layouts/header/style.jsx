@@ -1,9 +1,42 @@
-import React from 'react';
-import { Container, Logo, LogoImage, Menu, MenuItem } from '../styles/Header';
-import logo from '../assets/images/logo.png';
 import styled from 'styled-components';
 
-const LoginButton = styled.button`
+export const Container = styled.header`
+  display: flex;
+  align-items: center;
+  background-color: white;
+  height: 111px;
+  cursor: pointer;
+  width: 1128px;
+`;
+
+export const Logo = styled.div`
+  font-size: 24px;
+  font-weight: bold;
+  color: #007aff;
+`;
+
+
+export const LogoImage = styled.img`
+  height: 44px;
+  width: 223px;
+`;
+
+export const Menu = styled.nav`
+  display: flex;
+  gap: 20px;
+`;
+
+export const MenuItem = styled.div`
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+
+  &:hover {
+    color: #007aff;
+  }
+`;
+
+export const LoginButton = styled.button`
   font-size: ${props => props.theme.typo.size.md};
   color: ${props => props.theme.colors.primary};
   cursor: pointer;
@@ -17,7 +50,7 @@ const LoginButton = styled.button`
   }
 `;
 
-const SignUpButton = styled.button`
+export const SignUpButton = styled.button`
   font-size: ${props => props.theme.typo.size.md};
   color: ${props => props.theme.colors.white};
   background-color: ${props => props.theme.colors.primary};
@@ -30,18 +63,3 @@ const SignUpButton = styled.button`
     outline: none;
   }  
 `;
-
-function Header() {
-
-  return (
-    <Container>
-        <Logo>
-            <LogoImage src={logo}></LogoImage>
-        </Logo>
-        <LoginButton>로그인</LoginButton>
-        <SignUpButton>회원가입</SignUpButton>    
-   </Container>
-  );
-}
-
-export default Header;
