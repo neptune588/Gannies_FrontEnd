@@ -29,7 +29,6 @@ ${reset}
     font-size: inherit;
     margin: 0;
   }
-  
   html {
     font-size: 10px;
   }
