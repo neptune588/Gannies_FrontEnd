@@ -2,10 +2,10 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.header`
   display: flex;
+  margin: auto;
   align-items: center;
   background-color: white;
   height: 111px;
-  cursor: pointer;
   width: 1128px;
 `;
 
@@ -13,12 +13,13 @@ export const Logo = styled.div`
   font-size: 24px;
   font-weight: bold;
   color: #007aff;
+  cursor: pointer;
 `;
 
 
 export const LogoImage = styled.img`
-  height: 44px;
-  width: 223px;
+  height: 68px;
+  width: 164px;
 `;
 
 export const Menu = styled.nav`
@@ -44,7 +45,7 @@ export const LoginButton = styled.button`
   border-radius: 4px;
   border: 1px solid ${props => props.theme.colors.primary};
   margin-left: auto;
-  margin-right: 10px;
+  margin-right: 20px;
   &:focus {
     outline: none;
   }
