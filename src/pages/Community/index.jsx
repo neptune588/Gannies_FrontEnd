@@ -1,4 +1,5 @@
 import Banner from '@/pages/Community/Banner';
+
 import {
   BannerTitle,
   BannerText,

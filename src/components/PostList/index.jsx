@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import {
   PostWrapper,
   Wrapper,
@@ -8,7 +7,7 @@ import {
   Comment,
   PostEye,
   PostHeartInactive,
-  Description
+  Description,
 } from '@/components/PostList/style';
 
 function PostList({ posts }) {
@@ -18,7 +17,9 @@ function PostList({ posts }) {
         posts.map((post, postIndex) => (
           <PostWrapper key={postIndex}>
             <Category>{post.category}</Category>
-            <PostTitle>{post.title} <Comment>[{post.comment}]</Comment></PostTitle>
+            <PostTitle>
+              {post.title} <Comment>[{post.comment}]</Comment>
+            </PostTitle>
             <DescriptionWrapper>
               <PostEye />
               <Description>{post.views}</Description>
@@ -38,18 +39,5 @@ function PostList({ posts }) {
     </Wrapper>
   );
 }
-
-PostList.propTypes = {
-  posts: PropTypes.arrayOf(
-    PropTypes.shape({
-      category: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
-      comment: PropTypes.number.isRequired,
-      views: PropTypes.string.isRequired,
-      likes: PropTypes.string.isRequired,
-      date: PropTypes.string.isRequired,
-    })
-  )
-};
 
 export default PostList;
