@@ -1,9 +1,11 @@
 import { Icon } from '@/components/Icons/style';
 import heartInactive from '@/assets/icons/hearts/heart_inactive.svg';
 
-function HeartInactive(props) {
+function HeartInactive({ likeCount }) {
   return (
-    <Icon src={heartInactive} alt="heart" {...props}/>
+    <Icon src={heartInactive} alt='heart'>
+      {likeCount}
+    </Icon>
   );
 }
 
