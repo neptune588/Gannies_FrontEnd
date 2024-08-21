@@ -7,7 +7,7 @@ import {
   Detail,
   Copyright,
   Underline,
-} from './style';
+} from '@/layouts/Footer/style';
 
 function Footer() {
   return (
