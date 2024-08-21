@@ -4,15 +4,14 @@ import {
   Wrapper,
   Category,
   PostTitle,
-  Description,
   DescriptionWrapper,
-  Comment
+  Comment,
+  PostEye,
+  PostHeartInactive,
+  Description
 } from '@/components/PostList/style';
-import Eye from '@/components/Icons/Eye';
-import HeartInactive from '@/components/Icons/HeartInactive';
 
 function PostList({ posts }) {
-
   return (
     <Wrapper>
       {posts.length > 0 ? (
@@ -21,11 +20,11 @@ function PostList({ posts }) {
             <Category>{post.category}</Category>
             <PostTitle>{post.title} <Comment>[{post.comment}]</Comment></PostTitle>
             <DescriptionWrapper>
-              <Eye />
+              <PostEye />
               <Description>{post.views}</Description>
             </DescriptionWrapper>
             <DescriptionWrapper>
-              <HeartInactive />
+              <PostHeartInactive />
               <Description>{post.likes}</Description>
             </DescriptionWrapper>
             <DescriptionWrapper>

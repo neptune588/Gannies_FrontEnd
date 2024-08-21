@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import Eye from '@/components/Icons/Eye';
+import HeartInactive from '@/components/Icons/HeartInactive';
 
 export const Wrapper = styled.div`
   width: 1128px;
@@ -52,3 +54,11 @@ export const DescriptionWrapper = styled.div`
   display: flex;
   align-items: center;
 `
+
+export const PostEye = styled(Eye)`
+  margin-right: 8px;
+`;
+
+export const PostHeartInactive = styled(HeartInactive)`
+  margin-right: 8px;
+`;
