@@ -3,7 +3,7 @@ import {
   Logo,
   LoginButton,
   SignUpButton,
-} from '@/layouts/header/style';
+} from '@/layouts/Header/style';
 import logo from '@/assets/images/logo.png';
 
 function Header() {
