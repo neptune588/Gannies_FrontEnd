@@ -11,15 +11,15 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Home />,
+        element: <Home />
       },
       {
         path: '/community',
-        element: <Community />,
+        element: <Community />
       },
       {
         path: '/community/create-post',
-        element: <CreatePost />,
+        element: <CreatePost />
       },
     ],
   },
