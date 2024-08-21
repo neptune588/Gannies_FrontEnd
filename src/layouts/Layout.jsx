@@ -1,5 +1,7 @@
-import Header from '@/layouts/header';
-import Footer from '@/layouts/footer';
+import Header from '@/layouts/Header';
+import Footer from '@/layouts/Footer';
+import Navbar from '@/layouts/Navbar';
+
 import styled from 'styled-components';
 import { Outlet } from 'react-router-dom';
 
@@ -12,6 +14,7 @@ export default function Layout() {
   return (
     <>
       <Header />
+      <Navbar />
       <CenterdContainer>
         <Outlet />
       </CenterdContainer>
