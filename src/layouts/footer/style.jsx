@@ -8,6 +8,7 @@ export const Wrapper = styled.footer`
   background-color: #efefef;
   height: 208px;
   width: 1128px;
+  margin-top: 58px;
 `;
 
 export const ButtonWrapper = styled.div`
