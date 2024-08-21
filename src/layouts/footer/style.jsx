@@ -19,18 +19,18 @@ export const ButtonWrapper = styled.div`
 
 export const Button = styled.button`
   margin-top: 46px;
-  font-size: ${props => props.theme.typo.size.md};
-  color: ${props => props.theme.colors.primary};
+  font-size: ${(props) => props.theme.typo.size.md};
+  color: ${(props) => props.theme.colors.primary};
   cursor: pointer;
   border: none;
   padding-left: 10px;
   padding-right: 10px;
-  border-right: 1px solid #D5D5D5;
+  border-right: 1px solid #d5d5d5;
   color: black;
 
   &:last-of-type {
     border-right: none;
-  }  
+  }
 
   &:focus {
     outline: none;
@@ -52,11 +52,11 @@ export const Detail = styled.span`
 
   &:last-of-type {
     border-right: none;
-  }  
+  }
 `;
 
 export const Underline = styled.span`
-   text-decoration: underline;
+  text-decoration: underline;
 `;
 
 export const Copyright = styled.div`
