@@ -5,6 +5,7 @@ import Navbar from '@/layouts/Navbar';
 import Banner from '@/components/Home/Banner';
 import SearchBar from '@/components/Home/SearchBar';
 import Post from '@/components/Home/Post';
+import Link from '@/components/Home/Link';
 
 function Home() {
   return (
@@ -14,6 +15,7 @@ function Home() {
       <Banner />
       <SearchBar />
       <Post />
+      <Link />
       <Footer />
     </>
   )
