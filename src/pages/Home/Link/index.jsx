@@ -2,7 +2,7 @@ import {
 	Wrapper,
 	LeftWrapper,
 	Title,
-	Button,
+	Goto,
 	ArrowIcon,
 	ArrowIconWrapper,
 	RightWrapper,
@@ -16,7 +16,7 @@ function Link() {
     <Wrapper>
 			<LeftWrapper>
 				<Title>우리학교 다른홈페이지</Title>
-				<Button>바로가기<ArrowIconWrapper><ArrowIcon src={chevron_right} alt="chevron_left"/></ArrowIconWrapper></Button>
+				<Goto>바로가기<ArrowIconWrapper><ArrowIcon src={chevron_right} alt="chevron_left"/></ArrowIconWrapper></Goto>
 			</LeftWrapper>
 			<RightWrapper>
 				<LinkIcon src={department} alt="LinkIcon"/>

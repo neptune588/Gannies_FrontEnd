@@ -55,7 +55,7 @@ function NewPost() {
   ]
 
   return (
-    <Post title={title} data={posts}/>
+    <Post title={title} posts={posts} />
   );
 
 }

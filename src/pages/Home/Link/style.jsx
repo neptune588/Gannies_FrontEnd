@@ -15,15 +15,16 @@ export const LeftWrapper = styled.div`
   display: flex;
   flex-direction: column;
   color: white;
-  margin-left: 48px;
+  padding-left: 48px;
 `;
 
 export const Title = styled.span`
   color: ${props => props.theme.colors.gray[10]};
   font-size: ${props => props.theme.typo.size.h4};
   font-weight: ${props => props.theme.typo.weight.regular};
+  letter-spacing: 0px;
 `
-export const Button = styled.button`
+export const Goto = styled.div`
   margin-top: 11px;
   font-size: ${props => props.theme.typo.size.h4};
   color: ${props => props.theme.colors.white};

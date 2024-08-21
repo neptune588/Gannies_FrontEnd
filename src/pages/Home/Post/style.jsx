@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
   width: 1128px;
 `;
 
-export const UpperWrapper = styled.form`
+export const UpperWrapper = styled.div`
   width: 1128px;
   height: 48px;
   display: flex;
@@ -14,6 +14,7 @@ export const UpperWrapper = styled.form`
   padding-left: 24px;
   padding-right: 6px;
   padding-bottom: 18px;
+  border-bottom: 1px solid ${props => props.theme.colors.gray[60]};
 `;
 
 export const UpperTitle = styled.span`
