@@ -1,14 +1,15 @@
-import React from 'react';
-import { Wrapper } from './style';
-import { LeftWrapper } from './style';
-import { Title } from './style';
-import { Button } from './style';
+import {
+	Wrapper,
+	LeftWrapper,
+	Title,
+	Button,
+	ArrowIcon,
+	ArrowIconWrapper,
+	RightWrapper,
+	LinkIcon
+} from '@/pages/Home/Link/style';
 import chevron_right from '@/assets/icons/arrows/chevron_right.svg';
 import department from '@/assets/images/department.png';
-import { ArrowIcon } from './style';
-import { ArrowIconWrapper } from './style';
-import { RightWrapper } from './style';
-import { LinkIcon } from './style';
 
 function Link() {
   return (

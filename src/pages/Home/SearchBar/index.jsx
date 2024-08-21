@@ -1,5 +1,10 @@
-import React from 'react';
-import { Wrapper, SearchBarWrapper, SearchIcon, Input, Button } from './style';
+import {
+  Wrapper,
+  SearchBarWrapper,
+  SearchIcon,
+  Input,
+  Button
+} from '@/pages/Home/SearchBar/style';
 import search from '@/assets/icons/etc/search.svg';
 
 function SearchBar() {

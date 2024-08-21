@@ -1,4 +1,4 @@
-import { Wrapper } from './style';
+import { Wrapper } from '@/pages/Home/Banner/style';
 import banner from '@/assets/images/banner.png';
 
 function Banner() {

@@ -1,6 +1,18 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { PostWrapper, LowerWrapper, ShowMoreButton, ShowMoreButtonIcon, UpperTitle, UpperWrapper, Wrapper, CategoryButton, PostTitle, LowerIcon, LowerDescription, LowerDescriptionWrapper, Comment } from './style';
+import {
+  PostWrapper,
+  LowerWrapper,
+  ShowMoreButton,
+  ShowMoreButtonIcon,
+  UpperTitle,
+  UpperWrapper,
+  Wrapper,
+  CategoryButton,
+  PostTitle,
+  LowerIcon,
+  LowerDescription,
+  LowerDescriptionWrapper,
+  Comment} from '@/pages/Home/Post/style';
 import chevron_right from '@/assets/icons/arrows/chevron_right.svg';
 import eye from '@/assets/icons/eyes/eye.svg';
 import like_inactive from '@/assets/icons/hearts/like_inactive.svg';

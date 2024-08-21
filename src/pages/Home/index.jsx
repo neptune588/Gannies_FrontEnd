@@ -1,4 +1,3 @@
-import React from 'react';
 import Navbar from '@/layouts/Navbar';
 import Banner from '@/pages/Home/Banner';
 import SearchBar from '@/pages/Home/SearchBar';
