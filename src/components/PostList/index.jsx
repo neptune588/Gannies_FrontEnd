@@ -7,7 +7,7 @@ import {
   Comment,
   PostEye,
   PostHeartInactive,
-  Description
+  Description,
 } from '@/components/PostList/style';
 
 function PostList({ posts }) {
@@ -17,7 +17,9 @@ function PostList({ posts }) {
         posts.map((post, postIndex) => (
           <PostWrapper key={postIndex}>
             <Category>{post.category}</Category>
-            <PostTitle>{post.title} <Comment>[{post.comment}]</Comment></PostTitle>
+            <PostTitle>
+              {post.title} <Comment>[{post.comment}]</Comment>
+            </PostTitle>
             <DescriptionWrapper>
               <PostEye />
               <Description>{post.views}</Description>
