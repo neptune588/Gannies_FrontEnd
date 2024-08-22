@@ -10,14 +10,18 @@ import { useNavigate } from 'react-router-dom';
 function Header() {
   const navigate = useNavigate();
 
-  const onClickLoginButton = () => {
-    navigate('/Login');
+  const goToHome = () => {
+    navigate('/');
+  };
+
+  const goToSignIn = () => {
+    navigate('/sign-in');
   };
 
   return (
     <Wrapper>
-      <Logo src={logo}></Logo>
-      <LoginButton onClick={onClickLoginButton}>로그인</LoginButton>
+      <Logo src={logo} alt="logo" onClick={goToHome}></Logo>
+      <LoginButton onClick={goToSignIn}>로그인</LoginButton>
       <SignUpButton>회원가입</SignUpButton>
     </Wrapper>
   );
