@@ -59,6 +59,40 @@ const ellipsisStyle = css`
   text-overflow: ellipsis;
 `;
 
+const centerAlignStyle = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const paginationWrapperStyle = css`
+  display: flex;
+  width: 580px;
+`;
+
+const pageArrowWrapperStyle = css`
+  display: flex;
+  align-items: center;
+  >div: first-child {
+    margin-right: 6px;
+  }
+`;
+
+const pageNumberWrapperStlye = css`
+  display: flex;
+  align-items: center;
+
+  li {
+    margin: 0 4.5px;
+  }
+  > li:first-child {
+    margin-left: 30px;
+  }
+  > li:last-child {
+    margin-right: 30px;
+  }
+`;
+
 export {
   defaultBorderBoxStyle,
   primaryColorBoxStyle,
@@ -66,4 +100,8 @@ export {
   bannerTitleStyle,
   bannerTextStyle,
   ellipsisStyle,
+  centerAlignStyle,
+  paginationWrapperStyle,
+  pageArrowWrapperStyle,
+  pageNumberWrapperStlye,
 };

@@ -7,6 +7,10 @@ import {
   primaryColorBoxStyle,
   defaultBorderBoxStyle,
   ellipsisStyle,
+  centerAlignStyle,
+  paginationWrapperStyle,
+  pageArrowWrapperStyle,
+  pageNumberWrapperStlye,
 } from '@/styles/commonStyle';
 
 const BannerTitle = styled.h2`
@@ -30,6 +34,7 @@ const ContentsAlignBox = styled.div`
 const PostCreateButton = styled(Link)`
   ${primaryColorBoxStyle}
   display: flex;
+  justify-content: space-between;
   align-items: center;
   width: 135px;
   height: 40px;
@@ -37,17 +42,30 @@ const PostCreateButton = styled(Link)`
   font-size: ${({ theme: { typo } }) => {
     return typo.size.sm;
   }};
+  > img {
+    width: 24px;
+    height: 24px;
+  }
 `;
 
-const SelectBox = styled.select`
+const SelectBox = styled.div`
   ${defaultBorderBoxStyle}
+  ${centerAlignStyle}
   width: 95px;
   height: 35px;
   padding: 0 10px;
-  appearance: none;
   font-size: ${({ theme: { typo } }) => {
     return typo.size.xs;
   }};
+  font-weight: ${({ theme: { typo } }) => {
+    return typo.weight.regular;
+  }};
+  > div:first-child {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 `;
 
 const PostWrapper = styled.div`
@@ -92,6 +110,19 @@ const PostHeaderBox = styled.div`
   }
 `;
 
+const PageWrapper = styled.section`
+  ${paginationWrapperStyle}
+  margin: 50px auto 95px;
+`;
+
+const ArrowBox = styled.div`
+  ${pageArrowWrapperStyle}
+`;
+
+const PageNumberBox = styled.ul`
+  ${pageNumberWrapperStlye}
+`;
+
 export {
   BannerTitle,
   BannerText,
@@ -100,4 +131,7 @@ export {
   SelectBox,
   PostWrapper,
   PostHeaderBox,
+  PageWrapper,
+  ArrowBox,
+  PageNumberBox,
 };
