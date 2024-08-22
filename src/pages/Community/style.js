@@ -75,7 +75,7 @@ const PostHeaderBox = styled.div`
       margin-right: 15px;
     }
     > p:last-child {
-      width: 730px;
+      width: 720px;
       ${ellipsisStyle}
     }
   }

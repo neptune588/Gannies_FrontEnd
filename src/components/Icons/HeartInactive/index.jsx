@@ -1,8 +1,18 @@
-import { Icon } from '@/components/Icons/style';
 import heartInactive from '@/assets/icons/hearts/heart_inactive.svg';
+import { IconBox } from '@/components/Icons/style';
 
-function HeartInactive({ likeCount = 0 }) {
-  return <Icon src={heartInactive} alt='heart'></Icon>;
+import styled from 'styled-components';
+
+const Icon = styled.img`
+  width: 18px;
+  height: 16px;
+`;
+
+export default function HeartInactive({ likeCount = 0 }) {
+  return (
+    <IconBox>
+      <Icon src={heartInactive} alt='heart' />
+      <p>{likeCount.toLocaleString()}</p>
+    </IconBox>
+  );
 }
-
-export default HeartInactive;

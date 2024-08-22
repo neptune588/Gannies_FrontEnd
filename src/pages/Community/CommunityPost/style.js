@@ -14,6 +14,7 @@ const PostContainer = styled.li`
 
 const PostContentsWrapper = styled.div`
   display: flex;
+  width: 830px;
 `;
 const PostNumberBox = styled.p`
   width: 110px;
@@ -34,7 +35,7 @@ const PostBodyBox = styled.div`
   display: flex;
   flex-flow: column;
   justify-content: center;
-  width: 730px;
+  width: 720px;
   ${ellipsisStyle}
   p {
     color: ${({ theme: { colors } }) => {
@@ -62,25 +63,29 @@ const PostBodyBox = styled.div`
 
 const PostInfoBox = styled.div`
   display: flex;
+  width: calc(100% - 830px);
   flex-flow: column;
   justify-content: center;
   margin-right: 40px;
-  > div:first-child {
-    display: flex;
-    margin-bottom: 10px;
-  }
-  > p:last-child {
-    text-align: right;
-    color: ${({ theme: { colors } }) => {
-      return colors.gray['70'];
-    }};
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.sm;
-    }};
-    font-weight: ${({ theme: { typo } }) => {
-      return typo.weight.medium;
-    }};
-  }
+`;
+
+const PostIconBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+`;
+
+const PostDateBox = styled.p`
+  text-align: right;
+  color: ${({ theme: { colors } }) => {
+    return colors.gray['70'];
+  }};
+  font-size: ${({ theme: { typo } }) => {
+    return typo.size.sm;
+  }};
+  font-weight: ${({ theme: { typo } }) => {
+    return typo.weight.medium;
+  }};
 `;
 
 export {
@@ -89,4 +94,6 @@ export {
   PostNumberBox,
   PostBodyBox,
   PostInfoBox,
+  PostIconBox,
+  PostDateBox,
 };

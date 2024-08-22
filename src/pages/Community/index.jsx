@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import CommunityBanner from '@/pages/Community/CommunityBanner';
 import CommunityPost from '@/pages/Community/CommunityPost';
 
@@ -12,7 +14,14 @@ import {
 } from '@/pages/Community/style';
 
 //커밋순 -> 1) 페이지컴포넌트 완성 + 공통 스타일 등록 2) 공용 컴포넌트 완성 3) svg관련 커밋
+
 export default function Community() {
+  const [tempData, setTempData] = useState(
+    Array.from({ length: 10 }, (_, index) => {
+      return index;
+    })
+  );
+
   return (
     <>
       <CommunityBanner>
@@ -39,10 +48,9 @@ export default function Community() {
         </PostHeaderBox>
       </PostWrapper>
       <ul>
-        <CommunityPost />
-        <CommunityPost />
-        <CommunityPost />
-        <CommunityPost />
+        {tempData.map((item) => {
+          return <CommunityPost key={item} />;
+        })}
       </ul>
     </>
   );
