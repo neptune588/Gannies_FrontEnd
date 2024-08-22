@@ -53,10 +53,17 @@ const bannerTextStyle = css`
   }};
 `;
 
+const ellipsisStyle = css`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 export {
   defaultBorderBoxStyle,
   primaryColorBoxStyle,
   primaryBorderBoxStyle,
   bannerTitleStyle,
   bannerTextStyle,
+  ellipsisStyle,
 };

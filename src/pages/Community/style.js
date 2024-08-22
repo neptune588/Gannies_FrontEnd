@@ -6,6 +6,7 @@ import {
   bannerTextStyle,
   primaryColorBoxStyle,
   defaultBorderBoxStyle,
+  ellipsisStyle,
 } from '@/styles/commonStyle';
 
 const BannerTitle = styled.h2`
@@ -56,7 +57,7 @@ const PostHeaderBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px 20px 15px 40px;
+  padding: 15px 0 15px;
   border-top: 2px solid
     ${({ theme: { colors } }) => {
       return colors.gray['50'];
@@ -69,10 +70,17 @@ const PostHeaderBox = styled.div`
     display: flex;
     align-items: center;
     > p:first-child {
-      margin-right: 60px;
+      width: 110px;
+      text-align: center;
+      margin-right: 15px;
+    }
+    > p:last-child {
+      width: 730px;
+      ${ellipsisStyle}
     }
   }
   > div:last-child {
+    margin-right: 20px;
   }
   p {
     font-size: ${({ theme: { typo } }) => {

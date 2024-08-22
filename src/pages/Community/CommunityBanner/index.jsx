@@ -11,6 +11,6 @@ const BannerBox = styled.div`
   padding: 77px 0 89px 56px;
 `;
 
-export default function Banner({ children }) {
+export default function CommunityBanner({ children }) {
   return <BannerBox>{children}</BannerBox>;
 }

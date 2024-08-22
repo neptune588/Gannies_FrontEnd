@@ -1,4 +1,5 @@
-import Banner from '@/pages/Community/Banner';
+import CommunityBanner from '@/pages/Community/CommunityBanner';
+import CommunityPost from '@/pages/Community/CommunityPost';
 
 import {
   BannerTitle,
@@ -14,10 +15,10 @@ import {
 export default function Community() {
   return (
     <>
-      <Banner>
+      <CommunityBanner>
         <BannerTitle>실습정보</BannerTitle>
         <BannerText>실습에 관련한 유용한 정보를 제공합니다.</BannerText>
-      </Banner>
+      </CommunityBanner>
       <ContentsAlignBox>
         <PostCreateButton to='/community/create-post'>
           게시글 작성
@@ -37,7 +38,12 @@ export default function Community() {
           </div>
         </PostHeaderBox>
       </PostWrapper>
-      <ul></ul>
+      <ul>
+        <CommunityPost />
+        <CommunityPost />
+        <CommunityPost />
+        <CommunityPost />
+      </ul>
     </>
   );
 }
