@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { primaryColorBoxStyle } from '@/styles/commonStyle';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -45,14 +46,13 @@ export const Input = styled.input`
   }
 `;
 
+
 export const Button = styled.button`
+  ${primaryColorBoxStyle};
   font-size: ${props => props.theme.typo.size.md};
-  background-color: ${props => props.theme.colors.primary};
   width: 90px;
   height: 50px;
-  color: white;
   cursor: pointer;
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-  border: 1px solid ${props => props.theme.colors.primary};
+  border-radius: 0px 4px 4px 0px;
+  // border: 1px solid ${props => props.theme.colors.primary};
 `;
