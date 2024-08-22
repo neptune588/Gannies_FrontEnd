@@ -18,11 +18,15 @@ function Header() {
     navigate('/sign-in');
   };
 
+  const goToSignUp = () => {
+    navigate('/sign-up/verify');
+  };
+
   return (
     <Wrapper>
       <Logo src={logo} alt="logo" onClick={goToHome}></Logo>
       <LoginButton onClick={goToSignIn}>로그인</LoginButton>
-      <SignUpButton>회원가입</SignUpButton>
+      <SignUpButton onClick={goToSignUp}>회원가입</SignUpButton>
     </Wrapper>
   );
 }

@@ -33,7 +33,7 @@ export const SearchIcon = styled.img`
 
 export const Input = styled.input`
   width: 744px;
-  height: 19px;
+  height: 46px;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
   margin-left: 23px;
@@ -54,5 +54,4 @@ export const Button = styled.button`
   height: 50px;
   cursor: pointer;
   border-radius: 0px 4px 4px 0px;
-  // border: 1px solid ${props => props.theme.colors.primary};
 `;
