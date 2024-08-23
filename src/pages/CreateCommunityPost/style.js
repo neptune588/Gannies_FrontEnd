@@ -1,5 +1,9 @@
 import styled from 'styled-components';
-import { defaultBorderBoxStyle } from '@/styles/commonStyle';
+import {
+  defaultBorderBoxStyle,
+  createPostPageInputBoxStyle,
+  createPostPageInputStyle,
+} from '@/styles/commonStyle';
 
 const CategoryBox = styled.section`
   margin: 60px 0 30px;
@@ -19,28 +23,6 @@ const TitleBox = styled.section`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 60px;
-  > h2 {
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.h4;
-    }};
-    font-weight: ${({ theme: { typo } }) => {
-      return typo.weight.medium;
-    }};
-    margin-left: 30px;
-  }
-
-  > p {
-    color: ${({ theme: { colors } }) => {
-      return colors.black;
-    }};
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.xs;
-    }};
-    font-weight: ${({ theme: { typo } }) => {
-      return typo.weight.medium;
-    }};
-    margin-right: 70px;
-  }
 `;
 
 const ContentsWrapper = styled.div`
@@ -49,22 +31,10 @@ const ContentsWrapper = styled.div`
 `;
 
 const InputBox = styled.section`
-  border-bottom: 1px solid
-    ${({ theme: { colors } }) => {
-      return colors.black;
-    }};
+  ${createPostPageInputBoxStyle}
+
   > input {
-    width: 100%;
-    padding: 0 15px 15px 15px;
-    color: ${({ theme: { colors } }) => {
-      return colors.black;
-    }};
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.h4;
-    }};
-    font-weight: ${({ theme: { typo } }) => {
-      return typo.weight.medium;
-    }};
+    ${createPostPageInputStyle}
   }
 `;
 
@@ -72,9 +42,8 @@ const DataInputWrapper = styled.div`
   padding: 30px 0 30px 25px;
   border-bottom: 1px solid
     ${({ theme: { colors } }) => {
-      return colors.black;
+      return colors.gray['60'];
     }};
-
   > div:first-child {
     margin-bottom: 45px;
   }
@@ -83,6 +52,7 @@ const DataInputWrapper = styled.div`
 const DataInputBox = styled.div`
   display: flex;
   align-items: center;
+
   > p {
     color: ${({ theme: { colors } }) => {
       return colors.gray['90'];
@@ -97,12 +67,62 @@ const DataInputBox = styled.div`
   }
 
   > div,
-  input {
+  > label {
     ${defaultBorderBoxStyle}
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     width: 340px;
     height: 45px;
     padding: 10px 20px 10px 30px;
+    font-size: ${({ theme: { typo } }) => {
+      return typo.size.sm;
+    }};
+    cursor: pointer;
   }
+
+  > div {
+    color: ${({ theme: { colors } }) => {
+      return colors.gray['90'];
+    }};
+    font-weight: ${({ theme: { typo } }) => {
+      return typo.weight.regular;
+    }};
+    > img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  > label {
+    > input {
+      width: 90%;
+      font-size: inherit;
+      cursor: pointer;
+    }
+    > img {
+      width: 18px;
+      height: 18px;
+    }
+  }
+`;
+
+const TextAreaBox = styled.div`
+  ${createPostPageInputBoxStyle}
+  margin-bottom: 95px;
+  > textarea {
+    display: block;
+    min-height: 490px;
+    ${createPostPageInputStyle}
+    padding-top: 30px;
+  }
+`;
+
+const ButtonBox = styled.section`
+  display: flex;
+  justify-content: space-between;
+  width: 510px;
+  margin: 0 auto 175px;
 `;
 export {
   CategoryBox,
@@ -112,4 +132,6 @@ export {
   InputBox,
   DataInputWrapper,
   DataInputBox,
+  TextAreaBox,
+  ButtonBox,
 };

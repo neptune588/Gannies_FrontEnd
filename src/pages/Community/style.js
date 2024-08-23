@@ -8,7 +8,7 @@ import {
   centerAlignStyle,
   paginationWrapperStyle,
   pageArrowWrapperStyle,
-  pageNumberWrapperStlye,
+  pageNumberWrapperStyle,
 } from '@/styles/commonStyle';
 
 const ContentsAlignBox = styled.div`
@@ -108,7 +108,7 @@ const ArrowBox = styled.div`
 `;
 
 const PageNumberBox = styled.ul`
-  ${pageNumberWrapperStlye}
+  ${pageNumberWrapperStyle}
 `;
 
 export {

@@ -78,7 +78,7 @@ const pageArrowWrapperStyle = css`
   }
 `;
 
-const pageNumberWrapperStlye = css`
+const pageNumberWrapperStyle = css`
   display: flex;
   align-items: center;
 
@@ -93,6 +93,27 @@ const pageNumberWrapperStlye = css`
   }
 `;
 
+const createPostPageInputBoxStyle = css`
+  border-bottom: 1px solid
+    ${({ theme: { colors } }) => {
+      return colors.gray['60'];
+    }};
+  padding: 0 15px 15px 15px;
+`;
+
+const createPostPageInputStyle = css`
+  width: 100%;
+  color: ${({ theme: { colors } }) => {
+    return colors.black;
+  }};
+  font-size: ${({ theme: { typo } }) => {
+    return typo.size.h4;
+  }};
+  font-weight: ${({ theme: { typo } }) => {
+    return typo.weight.medium;
+  }};
+`;
+
 export {
   defaultBorderBoxStyle,
   primaryColorBoxStyle,
@@ -103,5 +124,7 @@ export {
   centerAlignStyle,
   paginationWrapperStyle,
   pageArrowWrapperStyle,
-  pageNumberWrapperStlye,
+  pageNumberWrapperStyle,
+  createPostPageInputBoxStyle,
+  createPostPageInputStyle,
 };

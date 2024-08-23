@@ -34,9 +34,19 @@ ${reset}
   }
   input {
     border: none;
+    &:placeholder {
+      color: ${({ theme: { colors } }) => {
+        return colors.gray['40'];
+      }};
+    }
     &:focus {
       outline: none;
     }
+  }
+  textarea {
+    border: none;
+    resize: none; 
+    outline: none;
   }
 `;
 
