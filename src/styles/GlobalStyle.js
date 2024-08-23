@@ -32,6 +32,12 @@ ${reset}
   html {
     font-size: 10px;
   }
+  input {
+    border: none;
+    &:focus {
+      outline: none;
+    }
+  }
 `;
 
 export default GlobalStyles;
