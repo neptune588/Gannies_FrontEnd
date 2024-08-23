@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { primaryColorBoxStyle } from '@/styles/commonStyle';
+import { InputBox } from '@/components/Input/style';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -31,19 +32,12 @@ export const SearchIcon = styled.img`
   height: 24px;
 `;
 
-export const Input = styled.input`
+export const Input = styled(InputBox)`
   width: 744px;
   height: 46px;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
   margin-left: 23px;
-  outline: none;
-  border: none;
-  font-size: ${props => props.theme.typo.size.sm};
-
-  &:placeholder {
-    color: #DODODO;
-  }
 `;
 
 

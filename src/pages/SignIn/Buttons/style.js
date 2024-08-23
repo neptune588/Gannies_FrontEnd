@@ -1,3 +1,4 @@
+import { inactiveBoxStyle } from '@/styles/commonStyle';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
@@ -42,12 +43,10 @@ export const FindButton = styled(Description)`
 `;
 
 export const LoginButton = styled.button`
+  ${inactiveBoxStyle};
   width: 360px;
   height: 48px;
-  background-color: ${props => props.theme.colors.gray[20]};
-  color: ${props => props.theme.colors.gray[60]};
   font-size: ${props => props.theme.typo.size.md};
   font-weight: ${props => props.theme.typo.weight.regular};
-  border-radius: 4px;
   margin-top: 35px;
 `;

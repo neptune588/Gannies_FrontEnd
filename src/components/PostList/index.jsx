@@ -5,10 +5,11 @@ import {
   PostTitle,
   DescriptionWrapper,
   Comment,
-  PostEye,
-  PostHeartInactive,
-  Description,
+  Date,
 } from '@/components/PostList/style';
+
+import Eye from '@/components/Icons/Eye';
+import HeartInactive from '@/components/Icons/HeartInactive';
 
 function PostList({ posts }) {
   return (
@@ -21,15 +22,13 @@ function PostList({ posts }) {
               {post.title} <Comment>[{post.comment}]</Comment>
             </PostTitle>
             <DescriptionWrapper>
-              <PostEye />
-              <Description>{post.views}</Description>
+              <Eye viewCount={post.views} />
             </DescriptionWrapper>
             <DescriptionWrapper>
-              <PostHeartInactive />
-              <Description>{post.likes}</Description>
+              <HeartInactive likeCount={post.likes} />
             </DescriptionWrapper>
             <DescriptionWrapper>
-              <Description>{post.date}</Description>
+              <Date>{post.date}</Date>
             </DescriptionWrapper>
           </PostWrapper>
         ))

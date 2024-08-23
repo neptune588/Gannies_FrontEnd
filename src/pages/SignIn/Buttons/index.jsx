@@ -9,6 +9,7 @@ import {
 } from '@/pages/SignIn/Buttons/style';
 
 function Buttons() {
+
  return (
     <Wrapper>
       <LoginOptionsWrapper>

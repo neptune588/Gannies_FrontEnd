@@ -10,7 +10,7 @@ import {
   centerAlignStyle,
   paginationWrapperStyle,
   pageArrowWrapperStyle,
-  pageNumberWrapperStlye,
+  pageNumberWrapperStyle,
 } from '@/styles/commonStyle';
 
 const BannerTitle = styled.h2`
@@ -120,7 +120,7 @@ const ArrowBox = styled.div`
 `;
 
 const PageNumberBox = styled.ul`
-  ${pageNumberWrapperStlye}
+  ${pageNumberWrapperStyle}
 `;
 
 export {

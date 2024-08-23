@@ -5,7 +5,7 @@ import CommunityPost from '@/pages/Community/CommunityPost';
 import PageControlArrow from '@/components/PageControlArrow';
 import PageNumber from '@/components/PageNumber';
 import brush from '@/assets/icons/etc/brush.svg';
-import bottomArraow from '@/assets/icons/arrows/chevron_down.svg';
+import bottomArrow from '@/assets/icons/arrows/chevron_down.svg';
 
 import prevArrow from '@/assets/icons/arrows/chevron_left.svg';
 import nextArrow from '@/assets/icons/arrows/chevron_right.svg';
@@ -52,7 +52,7 @@ export default function Community() {
         <SelectBox>
           <div>
             <p>최신순</p>
-            <img src={bottomArraow} alt='select-arrow' />
+            <img src={bottomArrow} alt='select-arrow' />
           </div>
         </SelectBox>
       </ContentsAlignBox>

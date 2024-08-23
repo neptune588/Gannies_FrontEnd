@@ -1,4 +1,4 @@
-import eyeSlash from '@/assets/icons/eyes/eye_slash.svg';
+import clock from '@/assets/icons/etc/clock.svg';
 import { IconBox } from '@/components/Icons/style';
 
 import styled from 'styled-components';
@@ -8,10 +8,11 @@ const Icon = styled.img`
   height: 18px;
 `;
 
-export default function EyeSlash() {
+export default function Clock({ time = 0 }) {
   return (
     <IconBox>
-      <Icon src={eyeSlash} alt='eyeSlash' />
+      <Icon src={clock} alt='clock' />
+        <p>{time}</p>
     </IconBox>
   );
 }

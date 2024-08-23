@@ -18,6 +18,16 @@ const primaryColorBoxStyle = css`
   border-radius: 4px;
 `;
 
+const inactiveBoxStyle = css`
+  color: ${({ theme: { colors } }) => {
+    return colors.gray[60];
+  }};
+  background-color: ${({ theme: { colors } }) => {
+    return colors.gray[20];
+  }};
+  border-radius: 4px;
+`;
+
 const primaryBorderBoxStyle = css`
   color: ${({ theme: { colors } }) => {
     return colors.primary;
@@ -78,7 +88,7 @@ const pageArrowWrapperStyle = css`
   }
 `;
 
-const pageNumberWrapperStlye = css`
+const pageNumberWrapperStyle = css`
   display: flex;
   align-items: center;
 
@@ -96,6 +106,7 @@ const pageNumberWrapperStlye = css`
 export {
   defaultBorderBoxStyle,
   primaryColorBoxStyle,
+  inactiveBoxStyle,
   primaryBorderBoxStyle,
   bannerTitleStyle,
   bannerTextStyle,
@@ -103,5 +114,5 @@ export {
   centerAlignStyle,
   paginationWrapperStyle,
   pageArrowWrapperStyle,
-  pageNumberWrapperStlye,
+  pageNumberWrapperStyle,
 };

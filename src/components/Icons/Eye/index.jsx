@@ -12,7 +12,9 @@ export default function Eye({ viewCount = 0 }) {
   return (
     <IconBox>
       <Icon src={eye} alt='eye' />
-      <p>{viewCount.toLocaleString()}</p>
+      {
+        viewCount ? <p>{viewCount.toLocaleString()}</p>  : <></>
+      }
     </IconBox>
   );
 }
