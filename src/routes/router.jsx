@@ -6,6 +6,8 @@ import Community from '@/pages/Community';
 import CreatePost from '@/pages/CreatePost';
 import Identity from '@/pages/SignUp/Identity';
 import Info from '@/pages/SignUp/Info';
+import Department from '@/pages/SignUp/Department';
+import Error from '@/pages/Error';
 
 export const router = createBrowserRouter([
   {
@@ -22,11 +24,15 @@ export const router = createBrowserRouter([
       },    
       {
         path: '/sign-up/identity',
-        element: <Identity/>
+        element: <Identity />
       },      
       {
         path: '/sign-up/info',
-        element: <Info/>
+        element: <Info />
+      },   
+      {
+        path: '/sign-up/department',
+        element: <Department />
       },         
       {
         path: '/community',
@@ -36,6 +42,10 @@ export const router = createBrowserRouter([
         path: '/community/create-post',
         element: <CreatePost />
       },
+      {
+        path: '*',
+        element: <Error />
+      },      
     ],
   },
 ]);

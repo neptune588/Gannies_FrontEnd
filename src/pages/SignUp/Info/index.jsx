@@ -14,7 +14,7 @@ function Info() {
       <Title title="회원가입" />
       <Icons identity={identity} info={info} department={department} sequence={sequence}/>
       <Inputs />
-      <NextButton $margin="80px" text="다음" />
+      <NextButton $margin="80px" text="다음" to="/sign-up/department"/>
    </>
   );
 }

@@ -17,7 +17,7 @@ function Identity() {
       <Icons identity={identity} info={info} department={department} sequence={sequence}/>
       <Inputs />
       <Agree />
-      <NextButton $margin="80px" text="다음" />
+      <NextButton $margin="80px" text="다음" to="/sign-up/info"/>
     </>
   );
 }

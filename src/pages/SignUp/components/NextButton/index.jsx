@@ -1,10 +1,10 @@
 import { ActiveButton, ButtonWrapper } from "@/pages/SignUp/components/NextButton/style";
 
-function NextButton({$margin, text}) {
+function NextButton({$margin, text, to}) {
   return (
     <ButtonWrapper $margin={$margin}>
       {/* <InactiveButton>{text}</InactiveButton> */}
-      <ActiveButton>{text}</ActiveButton>
+      <ActiveButton to={to}>{text}</ActiveButton>
     </ButtonWrapper>
   )
 }
