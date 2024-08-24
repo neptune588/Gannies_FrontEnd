@@ -5,12 +5,15 @@ import {
     Wrapper,
     IconsWrapper,
     FontActive,
-    FontInactive
+    FontInactive,
+    Instruction,
+    FontFinished
   } from '@/pages/SignUp/components/Icons/style';
   import arrow from '@/assets/icons/arrows/chevron_right.svg';
   
-  function Icons({identity, info, department, sequence}) {
-    const fonts = ['본인인증', '정보인증', '학과인증'];
+function Icons({ identity, info, department, sequence }) {
+    
+    const fonts = ['본인인증', '정보입력', '학과인증'];
 
     return (
       <Wrapper>
@@ -24,12 +27,24 @@ import {
         <FontWrapper>
           {
             sequence.map((s, e) => {
-                const FontComponent = s ? FontActive : FontInactive;
-                return <FontComponent key={e}>{fonts[e]}</FontComponent>;
+              let Font;
+
+              switch (s) {
+                case 'active':
+                  Font = FontActive;
+                  break;
+                case 'finished':
+                  Font = FontFinished;
+                  break;
+                default:
+                  Font = FontInactive;
+              }
+
+              return <Font key={e}>{fonts[e]}</Font>;
             })
           }
         </FontWrapper>
-        {/* <>필수항목</> */}
+        <Instruction>*필수항목</Instruction>
       </Wrapper>
     );
   }

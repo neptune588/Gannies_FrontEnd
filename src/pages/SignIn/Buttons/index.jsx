@@ -1,12 +1,17 @@
 import {
   Wrapper,
   Description,
-  LoginButton,
   LoginOptionsWrapper,
   CheckBox,
   AutoLoginButton,
-  FindButton
+  FindButton,
+  Instruction,
+  InstructionPrimary,
+  ButtonWrapper
 } from '@/pages/SignIn/Buttons/style';
+
+import ActiveButton from '@/components/Buttons/AuthButtons/Active';
+import InactiveButton from '@/components/Buttons/AuthButtons/Inactive';
 
 function Buttons() {
 
@@ -19,7 +24,11 @@ function Buttons() {
         </AutoLoginButton>
         <FindButton>아이디 / 비밀번호 찾기</FindButton>
       </LoginOptionsWrapper>
-      <LoginButton>로그인</LoginButton>
+      <ButtonWrapper>
+        <InactiveButton text="로그인"></InactiveButton>       
+        {/* <ActiveButton text="로그인"></ActiveButton> */}
+      </ButtonWrapper>
+      <Instruction>아직 회원이 아니신가요?&nbsp;&nbsp;<InstructionPrimary to="/sign-up/identity">회원가입</InstructionPrimary></Instruction>
     </Wrapper>
   );
 }

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Input from '@/components/Input';
-import { defaultBorderBoxStyle, inactiveBoxStyle } from '@/styles/commonStyle';
+import { defaultBorderBoxStyle, disabledColorBoxStyle, inactiveColorBoxStyle, placeholderTextStyle, primaryColorBoxStyle } from '@/styles/commonStyle';
 
 export const Wrapper = styled.div`
 	display: flex;
@@ -25,10 +25,8 @@ export const InputBox = styled(Input)`
   width: 211px;
   height: 46px;
 
-  &:placeholder {
-    font-size: 24px;
-    font-weight: ${props => props.theme.typo.weight.regular};
-    color: #9B9B9B;
+  &::placeholder {
+    ${placeholderTextStyle};
   }
 `;
 
@@ -42,13 +40,23 @@ export const Info = styled.span`
 `;
 
 export const Button = styled.button`
-  ${inactiveBoxStyle};
   width: 112px;
   height: 48px;
   margin-top: 10px;
   font-size: ${props => props.theme.typo.size.xs};
   font-weight: ${props => props.theme.typo.weight.medium};  
   margin-left: 11px;
+`
+export const ActiveButton = styled(Button)`
+  ${primaryColorBoxStyle};
+`;
+
+export const DisabledButton = styled(Button)`
+  ${disabledColorBoxStyle};
+`;
+
+export const InactiveButton = styled(Button)`
+  ${inactiveColorBoxStyle};
 `;
 
 export const InfoWrapper = styled.div`

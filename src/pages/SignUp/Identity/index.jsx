@@ -1,14 +1,14 @@
-import Agree from '@/pages/SignUp/Verify/Agree';
+import Agree from '@/pages/SignUp/Identity/Agree';
 import Icons from '@/pages/SignUp/components/Icons';
-import Inputs from '@/pages/SignUp/Verify/Inputs';
+import Inputs from '@/pages/SignUp/Identity/Inputs';
 import Title from '@/pages/SignUp/components/Title';
 import identity from '@/assets/icons/etc/identity_verification_active.svg';
 import info from '@/assets/icons/etc/info_input_inactive.svg';
 import department from '@/assets/icons/etc/department_verification_inactive.svg';
 
 
-function Verify() {
-  const sequence = [true, false, false];
+function Identity() {
+  const sequence = ['active', 'inactive', 'inactive'];
 
   return (
    <>
@@ -20,4 +20,4 @@ function Verify() {
   );
 }
 
-export default Verify;
+export default Identity;

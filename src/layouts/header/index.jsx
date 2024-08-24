@@ -15,7 +15,7 @@ function Header() {
         <img src={logo} alt="logo" />
       </Logo>
       <LoginButton to="/sign-in">로그인</LoginButton>
-      <SignUpButton to="/sign-up/verify">회원가입</SignUpButton>
+      <SignUpButton to="/sign-up/identity">회원가입</SignUpButton>
     </Wrapper>
   );
 }

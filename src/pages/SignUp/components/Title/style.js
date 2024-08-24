@@ -10,11 +10,11 @@ export const Wrapper = styled.div`
 
 export const Font = styled.span`
   font-size: 28px;
-	font-weight: ${props => props.theme.typo.weight.semiBold};
+		font-weight: ${props => props.theme.typo.weight.semiBold};
   color: ${props => props.theme.colors.primary};
-  margin-bottom: 14px;
+  margin-bottom: 21px;
 `;
 
-export const Description = styled.span`
+export const Instruction = styled.span`
 	${instructionTextStyle};
 `

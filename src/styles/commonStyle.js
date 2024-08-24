@@ -18,7 +18,7 @@ const primaryColorBoxStyle = css`
   border-radius: 4px;
 `;
 
-const inactiveBoxStyle = css`
+const inactiveColorBoxStyle = css`
   color: ${({ theme: { colors } }) => {
     return colors.gray[60];
   }};
@@ -28,8 +28,8 @@ const inactiveBoxStyle = css`
   border-radius: 4px;
 `;
 
-const disabledBoxStyle = css`
-  ${inactiveBoxStyle}
+const disabledColorBoxStyle = css`
+  ${inactiveColorBoxStyle}
   opacity: 0.5;
 `;
 
@@ -132,11 +132,17 @@ const authTitleTextStyle = css`
   }};
 `;
 
+const placeholderTextStyle = css`
+  font-size: ${props => props.theme.typo.weight.sm};
+  font-weight: ${props => props.theme.typo.weight.regular};
+  color: ${props => props.theme.colors.gray[40]};
+`;
+
 export {
   defaultBorderBoxStyle,
   primaryColorBoxStyle,
-  inactiveBoxStyle,
-  disabledBoxStyle,
+  inactiveColorBoxStyle,
+  disabledColorBoxStyle,
   primaryBorderBoxStyle,
   bannerTitleStyle,
   bannerTextStyle,
@@ -146,5 +152,6 @@ export {
   pageArrowWrapperStyle,
   pageNumberWrapperStyle,
   instructionTextStyle,
-  authTitleTextStyle
+  authTitleTextStyle,
+  placeholderTextStyle
 };

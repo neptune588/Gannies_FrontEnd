@@ -1,19 +1,24 @@
+import { instructionTextStyle } from '@/styles/commonStyle';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
 		display: flex;
 		flex-direction: column;
 		margin: auto;
-		width: 360px;
+		width: 456px;
 		margin-top: 32px;
-		height: 160px;
-		// padding-bottom: 78px;
+		height: 149px;
+		margin-bottom: 15px;
+		position: relative;
 `;
 
 export const IconsWrapper = styled.div`
 		display: flex;
 		align-items: center;
 		justify-content: space-between;		
+		width: 360px;
+		margin-left: auto;
+		margin-right: auto;		
 `;
 
 export const Icon = styled.img`
@@ -44,4 +49,15 @@ export const FontActive = styled.span`
 
 export const FontInactive = styled(FontActive)`
   color: ${props => props.theme.colors.gray[50]};
+`;
+
+export const FontFinished = styled(FontActive)`
+		opacity: 0.5;
+`;
+
+export const Instruction = styled.span`
+	${instructionTextStyle};
+	margin-top: 53px;
+	margin-left: auto;
+	margin-right: 8px;
 `;

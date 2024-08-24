@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Input from '@/components/Input';
-import { defaultBorderBoxStyle } from '@/styles/commonStyle';
+import { defaultBorderBoxStyle, placeholderTextStyle } from '@/styles/commonStyle';
 import Eye from '@/components/Icons/Eye';
 
 export const Wrapper = styled.div`
@@ -32,10 +32,8 @@ export const InputBox = styled(Input)`
     margin-right: 12px;
   }
 
-  &:placeholder {
-    font-size: 24px;
-    font-weight: ${props => props.theme.typo.weight.regular};
-    color: #9B9B9B;
+  &::placeholder {
+    ${placeholderTextStyle};
   }
 `;
 
@@ -43,9 +41,4 @@ export const Icon = styled(Eye)`
   width: 18px;
   height: 18px;
   margin-right: 12px;
-  cursor: pointer;  
-`;
-
-export const = styled()`
-  ${instructionTextStyle};
 `;

@@ -1,5 +1,6 @@
-import { inactiveBoxStyle } from '@/styles/commonStyle';
+import { instructionTextStyle } from '@/styles/commonStyle';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export const Wrapper = styled.div`
 	display: flex;
@@ -42,11 +43,16 @@ export const FindButton = styled(Description)`
   }
 `;
 
-export const LoginButton = styled.button`
-  ${inactiveBoxStyle};
-  width: 360px;
-  height: 48px;
-  font-size: ${props => props.theme.typo.size.md};
-  font-weight: ${props => props.theme.typo.weight.regular};
-  margin-top: 35px;
+export const Instruction = styled.span`
+  ${instructionTextStyle};
+  margin-top: 17px;
+`;
+
+export const InstructionPrimary = styled(Link)`
+  ${instructionTextStyle};
+  color: ${props => props.theme.colors.primary};
+`;
+
+export const ButtonWrapper = styled.div`
+  margin-top: 47px;
 `;

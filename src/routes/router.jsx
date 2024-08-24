@@ -4,7 +4,8 @@ import Home from '@/pages/Home';
 import SignIn from '@/pages/SignIn';
 import Community from '@/pages/Community';
 import CreatePost from '@/pages/CreatePost';
-import Verify from '@/pages/SignUp/Verify';
+import Identity from '@/pages/SignUp/Identity';
+import Info from '@/pages/SignUp/Info';
 
 export const router = createBrowserRouter([
   {
@@ -20,9 +21,13 @@ export const router = createBrowserRouter([
         element: <SignIn />
       },    
       {
-        path: '/sign-up/verify',
-        element: <Verify/>
-      },        
+        path: '/sign-up/identity',
+        element: <Identity/>
+      },      
+      {
+        path: '/sign-up/info',
+        element: <Info/>
+      },         
       {
         path: '/community',
         element: <Community />
