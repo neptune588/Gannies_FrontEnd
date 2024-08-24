@@ -36,7 +36,7 @@ export const AgreeWrapper = styled.div`
     font-weight: ${props => props.theme.typo.weight.semiBold};
   }  
 `
-export const Instruction = styled.span`
+export const Info = styled.span`
   ${instructionTextStyle};
 `
 
@@ -50,10 +50,4 @@ export const CheckBox = styled.input`
   height: 20px;
   margin-right: 20px;
   cursor: pointer;
-`;
-
-export const ButtonWrapper = styled.div`
-  margin-top: 80px;
-  display: flex;
-  justify-content: center;
 `;

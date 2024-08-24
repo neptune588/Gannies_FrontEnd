@@ -1,7 +1,7 @@
 import {
   Wrapper,
   SectionWrapper,
-  Instruction
+  Info
 } from '@/pages/SignUp/components/InputSection/style';
 
 function InputSection({ $margin = '0px', title, children }) {
@@ -9,7 +9,7 @@ function InputSection({ $margin = '0px', title, children }) {
   return (
     <Wrapper $margin={$margin}>
       <SectionWrapper>
-        <Instruction>{title}</Instruction>
+        <Info>{title}</Info>
         {children}
       </SectionWrapper>
     </Wrapper>

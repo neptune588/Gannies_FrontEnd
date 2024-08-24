@@ -34,7 +34,7 @@ export const SearchIcon = styled.img`
 
 export const Input = styled(InputBox)`
   width: 744px;
-  height: 46px;
+  height: 42px;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
   margin-left: 23px;

@@ -13,7 +13,7 @@ export const InputBox = styled(Input)`
   padding-right: 16px;
   border-radius: 4px;
   width: 335px;
-  height: 46px;
+  height: 40px;
   
   &::placeholder {
     ${placeholderTextStyle};
@@ -61,12 +61,4 @@ export const InactiveButton = styled(Button)`
 export const InfoWrapper = styled.div`
   display: flex;
   width: 456px;
-`
-
-export const Completed = styled.span`
-  display: block;
-  margin-top: 10px;
-  font-size: ${props => props.theme.typo.size.xs};
-  font-weight: ${props => props.theme.typo.weight.medium};
-  color: ${props => props.theme.colors.primary};  
 `

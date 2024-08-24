@@ -22,8 +22,8 @@ export const InputBox = styled(Input)`
   padding-left: 16px;
   padding-right: 16px;
   border-radius: 4px;
-  width: 211px;
-  height: 46px;
+  width: 205px;
+  height: 40px;
 
   &::placeholder {
     ${placeholderTextStyle};

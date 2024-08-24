@@ -12,6 +12,6 @@ export const SectionWrapper = styled.div`
   
 `
 
-export const Instruction = styled.span`
+export const Info = styled.span`
   ${instructionTextStyle};
 `

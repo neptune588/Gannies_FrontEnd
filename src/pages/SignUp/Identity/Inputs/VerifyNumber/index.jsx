@@ -2,7 +2,6 @@ import {
   InputBox,
   InputWrapper,
   InfoWrapper,
-  Completed,
   // ActiveButton,
   InactiveButton,
   // DisabledButton
@@ -10,10 +9,11 @@ import {
 
 import Clock from '@/components/Icons/Clock';
 import InputSection from '@/pages/SignUp/components/InputSection';
+import Positive from '@/components/Instruction/Positive';
 
 function VerifyNumber() {
   return (
-    <InputSection $margin="37px" title="*이름">
+    <InputSection $margin="37px" title="인증번호*">
       <InfoWrapper>
           <InputWrapper>
           <InputBox type="text" placeholder='인증번호를 입력해주세요' />  
@@ -23,7 +23,7 @@ function VerifyNumber() {
           {/* <ActiveButton>인증확인</ActiveButton>
           <DisabledButton>인증확인</DisabledButton> */}
       </InfoWrapper>
-      <Completed>인증이 완료되었습니다.</Completed>
+      <Positive text="인증이 완료되었습니다"></Positive>
     </InputSection>
   );
 }

@@ -15,7 +15,7 @@ function PhoneNumber() {
   const numberKinds = ["010", "011", "012", "016", "017", "018", "019"];
   
   return (
-    <InputSection $margin="37px" title="*휴대폰 번호">
+    <InputSection $margin="37px" title="휴대폰 번호*">
       <InfoWrapper>
         <Select>
           {

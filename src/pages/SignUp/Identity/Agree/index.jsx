@@ -1,12 +1,10 @@
-import ActiveButton from '@/components/Buttons/AuthButtons/Active';
 // import InactiveButton from '@/components/Buttons/AuthButtons/Inactive';
 import { CheckBox } from '@/pages/SignUp/Identity/Agree/style';
 import {
   Wrapper,
   SectionWrapper,
-  Instruction,
+  Info,
   AgreeWrapper,
-  ButtonWrapper,
   ShowButton
 } from '@/pages/SignUp/Identity/Agree/style';
 
@@ -17,7 +15,7 @@ function Agree() {
   return (
     <Wrapper>
       <SectionWrapper>
-        <Instruction>회원약관</Instruction>
+        <Info>회원약관</Info>
         <AgreeWrapper>
           <CheckBox type="checkbox" />
           <p>전체약관동의</p>
@@ -32,10 +30,6 @@ function Agree() {
             </AgreeWrapper>
           ))
         }      
-        <ButtonWrapper>
-          {/* <InactiveButton text="다음"></InactiveButton> */}
-          <ActiveButton text="다음"></ActiveButton>
-        </ButtonWrapper>
       </SectionWrapper>
     </Wrapper>
   );

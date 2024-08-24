@@ -26,7 +26,7 @@ export const InputBox = styled(Input)`
   margin-left: 16px;
   margin-right: 42px;
   width: 344px;
-  height: 40px;
+  height: 36px;
 
   &:last-of-type {
     margin-right: 12px;
