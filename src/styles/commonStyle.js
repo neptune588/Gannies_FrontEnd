@@ -28,6 +28,11 @@ const inactiveBoxStyle = css`
   border-radius: 4px;
 `;
 
+const disabledBoxStyle = css`
+  ${inactiveBoxStyle}
+  opacity: 0.5;
+`;
+
 const primaryBorderBoxStyle = css`
   color: ${({ theme: { colors } }) => {
     return colors.primary;
@@ -103,10 +108,35 @@ const pageNumberWrapperStyle = css`
   }
 `;
 
+const instructionTextStyle = css`
+  color: ${({ theme: { colors } }) => {
+    return colors.gray['60'];
+  }};
+  font-size: ${({ theme: { typo } }) => {
+    return typo.size.xs;
+  }};
+  font-weight: ${({ theme: { typo } }) => {
+    return typo.weight.medium;
+  }};
+`;
+
+const authTitleTextStyle = css`
+  color: ${({ theme: { colors } }) => {
+    return colors.gray.primary;
+  }};
+  font-size: ${({ theme: { typo } }) => {
+    return typo.size.h3;
+  }};
+  font-weight: ${({ theme: { typo } }) => {
+    return typo.weight.semiBold;
+  }};
+`;
+
 export {
   defaultBorderBoxStyle,
   primaryColorBoxStyle,
   inactiveBoxStyle,
+  disabledBoxStyle,
   primaryBorderBoxStyle,
   bannerTitleStyle,
   bannerTextStyle,
@@ -115,4 +145,6 @@ export {
   paginationWrapperStyle,
   pageArrowWrapperStyle,
   pageNumberWrapperStyle,
+  instructionTextStyle,
+  authTitleTextStyle
 };

@@ -27,6 +27,7 @@ export const InputBox = styled(Input)`
   margin-right: 42px;
   width: 344px;
   height: 40px;
+
   &:last-of-type {
     margin-right: 12px;
   }
@@ -43,4 +44,8 @@ export const Icon = styled(Eye)`
   height: 18px;
   margin-right: 12px;
   cursor: pointer;  
+`;
+
+export const = styled()`
+  ${instructionTextStyle};
 `;

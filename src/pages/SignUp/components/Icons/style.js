@@ -5,14 +5,13 @@ export const Wrapper = styled.div`
 		flex-direction: column;
 		margin: auto;
 		width: 360px;
-		height: 88px;
 		margin-top: 32px;
+		height: 160px;
+		// padding-bottom: 78px;
 `;
 
 export const IconsWrapper = styled.div`
 		display: flex;
-		width: 360px;
-		height: 68px;
 		align-items: center;
 		justify-content: space-between;		
 `;
@@ -31,19 +30,18 @@ export const Arrow = styled.img`
 export const FontWrapper = styled.div`
 		display: flex;
 		width: 348px;
-		height: 68px;
-		align-items: center;
 		justify-content: space-between;		
-		margin: auto;
+		margin-left: auto;
+		margin-right: auto;
 `;
 
-export const Font = styled.span`
+export const FontActive = styled.span`
   font-size: ${props => props.theme.typo.size.xs};
-	 font-weight: ${props => props.theme.typo.weight.semiBold};
-  margin-top: 4px;
-  color: ${props => props.theme.colors.primary};		
+  font-weight: ${props => props.theme.typo.weight.semiBold};
+  color: ${props => props.theme.colors.primary};  
+  margin-top: 8px;	
 `;
 
-export const FontInactive = styled(Font)`
+export const FontInactive = styled(FontActive)`
   color: ${props => props.theme.colors.gray[50]};
 `;
