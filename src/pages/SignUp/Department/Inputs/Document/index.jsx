@@ -1,14 +1,50 @@
+import Upload from '@/components/Icons/Upload';
 import InputSection from '@/pages/SignUp/components/InputSection';
-import { ActiveButton, InactiveButton, ButtonWrapper } from '@/pages/SignUp/Department/Inputs/Status/style';
+import {
+  ActiveInputBox,
+  InactiveInputBox,
+  InputBox
+} from '@/pages/SignUp/Department/Inputs/Document/style';
+import Instruction from '@/components/Instruction';
+import { useState } from 'react';
+import Clip from '@/components/Icons/Clip';
+import Close from '@/components/Icons/Close';
 
 function Document() {
+
+  const [fileName, setFileName] = useState('');
+
+  const ChangeFile = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setFileName(file.name);
+    }
+  };
+  
+  const DeleteFile = () => {
+    setFileName('');
+  };
   
   return (
     <InputSection $margin="37px" title="인증서류 업로드*">
-      <ButtonWrapper>
-        <ActiveButton>재학생</ActiveButton>  
-        <InactiveButton>졸업생</InactiveButton>  
-      </ButtonWrapper>
+      <label htmlFor="file">
+        {
+          fileName ?
+            <ActiveInputBox>
+              <Clip />
+              <div>{fileName}</div>
+              <Close onClick={DeleteFile} />
+            </ActiveInputBox>
+            :
+            <InactiveInputBox>
+              <span>파일업로드하기</span>
+              <Upload />
+            </InactiveInputBox>
+        }
+        <InputBox type="file" name="file" id="file" onChange={ChangeFile} />
+      </label>
+      <Instruction text="*졸업증명서, 재학증면서만 가능 (최대 1MB 이내)" />
+      <Instruction text="*JPG / JPEG / PNG / GIF (이미지만)"/>
     </InputSection>
   );
 }

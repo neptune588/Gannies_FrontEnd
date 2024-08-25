@@ -33,11 +33,6 @@ export const InputBox = styled(Input)`
 export const SectionWrapper = styled.div`
   margin-top: 37px;
 `
-export const Info = styled.span`
-  font-size: ${props => props.theme.typo.size.xs};
-  font-weight: ${props => props.theme.typo.weight.medium};
-  color: #8D8D8D;
-`;
 
 export const Button = styled.button`
   width: 112px;

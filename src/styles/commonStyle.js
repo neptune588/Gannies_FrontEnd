@@ -133,9 +133,21 @@ const authTitleTextStyle = css`
 `;
 
 const placeholderTextStyle = css`
-  font-size: ${props => props.theme.typo.weight.sm};
+  font-size: ${props => props.theme.typo.size.sm};
   font-weight: ${props => props.theme.typo.weight.regular};
   color: ${props => props.theme.colors.gray[40]};
+`;
+
+const authDefaultTextStyle = css`
+  font-size: ${props => props.theme.typo.size.sm};
+  font-weight: ${props => props.theme.typo.weight.regular};
+  color: ${props => props.theme.colors.gray[100]};
+`;
+
+const authEmailTextStyle = css`
+  font-size: ${props => props.theme.typo.size.md};
+  font-weight: ${props => props.theme.typo.weight.semiBold};
+  color: ${props => props.theme.colors.primary};
 `;
 
 export {
@@ -153,5 +165,7 @@ export {
   pageNumberWrapperStyle,
   instructionTextStyle,
   authTitleTextStyle,
-  placeholderTextStyle
+  placeholderTextStyle,
+  authDefaultTextStyle,
+  authEmailTextStyle
 };
