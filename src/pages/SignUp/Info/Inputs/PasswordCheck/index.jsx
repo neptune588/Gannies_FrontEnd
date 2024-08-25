@@ -1,12 +1,10 @@
-// import Positive from '@/components/Instruction/Positive';
-
-import InputSection from '@/pages/SignUp/components/InputSection';
-
 import {
   InputBox,
   InputWrapper
 } from '@/pages/SignUp/Info/Inputs/Password/style';
 
+import InputSection from '@/pages/SignUp/components/InputSection';
+// import Positive from '@/components/Instruction/Positive';
 import EyeSlash from "@/components/Icons/EyeSlash";
 
 function PasswordCheck() {

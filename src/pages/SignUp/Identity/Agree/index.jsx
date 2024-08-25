@@ -1,5 +1,3 @@
-// import InactiveButton from '@/components/Buttons/AuthButtons/Inactive';
-import { CheckBox } from '@/pages/SignUp/Identity/Agree/style';
 import {
   Wrapper,
   SectionWrapper,
@@ -7,6 +5,9 @@ import {
   AgreeWrapper,
   ShowButton
 } from '@/pages/SignUp/Identity/Agree/style';
+
+// import InactiveButton from '@/components/Buttons/AuthButtons/Inactive';
+import { CheckBox } from '@/pages/SignUp/Identity/Agree/style';
 
 function Agree() {
 

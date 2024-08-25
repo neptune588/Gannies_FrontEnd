@@ -1,6 +1,5 @@
 // import Positive from '@/components/Instruction/Positive';
 import Instruction from '@/components/Instruction';
-
 import InputSection from '@/pages/SignUp/components/InputSection';
 import DefaultInput from '@/pages/SignUp/components/DefaultInput';
 

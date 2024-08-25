@@ -1,6 +1,11 @@
-import styled from "styled-components";
-import { inactiveColorBoxStyle, primaryColorBoxStyle } from "@/styles/commonStyle";
+import {
+  inactiveColorBoxStyle,
+  primaryColorBoxStyle
+} from "@/styles/commonStyle";
+
 import { Link } from "react-router-dom";
+
+import styled from "styled-components";
 
 export const ButtonWrapper = styled.div`
   margin-top: 80px;

@@ -1,4 +1,7 @@
-import { ActiveButton, ButtonWrapper } from "@/pages/SignUp/components/NextButton/style";
+import {
+  ActiveButton,
+  ButtonWrapper
+} from "@/pages/SignUp/components/NextButton/style";
 
 function NextButton({$margin, text, to}) {
   return (

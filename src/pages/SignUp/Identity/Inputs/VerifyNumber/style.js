@@ -1,6 +1,13 @@
+import {
+  defaultBorderBoxStyle,
+  disabledColorBoxStyle,
+  inactiveColorBoxStyle,
+  placeholderTextStyle,
+  primaryColorBoxStyle
+} from '@/styles/commonStyle';
+
 import styled from 'styled-components';
 import Input from '@/components/Input';
-import { defaultBorderBoxStyle, disabledColorBoxStyle, inactiveColorBoxStyle, placeholderTextStyle, primaryColorBoxStyle } from '@/styles/commonStyle';
 
 export const Wrapper = styled.div`
 	display: flex;

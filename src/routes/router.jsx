@@ -8,6 +8,7 @@ import Identity from '@/pages/SignUp/Identity';
 import Info from '@/pages/SignUp/Info';
 import Department from '@/pages/SignUp/Department';
 import Error from '@/pages/Error';
+import Success from '@/pages/SignUp/Success';
 
 export const router = createBrowserRouter([
   {
@@ -33,7 +34,11 @@ export const router = createBrowserRouter([
       {
         path: '/sign-up/department',
         element: <Department />
-      },         
+      },   
+      {
+        path: '/sign-up/success',
+        element: <Success />
+      },          
       {
         path: '/community',
         element: <Community />

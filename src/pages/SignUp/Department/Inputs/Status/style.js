@@ -1,5 +1,10 @@
+import {
+  defaultBorderBoxStyle,
+  placeholderTextStyle,
+  primaryBorderBoxStyle
+} from '@/styles/commonStyle';
+
 import styled from 'styled-components';
-import { defaultBorderBoxStyle, placeholderTextStyle, primaryBorderBoxStyle } from '@/styles/commonStyle';
 
 export const ButtonWrapper = styled.div`
   width: 448px;

@@ -1,6 +1,10 @@
+import {
+  defaultBorderBoxStyle,
+  placeholderTextStyle
+} from '@/styles/commonStyle';
+
 import styled from 'styled-components';
 import Input from '@/components/Input';
-import { defaultBorderBoxStyle, placeholderTextStyle } from '@/styles/commonStyle';
 import Eye from '@/components/Icons/Eye';
 
 export const Wrapper = styled.div`

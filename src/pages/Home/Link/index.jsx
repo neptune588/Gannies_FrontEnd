@@ -8,6 +8,7 @@ import {
 	RightWrapper,
 	LinkIcon
 } from '@/pages/Home/Link/style';
+
 import chevron_right from '@/assets/icons/arrows/chevron_right.svg';
 import department from '@/assets/images/homepage_example.png';
 

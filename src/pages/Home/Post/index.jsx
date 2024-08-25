@@ -5,6 +5,7 @@ import {
   UpperWrapper,
   Wrapper,
 } from '@/pages/Home/Post/style';
+
 import chevron_right from '@/assets/icons/arrows/chevron_right.svg';
 import PostList from '@/components/PostList';
 

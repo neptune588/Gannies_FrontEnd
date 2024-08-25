@@ -144,10 +144,18 @@ const authDefaultTextStyle = css`
   color: ${props => props.theme.colors.gray[100]};
 `;
 
-const authEmailTextStyle = css`
+const authEmailColorBoxStyle = css`
+  background-color: ${props => props.theme.colors.gray[10]};
   font-size: ${props => props.theme.typo.size.md};
   font-weight: ${props => props.theme.typo.weight.semiBold};
   color: ${props => props.theme.colors.primary};
+  width: 336px;
+  height: 58px;
+  padding-left: 13px;
+  padding-right: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export {
@@ -167,5 +175,5 @@ export {
   authTitleTextStyle,
   placeholderTextStyle,
   authDefaultTextStyle,
-  authEmailTextStyle
+  authEmailColorBoxStyle
 };

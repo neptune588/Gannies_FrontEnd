@@ -1,5 +1,10 @@
+import {
+  ActiveButton,
+  InactiveButton,
+  ButtonWrapper
+} from '@/pages/SignUp/Department/Inputs/Status/style';
+
 import InputSection from '@/pages/SignUp/components/InputSection';
-import { ActiveButton, InactiveButton, ButtonWrapper } from '@/pages/SignUp/Department/Inputs/Status/style';
 
 function Status() {
   

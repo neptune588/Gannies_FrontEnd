@@ -8,6 +8,7 @@ import {
   Instruction,
   InstructionPrimary
 } from '@/pages/SignIn/Buttons/style';
+
 import NextButton from '@/pages/SignUp/components/NextButton';
 
 function Buttons() {

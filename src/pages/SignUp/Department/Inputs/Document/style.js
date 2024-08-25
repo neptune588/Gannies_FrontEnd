@@ -1,5 +1,9 @@
+import {
+  defaultBorderBoxStyle,
+  placeholderTextStyle
+} from '@/styles/commonStyle';
+
 import styled from 'styled-components';
-import { defaultBorderBoxStyle, placeholderTextStyle } from '@/styles/commonStyle';
 
 export const InactiveInputBox = styled.div`
   ${defaultBorderBoxStyle};

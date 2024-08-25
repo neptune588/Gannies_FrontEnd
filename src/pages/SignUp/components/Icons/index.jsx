@@ -8,8 +8,9 @@ import {
     FontInactive,
     Instruction,
     FontFinished
-  } from '@/pages/SignUp/components/Icons/style';
-  import arrow from '@/assets/icons/arrows/chevron_right.svg';
+} from '@/pages/SignUp/components/Icons/style';
+  
+import arrow from '@/assets/icons/arrows/chevron_right.svg';
   
 function Icons({ identity, info, department, sequence }) {
     

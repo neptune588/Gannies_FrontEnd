@@ -1,4 +1,3 @@
-import InputSection from '@/pages/SignUp/components/InputSection';
 import {
   InputBox,
   InputWrapper,
@@ -9,6 +8,8 @@ import {
   // DisabledButton,
   InactiveButton
 } from '@/pages/SignUp/Identity/Inputs/PhoneNumber/style';
+
+import InputSection from '@/pages/SignUp/components/InputSection';
 
 function PhoneNumber() {
 
