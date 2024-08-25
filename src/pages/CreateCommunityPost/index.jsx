@@ -69,7 +69,7 @@ export default function CreateCommunityPost() {
               </div>
             </DataInputWrapper>
             <TextAreaBox>
-              <textarea placeholder='내용입력' maxLength={1000} />
+              <textarea placeholder='*내용입력' maxLength={1000} />
             </TextAreaBox>
           </form>
         </ContentsWrapper>
