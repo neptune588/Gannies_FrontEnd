@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 import CommunityBanner from '@/components/CommunityBanner';
 import CommunityBannerText from '@/components/CommunityBannerText';
 import PageCategory from '@/components/PageCategory';
 import CategoryTitle from '@/pages/CreateCommunityPost/CategoryTitle';
 import Buttons from '@/pages/CreateCommunityPost/Buttons';
+import PostCreateEditor from '@/pages/CreateCommunityPost/PostCreateEditor';
 
 import bottomArrow from '@/assets/icons/arrows/chevron_down.svg';
 import searchIcon from '@/assets/icons/etc/search.svg';
@@ -28,6 +29,13 @@ export default function CreateCommunityPost() {
   //제목 - 한글 1글자 이상은 최소로 있어야 한다. 최대는 50자 이하
 
   const [selectCategory] = useState(categoryData);
+  const editorRef = useRef(null);
+  const log = () => {
+    if (editorRef.current) {
+      console.log(editorRef.current.getContent());
+    }
+  };
+
   return (
     <>
       <CommunityBanner>
@@ -68,9 +76,7 @@ export default function CreateCommunityPost() {
                 </DataInputBox>
               </div>
             </DataInputWrapper>
-            <TextAreaBox>
-              <textarea placeholder='*내용입력' maxLength={1000} />
-            </TextAreaBox>
+            <PostCreateEditor />
           </form>
         </ContentsWrapper>
         <ButtonBox>

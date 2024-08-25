@@ -44,9 +44,9 @@ ${reset}
     }
   }
   textarea {
-    border: none;
-    resize: none; 
-    outline: none;
+    border: none !important;
+    resize: none !important; 
+    outline: none !important;
   }
 `;
 
