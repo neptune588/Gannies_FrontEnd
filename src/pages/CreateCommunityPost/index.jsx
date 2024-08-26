@@ -18,7 +18,6 @@ import {
   InputBox,
   DataInputWrapper,
   DataInputBox,
-  TextAreaBox,
   ButtonBox,
 } from '@/pages/CreateCommunityPost/style';
 
@@ -30,11 +29,7 @@ export default function CreateCommunityPost() {
 
   const [selectCategory] = useState(categoryData);
   const editorRef = useRef(null);
-  const log = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
-    }
-  };
+  const [editorContent, setEditorContent] = useState('');
 
   return (
     <>
@@ -76,7 +71,11 @@ export default function CreateCommunityPost() {
                 </DataInputBox>
               </div>
             </DataInputWrapper>
-            <PostCreateEditor />
+            <PostCreateEditor
+              editorRef={editorRef}
+              editorValue={editorContent}
+              setEditorValue={setEditorContent}
+            />
           </form>
         </ContentsWrapper>
         <ButtonBox>

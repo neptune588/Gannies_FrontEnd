@@ -107,17 +107,6 @@ const DataInputBox = styled.div`
   }
 `;
 
-const TextAreaBox = styled.div`
-  ${createPostPageInputBoxStyle}
-  margin-bottom: 95px;
-  > textarea {
-    display: block;
-    min-height: 490px;
-    ${createPostPageInputStyle}
-    padding-top: 30px;
-  }
-`;
-
 const ButtonBox = styled.section`
   display: flex;
   justify-content: space-between;
@@ -132,6 +121,5 @@ export {
   InputBox,
   DataInputWrapper,
   DataInputBox,
-  TextAreaBox,
   ButtonBox,
 };

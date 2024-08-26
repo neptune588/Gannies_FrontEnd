@@ -1,6 +1,6 @@
-import styled from 'styled-components';
 import { Editor } from '@tinymce/tinymce-react';
-import { useRef } from 'react';
+import styled from 'styled-components';
+
 const EditorStylingBox = styled.div`
   .tox {
     margin: 30px 0 95px;
@@ -18,19 +18,15 @@ const EditorStylingBox = styled.div`
       }
     }
     .tox-edit-area__iframe {
-      min-height: 100%;
       overflow: hidden;
     }
   }
 `;
-export default function PostCreateEditor({ value }) {
-  const editorRef = useRef(null);
-  const log = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
-    }
-  };
-
+export default function PostCreateEditor({
+  editorRef,
+  editorValue,
+  setEditorValue,
+}) {
   return (
     <EditorStylingBox>
       <Editor
@@ -38,9 +34,15 @@ export default function PostCreateEditor({ value }) {
         //초기화 이후 실행될 콜백
         onInit={(evt, editor) => (editorRef.current = editor)}
         initialValue=''
+        value={editorValue}
+        onEditorChange={(_, editor) => {
+          setEditorValue(editor.getContent({ format: 'text' }));
+          console.log(editorValue);
+        }}
         init={{
           menubar: false,
-          language: 'ko',
+          placeholder: '내용을 입력하세요',
+          language: 'ko_KR',
           plugins: [
             'image',
             'wordcount',
@@ -52,12 +54,12 @@ export default function PostCreateEditor({ value }) {
             'searchreplace',
             'media',
             'table',
-            'paste',
+            //'paste',
             'help',
           ],
           toolbar:
             'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | charmap | link image media | preview | wordcount | searchreplace | help',
-          //iframe이라 내부 css로 컨트롤불가능
+          //외부iframe이라 내부 css로 컨트롤불가능
           content_style: `
           html {
             font-size: 10px; 
@@ -65,10 +67,10 @@ export default function PostCreateEditor({ value }) {
           body {
             font-family: Pretendard, Arial, sans-serif;
             font-size: 1.4rem;
-            min-height: 439px;
+            min-height: 415px;
           }
           `,
-          statusbar: true,
+          statusbar: false,
         }}
       />
     </EditorStylingBox>
