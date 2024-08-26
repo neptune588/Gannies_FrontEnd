@@ -1,13 +1,13 @@
 import { useState } from 'react';
 
 import SideTabMenu from '@/pages/MyPage/SideTabMenu';
+import PersonalInfo from '@/pages/MyPage/PersonalInfo';
 
 import {
   Title,
   ContentsContainer,
   SideTabMenuWrapper,
   MainContentsWrapper,
-  ProfileSettingsBox,
 } from '@/pages/MyPage/style';
 
 import { tabMenuData } from '@/pages/MyPage/data';
@@ -33,17 +33,15 @@ export default function MyPage() {
           {activeMenu === tabMenuData[0].content && (
             <>
               <h2>{'회원' + tabMenuData[0].content}</h2>
-              <ProfileSettingsBox>
-                <form></form>
-              </ProfileSettingsBox>
+              <form>
+                <PersonalInfo />
+              </form>
             </>
           )}
           {activeMenu === tabMenuData[1].content && (
             <>
               <h2>{tabMenuData[1].content}</h2>
-              <ProfileSettingsBox>
-                <form></form>
-              </ProfileSettingsBox>
+              <form></form>
             </>
           )}
           {activeMenu === tabMenuData[2].content && (

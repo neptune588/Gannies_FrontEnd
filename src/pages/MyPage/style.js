@@ -56,17 +56,4 @@ const MainContentsWrapper = styled.div`
   }
 `;
 
-const ProfileSettingsBox = styled.div`
-  padding-top: 15px;
-  border-top: 1px solid
-    ${({ theme: { colors } }) => {
-      return colors.black;
-    }};
-`;
-export {
-  Title,
-  ContentsContainer,
-  SideTabMenuWrapper,
-  MainContentsWrapper,
-  ProfileSettingsBox,
-};
+export { Title, ContentsContainer, SideTabMenuWrapper, MainContentsWrapper };
