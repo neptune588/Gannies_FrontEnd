@@ -6,12 +6,14 @@ import identity from '@/assets/icons/etc/identity_verification_active.svg';
 import info from '@/assets/icons/etc/info_input_inactive.svg';
 import department from '@/assets/icons/etc/department_verification_inactive.svg';
 import NextButton from '@/pages/SignUp/components/NextButton';
+import Header from '@/layouts/Header';
 
 function Identity() {
   const sequence = ['active', 'inactive', 'inactive'];
 
   return (
     <>
+      <Header />
       <Title title="회원가입" />
       <Icons identity={identity} info={info} department={department} sequence={sequence}/>
       <Inputs />

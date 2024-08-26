@@ -6,7 +6,7 @@ import {
   Button
 } from '@/pages/Home/SearchBar/style';
 
-import search from '@/assets/icons/etc/search.svg';
+import search from '@/assets/icons/search/search_default.svg';
 
 function SearchBar() {
   return (
