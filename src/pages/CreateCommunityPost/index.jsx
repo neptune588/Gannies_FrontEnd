@@ -6,9 +6,10 @@ import PageCategory from '@/components/PageCategory';
 import CategoryTitle from '@/pages/CreateCommunityPost/CategoryTitle';
 import Buttons from '@/pages/CreateCommunityPost/Buttons';
 import PostCreateEditor from '@/pages/CreateCommunityPost/PostCreateEditor';
+import HospitalSearchModal from '@/pages/CreateCommunityPost/HospitalSearchModal';
 
 import bottomArrow from '@/assets/icons/arrows/chevron_down.svg';
-import searchIcon from '@/assets/icons/etc/search.svg';
+import searchIcon from '@/assets/icons/search/search_default.svg';
 
 import {
   CategoryBox,
@@ -27,12 +28,15 @@ export default function CreateCommunityPost() {
   //전역 변수 사용해서 text 넣어야할것같은
   //제목 - 한글 1글자 이상은 최소로 있어야 한다. 최대는 50자 이하
 
+  //temp -> 후에 customHooks로 옮길예정
   const [selectCategory] = useState(categoryData);
   const editorRef = useRef(null);
   const [editorContent, setEditorContent] = useState('');
+  const [modalState, setModalState] = useState(false);
 
   return (
     <>
+      {modalState && <HospitalSearchModal />}
       <CommunityBanner>
         <CommunityBannerText
           title='실습정보'
