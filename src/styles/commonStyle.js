@@ -108,6 +108,24 @@ const pageNumberWrapperStyle = css`
   }
 `;
 
+const createPostPageInputBoxStyle = css`
+  border-bottom: 1px solid
+    ${({ theme: { colors } }) => {
+      return colors.gray['60'];
+    }};
+  padding: 0 15px 15px 15px;
+`;
+
+const createPostPageInputStyle = css`
+  width: 100%;
+  color: ${({ theme: { colors } }) => {
+    return colors.black;
+  }};
+  font-size: ${({ theme: { typo } }) => {
+    return typo.size.h4;
+  }};
+`;
+
 const instructionTextStyle = css`
   color: ${({ theme: { colors } }) => {
     return colors.gray['60'];
@@ -133,22 +151,22 @@ const authTitleTextStyle = css`
 `;
 
 const placeholderTextStyle = css`
-  font-size: ${props => props.theme.typo.size.sm};
-  font-weight: ${props => props.theme.typo.weight.regular};
-  color: ${props => props.theme.colors.gray[40]};
+  font-size: ${(props) => props.theme.typo.size.sm};
+  font-weight: ${(props) => props.theme.typo.weight.regular};
+  color: ${(props) => props.theme.colors.gray[40]};
 `;
 
 const authDefaultTextStyle = css`
-  font-size: ${props => props.theme.typo.size.sm};
-  font-weight: ${props => props.theme.typo.weight.regular};
-  color: ${props => props.theme.colors.gray[100]};
+  font-size: ${(props) => props.theme.typo.size.sm};
+  font-weight: ${(props) => props.theme.typo.weight.regular};
+  color: ${(props) => props.theme.colors.gray[100]};
 `;
 
 const authEmailColorBoxStyle = css`
-  background-color: ${props => props.theme.colors.gray[10]};
-  font-size: ${props => props.theme.typo.size.md};
-  font-weight: ${props => props.theme.typo.weight.semiBold};
-  color: ${props => props.theme.colors.primary};
+  background-color: ${(props) => props.theme.colors.gray[10]};
+  font-size: ${(props) => props.theme.typo.size.md};
+  font-weight: ${(props) => props.theme.typo.weight.semiBold};
+  color: ${(props) => props.theme.colors.primary};
   width: 336px;
   height: 58px;
   padding-left: 13px;
@@ -179,10 +197,12 @@ export {
   paginationWrapperStyle,
   pageArrowWrapperStyle,
   pageNumberWrapperStyle,
+  createPostPageInputBoxStyle,
+  createPostPageInputStyle,
   instructionTextStyle,
   authTitleTextStyle,
   placeholderTextStyle,
   authDefaultTextStyle,
   authEmailColorBoxStyle,
-  modalBoxStyle
+  modalBoxStyle,
 };

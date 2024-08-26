@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
-import CommunityBanner from '@/pages/Community/CommunityBanner';
+import CommunityBanner from '@/components/CommunityBanner';
+import CommunityBannerText from '@/components/CommunityBannerText';
 import CommunityPost from '@/pages/Community/CommunityPost';
 import PageControlArrow from '@/components/PageControlArrow';
 import PageNumber from '@/components/PageNumber';
@@ -13,8 +14,6 @@ import prev10PagesArrow from '@/assets/icons/arrows/double_chevron_lef.svg';
 import next10PagesArrow from '@/assets/icons/arrows/double_chevron_right.svg';
 
 import {
-  BannerTitle,
-  BannerText,
   ContentsAlignBox,
   PostCreateButton,
   SelectBox,
@@ -41,11 +40,13 @@ export default function Community() {
   return (
     <>
       <CommunityBanner>
-        <BannerTitle>실습정보</BannerTitle>
-        <BannerText>실습에 관련한 유용한 정보를 제공합니다.</BannerText>
+        <CommunityBannerText
+          title='실습정보'
+          text='실습에 관련된 유용한 정보를 제공합니다.'
+        ></CommunityBannerText>
       </CommunityBanner>
       <ContentsAlignBox>
-        <PostCreateButton to='/community/create-post'>
+        <PostCreateButton to='/community/create-community-post'>
           <img src={brush} alt='create-button' />
           게시글 작성
         </PostCreateButton>

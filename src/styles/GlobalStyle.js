@@ -32,6 +32,22 @@ ${reset}
   html {
     font-size: 10px;
   }
+  input {
+    border: none;
+    &:placeholder {
+      color: ${({ theme: { colors } }) => {
+        return colors.gray['40'];
+      }};
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+  textarea {
+    border: none !important;
+    resize: none !important; 
+    outline: none !important;
+  }
 `;
 
 export default GlobalStyles;
