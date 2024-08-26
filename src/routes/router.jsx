@@ -4,7 +4,11 @@ import Home from '@/pages/Home';
 import SignIn from '@/pages/SignIn';
 import Community from '@/pages/Community';
 import CreatePost from '@/pages/CreatePost';
-import SignUp from '@/pages/SignUp';
+import Identity from '@/pages/SignUp/Identity';
+import Info from '@/pages/SignUp/Info';
+import Department from '@/pages/SignUp/Department';
+import Error from '@/pages/Error';
+import Success from '@/pages/SignUp/Success';
 
 export const router = createBrowserRouter([
   {
@@ -20,9 +24,21 @@ export const router = createBrowserRouter([
         element: <SignIn />
       },    
       {
-        path: '/sign-up',
-        element: <SignUp />
-      },        
+        path: '/sign-up/identity',
+        element: <Identity />
+      },      
+      {
+        path: '/sign-up/info',
+        element: <Info />
+      },   
+      {
+        path: '/sign-up/department',
+        element: <Department />
+      },   
+      {
+        path: '/sign-up/success',
+        element: <Success />
+      },          
       {
         path: '/community',
         element: <Community />
@@ -31,6 +47,10 @@ export const router = createBrowserRouter([
         path: '/community/create-post',
         element: <CreatePost />
       },
+      {
+        path: '*',
+        element: <Error />
+      },      
     ],
   },
 ]);

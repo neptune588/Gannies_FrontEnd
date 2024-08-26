@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { primaryColorBoxStyle } from '@/styles/commonStyle';
+import { InputBox } from '@/components/Input/style';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -31,19 +32,12 @@ export const SearchIcon = styled.img`
   height: 24px;
 `;
 
-export const Input = styled.input`
+export const Input = styled(InputBox)`
   width: 744px;
-  height: 19px;
+  height: 42px;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
   margin-left: 23px;
-  outline: none;
-  border: none;
-  font-size: ${props => props.theme.typo.size.sm};
-
-  &:placeholder {
-    color: #DODODO;
-  }
 `;
 
 
@@ -54,5 +48,4 @@ export const Button = styled.button`
   height: 50px;
   cursor: pointer;
   border-radius: 0px 4px 4px 0px;
-  // border: 1px solid ${props => props.theme.colors.primary};
 `;

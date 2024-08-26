@@ -18,6 +18,21 @@ const primaryColorBoxStyle = css`
   border-radius: 4px;
 `;
 
+const inactiveColorBoxStyle = css`
+  color: ${({ theme: { colors } }) => {
+    return colors.gray[60];
+  }};
+  background-color: ${({ theme: { colors } }) => {
+    return colors.gray[20];
+  }};
+  border-radius: 4px;
+`;
+
+const disabledColorBoxStyle = css`
+  ${inactiveColorBoxStyle}
+  opacity: 0.5;
+`;
+
 const primaryBorderBoxStyle = css`
   color: ${({ theme: { colors } }) => {
     return colors.primary;
@@ -78,7 +93,7 @@ const pageArrowWrapperStyle = css`
   }
 `;
 
-const pageNumberWrapperStlye = css`
+const pageNumberWrapperStyle = css`
   display: flex;
   align-items: center;
 
@@ -93,9 +108,61 @@ const pageNumberWrapperStlye = css`
   }
 `;
 
+const instructionTextStyle = css`
+  color: ${({ theme: { colors } }) => {
+    return colors.gray['60'];
+  }};
+  font-size: ${({ theme: { typo } }) => {
+    return typo.size.xs;
+  }};
+  font-weight: ${({ theme: { typo } }) => {
+    return typo.weight.medium;
+  }};
+`;
+
+const authTitleTextStyle = css`
+  color: ${({ theme: { colors } }) => {
+    return colors.gray.primary;
+  }};
+  font-size: ${({ theme: { typo } }) => {
+    return typo.size.h3;
+  }};
+  font-weight: ${({ theme: { typo } }) => {
+    return typo.weight.semiBold;
+  }};
+`;
+
+const placeholderTextStyle = css`
+  font-size: ${props => props.theme.typo.size.sm};
+  font-weight: ${props => props.theme.typo.weight.regular};
+  color: ${props => props.theme.colors.gray[40]};
+`;
+
+const authDefaultTextStyle = css`
+  font-size: ${props => props.theme.typo.size.sm};
+  font-weight: ${props => props.theme.typo.weight.regular};
+  color: ${props => props.theme.colors.gray[100]};
+`;
+
+const authEmailColorBoxStyle = css`
+  background-color: ${props => props.theme.colors.gray[10]};
+  font-size: ${props => props.theme.typo.size.md};
+  font-weight: ${props => props.theme.typo.weight.semiBold};
+  color: ${props => props.theme.colors.primary};
+  width: 336px;
+  height: 58px;
+  padding-left: 13px;
+  padding-right: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 export {
   defaultBorderBoxStyle,
   primaryColorBoxStyle,
+  inactiveColorBoxStyle,
+  disabledColorBoxStyle,
   primaryBorderBoxStyle,
   bannerTitleStyle,
   bannerTextStyle,
@@ -103,5 +170,10 @@ export {
   centerAlignStyle,
   paginationWrapperStyle,
   pageArrowWrapperStyle,
-  pageNumberWrapperStlye,
+  pageNumberWrapperStyle,
+  instructionTextStyle,
+  authTitleTextStyle,
+  placeholderTextStyle,
+  authDefaultTextStyle,
+  authEmailColorBoxStyle
 };

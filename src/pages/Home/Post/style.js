@@ -18,7 +18,7 @@ export const UpperWrapper = styled.div`
 `;
 
 export const UpperTitle = styled.span`
-  color: 1px solid ${props => props.theme.colors.gray[90]};  
+  color: ${props => props.theme.colors.gray[90]};  
   font-size: ${props => props.theme.typo.size.h4};
   font-weight: ${props => props.theme.typo.weight.semiBold};
 `;

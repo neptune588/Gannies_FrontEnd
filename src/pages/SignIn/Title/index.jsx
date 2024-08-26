@@ -1,4 +1,7 @@
-import { Font, Wrapper } from '@/pages/SignIn/Title/style';
+import {
+  Font,
+  Wrapper
+} from '@/pages/SignIn/Title/style';
 
 function Title({title}) {
   return (

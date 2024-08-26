@@ -5,6 +5,7 @@ import {
   Input,
   Button
 } from '@/pages/Home/SearchBar/style';
+
 import search from '@/assets/icons/etc/search.svg';
 
 function SearchBar() {
