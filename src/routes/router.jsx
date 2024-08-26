@@ -3,7 +3,7 @@ import Layout from '@/layouts/Layout';
 import Home from '@/pages/Home';
 import SignIn from '@/pages/SignIn';
 import Community from '@/pages/Community';
-import CreatePost from '@/pages/CreatePost';
+import CreateCommunityPost from '@/pages/CreateCommunityPost';
 import Identity from '@/pages/SignUp/Identity';
 import Info from '@/pages/SignUp/Info';
 import Department from '@/pages/SignUp/Department';
@@ -21,60 +21,56 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Home />
+        element: <Home />,
       },
-      {
-        path: '/sign-in',
-        element: <SignIn />
-      },  
-      {
-        path: '/sign-up',
-        element: <Navigate to="/sign-up/identity" />
-      },      
-      {
-        path: '/sign-up/identity',
-        element: <Identity />
-      },      
-      {
-        path: '/sign-up/info',
-        element: <Info />
-      },   
-      {
-        path: '/sign-up/department',
-        element: <Department />
-      },   
-      {
-        path: '/sign-up/success',
-        element: <SignUpSuccess />
-      },          
-      {
-        path: '/find/id',
-        element: <ID />
-      },   
-      {
-        path: '/find/id/success',
-        element: <FindIDSuccess />
-      },  
-      {
-        path: '/find/password',
-        element: <Password />
-      },     
-      {
-        path: '/find/password/success',
-        element: <FindPasswordSuccess />
-      },        
       {
         path: '/community',
-        element: <Community />
+        element: <Community />,
       },
       {
-        path: '/community/create-post',
-        element: <CreatePost />
+        path: '/community/create-community-post',
+        element: <CreateCommunityPost />,
       },
-      {
-        path: '*',
-        element: <Error />
-      },      
     ],
+  },
+  {
+    path: '/sign-in',
+    element: <SignIn />,
+  },
+  {
+    path: '/sign-up/identity',
+    element: <Identity />,
+  },
+  {
+    path: '/sign-up/info',
+    element: <Info />,
+  },
+  {
+    path: '/sign-up/department',
+    element: <Department />,
+  },
+  {
+    path: '/sign-up/success',
+    element: <SignUpSuccess />,
+  },
+  {
+    path: '/find/id',
+    element: <ID />,
+  },
+  {
+    path: '/find/id/success',
+    element: <FindIDSuccess />,
+  },
+  {
+    path: '/find/password',
+    element: <Password />,
+  },
+  {
+    path: '/find/password/success',
+    element: <FindPasswordSuccess />,
+  },
+  {
+    path: '*',
+    element: <Error />,
   },
 ]);

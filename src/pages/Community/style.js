@@ -2,8 +2,6 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 import {
-  bannerTitleStyle,
-  bannerTextStyle,
   primaryColorBoxStyle,
   defaultBorderBoxStyle,
   ellipsisStyle,
@@ -12,16 +10,6 @@ import {
   pageArrowWrapperStyle,
   pageNumberWrapperStyle,
 } from '@/styles/commonStyle';
-
-const BannerTitle = styled.h2`
-  ${bannerTitleStyle}
-  margin-bottom: 10px;
-`;
-
-const BannerText = styled.h2`
-  ${bannerTextStyle}
-  letter-spacing: 0.3px
-`;
 
 const ContentsAlignBox = styled.div`
   display: flex;
@@ -124,8 +112,6 @@ const PageNumberBox = styled.ul`
 `;
 
 export {
-  BannerTitle,
-  BannerText,
   ContentsAlignBox,
   PostCreateButton,
   SelectBox,
