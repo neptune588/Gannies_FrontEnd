@@ -1,5 +1,6 @@
 import { primaryBorderBoxStyle, primaryColorBoxStyle } from '@/styles/commonStyle';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export const Wrapper = styled.header`
   display: flex;
@@ -10,13 +11,18 @@ export const Wrapper = styled.header`
   width: 1128px;
 `;
 
-export const Logo = styled.img`
+export const Logo = styled(Link)`
   cursor: pointer;
   height: 68px;
   width: 164px;
+
+  img {
+    height: 100%;
+    width: 100%;
+  }  
 `;
 
-export const LoginButton = styled.button`
+export const LoginButton = styled(Link)`
   ${primaryBorderBoxStyle};
   cursor: pointer;
   font-size: ${props => props.theme.typo.size.md};
@@ -25,7 +31,7 @@ export const LoginButton = styled.button`
   margin-right: 20px;
 `;
 
-export const SignUpButton = styled.button`
+export const SignUpButton = styled(Link)`
   ${primaryColorBoxStyle};
   font-size: ${props => props.theme.typo.size.md};
   cursor: pointer;

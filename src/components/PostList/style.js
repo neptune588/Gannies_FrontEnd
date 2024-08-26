@@ -43,10 +43,16 @@ export const Comment = styled.span`
   font-weight: ${props => props.theme.typo.weight.semiBold};
 `;
 
-export const Description = styled.span`
-  color: ${props => props.theme.colors.gray[60]};  
-  font-size: ${props => props.theme.typo.size.sm};
-  font-weight: ${props => props.theme.typo.weight.regular};
+export const Date = styled.span`
+  color: ${({ theme: { colors } }) => {
+    return colors.gray['60'];
+  }};
+  font-size: ${({ theme: { typo } }) => {
+    return typo.size.xs;
+  }};
+  font-weight: ${({ theme: { typo } }) => {
+    return typo.weight.medium;
+  }};  
 `
 
 export const DescriptionWrapper = styled.div`

@@ -1,3 +1,4 @@
+import { placeholderTextStyle } from '@/styles/commonStyle';
 import styled from 'styled-components';
 
 export const InputBox = styled.input` 
@@ -6,7 +7,7 @@ export const InputBox = styled.input`
   font-size: ${props => props.theme.typo.size.sm};
   background-color: ${props => props.theme.colors.white};  
 
-  &:placeholder {
-    color: ${props => props.theme.colors.gray[50]};
+  &::placeholder {
+    ${placeholderTextStyle};
   }
 `;
