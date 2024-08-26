@@ -1,5 +1,8 @@
 import styled from 'styled-components';
-import { defaultBorderBoxStyle } from '@/styles/commonStyle';
+import {
+  defaultBorderBoxStyle,
+  primaryColorBoxStyle,
+} from '@/styles/commonStyle';
 
 const PasswordChangeWrapper = styled.div`
   margin-top: 15px;
@@ -14,6 +17,7 @@ const PasswordChgngeBox = styled.section`
   display: flex;
   align-items: center;
   margin-bottom: 35px;
+  &:nth-child(2n),
   &:nth-child(3n) {
     margin-bottom: 0;
   }
@@ -54,4 +58,42 @@ const InputBox = styled.label`
     cursor: pointer;
   }
 `;
-export { PasswordChangeWrapper, PasswordChgngeBox, InputBox };
+
+const NoticeMent = styled.p`
+  margin: 10px 0 0 120px;
+  &:nth-child(2n) {
+    margin-bottom: 35px;
+  }
+  color: ${({ theme: { colors } }) => {
+    return colors.gray['60'];
+  }};
+  font-size: ${({ theme: { typo } }) => {
+    return typo.size.xs;
+  }};
+  font-weight: ${({ theme: { typo } }) => {
+    return typo.weight.medium;
+  }};
+`;
+
+const EditSaveBox = styled.section`
+  padding-top: 70px;
+  > button {
+    ${primaryColorBoxStyle}
+    height: 50px;
+    padding: 10px 35px;
+    font-size: ${({ theme: { typo } }) => {
+      return typo.size.md;
+    }};
+    font-weight: ${({ theme: { typo } }) => {
+      return typo.weight.regular;
+    }};
+  }
+`;
+
+export {
+  PasswordChangeWrapper,
+  PasswordChgngeBox,
+  InputBox,
+  NoticeMent,
+  EditSaveBox,
+};
