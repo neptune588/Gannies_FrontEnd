@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import SideTabMenu from '@/pages/MyPage/SideTabMenu';
 import PersonalInfo from '@/pages/MyPage/PersonalInfo';
+import PasswordChange from '@/pages/MyPage/PasswordChange';
 
 import {
   Title,
@@ -16,6 +17,12 @@ export default function MyPage() {
   const [activeMenu, setActiveMenu] = useState(tabMenuData[0].content);
   const handleTabMenuClick = (content) => {
     setActiveMenu(content);
+  };
+
+  const [passwordView, setPasswordView] = useState(true);
+  const handlePasswordViewClick = () => {
+    setPasswordView((prev) => !prev);
+    console.log(passwordView);
   };
 
   return (
@@ -41,7 +48,12 @@ export default function MyPage() {
           {activeMenu === tabMenuData[1].content && (
             <>
               <h2>{tabMenuData[1].content}</h2>
-              <form></form>
+              <form>
+                <PasswordChange
+                  passwordView={passwordView}
+                  handlePasswordViewClick={handlePasswordViewClick}
+                />
+              </form>
             </>
           )}
           {activeMenu === tabMenuData[2].content && (

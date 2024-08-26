@@ -2,6 +2,7 @@ import {
   PersonalInfoWrapper,
   PersonalInfoBox,
   NicknameEditBox,
+  EditSaveAndAccountDeleteBox,
 } from '@/pages/MyPage/PersonalInfo/style';
 
 export default function PersonalInfo() {
@@ -26,6 +27,10 @@ export default function PersonalInfo() {
         <p>이메일</p>
         <p>hihi@gmail.com</p>
       </PersonalInfoBox>
+      <EditSaveAndAccountDeleteBox>
+        <button disabled>저장하기</button>
+        <button disabled>회원탈퇴</button>
+      </EditSaveAndAccountDeleteBox>
     </PersonalInfoWrapper>
   );
 }
