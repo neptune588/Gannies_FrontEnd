@@ -34,10 +34,13 @@ export const Description = styled.span`
   font-weight: ${props => props.theme.typo.weight.medium};  
 `
 
-export const FindButton = styled(Description)`
+export const FindButton = styled(Link)`
   cursor: pointer;
   margin-left: auto;
-  
+  color: ${props => props.theme.colors.gray[70]};  
+  font-size: ${props => props.theme.typo.size.xs};
+  font-weight: ${props => props.theme.typo.weight.medium};  
+    
   &:hover {
     color: ${props => props.theme.colors.primary};
   }

@@ -1,10 +1,10 @@
 import {
   ButtonWrapper,
- EmailBox,
- Image,
- LeftButton,
- RightButton,
- Wrapper
+  EmailBox,
+  Image,
+  LeftButton,
+  RightButton,
+  Wrapper
 } from "@/pages/SignUp/Success/style";
 import success from '@/assets/images/sign_up_success.png';
 
@@ -21,7 +21,7 @@ function Success() {
         <LeftButton />
         <RightButton />
       </ButtonWrapper>
-   </Wrapper>
+    </Wrapper>
   );
 }
 
