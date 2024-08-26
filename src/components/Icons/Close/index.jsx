@@ -7,8 +7,8 @@ const Icon = styled.img`
   height: 14px;
 `;
 
-export default function Close() {
+export default function Close(props) {
   return (
-    <Icon src={close} alt='close' />
+    <Icon src={close} alt='close' {...props} />
   );
 }

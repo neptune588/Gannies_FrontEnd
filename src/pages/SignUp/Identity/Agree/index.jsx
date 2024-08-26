@@ -1,3 +1,4 @@
+import Modal from '@/pages/SignUp/Identity/Agree/Modal';
 import {
   Wrapper,
   SectionWrapper,
@@ -8,13 +9,22 @@ import {
 
 // import InactiveButton from '@/components/Buttons/AuthButtons/Inactive';
 import { CheckBox } from '@/pages/SignUp/Identity/Agree/style';
+import { useState } from 'react';
 
 function Agree() {
 
   const agreeCount = 2;
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   return (
     <Wrapper>
+      {
+        isModalOpen ? <Modal closeModal={closeModal} /> : <></>
+      }
       <SectionWrapper>
         <Info>회원약관</Info>
         <AgreeWrapper>
@@ -27,7 +37,7 @@ function Agree() {
               <CheckBox type="checkbox" />
               <span>[필수]</span>
               <p>약관동의</p>
-              <ShowButton>약관보기</ShowButton>
+              <ShowButton onClick={openModal}>약관보기</ShowButton>
             </AgreeWrapper>
           ))
         }      

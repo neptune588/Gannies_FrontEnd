@@ -7,7 +7,6 @@ import info from '@/assets/icons/etc/info_input_inactive.svg';
 import department from '@/assets/icons/etc/department_verification_inactive.svg';
 import NextButton from '@/pages/SignUp/components/NextButton';
 
-
 function Identity() {
   const sequence = ['active', 'inactive', 'inactive'];
 
@@ -17,7 +16,7 @@ function Identity() {
       <Icons identity={identity} info={info} department={department} sequence={sequence}/>
       <Inputs />
       <Agree />
-      <NextButton $margin="80px" text="다음" to="/sign-up/info"/>
+      <NextButton $margin="80px" text="다음" to="/sign-up/info" />
     </>
   );
 }

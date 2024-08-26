@@ -176,6 +176,14 @@ const authEmailColorBoxStyle = css`
   justify-content: center;
 `;
 
+const modalBoxStyle = css`
+  background-color: ${props => props.theme.colors.white};
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 export {
   defaultBorderBoxStyle,
   primaryColorBoxStyle,
@@ -196,4 +204,5 @@ export {
   placeholderTextStyle,
   authDefaultTextStyle,
   authEmailColorBoxStyle,
+  modalBoxStyle,
 };

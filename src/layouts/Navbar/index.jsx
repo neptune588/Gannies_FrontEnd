@@ -4,6 +4,7 @@ import { Wrapper, Button } from '@/layouts/Navbar/style';
 function Navbar() {
   return (
     <Wrapper>
+        <Button to="/">메인</Button>
         <Button>이론정보</Button>
         <Button>실습정보</Button>
         <Button>국가고시준비</Button>      
