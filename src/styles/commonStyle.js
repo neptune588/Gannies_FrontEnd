@@ -3,7 +3,7 @@ import { css } from 'styled-components';
 const defaultBorderBoxStyle = css`
   border: 1px solid
     ${({ theme: { colors } }) => {
-      return colors.gray['40'];
+      return colors.gray['30'];
     }};
   border-radius: 4px;
 `;
@@ -177,7 +177,7 @@ const authEmailColorBoxStyle = css`
 `;
 
 const modalBoxStyle = css`
-  background-color: ${props => props.theme.colors.white};
+  background-color: ${(props) => props.theme.colors.white};
   border-radius: 16px;
   display: flex;
   flex-direction: column;
