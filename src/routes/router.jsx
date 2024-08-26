@@ -8,7 +8,11 @@ import Identity from '@/pages/SignUp/Identity';
 import Info from '@/pages/SignUp/Info';
 import Department from '@/pages/SignUp/Department';
 import Error from '@/pages/Error';
-import Success from '@/pages/SignUp/Success';
+import SignUpSuccess from '@/pages/SignUp/Success';
+import ID from '@/pages/Find/ID';
+import FindIDSuccess from '@/pages/Find/ID/Success';
+import Password from '@/pages/Find/Password';
+import FindPasswordSuccess from '@/pages/Find/Password/Success';
 
 export const router = createBrowserRouter([
   {
@@ -37,8 +41,24 @@ export const router = createBrowserRouter([
       },   
       {
         path: '/sign-up/success',
-        element: <Success />
+        element: <SignUpSuccess />
       },          
+      {
+        path: '/find/id',
+        element: <ID />
+      },   
+      {
+        path: '/find/id/success',
+        element: <FindIDSuccess />
+      },  
+      {
+        path: '/find/password',
+        element: <Password />
+      },     
+      {
+        path: '/find/password/success',
+        element: <FindPasswordSuccess />
+      },        
       {
         path: '/community',
         element: <Community />
