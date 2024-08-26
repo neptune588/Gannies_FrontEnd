@@ -4,7 +4,6 @@ import Home from '@/pages/Home';
 import SignIn from '@/pages/SignIn';
 import Community from '@/pages/Community';
 import CreateCommunityPost from '@/pages/CreateCommunityPost';
-/* import SignUp from '@/pages/SignUp'; */
 import Identity from '@/pages/SignUp/Identity';
 import Info from '@/pages/SignUp/Info';
 import Department from '@/pages/SignUp/Department';
