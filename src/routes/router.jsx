@@ -1,5 +1,5 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
-import Layout from '@/layouts/Layout';
+import { createBrowserRouter } from 'react-router-dom';
+import { MainLayout, MypageLayout } from '@/layouts';
 import Home from '@/pages/Home';
 import SignIn from '@/pages/SignIn';
 import Community from '@/pages/Community';
@@ -13,11 +13,12 @@ import ID from '@/pages/Find/ID';
 import FindIDSuccess from '@/pages/Find/ID/Success';
 import Password from '@/pages/Find/Password';
 import FindPasswordSuccess from '@/pages/Find/Password/Success';
+import MyPage from '@/pages/MyPage';
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <Layout />,
+    element: <MainLayout />,
     children: [
       {
         path: '/',
@@ -32,6 +33,14 @@ export const router = createBrowserRouter([
         element: <CreateCommunityPost />,
       },
     ],
+  },
+  {
+    path: '/my-page',
+    element: <MypageLayout />,
+    children: {
+      path: '/my-page',
+      element: <MyPage />,
+    },
   },
   {
     path: '/sign-in',
