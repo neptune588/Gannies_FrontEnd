@@ -94,4 +94,8 @@ export const IconBox = styled.div`
   }};
 `;
 
-export const ScrapBox = styled.div``;
+export const ScrapBox = styled.div`
+  margin: ${({ $scrapClickState }) => {
+    return $scrapClickState && '0 45px 0 15px';
+  }};
+`;

@@ -31,7 +31,11 @@ export default function MyPage() {
   };
 
   const [postData] = useState(posts);
-
+  const [pageData] = useState(
+    Array.from({ length: 10 }, (_, index) => {
+      return index;
+    })
+  );
   return (
     <>
       <Title>마이페이지</Title>
@@ -80,24 +84,45 @@ export default function MyPage() {
               </ActiveTabTitleBox>
               <PostContents
                 postData={postData}
+                pageData={pageData}
                 pageName={'my-page'}
                 scrapViewState={false}
-                scrapClickState={false}
               />
             </>
           )}
           {activeMenu === tabMenuData[3].content && (
             <>
               <ActiveTabTitleBox>
-                <ActiveTabTitle>{tabMenuData[3].content}</ActiveTabTitle>
+                <div>
+                  <ActiveTabTitle>{tabMenuData[3].content}</ActiveTabTitle>
+                  <p>총 n개</p>
+                </div>
+                <AlignSelectMenu />
               </ActiveTabTitleBox>
+              <PostContents
+                postData={postData}
+                pageData={pageData}
+                pageName={'my-page'}
+                scrapViewState={true}
+                scrapClickState={true}
+              />
             </>
           )}
           {activeMenu === tabMenuData[4].content && (
             <>
               <ActiveTabTitleBox>
-                <ActiveTabTitle>{tabMenuData[4].content}</ActiveTabTitle>
+                <div>
+                  <ActiveTabTitle>{tabMenuData[4].content}</ActiveTabTitle>
+                  <p>총 n개</p>
+                </div>
+                <AlignSelectMenu />
               </ActiveTabTitleBox>
+              <PostContents
+                postData={postData}
+                pageData={pageData}
+                pageName={'my-page'}
+                scrapViewState={false}
+              />
             </>
           )}
         </MainContentsWrapper>

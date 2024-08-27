@@ -25,8 +25,8 @@ function PostList({
   views = null,
   likes = null,
   date = null,
-  scrapViewState = false,
   pageName = 'home',
+  scrapViewState = false,
   scrapClickState = false,
 }) {
   return (
@@ -40,17 +40,22 @@ function PostList({
         </PostTitle>
       </PostLeftBox>
       <PostRightBox>
-        <IconBox $pageName={pageName}>
-          <Eye viewCount={views} />
-        </IconBox>
-        <IconBox $pageName={pageName}>
-          <HeartInactive likeCount={likes} />
-        </IconBox>
+        {!scrapViewState && (
+          <>
+            <IconBox $pageName={pageName}>
+              <Eye viewCount={views} />
+            </IconBox>
+            <IconBox $pageName={pageName}>
+              <HeartInactive likeCount={likes} />
+            </IconBox>
+          </>
+        )}
+
         <DescriptionBox $pageName={pageName}>
           <Date>{date}</Date>
         </DescriptionBox>
         {scrapViewState && (
-          <ScrapBox>
+          <ScrapBox $scrapClickState={scrapClickState}>
             <Scrap scrapClickState={scrapClickState} pageName={pageName} />
           </ScrapBox>
         )}

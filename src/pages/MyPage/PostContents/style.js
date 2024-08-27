@@ -1,5 +1,10 @@
 import styled from 'styled-components';
-import { postsHeaderStyle } from '@/styles/commonStyle';
+import {
+  postsHeaderStyle,
+  paginationWrapperStyle,
+  pageArrowWrapperStyle,
+  pageNumberWrapperStyle,
+} from '@/styles/commonStyle';
 
 const PostsWrapper = styled.div`
   margin-top: 10px;
@@ -46,10 +51,26 @@ const PostListBox = styled.ul`
   }
 `;
 
+const PageWrapper = styled.section`
+  ${paginationWrapperStyle}
+  margin: 50px auto 130px;
+`;
+
+const ArrowBox = styled.div`
+  ${pageArrowWrapperStyle}
+`;
+
+const PageNumberBox = styled.ul`
+  ${pageNumberWrapperStyle}
+`;
+
 export {
   PostsWrapper,
   PostsHeader,
   PostsHeaderLeftBox,
   PostsHeaderRightBox,
   PostListBox,
+  PageWrapper,
+  ArrowBox,
+  PageNumberBox,
 };
