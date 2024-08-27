@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import PostList from '@/components/PostList';
 
 import {
@@ -10,10 +8,12 @@ import {
   PostListBox,
 } from '@/pages/MyPage/PostContents/style';
 
-import { posts } from '@/pages/Home/data';
-export default function PostContents() {
-  const [data] = useState(posts);
-
+export default function PostContents({
+  postData,
+  pageName,
+  scrapViewState = false,
+  scrapClickState = false,
+}) {
   return (
     <PostsWrapper>
       <PostsHeader>
@@ -29,7 +29,24 @@ export default function PostContents() {
         </PostsHeaderRightBox>
       </PostsHeader>
       <PostListBox>
-        <PostList />
+        {postData?.length > 0 &&
+          postData.map((list, idx) => {
+            return (
+              <PostList
+                key={list.category + idx}
+                postNumber={String(idx + 1).padStart(2, '0')}
+                category={list.category}
+                title={list.title}
+                comment={list.comment}
+                views={list.views}
+                likes={list.likes}
+                date={list.date}
+                scrapViewState={scrapViewState}
+                scrapClickState={scrapClickState}
+                pageName={pageName}
+              />
+            );
+          })}
       </PostListBox>
     </PostsWrapper>
   );

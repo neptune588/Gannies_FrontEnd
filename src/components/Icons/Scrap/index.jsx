@@ -7,17 +7,21 @@ const Icons = styled.img`
   cursor: pointer;
   user-select: none;
   width: ${({ $pageName }) => {
-    return $pageName === 'create-community-create' ? '36px' : '18px';
+    return $pageName === 'post-detail-view' ? '36px' : '18px';
   }};
   height: ${({ $pageName }) => {
-    return $pageName === 'create-community-create' ? '36px' : '18px';
+    return $pageName === 'post-detail-view' ? '36px' : '18px';
   }};
 `;
 
-export default function Scrap({ handleScrapClick, pageName, scrapState }) {
+export default function Scrap({
+  handleScrapClick,
+  pageName = 'post-detail-view',
+  scrapClickState = false,
+}) {
   return (
     <Icons
-      src={scrapState ? acitveScrap : inacitveScrap}
+      src={scrapClickState ? acitveScrap : inacitveScrap}
       $pageName={pageName}
       onClick={handleScrapClick || undefined}
     />

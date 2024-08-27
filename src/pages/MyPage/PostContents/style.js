@@ -32,11 +32,12 @@ const PostsHeaderLeftBox = styled.div`
 
 const PostsHeaderRightBox = styled(PostsHeaderLeftBox)`
   > p {
+    width: 75px;
     text-align: left;
   }
 `;
 
-const PostListBox = styled.div`
+const PostListBox = styled.ul`
   li {
     border-bottom: 1px solid
       ${({ theme: { colors } }) => {

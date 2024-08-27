@@ -1,39 +1,60 @@
+import CommentLength from '@/components/CommentLength';
+import Scrap from '@/components/Icons/Scrap';
+
 import {
   PostWrapper,
+  PostNumber,
+  PostLeftBox,
   Category,
   PostTitle,
   DescriptionBox,
-  Comment,
+  PostRightBox,
+  IconBox,
   Date,
+  ScrapBox,
 } from '@/components/PostList/style';
 
 import Eye from '@/components/Icons/Eye';
 import HeartInactive from '@/components/Icons/HeartInactive';
 
 function PostList({
+  postNumber = null,
   category = null,
   title = null,
   comment = null,
   views = null,
   likes = null,
   date = null,
+  scrapViewState = false,
+  pageName = 'home',
+  scrapClickState = false,
 }) {
   return (
-    <PostWrapper>
-      <Category>{category}</Category>
-      <PostTitle>
-        {title}
-        <Comment>{comment}</Comment>
-      </PostTitle>
-      <DescriptionBox>
-        <Eye viewCount={views} />
-      </DescriptionBox>
-      <DescriptionBox>
-        <HeartInactive likeCount={likes} />
-      </DescriptionBox>
-      <DescriptionBox>
-        <Date>{date}</Date>
-      </DescriptionBox>
+    <PostWrapper $pageName={pageName}>
+      <PostLeftBox>
+        {postNumber && <PostNumber>{postNumber}</PostNumber>}
+        <Category $pageName={pageName}>{category}</Category>
+        <PostTitle $pageName={pageName}>
+          {title}
+          <CommentLength>{comment}</CommentLength>
+        </PostTitle>
+      </PostLeftBox>
+      <PostRightBox>
+        <IconBox $pageName={pageName}>
+          <Eye viewCount={views} />
+        </IconBox>
+        <IconBox $pageName={pageName}>
+          <HeartInactive likeCount={likes} />
+        </IconBox>
+        <DescriptionBox $pageName={pageName}>
+          <Date>{date}</Date>
+        </DescriptionBox>
+        {scrapViewState && (
+          <ScrapBox>
+            <Scrap scrapClickState={scrapClickState} pageName={pageName} />
+          </ScrapBox>
+        )}
+      </PostRightBox>
     </PostWrapper>
   );
 }

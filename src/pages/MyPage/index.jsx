@@ -16,6 +16,7 @@ import {
 } from '@/pages/MyPage/style';
 
 import { tabMenuData } from '@/pages/MyPage/data';
+import { posts } from '@/pages/Home/data';
 
 export default function MyPage() {
   const [activeMenu, setActiveMenu] = useState(tabMenuData[0].content);
@@ -28,6 +29,8 @@ export default function MyPage() {
     setPasswordView((prev) => !prev);
     console.log(passwordView);
   };
+
+  const [postData] = useState(posts);
 
   return (
     <>
@@ -75,7 +78,12 @@ export default function MyPage() {
                 </div>
                 <AlignSelectMenu />
               </ActiveTabTitleBox>
-              <PostContents />
+              <PostContents
+                postData={postData}
+                pageName={'my-page'}
+                scrapViewState={false}
+                scrapClickState={false}
+              />
             </>
           )}
           {activeMenu === tabMenuData[3].content && (

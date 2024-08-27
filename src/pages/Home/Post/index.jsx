@@ -20,7 +20,6 @@ function Post({ title, posts }) {
             <ShowMoreButtonIcon src={chevron_right} alt='chevron_right' />
           </ShowMoreButton>
         </UpperWrapper>
-        <PostList posts={posts} />
       </Wrapper>
     </>
   );
