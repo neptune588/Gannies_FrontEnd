@@ -184,6 +184,17 @@ const modalBoxStyle = css`
   align-items: center;
 `;
 
+const postsHeaderStyle = css`
+  border-top: 2px solid
+    ${({ theme: { colors } }) => {
+      return colors.gray['50'];
+    }};
+  border-bottom: 1px solid
+    ${({ theme: { colors } }) => {
+      return colors.gray['50'];
+    }};
+`;
+
 export {
   defaultBorderBoxStyle,
   primaryColorBoxStyle,
@@ -205,4 +216,5 @@ export {
   authDefaultTextStyle,
   authEmailColorBoxStyle,
   modalBoxStyle,
+  postsHeaderStyle,
 };

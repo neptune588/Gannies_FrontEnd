@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { defaultBorderBoxStyle } from '@/styles/commonStyle';
+import { defaultBorderBoxStyle, postsHeaderStyle } from '@/styles/commonStyle';
 
 const Title = styled.h2`
   font-size: ${({ theme: { typo } }) => {
@@ -21,39 +21,54 @@ const SideTabMenuWrapper = styled.div`
   width: 160px;
   height: 405px;
   padding: 25px 15px 65px;
-
-  > h2 {
-    color: ${({ theme: { colors } }) => {
-      return colors.gray['100'];
-    }};
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.xs;
-    }};
-    font-weight: ${({ theme: { typo } }) => {
-      return typo.weight.semiBold;
-    }};
-    padding-bottom: 10px;
-    border-bottom: 1px solid
-      ${({ theme: { colors } }) => {
-        return colors.gray['20'];
-      }};
-  }
 `;
 
 const MainContentsWrapper = styled.div`
   width: 795px;
   margin-left: 30px;
+`;
 
-  h2 {
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.h4;
-    }};
-    font-weight: ${({ theme: { typo } }) => {
-      return typo.weight.semiBold;
-    }};
-    padding-left: 10px;
-    margin-bottom: 15px;
+const ActiveTabTitleBox = styled.section`
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  >div: first-child {
+    display: flex;
+    align-items: baseline;
+    > p {
+      color: ${({ theme: { colors } }) => {
+        return colors.gray['80'];
+      }};
+      font-size: ${({ theme: { typo } }) => {
+        return typo.size.md;
+      }};
+      font-weight: ${({ theme: { typo } }) => {
+        return typo.weight.semiBold;
+      }};
+      margin-left: 15px;
+    }
   }
 `;
 
-export { Title, ContentsContainer, SideTabMenuWrapper, MainContentsWrapper };
+const ActiveTabTitle = styled.h2`
+  font-size: ${({ theme: { typo } }) => {
+    return typo.size.h4;
+  }};
+  font-weight: ${({ theme: { typo } }) => {
+    return typo.weight.semiBold;
+  }};
+`;
+
+const PostsHeaader = styled.div`
+  ${postsHeaderStyle}
+  display: flex;
+`;
+
+export {
+  Title,
+  ContentsContainer,
+  SideTabMenuWrapper,
+  MainContentsWrapper,
+  ActiveTabTitleBox,
+  ActiveTabTitle,
+};

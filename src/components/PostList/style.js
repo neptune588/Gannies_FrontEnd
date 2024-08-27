@@ -2,10 +2,6 @@ import styled from 'styled-components';
 import Eye from '@/components/Icons/Eye';
 import HeartInactive from '@/components/Icons/HeartInactive';
 
-export const Container = styled.ul`
-  width: 100%;
-`;
-
 export const PostWrapper = styled.li`
   display: flex;
   width: 100%;

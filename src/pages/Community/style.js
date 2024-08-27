@@ -7,6 +7,7 @@ import {
   paginationWrapperStyle,
   pageArrowWrapperStyle,
   pageNumberWrapperStyle,
+  postsHeaderStyle,
 } from '@/styles/commonStyle';
 
 const ContentsAlignBox = styled.div`
@@ -42,14 +43,7 @@ const PostHeaderBox = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 15px 0 15px;
-  border-top: 2px solid
-    ${({ theme: { colors } }) => {
-      return colors.gray['50'];
-    }};
-  border-bottom: 1px solid
-    ${({ theme: { colors } }) => {
-      return colors.gray['50'];
-    }};
+  ${postsHeaderStyle}
   > div:first-child {
     display: flex;
     align-items: center;

@@ -1,5 +1,22 @@
 import styled from 'styled-components';
 
+const SideTabTitle = styled.h2`
+  color: ${({ theme: { colors } }) => {
+    return colors.gray['100'];
+  }};
+  font-size: ${({ theme: { typo } }) => {
+    return typo.size.xs;
+  }};
+  font-weight: ${({ theme: { typo } }) => {
+    return typo.weight.semiBold;
+  }};
+  padding-bottom: 10px;
+  border-bottom: 1px solid
+    ${({ theme: { colors } }) => {
+      return colors.gray['20'];
+    }};
+`;
+
 const SideTabMenuBox = styled.ul`
   padding: 15px 15px 0 15px;
 `;
@@ -28,7 +45,7 @@ export default function SideTabMenu({
 }) {
   return (
     <>
-      <h2>내정보 관리</h2>
+      <SideTabTitle>내정보 관리</SideTabTitle>
       <SideTabMenuBox>
         <SideTabMenuList
           $isActiveMenu={activeMenu}
@@ -49,7 +66,7 @@ export default function SideTabMenu({
           {tabMenu[1].content}
         </SideTabMenuList>
       </SideTabMenuBox>
-      <h2>게시글 관리</h2>
+      <SideTabTitle>게시글 관리</SideTabTitle>
       <SideTabMenuBox>
         <SideTabMenuList
           $isActiveMenu={activeMenu}
@@ -70,7 +87,7 @@ export default function SideTabMenu({
           {tabMenu[3].content}
         </SideTabMenuList>
       </SideTabMenuBox>
-      <h2>댓글 관리</h2>
+      <SideTabTitle>댓글 관리</SideTabTitle>
       <SideTabMenuBox>
         <SideTabMenuList
           $isActiveMenu={activeMenu}
