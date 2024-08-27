@@ -5,8 +5,8 @@ import CommunityBannerText from '@/components/CommunityBannerText';
 import CommunityPost from '@/pages/Community/CommunityPost';
 import PageControlArrow from '@/components/PageControlArrow';
 import PageNumber from '@/components/PageNumber';
+import AlignSelectMenu from '@/components/AlignSelectMenu';
 import brush from '@/assets/icons/etc/brush.svg';
-import bottomArrow from '@/assets/icons/arrows/chevron_down.svg';
 
 import prevArrow from '@/assets/icons/arrows/chevron_left.svg';
 import nextArrow from '@/assets/icons/arrows/chevron_right.svg';
@@ -16,7 +16,6 @@ import next10PagesArrow from '@/assets/icons/arrows/double_chevron_right.svg';
 import {
   ContentsAlignBox,
   PostCreateButton,
-  SelectBox,
   PostWrapper,
   PostHeaderBox,
   PageWrapper,
@@ -50,12 +49,7 @@ export default function Community() {
           <img src={brush} alt='create-button' />
           게시글 작성
         </PostCreateButton>
-        <SelectBox>
-          <div>
-            <p>최신순</p>
-            <img src={bottomArrow} alt='select-arrow' />
-          </div>
-        </SelectBox>
+        <AlignSelectMenu />
       </ContentsAlignBox>
       <PostWrapper>
         <PostHeaderBox>
