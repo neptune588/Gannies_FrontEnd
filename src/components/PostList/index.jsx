@@ -1,9 +1,9 @@
 import {
+  Container,
   PostWrapper,
-  Wrapper,
   Category,
   PostTitle,
-  DescriptionWrapper,
+  DescriptionBox,
   Comment,
   Date,
 } from '@/components/PostList/style';
@@ -11,31 +11,32 @@ import {
 import Eye from '@/components/Icons/Eye';
 import HeartInactive from '@/components/Icons/HeartInactive';
 
-function PostList({ posts }) {
+function PostList({ posts = null }) {
   return (
-    <Wrapper>
-      {posts.length > 0 ? (
+    <Container>
+      {posts?.length > 0 ? (
         posts.map((post, postIndex) => (
           <PostWrapper key={postIndex}>
             <Category>{post.category}</Category>
             <PostTitle>
-              {post.title} <Comment>[{post.comment}]</Comment>
+              {post.title}
+              <Comment>[{post.comment}]</Comment>
             </PostTitle>
-            <DescriptionWrapper>
+            <DescriptionBox>
               <Eye viewCount={post.views} />
-            </DescriptionWrapper>
-            <DescriptionWrapper>
+            </DescriptionBox>
+            <DescriptionBox>
               <HeartInactive likeCount={post.likes} />
-            </DescriptionWrapper>
-            <DescriptionWrapper>
+            </DescriptionBox>
+            <DescriptionBox>
               <Date>{post.date}</Date>
-            </DescriptionWrapper>
+            </DescriptionBox>
           </PostWrapper>
         ))
       ) : (
-        <></>
+        <p>데이터 x</p>
       )}
-    </Wrapper>
+    </Container>
   );
 }
 

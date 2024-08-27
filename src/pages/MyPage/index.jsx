@@ -3,6 +3,7 @@ import { useState } from 'react';
 import SideTabMenu from '@/pages/MyPage/SideTabMenu';
 import PersonalInfo from '@/pages/MyPage/PersonalInfo';
 import PasswordChange from '@/pages/MyPage/PasswordChange';
+import PostList from '@/components/PostList';
 
 import {
   Title,
@@ -59,6 +60,7 @@ export default function MyPage() {
           {activeMenu === tabMenuData[2].content && (
             <>
               <h2>{tabMenuData[2].content}</h2>
+              <PostList posts={5}></PostList>
             </>
           )}
           {activeMenu === tabMenuData[3].content && (
