@@ -3,9 +3,7 @@ import { Link } from 'react-router-dom';
 
 import {
   primaryColorBoxStyle,
-  defaultBorderBoxStyle,
   ellipsisStyle,
-  centerAlignStyle,
   paginationWrapperStyle,
   pageArrowWrapperStyle,
   pageNumberWrapperStyle,
@@ -33,26 +31,6 @@ const PostCreateButton = styled(Link)`
   > img {
     width: 24px;
     height: 24px;
-  }
-`;
-
-const SelectBox = styled.div`
-  ${defaultBorderBoxStyle}
-  ${centerAlignStyle}
-  width: 95px;
-  height: 35px;
-  padding: 0 10px;
-  font-size: ${({ theme: { typo } }) => {
-    return typo.size.xs;
-  }};
-  font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.regular;
-  }};
-  > div:first-child {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
   }
 `;
 
@@ -114,7 +92,6 @@ const PageNumberBox = styled.ul`
 export {
   ContentsAlignBox,
   PostCreateButton,
-  SelectBox,
   PostWrapper,
   PostHeaderBox,
   PageWrapper,
