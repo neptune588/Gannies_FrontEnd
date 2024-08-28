@@ -1,11 +1,12 @@
-import { instructionTextStyle } from '@/styles/commonStyle';
 import styled from 'styled-components';
+
 import { Link } from 'react-router-dom';
+import { instructionTextStyle } from '@/styles/commonStyle/text';
 
 export const Wrapper = styled.div`
-	display: flex;
+  display: flex;
   flex-direction: column;
-	align-items: center;
+  align-items: center;
   margin-top: 21px;
 `;
 
@@ -29,20 +30,20 @@ export const CheckBox = styled.input`
 `;
 
 export const Description = styled.span`
-  color: ${props => props.theme.colors.gray[70]};  
-  font-size: ${props => props.theme.typo.size.xs};
-  font-weight: ${props => props.theme.typo.weight.medium};  
-`
+  color: ${(props) => props.theme.colors.gray[70]};
+  font-size: ${(props) => props.theme.typo.size.xs};
+  font-weight: ${(props) => props.theme.typo.weight.medium};
+`;
 
 export const FindButton = styled(Link)`
   cursor: pointer;
   margin-left: auto;
-  color: ${props => props.theme.colors.gray[70]};  
-  font-size: ${props => props.theme.typo.size.xs};
-  font-weight: ${props => props.theme.typo.weight.medium};  
-    
+  color: ${(props) => props.theme.colors.gray[70]};
+  font-size: ${(props) => props.theme.typo.size.xs};
+  font-weight: ${(props) => props.theme.typo.weight.medium};
+
   &:hover {
-    color: ${props => props.theme.colors.primary};
+    color: ${(props) => props.theme.colors.primary};
   }
 `;
 
@@ -53,7 +54,7 @@ export const Instruction = styled.span`
 
 export const InstructionPrimary = styled(Link)`
   ${instructionTextStyle};
-  color: ${props => props.theme.colors.primary};
+  color: ${(props) => props.theme.colors.primary};
 `;
 
 export const ButtonWrapper = styled.div`

@@ -2,7 +2,8 @@ import styled from 'styled-components';
 
 import bottomArrow from '@/assets/icons/arrows/chevron_down.svg';
 
-import { defaultBorderBoxStyle, centerAlignStyle } from '@/styles/commonStyle';
+import { defaultBorderBoxStyle } from '@/styles/commonStyle/box';
+import { centerAlignStyle } from '@/styles/commonStyle/etc';
 
 const SelectBox = styled.div`
   ${defaultBorderBoxStyle}

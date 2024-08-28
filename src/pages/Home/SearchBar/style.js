@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { primaryColorBoxStyle } from '@/styles/commonStyle';
+
+import { primaryColorBoxStyle } from '@/styles/commonStyle/box';
 import { InputBox } from '@/components/Input/style';
 
 export const Wrapper = styled.div`
@@ -8,7 +9,7 @@ export const Wrapper = styled.div`
   margin-top: 17px;
   align-items: center;
   justify-content: center;
-  background-color: ${props => props.theme.colors.gray[10]};
+  background-color: ${(props) => props.theme.colors.gray[10]};
   height: 87px;
   width: 1128px;
 `;
@@ -18,7 +19,7 @@ export const SearchBarWrapper = styled.form`
   height: 50px;
   border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
-  border: 1px solid #C3C3C3;
+  border: 1px solid #c3c3c3;
   display: flex;
   align-items: center;
   padding-left: 24px;
@@ -40,10 +41,9 @@ export const Input = styled(InputBox)`
   margin-left: 23px;
 `;
 
-
 export const Button = styled.button`
   ${primaryColorBoxStyle};
-  font-size: ${props => props.theme.typo.size.md};
+  font-size: ${(props) => props.theme.typo.size.md};
   width: 90px;
   height: 50px;
   cursor: pointer;

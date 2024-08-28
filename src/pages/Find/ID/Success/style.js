@@ -1,9 +1,9 @@
+import styled from 'styled-components';
+
 import {
   primaryBorderBoxStyle,
-  primaryColorBoxStyle
-} from "@/styles/commonStyle";
-
-import styled from "styled-components";
+  primaryColorBoxStyle,
+} from '@/styles/commonStyle/box';
 
 export const ButtonWrapper = styled.div`
   display: flex;
@@ -16,10 +16,10 @@ export const LeftButton = styled.button`
   ${primaryBorderBoxStyle};
   width: 205px;
   height: 48px;
-`
+`;
 
 export const RightButton = styled.button`
   ${primaryColorBoxStyle};
   width: 205px;
   height: 48px;
-`
+`;

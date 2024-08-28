@@ -27,3 +27,9 @@ const pageNumberWrapperStyle = css`
     margin-right: 30px;
   }
 `;
+
+export {
+  paginationWrapperStyle,
+  pageArrowWrapperStyle,
+  pageNumberWrapperStyle,
+};

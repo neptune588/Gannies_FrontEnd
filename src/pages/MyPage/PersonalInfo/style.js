@@ -1,8 +1,9 @@
 import styled from 'styled-components';
+
 import {
   primaryBorderBoxStyle,
   primaryColorBoxStyle,
-} from '@/styles/commonStyle';
+} from '@/styles/commonStyle/box';
 
 const PersonalInfoWrapper = styled.div`
   margin-top: 15px;

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ellipsisStyle } from '@/styles/commonStyle';
+import { ellipsisStyle } from '@/styles/commonStyle/etc';
 
 const PostContainer = styled.li`
   display: flex;

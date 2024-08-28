@@ -1,17 +1,15 @@
-import {
-  defaultBorderBoxStyle,
-  placeholderTextStyle
-} from '@/styles/commonStyle';
-
 import styled from 'styled-components';
 import Input from '@/components/Input';
 import Eye from '@/components/Icons/Eye';
 
+import { defaultBorderBoxStyle } from '@/styles/commonStyle/box';
+import { placeholderTextStyle } from '@/styles/commonStyle/text';
+
 export const Wrapper = styled.div`
-	display: flex;
+  display: flex;
   flex-direction: column;
-	align-items: center;
-	margin-top: 35px;
+  align-items: center;
+  margin-top: 35px;
 `;
 
 export const InputWrapper = styled.form`

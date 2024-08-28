@@ -1,8 +1,9 @@
 import styled from 'styled-components';
+
 import {
   defaultBorderBoxStyle,
   primaryColorBoxStyle,
-} from '@/styles/commonStyle';
+} from '@/styles/commonStyle/box';
 
 const PasswordChangeWrapper = styled.div`
   margin-top: 15px;
