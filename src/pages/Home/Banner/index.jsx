@@ -1,5 +1,10 @@
-import { Wrapper } from '@/pages/Home/Banner/style';
 import banner from '@/assets/images/banner.png';
+import styled from 'styled-components';
+
+const Wrapper= styled.img`
+  height: 339px;
+  margin-top: 16.5px;
+`;
 
 function Banner() {
   return (

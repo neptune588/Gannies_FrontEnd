@@ -60,7 +60,7 @@ export default function CreateCommunityPost() {
                 <DataInputBox>
                   <p>*카테고리</p>
                   <div>
-                    <p>{selectCategory[0].label}</p>
+                    <p>{selectCategory[0].content}</p>
                     <img src={bottomArrow} alt={'select-arrow'} />
                   </div>
                 </DataInputBox>

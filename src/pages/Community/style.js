@@ -3,12 +3,11 @@ import { Link } from 'react-router-dom';
 
 import {
   primaryColorBoxStyle,
-  defaultBorderBoxStyle,
   ellipsisStyle,
-  centerAlignStyle,
   paginationWrapperStyle,
   pageArrowWrapperStyle,
   pageNumberWrapperStyle,
+  postsHeaderStyle,
 } from '@/styles/commonStyle';
 
 const ContentsAlignBox = styled.div`
@@ -36,26 +35,6 @@ const PostCreateButton = styled(Link)`
   }
 `;
 
-const SelectBox = styled.div`
-  ${defaultBorderBoxStyle}
-  ${centerAlignStyle}
-  width: 95px;
-  height: 35px;
-  padding: 0 10px;
-  font-size: ${({ theme: { typo } }) => {
-    return typo.size.xs;
-  }};
-  font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.regular;
-  }};
-  > div:first-child {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-`;
-
 const PostWrapper = styled.div`
   padding: 0 43px;
 `;
@@ -64,14 +43,7 @@ const PostHeaderBox = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 15px 0 15px;
-  border-top: 2px solid
-    ${({ theme: { colors } }) => {
-      return colors.gray['50'];
-    }};
-  border-bottom: 1px solid
-    ${({ theme: { colors } }) => {
-      return colors.gray['50'];
-    }};
+  ${postsHeaderStyle}
   > div:first-child {
     display: flex;
     align-items: center;
@@ -114,7 +86,6 @@ const PageNumberBox = styled.ul`
 export {
   ContentsAlignBox,
   PostCreateButton,
-  SelectBox,
   PostWrapper,
   PostHeaderBox,
   PageWrapper,

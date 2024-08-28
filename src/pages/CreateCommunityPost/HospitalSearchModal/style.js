@@ -1,24 +1,11 @@
 import styled from 'styled-components';
 
-const ModalContainer = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 9999;
-`;
-
 const ModalWrapper = styled.div`
   display: flex;
-  position: absolute;
+  position: relative;
   justify-content: space-between;
   width: 1440px;
   height: 775px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   z-index: 10;
   padding: 45px 45px 60px 75px;
   background-color: ${({ theme: { colors } }) => {
@@ -157,7 +144,6 @@ const ModalCloseArea = styled.div`
 `;
 
 export {
-  ModalContainer,
   ModalWrapper,
   ModalInnerLeftBox,
   SearchInputArea,

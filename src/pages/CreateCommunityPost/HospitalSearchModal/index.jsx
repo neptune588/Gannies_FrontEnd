@@ -1,7 +1,7 @@
 import searchIcon from '@/assets/icons/search/search_black.svg';
+import ModalContainer from '@/components/ModalContainer';
 
 import {
-  ModalContainer,
   ModalWrapper,
   ModalInnerLeftBox,
   SearchInputArea,

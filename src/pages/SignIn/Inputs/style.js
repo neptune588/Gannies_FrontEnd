@@ -11,18 +11,14 @@ export const Wrapper = styled.div`
 	display: flex;
   flex-direction: column;
 	align-items: center;
-	margin-top: 35px;
-`;
 
-export const InputWrapper = styled.form`
-  ${defaultBorderBoxStyle};
-  width: 400px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-
-  &:last-of-type {
-    margin-top: 18px;
+  > form {
+    ${defaultBorderBoxStyle};
+    width: 400px;
+    height: 44px;
+    display: flex;
+    align-items: center;  
+    margin-top: 26px;
   }
 `;
 

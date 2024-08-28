@@ -1,41 +1,66 @@
+import CommentLength from '@/components/CommentLength';
+import Scrap from '@/components/Icons/Scrap';
+
 import {
   PostWrapper,
-  Wrapper,
+  PostNumber,
+  PostLeftBox,
   Category,
   PostTitle,
-  DescriptionWrapper,
-  Comment,
+  DescriptionBox,
+  PostRightBox,
+  IconBox,
   Date,
+  ScrapBox,
 } from '@/components/PostList/style';
 
 import Eye from '@/components/Icons/Eye';
 import HeartInactive from '@/components/Icons/HeartInactive';
 
-function PostList({ posts }) {
+function PostList({
+  postNumber = null,
+  category = null,
+  title = null,
+  comment = null,
+  views = null,
+  likes = null,
+  date = null,
+  pageName = 'home',
+  scrapViewState = false,
+  scrapClickState = false,
+}) {
   return (
-    <Wrapper>
-      {posts.length > 0 ? (
-        posts.map((post, postIndex) => (
-          <PostWrapper key={postIndex}>
-            <Category>{post.category}</Category>
-            <PostTitle>
-              {post.title} <Comment>[{post.comment}]</Comment>
-            </PostTitle>
-            <DescriptionWrapper>
-              <Eye viewCount={post.views} />
-            </DescriptionWrapper>
-            <DescriptionWrapper>
-              <HeartInactive likeCount={post.likes} />
-            </DescriptionWrapper>
-            <DescriptionWrapper>
-              <Date>{post.date}</Date>
-            </DescriptionWrapper>
-          </PostWrapper>
-        ))
-      ) : (
-        <></>
-      )}
-    </Wrapper>
+    <PostWrapper $pageName={pageName}>
+      <PostLeftBox>
+        {postNumber && <PostNumber>{postNumber}</PostNumber>}
+        <Category $pageName={pageName}>{category}</Category>
+        <PostTitle $pageName={pageName}>
+          {title}
+          <CommentLength>{comment}</CommentLength>
+        </PostTitle>
+      </PostLeftBox>
+      <PostRightBox>
+        {!scrapViewState && (
+          <>
+            <IconBox $pageName={pageName}>
+              <Eye viewCount={views} />
+            </IconBox>
+            <IconBox $pageName={pageName}>
+              <HeartInactive likeCount={likes} />
+            </IconBox>
+          </>
+        )}
+
+        <DescriptionBox $pageName={pageName}>
+          <Date>{date}</Date>
+        </DescriptionBox>
+        {scrapViewState && (
+          <ScrapBox $scrapClickState={scrapClickState}>
+            <Scrap scrapClickState={scrapClickState} pageName={pageName} />
+          </ScrapBox>
+        )}
+      </PostRightBox>
+    </PostWrapper>
   );
 }
 

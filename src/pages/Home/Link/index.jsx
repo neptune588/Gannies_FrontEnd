@@ -1,12 +1,12 @@
 import {
-	Wrapper,
-	LeftWrapper,
-	Title,
-	Goto,
-	ArrowIcon,
-	ArrowIconWrapper,
-	RightWrapper,
-	LinkIcon
+		Wrapper,
+		LeftWrapper,
+		Title,
+		Goto,
+		ArrowIcon,
+		ArrowIconWrapper,
+		RightWrapper,
+		LinkIcon
 } from '@/pages/Home/Link/style';
 
 import chevron_right from '@/assets/icons/arrows/chevron_right.svg';

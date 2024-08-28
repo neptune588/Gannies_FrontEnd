@@ -1,20 +1,19 @@
 import {
   InputBox,
   Wrapper,
-  InputWrapper,
   Icon
 } from '@/pages/SignIn/Inputs/style';
 
 function Inputs() {
   return (
     <Wrapper>
-      <InputWrapper>
+      <form>
         <InputBox type="text" placeholder='이메일'/>
-      </InputWrapper>
-      <InputWrapper>
+      </form>
+      <form>
         <InputBox type="password" placeholder='비밀번호'/>
         <Icon />
-      </InputWrapper>
+      </form>
     </Wrapper>
   );
 }

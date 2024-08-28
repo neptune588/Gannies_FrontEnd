@@ -1,49 +1,81 @@
 import styled from 'styled-components';
-import Eye from '@/components/Icons/Eye';
-import HeartInactive from '@/components/Icons/HeartInactive';
 
-export const Wrapper = styled.div`
-  width: 1128px;
-  height: 330px;
+export const PostWrapper = styled.li`
+  display: flex;
+  justify-content: space-between;
+  height: ${({ $pageName }) => {
+    return $pageName === 'home' ? '57px' : '75px';
+  }};
+  padding-left: ${({ $pageName }) => {
+    return $pageName === 'home' && '8px';
+  }};
+  padding-right: ${({ $pageName }) => {
+    return $pageName === 'home' && '8px';
+}};
+  cursor: pointer;
 `;
 
-export const PostWrapper = styled.div`
+export const PostLeftBox = styled.div`
   display: flex;
-  width: 1128px;
-  height: 55px;
-  padding-left: 8px;
-  padding-right: 8px;
   align-items: center;
+`;
+export const PostRightBox = styled(PostLeftBox)``;
+export const PostNumber = styled.p`
+  width: 70px;
+  text-align: center;
+  color: ${({ theme: { colors } }) => {
+    return colors.gray['80'];
+  }};
+  font-size: ${({ theme: { typo } }) => {
+    return typo.size.xs;
+  }};
+  font-weight: ${({ theme: { typo } }) => {
+    return typo.weight.semiBold;
+  }};
 `;
 
 export const Category = styled.div`
-  font-size: ${props => props.theme.typo.size.xs};
-  font-weight: ${props => props.theme.typo.weight.medium};
-  height: 27px;
-  color: ${props => props.theme.colors.primary};
-  border: none;
   display: flex;
   align-items: center;
-  padding-left: 12px;
-  padding-right: 12px;
+  font-size: ${({ $pageName, theme: { typo } }) => {
+    return $pageName === 'home' ? typo.size.xs : typo.size.tiny;
+  }};
+  font-weight: ${({ theme: { typo } }) => {
+    return typo.weight.medium;
+  }};
+  color: ${({ theme: { colors } }) => {
+    return colors.primary;
+  }};
+  padding: 5px 13px;
   border-radius: 4px;
-  background-color: ${props => props.theme.colors.secondary};
+  background-color: ${({ theme: { colors } }) => {
+    return colors.secondary;
+  }};
+  margin: 0px 20px 0px 2px;
 `;
 
-export const PostTitle = styled.span`
-  color: ${props => props.theme.colors.gray[100]};  
-  font-size: ${props => props.theme.typo.size.md};
-  font-weight: ${props => props.theme.typo.weight.regular};
-  margin-left: 18px;
-  margin-right: auto;  
+export const PostTitle = styled.p`
+  color: ${({ theme: { colors } }) => {
+    return colors.gray['100'];
+  }};
+  font-size: ${({ $pageName, theme: { typo } }) => {
+    return $pageName === 'home' ? typo.size.md : typo.size.xs;
+  }};
+  font-weight: ${({ $pageName, theme: { typo } }) => {
+    return $pageName === 'home' ? typo.weight.regular : typo.weight.medium;
+  }};
+  margin-left: ${({ $pageName }) => {
+    return $pageName === 'home' && '18px';
+  }};
+  width: ${({ $pageName }) => {
+    return $pageName === 'home' ? '732px' : '373px';
+  }};  
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
-export const Comment = styled.span`
-  color: ${props => props.theme.colors.highlight};  
-  font-weight: ${props => props.theme.typo.weight.semiBold};
-`;
-
-export const Date = styled.span`
+export const Date = styled.p`
   color: ${({ theme: { colors } }) => {
     return colors.gray['60'];
   }};
@@ -52,19 +84,25 @@ export const Date = styled.span`
   }};
   font-weight: ${({ theme: { typo } }) => {
     return typo.weight.medium;
-  }};  
-`
-
-export const DescriptionWrapper = styled.div`
-  margin-left: 20px;
-  display: flex;
-  align-items: center;
-`
-
-export const PostEye = styled(Eye)`
-  margin-right: 8px;
+  }};
 `;
 
-export const PostHeartInactive = styled(HeartInactive)`
-  margin-right: 8px;
+export const DescriptionBox = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: ${({ $pageName }) => {
+    return $pageName === 'home' ? '15px' : '15px';
+  }};
+`;
+
+export const IconBox = styled.div`
+  margin-right: ${({ $pageName }) => {
+    return $pageName === 'home' ? '20px' : '20px';
+  }};
+`;
+
+export const ScrapBox = styled.div`
+  margin: ${({ $scrapClickState }) => {
+    return $scrapClickState && '0 45px 0 15px';
+  }};
 `;

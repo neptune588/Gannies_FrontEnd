@@ -10,7 +10,12 @@ const CenterdContainer = styled.div`
   margin: 0 auto;
 `;
 
-export default function Layout() {
+const MypageCenterdContainer = styled.div`
+  width: 975px;
+  margin: 0 auto;
+`;
+
+export function MainLayout() {
   return (
     <>
       <Header />
@@ -18,6 +23,19 @@ export default function Layout() {
       <CenterdContainer>
         <Outlet />
       </CenterdContainer>
+      <Footer />
+    </>
+  );
+}
+
+export function MypageLayout() {
+  return (
+    <>
+      <Header />
+      <Navbar />
+      <MypageCenterdContainer>
+        <Outlet />
+      </MypageCenterdContainer>
       <Footer />
     </>
   );

@@ -10,6 +10,7 @@ import {
 import Clock from '@/components/Icons/Clock';
 import InputSection from '@/pages/SignUp/components/InputSection';
 import Positive from '@/components/Instruction/Positive';
+import Negative from '@/components/Instruction/Negative';
 
 function VerifyNumber() {
   return (
@@ -24,6 +25,7 @@ function VerifyNumber() {
           <DisabledButton>인증확인</DisabledButton> */}
       </InfoWrapper>
       <Positive text="인증이 완료되었습니다"></Positive>
+      <Negative text="인증번호가 일치하지 않습니다"></Negative>
     </InputSection>
   );
 }

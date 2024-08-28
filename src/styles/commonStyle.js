@@ -3,7 +3,7 @@ import { css } from 'styled-components';
 const defaultBorderBoxStyle = css`
   border: 1px solid
     ${({ theme: { colors } }) => {
-      return colors.gray['40'];
+      return colors.gray['30'];
     }};
   border-radius: 4px;
 `;
@@ -153,7 +153,7 @@ const authTitleTextStyle = css`
 const placeholderTextStyle = css`
   font-size: ${(props) => props.theme.typo.size.sm};
   font-weight: ${(props) => props.theme.typo.weight.regular};
-  color: ${(props) => props.theme.colors.gray[40]};
+  color: ${(props) => props.theme.colors.gray[60]};
 `;
 
 const authDefaultTextStyle = css`
@@ -177,11 +177,22 @@ const authEmailColorBoxStyle = css`
 `;
 
 const modalBoxStyle = css`
-  background-color: ${props => props.theme.colors.white};
+  background-color: ${(props) => props.theme.colors.white};
   border-radius: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const postsHeaderStyle = css`
+  border-top: 2px solid
+    ${({ theme: { colors } }) => {
+      return colors.gray['50'];
+    }};
+  border-bottom: 1px solid
+    ${({ theme: { colors } }) => {
+      return colors.gray['50'];
+    }};
 `;
 
 export {
@@ -205,4 +216,5 @@ export {
   authDefaultTextStyle,
   authEmailColorBoxStyle,
   modalBoxStyle,
+  postsHeaderStyle,
 };

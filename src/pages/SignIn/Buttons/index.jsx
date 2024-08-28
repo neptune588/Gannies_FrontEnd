@@ -15,9 +15,14 @@ import Modal from "@/pages/SignIn/Buttons/Modal";
 
 function Buttons() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [autoLogin, setAutoLogin] = useState(false);
 
   const openModal = () => { setIsModalOpen(true); console.log(123)}
   const closeModal = () => setIsModalOpen(false);
+
+  const handleAutoLogin = () => {
+    setAutoLogin(!autoLogin);
+  }
 
   return (
     <Wrapper>
@@ -25,8 +30,8 @@ function Buttons() {
         isModalOpen ? <Modal closeModal={closeModal} /> : <></>
       }
       <LoginOptionsWrapper>
-        <AutoLoginButton>
-          <CheckBox type="checkbox" />
+        <AutoLoginButton onClick={handleAutoLogin}>
+          <CheckBox type="checkbox" checked={autoLogin} />
           <Description>자동로그인</Description>
         </AutoLoginButton>
         <FindButton to="/find/id">아이디 / 비밀번호 찾기</FindButton>
