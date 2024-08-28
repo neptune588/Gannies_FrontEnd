@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { defaultBorderBoxStyle, postsHeaderStyle } from '@/styles/commonStyle';
+
+import { defaultBorderBoxStyle } from '@/styles/commonStyle/box';
 
 const Title = styled.h2`
   font-size: ${({ theme: { typo } }) => {
@@ -57,11 +58,6 @@ const ActiveTabTitle = styled.h2`
   font-weight: ${({ theme: { typo } }) => {
     return typo.weight.semiBold;
   }};
-`;
-
-const PostsHeaader = styled.div`
-  ${postsHeaderStyle}
-  display: flex;
 `;
 
 export {

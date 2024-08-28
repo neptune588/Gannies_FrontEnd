@@ -1,6 +1,9 @@
-import { primaryBorderBoxStyle, primaryColorBoxStyle } from '@/styles/commonStyle';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import {
+  primaryBorderBoxStyle,
+  primaryColorBoxStyle,
+} from '@/styles/commonStyle/box';
 
 export const Wrapper = styled.header`
   display: flex;
@@ -19,13 +22,13 @@ export const Logo = styled(Link)`
   img {
     height: 100%;
     width: 100%;
-  }  
+  }
 `;
 
 export const LoginButton = styled(Link)`
   ${primaryBorderBoxStyle};
   cursor: pointer;
-  font-size: ${props => props.theme.typo.size.md};
+  font-size: ${(props) => props.theme.typo.size.md};
   padding: 12px 8px;
   margin-left: auto;
   margin-right: 20px;
@@ -33,12 +36,12 @@ export const LoginButton = styled(Link)`
 
 export const SignUpButton = styled(Link)`
   ${primaryColorBoxStyle};
-  font-size: ${props => props.theme.typo.size.md};
+  font-size: ${(props) => props.theme.typo.size.md};
   cursor: pointer;
   padding: 12px 8px;
-  border: 1px solid ${props => props.theme.colors.primary};
+  border: 1px solid ${(props) => props.theme.colors.primary};
 
   &:focus {
     outline: none;
-  }  
+  }
 `;

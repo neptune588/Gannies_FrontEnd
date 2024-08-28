@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { centerAlignStyle } from '@/styles/commonStyle';
+import { centerAlignStyle } from '@/styles/commonStyle/etc';
 
 const NumberBox = styled.li`
   ${centerAlignStyle}

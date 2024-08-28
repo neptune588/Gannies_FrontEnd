@@ -1,14 +1,13 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
+import { primaryColorBoxStyle } from '@/styles/commonStyle/box';
+import { postsHeaderStyle, ellipsisStyle } from '@/styles/commonStyle/etc';
 import {
-  primaryColorBoxStyle,
-  ellipsisStyle,
   paginationWrapperStyle,
   pageArrowWrapperStyle,
   pageNumberWrapperStyle,
-  postsHeaderStyle,
-} from '@/styles/commonStyle';
+} from '@/styles/commonStyle/wrapper';
 
 const ContentsAlignBox = styled.div`
   display: flex;

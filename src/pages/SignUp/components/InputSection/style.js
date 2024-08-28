@@ -1,17 +1,16 @@
 import styled from 'styled-components';
-import { instructionTextStyle } from '@/styles/commonStyle';
+
+import { instructionTextStyle } from '@/styles/commonStyle/text';
 
 export const Wrapper = styled.div`
-	display: flex;
+  display: flex;
   flex-direction: column;
-	align-items: center;
-  margin-top: ${props => props.$margin || '0px'};
+  align-items: center;
+  margin-top: ${(props) => props.$margin || '0px'};
 `;
 
-export const SectionWrapper = styled.div`
-  
-`
+export const SectionWrapper = styled.div``;
 
 export const Info = styled.span`
   ${instructionTextStyle};
-`
+`;

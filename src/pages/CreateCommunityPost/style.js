@@ -1,9 +1,8 @@
 import styled from 'styled-components';
-import {
-  defaultBorderBoxStyle,
-  createPostPageInputBoxStyle,
-  createPostPageInputStyle,
-} from '@/styles/commonStyle';
+
+import { defaultBorderBoxStyle } from '@/styles/commonStyle/box';
+import { createPostPageInputBoxStyle } from '@/styles/commonStyle/box';
+import { createPostPageInputStyle } from '@/styles/commonStyle/input';
 
 const CategoryBox = styled.section`
   margin: 60px 0 30px;

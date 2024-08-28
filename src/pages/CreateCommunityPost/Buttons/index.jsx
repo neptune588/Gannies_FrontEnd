@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import {
   primaryColorBoxStyle,
   primaryBorderBoxStyle,
-  centerAlignStyle,
-} from '@/styles/commonStyle';
+} from '@/styles/commonStyle/box';
+import { centerAlignStyle } from '@/styles/commonStyle/etc';
 
 const CansleButton = styled(Link)`
   ${primaryBorderBoxStyle}

@@ -1,18 +1,18 @@
+import styled from 'styled-components';
+import Input from '@/components/Input';
+
 import {
   defaultBorderBoxStyle,
   disabledColorBoxStyle,
   inactiveColorBoxStyle,
-  placeholderTextStyle,
-  primaryColorBoxStyle
-} from '@/styles/commonStyle';
-
-import styled from 'styled-components';
-import Input from '@/components/Input';
+  primaryColorBoxStyle,
+} from '@/styles/commonStyle/box';
+import { placeholderTextStyle } from '@/styles/commonStyle/text';
 
 export const Wrapper = styled.div`
-	display: flex;
+  display: flex;
   flex-direction: column;
-	align-items: center;
+  align-items: center;
 `;
 
 export const InputBox = styled(Input)`
@@ -21,7 +21,7 @@ export const InputBox = styled(Input)`
   border-radius: 4px;
   width: 335px;
   height: 40px;
-  
+
   &::placeholder {
     ${placeholderTextStyle};
   }
@@ -29,12 +29,12 @@ export const InputBox = styled(Input)`
 
 export const SectionWrapper = styled.div`
   margin-top: 37px;
-`
+`;
 export const Info = styled.span`
-  font-size: ${props => props.theme.typo.size.xs};
-  font-weight: ${props => props.theme.typo.weight.medium};
-  color: #9B9B9B;
-`
+  font-size: ${(props) => props.theme.typo.size.xs};
+  font-weight: ${(props) => props.theme.typo.weight.medium};
+  color: #9b9b9b;
+`;
 
 export const InputWrapper = styled.form`
   ${defaultBorderBoxStyle};
@@ -42,17 +42,17 @@ export const InputWrapper = styled.form`
   display: flex;
   align-items: center;
   margin-top: 10px;
-  width: 350px;  
+  width: 350px;
 `;
 
 export const Button = styled.button`
   width: 96px;
   height: 48px;
   margin-top: 10px;
-  font-size: ${props => props.theme.typo.size.xs};
-  font-weight: ${props => props.theme.typo.weight.medium};  
+  font-size: ${(props) => props.theme.typo.size.xs};
+  font-weight: ${(props) => props.theme.typo.weight.medium};
   margin-left: 10px;
-`
+`;
 export const ActiveButton = styled(Button)`
   ${primaryColorBoxStyle};
 `;
@@ -68,4 +68,4 @@ export const InactiveButton = styled(Button)`
 export const InfoWrapper = styled.div`
   display: flex;
   width: 456px;
-`
+`;

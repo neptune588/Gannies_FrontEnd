@@ -1,10 +1,8 @@
-import {
-  defaultBorderBoxStyle,
-  placeholderTextStyle
-} from "@/styles/commonStyle";
+import Input from '@/components/Input';
+import styled from 'styled-components';
 
-import Input from "@/components/Input";
-import styled from "styled-components";
+import { defaultBorderBoxStyle } from '@/styles/commonStyle/box';
+import { placeholderTextStyle } from '@/styles/commonStyle/text';
 
 export const InputWrapper = styled.form`
   ${defaultBorderBoxStyle};

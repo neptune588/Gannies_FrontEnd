@@ -1,13 +1,11 @@
-import {
-  defaultBorderBoxStyle,
-  placeholderTextStyle
-} from '@/styles/commonStyle';
-
 import styled from 'styled-components';
+
+import { defaultBorderBoxStyle } from '@/styles/commonStyle/box';
+import { placeholderTextStyle } from '@/styles/commonStyle/text';
 
 export const InactiveInputBox = styled.div`
   ${defaultBorderBoxStyle};
-  ${placeholderTextStyle};  
+  ${placeholderTextStyle};
   width: 448px;
   height: 48px;
   align-items: center;
@@ -16,16 +14,16 @@ export const InactiveInputBox = styled.div`
   display: flex;
   justify-content: center;
 
-  >span {
+  > span {
     margin-right: 13px;
   }
 `;
 
 export const ActiveInputBox = styled.div`
   ${defaultBorderBoxStyle};
-  font-size: ${props => props.theme.typo.size.sm};
-  font-weight: ${props => props.theme.typo.weight.regular};
-  color: ${props => props.theme.colors.primary};
+  font-size: ${(props) => props.theme.typo.size.sm};
+  font-weight: ${(props) => props.theme.typo.weight.regular};
+  color: ${(props) => props.theme.colors.primary};
   width: 448px;
   height: 48px;
   align-items: center;

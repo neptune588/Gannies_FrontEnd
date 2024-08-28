@@ -1,5 +1,7 @@
 import styled from 'styled-components';
-import { defaultBorderBoxStyle, centerAlignStyle } from '@/styles/commonStyle';
+
+import { defaultBorderBoxStyle } from '@/styles/commonStyle/box';
+import { centerAlignStyle } from '@/styles/commonStyle/etc';
 
 const ArrowButton = styled.div`
   ${defaultBorderBoxStyle}
