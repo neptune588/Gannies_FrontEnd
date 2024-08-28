@@ -14,6 +14,7 @@ import FindIDSuccess from '@/pages/Find/ID/Success';
 import Password from '@/pages/Find/Password';
 import FindPasswordSuccess from '@/pages/Find/Password/Success';
 import MyPage from '@/pages/MyPage';
+import Admin from '@/pages/Admin';
 
 export const router = createBrowserRouter([
   {
@@ -79,6 +80,10 @@ export const router = createBrowserRouter([
   {
     path: '/find/password/success',
     element: <FindPasswordSuccess />,
+  },
+  {
+    path: '/secure-admin/123456',
+    element: <Admin />,
   },
   {
     path: '*',
