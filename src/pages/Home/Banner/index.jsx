@@ -1,5 +1,6 @@
-import banner from '@/assets/images/banner.png';
 import styled from 'styled-components';
+
+import banner from '@/assets/images/banner.png';
 
 const Wrapper= styled.img`
   height: 339px;

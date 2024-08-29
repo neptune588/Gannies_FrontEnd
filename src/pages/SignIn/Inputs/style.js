@@ -1,16 +1,18 @@
-import {
-  defaultBorderBoxStyle,
-  placeholderTextStyle
-} from '@/styles/commonStyle';
+import styled, { css } from 'styled-components';
 
-import styled from 'styled-components';
 import Input from '@/components/Input';
 import Eye from '@/components/Icons/Eye';
+import EyeSlash from '@/components/Icons/EyeSlash';
+
+import { defaultBorderBoxStyle } from '@/styles/commonStyle/box';
+import { placeholderTextStyle } from '@/styles/commonStyle/text';
 
 export const Wrapper = styled.div`
-	display: flex;
+  display: flex;
   flex-direction: column;
 	align-items: center;
+  margin: auto;
+  width: 1128px;
 
   > form {
     ${defaultBorderBoxStyle};
@@ -19,6 +21,14 @@ export const Wrapper = styled.div`
     display: flex;
     align-items: center;  
     margin-top: 26px;
+
+    > div {
+      // cursor: pointer;    
+    }
+  }
+
+  > div {
+    width: 400px;
   }
 `;
 
@@ -37,8 +47,17 @@ export const InputBox = styled(Input)`
   }
 `;
 
-export const Icon = styled(Eye)`
+export const IconStyle = css`
   width: 18px;
   height: 18px;
   margin-right: 12px;
+  cursor: pointer;  
+`;
+
+export const EyeIcon = styled(Eye)`
+  ${IconStyle};
+`;
+
+export const EyeSlashIcon = styled(EyeSlash)`
+  ${IconStyle};  
 `;

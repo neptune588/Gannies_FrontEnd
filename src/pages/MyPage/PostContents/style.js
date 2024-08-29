@@ -1,10 +1,11 @@
 import styled from 'styled-components';
+
+import { postsHeaderStyle } from '@/styles/commonStyle/etc';
 import {
-  postsHeaderStyle,
   paginationWrapperStyle,
   pageArrowWrapperStyle,
   pageNumberWrapperStyle,
-} from '@/styles/commonStyle';
+} from '@/styles/commonStyle/wrapper';
 
 const PostsWrapper = styled.div`
   margin-top: 10px;

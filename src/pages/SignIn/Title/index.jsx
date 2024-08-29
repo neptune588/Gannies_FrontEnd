@@ -1,17 +1,4 @@
-import styled from 'styled-components';
-
-export const Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 103px;
-
-  > span {
-    font-size: ${props => props.theme.typo.size.h3};
-    font-weight: ${props => props.theme.typo.weight.semiBold};
-    color: ${props => props.theme.colors.primary};
-    margin-bottom: 12px;
-  }
-`;
+import { Wrapper } from "@/pages/SignIn/Title/style";
 
 function Title() {
   return (

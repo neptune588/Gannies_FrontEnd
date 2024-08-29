@@ -1,4 +1,4 @@
-const posts = [
+export const posts = [
   {
     category: '이론정보',
     title: 'ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ',
@@ -48,5 +48,3 @@ const posts = [
     date: '2024-08-01',
   },
 ];
-
-export { posts };

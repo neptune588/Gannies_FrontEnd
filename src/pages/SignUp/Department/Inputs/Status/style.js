@@ -1,12 +1,12 @@
-import {
-  defaultBorderBoxStyle,
-  placeholderTextStyle,
-  primaryBorderBoxStyle
-} from '@/styles/commonStyle';
-
 import styled from 'styled-components';
 
-export const ButtonWrapper = styled.div`
+import {
+  defaultBorderBoxStyle,
+  primaryBorderBoxStyle,
+} from '@/styles/commonStyle/box';
+import { placeholderTextStyle } from '@/styles/commonStyle/text';
+
+export const Wrapper = styled.div`
   width: 448px;
   height: 48px;
   display: flex;
@@ -16,14 +16,14 @@ export const ButtonWrapper = styled.div`
 
 export const InactiveButton = styled.button`
   ${defaultBorderBoxStyle};
-  ${placeholderTextStyle};  
+  ${placeholderTextStyle};
   width: 220px;
   height: 48px;
 `;
-  
+
 export const ActiveButton = styled.button`
   ${primaryBorderBoxStyle};
   width: 220px;
   height: 48px;
-  font-size: ${props => props.theme.typo.size.sm};
+  font-size: ${(props) => props.theme.typo.size.sm};
 `;

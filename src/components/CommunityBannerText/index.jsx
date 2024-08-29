@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { bannerTitleStyle, bannerTextStyle } from '@/styles/commonStyle';
+import { bannerTitleStyle, bannerTextStyle } from '@/styles/commonStyle/text';
 
 const BannerTitle = styled.h2`
   ${bannerTitleStyle}

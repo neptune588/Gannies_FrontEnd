@@ -6,8 +6,8 @@ import CommunityPost from '@/pages/Community/CommunityPost';
 import PageControlArrow from '@/components/PageControlArrow';
 import PageNumber from '@/components/PageNumber';
 import AlignSelectMenu from '@/components/AlignSelectMenu';
-import brush from '@/assets/icons/etc/brush.svg';
 
+import brush from '@/assets/icons/etc/brush.svg';
 import prevArrow from '@/assets/icons/arrows/chevron_left.svg';
 import nextArrow from '@/assets/icons/arrows/chevron_right.svg';
 import prev10PagesArrow from '@/assets/icons/arrows/double_chevron_lef.svg';

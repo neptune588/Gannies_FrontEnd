@@ -1,19 +1,20 @@
+import PostList from '@/components/PostList';
+import chevron_right from '@/assets/icons/arrows/chevron_right.svg';
+
 import {
+  ShowMoreButton,
   Wrapper
 } from '@/pages/Home/Post/style';
-
-import chevron_right from '@/assets/icons/arrows/chevron_right.svg';
-import PostList from '@/components/PostList';
 
 function Post({ title, posts }) {
   return (
     <>
         <Wrapper>
           <h3>{title}</h3>
-          <button>
+          <ShowMoreButton>
             <span>더보기</span>
             <img src={chevron_right} alt='chevron_right' />
-          </button>
+          </ShowMoreButton>
         </Wrapper>
         {
           posts.map((post, index) => {

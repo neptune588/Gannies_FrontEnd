@@ -1,22 +1,24 @@
+import styled from 'styled-components';
+
+import { authDefaultTextStyle } from '@/styles/commonStyle/text';
 import {
-  authDefaultTextStyle,
   authEmailColorBoxStyle,
   primaryBorderBoxStyle,
-  primaryColorBoxStyle
-} from "@/styles/commonStyle";
-
-import styled from "styled-components";
+  primaryColorBoxStyle,
+} from '@/styles/commonStyle/box';
+import { Link } from 'react-router-dom';
+import { centerAlignStyle } from '@/styles/commonStyle/etc';
 
 export const Wrapper = styled.div`
-  display:flex;
+  display: flex;
   align-items: center;
   flex-direction: column;
 
   > h3 {
-    font-weight: ${props => props.theme.typo.weight.semiBold};
-    font-size: ${props => props.theme.typo.size.h3};
-    color: ${props => props.theme.colors.gray[100]};
-    margin-top: 31px;  
+    font-weight: ${(props) => props.theme.typo.weight.semiBold};
+    font-size: ${(props) => props.theme.typo.size.h3};
+    color: ${(props) => props.theme.colors.gray[100]};
+    margin-top: 31px;
   }
 
   > p {
@@ -28,21 +30,21 @@ export const Wrapper = styled.div`
 
     &:last-of-type {
       margin-top: 8px;
-    }    
+    }
   }
 
   > span {
-    font-size: ${props => props.theme.typo.size.sm};
-    font-weight: ${props => props.theme.typo.weight.regular};
-    color: ${props => props.theme.colors.gray[60]};
-    margin-top: 38px;  
+    font-size: ${(props) => props.theme.typo.size.sm};
+    font-weight: ${(props) => props.theme.typo.weight.regular};
+    color: ${(props) => props.theme.colors.gray[60]};
+    margin-top: 38px;
   }
-`;
 
-export const Image = styled.img`
-  width: 100px;
-  height: 100px;
-  margin-top: 60px;
+  > img {
+    width: 100px;
+    height: 100px;
+    margin-top: 60px;  
+  }
 `;
 
 export const EmailBox = styled.div`
@@ -57,14 +59,17 @@ export const ButtonWrapper = styled.div`
   justify-content: space-between;
 `;
 
-export const LeftButton = styled.button`
+export const LeftButton = styled(Link)`
   ${primaryBorderBoxStyle};
+  ${centerAlignStyle};
+  font-size: ${(props) => props.theme.typo.size.md};
   width: 205px;
   height: 48px;
-`
+`;
 
 export const RightButton = styled.button`
   ${primaryColorBoxStyle};
+  font-size: ${(props) => props.theme.typo.size.md};
   width: 205px;
-  height: 48px;
-`
+  height: 48px;  
+`;

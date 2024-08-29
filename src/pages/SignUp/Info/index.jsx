@@ -5,14 +5,12 @@ import identity from '@/assets/icons/etc/identity_verification_finished.svg';
 import info from '@/assets/icons/etc/info_input_active.svg';
 import department from '@/assets/icons/etc/department_verification_inactive.svg';
 import NextButton from '@/pages/SignUp/components/NextButton';
-import Header from '@/layouts/Header';
 
 function Info() {
   const sequence = ['finished', 'active', 'inactive'];
 
   return (
     <>
-      <Header />
       <Title title="회원가입" />
       <Icons identity={identity} info={info} department={department} sequence={sequence}/>
       <Inputs />

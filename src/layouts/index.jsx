@@ -40,3 +40,14 @@ export function MypageLayout() {
     </>
   );
 }
+
+export function HeaderLayout() {
+  return (
+    <>
+      <Header />
+      <CenterdContainer>
+        <Outlet />
+      </CenterdContainer>
+    </>
+  );
+}

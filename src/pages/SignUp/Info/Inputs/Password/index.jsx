@@ -1,19 +1,27 @@
-import {
-  InputBox,
-  InputWrapper
-} from '@/pages/SignUp/Info/Inputs/Password/style';
+import { useState } from 'react';
 
 import Positive from '@/components/Instruction/Positive';
 import Instruction from '@/components/Instruction';
 import InputSection from '@/pages/SignUp/components/InputSection';
-import EyeSlash from "@/components/Icons/EyeSlash";
-import { useState } from 'react';
 import Negative from '@/components/Instruction/Negative';
 
-function Password() {
-  const [password, setPassword] = useState('');
-  const [passwordValid, setPasswordValid] = useState(false);
+import {
+  InputBox,
+  InputWrapper,
+  EyeIcon,
+  EyeSlashIcon  
+} from '@/pages/SignUp/Info/Inputs/Password/style';
 
+
+function Password({password, setPassword}) {
+  const [passwordValid, setPasswordValid] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  // const [allow, setAllow] = useState(false);
+
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  }
+  
   const handlePassword = (e) => {
     e.target.value = e.target.value.slice(0,16);
     setPassword(e.target.value);
@@ -29,8 +37,11 @@ function Password() {
   return (
     <InputSection $margin="37px" title="비밀번호*">
       <InputWrapper>
-        <InputBox type="password" placeholder='비밀번호를 입력해주세요' onChange={handlePassword}/>
-        <EyeSlash />
+        <InputBox type={showPassword ? "text" : "password"} placeholder='비밀번호를 입력해주세요' value={password} onChange={handlePassword}/>
+        { showPassword ? 
+          <EyeIcon onClick={handleShowPassword} /> :
+          <EyeSlashIcon onClick={handleShowPassword} />
+        }
       </InputWrapper>
       {
         password.length > 0 && passwordValid ?

@@ -6,14 +6,14 @@ import { modalBoxStyle } from '@/styles/commonStyle/box';
 export const ModalBox = styled.div`
   ${modalBoxStyle};
   width: 524px;
-  height: 406px;
+  height: 333px;
   padding: 26px 36px;
 
   > h4 {
     margin-top: 23px;
     font-size: ${(props) => props.theme.typo.size.h4};
     font-weight: ${(props) => props.theme.typo.weight.semiBold};
-    color: ${(props) => props.theme.colors.primary};
+    color: ${(props) => props.theme.colors.highlight};
     margin-bottom: 16px;
   }
 
@@ -23,25 +23,11 @@ export const ModalBox = styled.div`
     font-weight: ${(props) => props.theme.typo.weight.regular};
     color: ${(props) => props.theme.colors.gray[100]};
   }
-
-  > p {
-    margin-top: 41px;
-    font-size: ${(props) => props.theme.typo.size.xs};
-    font-weight: ${(props) => props.theme.typo.weight.medium};
-    color: ${(props) => props.theme.colors.gray[70]};
-  }
-
-  > span {
-    margin-top: 21px;
-    font-size: ${(props) => props.theme.typo.size.xs};
-    font-weight: ${(props) => props.theme.typo.weight.semiBold};
-    color: ${(props) => props.theme.colors.highlight};
-  }
 `;
 
 export const CloseIcon = styled(Close)`
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
   cursor: pointer;
   margin-left: auto;
 `;
@@ -49,4 +35,5 @@ export const CloseIcon = styled(Close)`
 export const Image = styled.img`
   width: 80px;
   height: 80px;
+  margin-top: 18px;
 `;
