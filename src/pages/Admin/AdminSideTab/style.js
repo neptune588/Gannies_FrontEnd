@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 
 const TabContainer = styled.div`
+  position: fixed;
   width: 405px;
   height: 100vh;
   padding: 52px 53px 0 52px;
   background-color: ${({ theme: { colors } }) => {
     return colors.primary;
   }};
-  margin-right: 60px;
 `;
 
 const ProfileBox = styled.div`
