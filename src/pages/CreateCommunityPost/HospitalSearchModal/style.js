@@ -1,5 +1,12 @@
 import styled from 'styled-components';
 
+import {
+  h3_600,
+  h4_400,
+  medium_600,
+  small_400,
+} from '@/styles/commonStyle/localTextStyle';
+
 const ModalWrapper = styled.div`
   display: flex;
   position: relative;
@@ -16,12 +23,7 @@ const ModalWrapper = styled.div`
 const ModalInnerLeftBox = styled.div`
   width: 620px;
   > h2 {
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.h3;
-    }};
-    font-weight: ${({ theme: { typo } }) => {
-      return typo.weight.semiBold;
-    }};
+    ${h3_600}
     margin-bottom: 35px;
   }
 `;
@@ -41,12 +43,7 @@ const SearchInputArea = styled.label`
     color: ${({ theme: { colors } }) => {
       return colors.gray['100'];
     }};
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.h4;
-    }};
-    font-weight: ${({ theme: { typo } }) => {
-      return typo.weight.regular;
-    }};
+    ${h4_400}
   }
   > img {
     width: 36px;
@@ -85,12 +82,7 @@ const HospitalName = styled.p`
   color: ${({ theme: { colors } }) => {
     return colors.gray['100'];
   }};
-  font-size: ${({ theme: { typo } }) => {
-    return typo.size.md;
-  }};
-  font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.semiBold;
-  }};
+  ${medium_600}
   margin-bottom: 20px;
 `;
 
@@ -101,12 +93,7 @@ const HospitalLocationInfo = styled.div`
   color: ${({ theme: { colors } }) => {
     return colors.gray['100'];
   }};
-  font-size: ${({ theme: { typo } }) => {
-    return typo.size.sm;
-  }};
-  font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.regular;
-  }};
+  ${small_400}
   margin-bottom: 20px;
   > p:first-child {
     color: ${({ theme: { colors } }) => {
@@ -124,12 +111,7 @@ const HospitalContact = styled.p`
   color: ${({ theme: { colors } }) => {
     return colors.gray['100'];
   }};
-  font-size: ${({ theme: { typo } }) => {
-    return typo.size.sm;
-  }};
-  font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.regular;
-  }};
+  ${small_400}
 `;
 
 const ModalInnerRightBox = styled.div`

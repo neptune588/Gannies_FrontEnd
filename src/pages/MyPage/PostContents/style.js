@@ -6,6 +6,7 @@ import {
   pageArrowWrapperStyle,
   pageNumberWrapperStyle,
 } from '@/styles/commonStyle/wrapper';
+import { xsmall_500 } from '@/styles/commonStyle/localTextStyle';
 
 const PostsWrapper = styled.div`
   margin-top: 10px;
@@ -18,12 +19,7 @@ const PostsHeader = styled.div`
   padding: 12px 0;
 
   p {
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.xs;
-    }};
-    font-weight: ${({ theme: { typo } }) => {
-      return typo.weight.medium;
-    }};
+    ${xsmall_500}
   }
 `;
 

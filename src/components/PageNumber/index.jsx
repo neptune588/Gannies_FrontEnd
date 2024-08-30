@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { centerAlignStyle } from '@/styles/commonStyle/etc';
 
+import { small_500 } from '@/styles/commonStyle/localTextStyle';
+
 const NumberBox = styled.li`
   ${centerAlignStyle}
   width: 30px;
@@ -8,16 +10,11 @@ const NumberBox = styled.li`
   color: ${({ $isMyNumber, $isActiveNumber, theme: { colors } }) => {
     return $isMyNumber === $isActiveNumber ? colors.primary : colors.gray['70'];
   }};
-  font-size: ${({ theme: { typo } }) => {
-    return typo.size.sm;
-  }};
-  font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.medium;
-  }};
+  ${small_500}
   border: 1px solid
     ${({ $isMyNumber, $isActiveNumber, theme: { colors } }) => {
-      return $isMyNumber === $isActiveNumber ? colors.primary : 'white';
-    }};
+    return $isMyNumber === $isActiveNumber ? colors.primary : 'white';
+  }};
 
   border-radius: 4px;
   user-select: none;

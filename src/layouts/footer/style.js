@@ -46,7 +46,7 @@ export const DetailsWrapper = styled.div`
 export const Detail = styled.span`
   padding-left: 10px;
   padding-right: 10px;
-  font-size: 12px;
+  font-size: ${(props) => props.theme.typo.size.tiny};
   border-right: 1px solid black;
   color: black;
 
@@ -63,5 +63,7 @@ export const Copyright = styled.div`
   margin-top: 14px;
   margin-left: 10px;
   margin-right: 10px;
-  font-size: 12px;
+  font-size: ${({ theme: { typo } }) => {
+    return typo.size.tiny;
+  }};
 `;

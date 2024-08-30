@@ -8,6 +8,7 @@ import {
   pageArrowWrapperStyle,
   pageNumberWrapperStyle,
 } from '@/styles/commonStyle/wrapper';
+import { small_500, small_600 } from '@/styles/commonStyle/localTextStyle';
 
 const ContentsAlignBox = styled.div`
   display: flex;
@@ -25,9 +26,7 @@ const PostCreateButton = styled(Link)`
   width: 135px;
   height: 40px;
   padding: 5px 12px;
-  font-size: ${({ theme: { typo } }) => {
-    return typo.size.sm;
-  }};
+  ${small_600}
   > img {
     width: 24px;
     height: 24px;
@@ -60,12 +59,7 @@ const PostHeaderBox = styled.div`
     margin-right: 20px;
   }
   p {
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.sm;
-    }};
-    font-weight: ${({ theme: { typo } }) => {
-      return typo.weight.medium;
-    }};
+    ${small_500}
   }
 `;
 

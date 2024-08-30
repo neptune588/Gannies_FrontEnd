@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import { instructionTextStyle } from '@/styles/commonStyle/text';
+import { xsmall_600 } from '@/styles/commonStyle/localTextStyle';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -40,9 +41,8 @@ export const FontWrapper = styled.div`
 `;
 
 export const FontActive = styled.span`
-  font-size: ${(props) => props.theme.typo.size.xs};
-  font-weight: ${(props) => props.theme.typo.weight.semiBold};
   color: ${(props) => props.theme.colors.primary};
+  ${xsmall_600}
   margin-top: 8px;
 `;
 

@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import rightArrow from '@/assets/icons/arrows/chevron_right.svg';
 
+import { small_500 } from '@/styles/commonStyle/localTextStyle';
+
 const CategoryBox = styled.ul`
   display: flex;
   align-items: center;
@@ -16,12 +18,7 @@ const CategoryList = styled.li`
   color: ${({ $isActiveCategory, theme: { colors } }) => {
     return $isActiveCategory ? colors.primary : colors.gray['60'];
   }};
-  font-size: ${({ theme: { typo } }) => {
-    return typo.size.sm;
-  }};
-  font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.medium;
-  }};
+  ${small_500}
   cursor: pointer;
 `;
 

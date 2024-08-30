@@ -4,6 +4,11 @@ import {
   primaryBorderBoxStyle,
   primaryColorBoxStyle,
 } from '@/styles/commonStyle/box';
+import {
+  xsmall_500,
+  small_600,
+  medium_400,
+} from '@/styles/commonStyle/localTextStyle';
 
 const PersonalInfoWrapper = styled.div`
   margin-top: 15px;
@@ -26,23 +31,13 @@ const PersonalInfoBox = styled.div`
     color: ${({ theme: { colors } }) => {
       return colors.gray['80'];
     }};
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.xs;
-    }};
-    font-weight: ${({ theme: { typo } }) => {
-      return typo.weight.medium;
-    }};
+    ${xsmall_500}
   }
   >p: last-child {
     color: ${({ theme: { colors } }) => {
       return colors.gray['100'];
     }};
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.sm;
-    }};
-    font-weight: ${({ theme: { typo } }) => {
-      return typo.weight.semiBold;
-    }};
+    ${small_600}
   }
 `;
 
@@ -54,16 +49,11 @@ const NicknameEditBox = styled(PersonalInfoBox)`
       width: 200px;
       padding: 0 5px 8px 5px;
       margin-right: 15px;
-      font-size: ${({ theme: { typo } }) => {
-        return typo.size.sm;
-      }};
-      font-weight: ${({ theme: { typo } }) => {
-        return typo.weight.semiBold;
-      }};
+      ${small_600}
       border-bottom: 1px solid
         ${({ theme: { colors } }) => {
-          return colors.gray['40'];
-        }};
+        return colors.gray['40'];
+      }};
     }
     > button {
       ${primaryBorderBoxStyle}
@@ -88,12 +78,7 @@ const EditSaveAndAccountDeleteBox = styled.section`
   >button: first-child {
     ${primaryColorBoxStyle}
     padding: 10px 70px;
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.md;
-    }};
-    font-weight: ${({ theme: { typo } }) => {
-      return typo.weight.regular;
-    }};
+    ${medium_400}
   }
   >button: last-child {
     border-bottom: 1px solid
@@ -103,12 +88,7 @@ const EditSaveAndAccountDeleteBox = styled.section`
     color: ${({ theme: { colors } }) => {
       return colors.gray['90'];
     }};
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.xs;
-    }};
-    font-weight: ${({ theme: { typo } }) => {
-      return typo.weight.medium;
-    }};
+    ${xsmall_500}
   }
 `;
 export {
