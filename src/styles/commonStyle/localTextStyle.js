@@ -224,6 +224,7 @@ export {
   small_400,
   small_500,
   small_600,
+  small_700,
   medium_400,
   medium_500,
   medium_600,

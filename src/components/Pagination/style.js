@@ -2,6 +2,14 @@ import styled from 'styled-components';
 
 import { defaultBorderBoxStyle } from '@/styles/commonStyle/box';
 import { centerAlignStyle } from '@/styles/commonStyle/etc';
+import {
+  pageArrowWrapperStyle,
+  pageNumberWrapperStyle,
+} from '@/styles/commonStyle/wrapper';
+
+const ArrowBox = styled.div`
+  ${pageArrowWrapperStyle}
+`;
 
 const ArrowButton = styled.div`
   ${defaultBorderBoxStyle}
@@ -16,10 +24,8 @@ const ArrowButton = styled.div`
   }
 `;
 
-export default function PageControlArrow({ onClick = null, arrowImg, alt }) {
-  return (
-    <ArrowButton onClick={onClick || null}>
-      <img src={arrowImg} alt={alt} />
-    </ArrowButton>
-  );
-}
+const PageNumberBox = styled.ul`
+  ${pageNumberWrapperStyle}
+`;
+
+export { ArrowBox, ArrowButton, PageNumberBox };
