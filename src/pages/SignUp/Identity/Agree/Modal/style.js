@@ -104,6 +104,7 @@ export const ActiveButton = styled.button`
 export const InactiveButton = styled(ActiveButton)`
   color: ${(props) => props.theme.colors.gray[30]};
   border: 1px solid ${(props) => props.theme.colors.gray[30]};
+  cursor: default;
 `;
 
 export const CheckIcon = styled.img`

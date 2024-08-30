@@ -12,6 +12,7 @@ import Modal from "@/pages/Find/Password/Modal";
 function Password() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [allow, setAllow] = useState([false, false]);
 
   const openModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -23,9 +24,9 @@ function Password() {
         <Inactive type="id" text={"이메일 찾기"}/>
         <Active type="password" text={"비밀번호 찾기"} />
       </FindBox>
-      <Name />
-      <Email />     
-      <NextButton $margin="80px" text="다음" to="/find/password/success" />
+      <Name allow={allow} setAllow={setAllow}/>
+      <Email setAllow={setAllow} />     
+      <NextButton $margin="80px" text="다음" active={(allow[0] && allow[1]) ? true : false} to="/find/password/success" />
       <button onClick={openModal}>모달 확인</button>
       {
         isModalOpen && <Modal openModal={openModal} />

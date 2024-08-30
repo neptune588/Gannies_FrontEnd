@@ -6,19 +6,24 @@ import Negative from '@/components/Instruction/Negative';
 import InputSection from '@/pages/SignUp/components/InputSection';
 import { useState } from 'react';
 
-function Email() {
+function Email({setAllow}) {
   const [email, setEmail] = useState('');
   const [emailValid, setEmailValid] = useState(false);  
 
   const handleEmail = (e) => {
-      setEmail(e.target.value);
-      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (regex.test(e.target.value)) {
-          setEmailValid(true);
-      } else {
-          setEmailValid(false);
-    }
-  }  
+    const value = e.target.value;
+    setEmail(value);
+
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isValid = regex.test(value);
+
+    setEmailValid(isValid);
+    setAllow((prev) => {
+      const newAllow = [...prev];
+      newAllow[1] = isValid;
+      return newAllow;
+    });
+  }
 
   return (
     <InputSection $margin="37px" title="이메일*">

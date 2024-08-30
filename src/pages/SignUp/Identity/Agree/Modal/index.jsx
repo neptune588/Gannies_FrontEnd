@@ -21,7 +21,7 @@ import inactive from "@/assets/icons/etc/check_circle_inactive.svg";
 import active from "@/assets/icons/etc/check_circle_active.svg";
 import { agreeList } from '@/pages/SignUp/Identity/Agree/Modal/data';
 
-function Modal({ index, openModal, handleCheck }) {
+function Modal({ index, openModal, handleCheckTrue }) {
   const bodyRef = useRef(null);
 
   const [scrollTop, setScrollTop] = useState(0);
@@ -29,7 +29,6 @@ function Modal({ index, openModal, handleCheck }) {
   const [scrollClientHeight, setScrollClientHeight] = useState(0);
   const [isActive, setIsActive] = useState(false);
 
-  const Button = isActive ? ActiveButton : InactiveButton;
   const icon = isActive ? active : inactive;
 
   useEffect(() => {
@@ -63,7 +62,7 @@ function Modal({ index, openModal, handleCheck }) {
   }, [scrollTop]);
 
   const handleButton = () => {
-    handleCheck(index);
+    handleCheckTrue(index);
     openModal(index);
   }
 
@@ -89,10 +88,9 @@ function Modal({ index, openModal, handleCheck }) {
         </Body>
         <Blur />
         <Footer>
-          <Button onClick={handleButton}>
-            <CheckIcon src={icon} alt="checkIcon" />
-            동의합니다
-          </Button>
+          {
+            isActive ? <ActiveButton onClick={handleButton}><CheckIcon src={icon} alt="checkIcon" />동의합니다</ActiveButton> : <InactiveButton><CheckIcon src={icon} alt="checkIcon" />동의합니다</InactiveButton>
+          }
         </Footer>
       </ModalBox>
     </ModalContainer>

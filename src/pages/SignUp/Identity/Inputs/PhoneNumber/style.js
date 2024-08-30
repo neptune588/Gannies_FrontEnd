@@ -9,6 +9,7 @@ import {
   primaryColorBoxStyle,
 } from '@/styles/commonStyle/box';
 import { placeholderTextStyle } from '@/styles/commonStyle/text';
+import { centerAlignStyle } from '@/styles/commonStyle/etc';
 
 export const InputBox = styled(Input)`
   padding-left: 16px;
@@ -46,6 +47,7 @@ export const InactiveButton = styled(ActiveButton)`
 export const InfoWrapper = styled.div`
   display: flex;
   width: 456px;
+  position: relative;
 
   > form {
     ${defaultBorderBoxStyle};
@@ -60,17 +62,29 @@ export const InfoWrapper = styled.div`
   > select {
     width: 108px;
     height: 48px;
-    padding-left: 22px;
+    padding-left: 17px;
     border-radius: 4px;
     border: 1px solid ${({ theme }) => theme.colors.gray[40]};
-    background-color: ${({ theme }) => theme.colors.white};
+    background-color: transparent;
     color: ${({ theme }) => theme.colors.black};
-    font-size: ${({ theme }) => theme.typo.size.md};
+    font-size: ${({ theme }) => theme.typo.size.sm};
     cursor: pointer;
     margin-top: 10px;
+    appearance: none;
 
     &:focus {
       outline: none;
     }  
   }  
+`;
+
+export const ImageWrapper = styled.div`
+  width: 47px;
+  height: 48px;
+  border-left: 1px solid ${({ theme }) => theme.colors.gray[40]};
+  ${centerAlignStyle};
+  position: absolute;
+  z-index: -1;
+  left: 61px;
+  top: 10px;
 `;

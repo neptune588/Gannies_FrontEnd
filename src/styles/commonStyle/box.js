@@ -29,7 +29,7 @@ const inactiveColorBoxStyle = css`
 `;
 
 const disabledColorBoxStyle = css`
-  ${inactiveColorBoxStyle}
+  ${primaryColorBoxStyle};
   opacity: 0.5;
 `;
 

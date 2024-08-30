@@ -13,25 +13,27 @@ import {
 } from '@/pages/SignUp/Info/Inputs/Password/style';
 
 
-function Password({password, setPassword}) {
+function Password({password, setPassword, setAllow}) {
   const [passwordValid, setPasswordValid] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  // const [allow, setAllow] = useState(false);
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   }
   
   const handlePassword = (e) => {
-    e.target.value = e.target.value.slice(0,16);
-    setPassword(e.target.value);
+    const value = e.target.value.slice(0, 16);
+    setPassword(value);
+    
     const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$^&*?_])[A-Za-z\d!@#$^&*?_]{8,16}$/;
+    const state = regex.test(value) && value.length >= 8;
 
-    if (regex.test(e.target.value) && e.target.value.length >= 8)  {
-      setPasswordValid(true);
-    } else {
-      setPasswordValid(false);
-    }
+    setPasswordValid(state);
+    setAllow((prev) => {
+      const newAllow = [...prev];
+      newAllow[2] = state;
+      return newAllow;
+    });
   }
 
   return (

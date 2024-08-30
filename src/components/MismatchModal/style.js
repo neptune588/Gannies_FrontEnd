@@ -22,10 +22,6 @@ export const ModalBox = styled.div`
     font-size: ${(props) => props.theme.typo.size.sm};
     font-weight: ${(props) => props.theme.typo.weight.regular};
     color: ${(props) => props.theme.colors.gray[100]};
-
-    &:last-of-type {
-      margin-bottom: 37px;
-    }
   }
 `;
 

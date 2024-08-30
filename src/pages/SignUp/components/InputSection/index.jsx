@@ -4,10 +4,10 @@ import {
   Info
 } from '@/pages/SignUp/components/InputSection/style';
 
-function InputSection({ $margin = '0px', title, children }) {
+function InputSection({ $visible = true,  $margin = '0px', title, children }) {
 
   return (
-    <Wrapper $margin={$margin}>
+    <Wrapper $visible={$visible} $margin={$margin}>
       <SectionWrapper>
         <Info>{title}</Info>
         {children}

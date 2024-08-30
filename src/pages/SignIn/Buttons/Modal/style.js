@@ -8,7 +8,7 @@ import { centerAlignStyle } from '@/styles/commonStyle/etc';
 export const ModalBox = styled.div`
   ${modalBoxStyle};
   width: 524px;
-  height: 414px;
+  height: 388px;
   padding: 26px 36px;
 
   > h4 {

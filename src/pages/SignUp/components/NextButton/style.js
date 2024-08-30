@@ -25,6 +25,6 @@ export const ActiveButton = styled(Link)`
   justify-content: center;
 `;
 
-export const InactiveButton = styled.button`
+export const InactiveButton = styled(ActiveButton)`
   ${inactiveColorBoxStyle};
 `;

@@ -11,22 +11,33 @@ import Clip from '@/components/Icons/Clip';
 import Close from '@/components/Icons/Close';
 import Negative from '@/components/Instruction/Negative';
 
-function Document() {
+function Document({setAllow}) {
   const [fileName, setFileName] = useState('');
   const inputRef = useRef();
   const fileTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
+  const maxSize = 1048576; // 1MB in bytes
   const [valid, setValid] = useState(undefined);
 
   const uploadFile = (event) => {
     const file = event.target.files[0];
 
     if (file) {
-      if (fileTypes.includes(file.type)) {
+      if (fileTypes.includes(file.type) && file.size <= maxSize) {
         setFileName(file.name);
         setValid(true);
+        setAllow((prev) => {
+          const newAllow = [...prev];
+          newAllow[1] = true;
+          return newAllow;
+        });
       }
       else {
         setValid(false);
+        setAllow((prev) => {
+          const newAllow = [...prev];
+          newAllow[1] = false;
+          return newAllow;
+        });        
       }
     }
   };
@@ -34,6 +45,11 @@ function Document() {
   const deleteFile = (e) => {
     e.stopPropagation();
     setFileName('');
+    setAllow((prev) => {
+      const newAllow = [...prev];
+      newAllow[1] = false;
+      return newAllow;
+    });       
   };
 
   const handleBoxClick = () => {
@@ -67,7 +83,7 @@ function Document() {
       <Instruction text="*졸업증명서, 재학증면서만 가능 (최대 1MB 이내)" />
       <Instruction text="*JPG / JPEG / PNG / GIF (이미지만)" />
       {
-        valid === false && <Negative text="올바르지 않은 형식입니다"/>
+        valid === false && <Negative text="파일 형식 또는 크기를 확인해주세요"/>
       }
     </InputSection>
   );

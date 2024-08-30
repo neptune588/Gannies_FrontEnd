@@ -15,6 +15,10 @@ const MypageCenterdContainer = styled.div`
   margin: 0 auto;
 `;
 
+const EmptyFooterBox = styled.div`
+  height: 167px;
+`;
+
 export function MainLayout() {
   return (
     <>
@@ -48,6 +52,7 @@ export function HeaderLayout() {
       <CenterdContainer>
         <Outlet />
       </CenterdContainer>
+      <EmptyFooterBox />
     </>
   );
 }

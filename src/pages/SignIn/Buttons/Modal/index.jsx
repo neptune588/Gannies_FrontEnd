@@ -1,12 +1,11 @@
 import {
  CloseIcon,
- Image,
- ModalBox
+ Image
 } from '@/pages/SignUp/Success/Modal/style';
 
 import ModalContainer from '@/components/ModalContainer';
 import warn from '@/assets/images/warn.png';
-import { Button } from '@/pages/SignIn/Buttons/Modal/style';
+import { Button, ModalBox } from '@/pages/SignIn/Buttons/Modal/style';
 
 function Modal({closeModal}) {
 

@@ -5,20 +5,25 @@ import DefaultInput from '@/pages/SignUp/components/DefaultInput';
 import Negative from '@/components/Instruction/Negative';
 import { useState } from 'react';
 
-function Nickname() {
+function Nickname({setAllow}) {
 
   const [nickname, setNickname] = useState('');
   const [nicknameValid, setNicknameValid] = useState(false);  
 
-  const handleNickname = (e) => {
-      setNickname(e.target.value);
-      const regex = /^[a-zA-Z가-힣]{2,8}$/;
-      if (e.target.value.length >= 2 && regex.test(e.target.value)) {
-          setNicknameValid(true);
-      } else {
-          setNicknameValid(false);
-    }
-  }  
+const handleNickname = (e) => {
+  const value = e.target.value;
+  setNickname(value);
+
+  const regex = /^[a-zA-Z가-힣]{2,8}$/;
+  const state = value.length >= 2 && regex.test(value);
+
+  setNicknameValid(state);
+  setAllow((prev) => {
+    const newAllow = [...prev];
+    newAllow[0] = state;
+    return newAllow;
+  });
+}
   
   return (
     <InputSection $margin="10px" title="닉네임*">

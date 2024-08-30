@@ -11,20 +11,25 @@ import {
 } from '@/pages/SignUp/Info/Inputs/Password/style';
 import Negative from '@/components/Instruction/Negative';
 
-
-function PasswordCheck({password}) {
+function PasswordCheck({password, passwordCheck, setPasswordCheck, allow, setAllow }) {
   const [showPassword, setShowPassword] = useState(false);
-  const [passwordCheck, setPasswordCheck] = useState('');
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   }
   
   const handlePassword = (e) => {
-    e.target.value = e.target.value.slice(0,16);
-    setPasswordCheck(e.target.value);
+    const value = e.target.value.slice(0, 16);
+    setPasswordCheck(value);
+
+    const state = password === value;
+    setAllow((prev) => {
+      const newAllow = [...prev];
+      newAllow[3] = state;
+      return newAllow;
+    });
   }
-  
+
   return (
     <InputSection $margin="37px" title="비밀번호 확인*">
       <InputWrapper>
@@ -35,7 +40,7 @@ function PasswordCheck({password}) {
           <EyeSlashIcon onClick={handleShowPassword} />
         }
       </InputWrapper>
-      { passwordCheck.length > 0 && (password === passwordCheck ? <Positive text="비밀번호가 일치합니다" /> : <Negative text="비밀번호가 일치하지 않습니다" />)}
+      { passwordCheck.length > 0 && (allow[3] ? <Positive text="비밀번호가 일치합니다" /> : <Negative text="비밀번호가 일치하지 않습니다" />)}
     </InputSection>
   );
 }
