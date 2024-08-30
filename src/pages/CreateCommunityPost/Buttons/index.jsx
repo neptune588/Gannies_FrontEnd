@@ -6,6 +6,7 @@ import {
   primaryBorderBoxStyle,
 } from '@/styles/commonStyle/box';
 import { centerAlignStyle } from '@/styles/commonStyle/etc';
+import { medium_400 } from '@/styles/commonStyle/localTextStyle';
 
 const CansleButton = styled(Link)`
   ${primaryBorderBoxStyle}
@@ -15,12 +16,7 @@ const CansleButton = styled(Link)`
   color: ${({ theme: { colors } }) => {
     return colors.primary;
   }};
-  font-size: ${({ theme: { typo } }) => {
-    return typo.size.md;
-  }};
-  font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.regular;
-  }};
+  ${medium_400}
   cursor: pointer;
   user-select: none;
 `;
@@ -33,12 +29,7 @@ const SubmitButton = styled.button`
   color: ${({ theme: { colors } }) => {
     return colors.white;
   }};
-  font-size: ${({ theme: { typo } }) => {
-    return typo.size.md;
-  }};
-  font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.regular;
-  }};
+  ${medium_400}
   cursor: pointer;
   user-select: none;
 `;

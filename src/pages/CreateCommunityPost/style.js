@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { defaultBorderBoxStyle } from '@/styles/commonStyle/box';
 import { createPostPageInputBoxStyle } from '@/styles/commonStyle/box';
 import { createPostPageInputStyle } from '@/styles/commonStyle/input';
+import { xsmall_500, small_400 } from '@/styles/commonStyle/localTextStyle';
 
 const CategoryBox = styled.section`
   margin: 60px 0 30px;
@@ -56,12 +57,7 @@ const DataInputBox = styled.div`
     color: ${({ theme: { colors } }) => {
       return colors.gray['90'];
     }};
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.xs;
-    }};
-    font-weight: ${({ theme: { typo } }) => {
-      return typo.weight.medium;
-    }};
+    ${xsmall_500}
     margin-right: 45px;
   }
 
@@ -97,6 +93,9 @@ const DataInputBox = styled.div`
     > input {
       width: 90%;
       font-size: inherit;
+      font-weight: ${({ theme: { typo } }) => {
+        return typo.weight.regular;
+      }};
       cursor: pointer;
     }
     > img {
@@ -112,6 +111,7 @@ const ButtonBox = styled.section`
   width: 510px;
   margin: 0 auto 175px;
 `;
+
 export {
   CategoryBox,
   CenterdContainer,

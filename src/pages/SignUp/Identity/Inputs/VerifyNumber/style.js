@@ -8,6 +8,7 @@ import {
   primaryColorBoxStyle,
 } from '@/styles/commonStyle/box';
 import { placeholderTextStyle } from '@/styles/commonStyle/text';
+import { xsmall_500 } from '@/styles/commonStyle/localTextStyle';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -31,9 +32,8 @@ export const SectionWrapper = styled.div`
   margin-top: 37px;
 `;
 export const Info = styled.span`
-  font-size: ${(props) => props.theme.typo.size.xs};
-  font-weight: ${(props) => props.theme.typo.weight.medium};
   color: #9b9b9b;
+  ${xsmall_500}
 `;
 
 export const InputWrapper = styled.form`
@@ -49,10 +49,10 @@ export const Button = styled.button`
   width: 96px;
   height: 48px;
   margin-top: 10px;
-  font-size: ${(props) => props.theme.typo.size.xs};
-  font-weight: ${(props) => props.theme.typo.weight.medium};
+  ${xsmall_500}
   margin-left: 10px;
 `;
+
 export const ActiveButton = styled(Button)`
   ${primaryColorBoxStyle};
 `;

@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 
+import { h4_400, h4_600 } from '@/styles/commonStyle/localTextStyle';
+
 export const Wrapper = styled.div`
   display: flex;
   margin: auto;
   align-items: center;
-  background-color: ${props => props.theme.colors.primary};
+  background-color: ${(props) => props.theme.colors.primary};
   height: 197px;
   width: 1128px;
   margin-top: 53px;
@@ -19,16 +21,14 @@ export const LeftWrapper = styled.div`
 `;
 
 export const Title = styled.span`
-  color: ${props => props.theme.colors.gray[10]};
-  font-size: ${props => props.theme.typo.size.h4};
-  font-weight: ${props => props.theme.typo.weight.regular};
+  color: ${(props) => props.theme.colors.gray[10]};
+  ${h4_400}
   letter-spacing: 0px;
-`
+`;
 export const Goto = styled.div`
   margin-top: 11px;
-  font-size: ${props => props.theme.typo.size.h4};
-  color: ${props => props.theme.colors.white};
-  font-weight: ${props => props.theme.typo.weight.semiBold};
+  color: ${(props) => props.theme.colors.white};
+  ${h4_600}
   display: flex;
   align-items: center;
 `;
@@ -38,8 +38,8 @@ export const ArrowIconWrapper = styled.div`
   align-items: center;
   justify-content: center;
   margin-left: 9px;
-  background-color: ${props => props.theme.colors.white};
-  opacity:0.45;
+  background-color: ${(props) => props.theme.colors.white};
+  opacity: 0.45;
   width: 30px;
   height: 30px;
   border-radius: 4px;

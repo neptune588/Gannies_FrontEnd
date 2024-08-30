@@ -1,11 +1,8 @@
 import styled from 'styled-components';
 
 import { postsHeaderStyle } from '@/styles/commonStyle/etc';
-import {
-  paginationWrapperStyle,
-  pageArrowWrapperStyle,
-  pageNumberWrapperStyle,
-} from '@/styles/commonStyle/wrapper';
+import { paginationWrapperStyle } from '@/styles/commonStyle/wrapper';
+import { xsmall_500 } from '@/styles/commonStyle/localTextStyle';
 
 const PostsWrapper = styled.div`
   margin-top: 10px;
@@ -18,12 +15,7 @@ const PostsHeader = styled.div`
   padding: 12px 0;
 
   p {
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.xs;
-    }};
-    font-weight: ${({ theme: { typo } }) => {
-      return typo.weight.medium;
-    }};
+    ${xsmall_500}
   }
 `;
 
@@ -57,14 +49,6 @@ const PageWrapper = styled.section`
   margin: 50px auto 130px;
 `;
 
-const ArrowBox = styled.div`
-  ${pageArrowWrapperStyle}
-`;
-
-const PageNumberBox = styled.ul`
-  ${pageNumberWrapperStyle}
-`;
-
 export {
   PostsWrapper,
   PostsHeader,
@@ -72,6 +56,4 @@ export {
   PostsHeaderRightBox,
   PostListBox,
   PageWrapper,
-  ArrowBox,
-  PageNumberBox,
 };

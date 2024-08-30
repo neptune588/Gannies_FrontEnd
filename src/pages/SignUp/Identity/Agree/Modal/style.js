@@ -3,6 +3,13 @@ import styled from 'styled-components';
 
 import { centerAlignStyle } from '@/styles/commonStyle/etc';
 import { modalBoxStyle, primaryBorderBoxStyle } from '@/styles/commonStyle/box';
+import {
+  small_400,
+  small_700,
+  medium_400,
+  large_700,
+  h3_700,
+} from '@/styles/commonStyle/localTextStyle';
 
 export const ModalBox = styled.div`
   ${modalBoxStyle};
@@ -22,8 +29,7 @@ export const Header = styled.div`
 
   > h3 {
     color: ${(props) => props.theme.colors.black};
-    font-size: ${(props) => props.theme.typo.size.h3};
-    font-weight: ${(props) => props.theme.typo.weight.bold};
+    ${h3_700}
   }
 `;
 
@@ -45,8 +51,7 @@ export const Body = styled.div`
 
   > h4 {
     color: ${(props) => props.theme.colors.black};
-    font-size: ${(props) => props.theme.typo.size.lg};
-    font-weight: ${(props) => props.theme.typo.weight.bold};
+    ${large_700}
     margin-top: 41px;
     margin-left: 40px;
   }
@@ -59,15 +64,13 @@ export const Body = styled.div`
 
     > h5 {
       color: ${(props) => props.theme.colors.black};
-      font-size: ${(props) => props.theme.typo.size.sm};
-      font-weight: ${(props) => props.theme.typo.weight.bold};
+      ${small_700}
       margin-bottom: 20px;
     }
 
     > p {
       color: ${(props) => props.theme.colors.gray[30]};
-      font-size: ${(props) => props.theme.typo.size.sm};
-      font-weight: ${(props) => props.theme.typo.weight.regular};
+      ${small_400}
       line-height: 24px;
     }
   }
@@ -91,12 +94,11 @@ export const Footer = styled.div`
 `;
 
 export const ActiveButton = styled.button`
+  display: flex;
   ${primaryBorderBoxStyle};
   width: 360px;
   height: 48px;
-  font-size: ${(props) => props.theme.typo.size.md};
-  font-weight: ${(props) => props.theme.typo.weight.regular};
-  display: flex;
+  ${medium_400}
   align-items: center;
   justify-content: center;
 `;
