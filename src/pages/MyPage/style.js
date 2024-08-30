@@ -1,14 +1,10 @@
 import styled from 'styled-components';
 
 import { defaultBorderBoxStyle } from '@/styles/commonStyle/box';
+import { h4_600, medium_600 } from '@/styles/commonStyle/localTextStyle';
 
 const Title = styled.h2`
-  font-size: ${({ theme: { typo } }) => {
-    return typo.size.h4;
-  }};
-  font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.semiBold;
-  }};
+  ${h4_600}
   margin: 70px 0 30px;
   padding-left: 10px;
 `;
@@ -40,24 +36,14 @@ const ActiveTabTitleBox = styled.section`
       color: ${({ theme: { colors } }) => {
         return colors.gray['80'];
       }};
-      font-size: ${({ theme: { typo } }) => {
-        return typo.size.md;
-      }};
-      font-weight: ${({ theme: { typo } }) => {
-        return typo.weight.semiBold;
-      }};
+      ${medium_600}
       margin-left: 15px;
     }
   }
 `;
 
 const ActiveTabTitle = styled.h2`
-  font-size: ${({ theme: { typo } }) => {
-    return typo.size.h4;
-  }};
-  font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.semiBold;
-  }};
+  ${h4_600}
 `;
 
 export {

@@ -1,15 +1,12 @@
 import styled from 'styled-components';
 
+import { xsmall_500, xsmall_600 } from '@/styles/commonStyle/localTextStyle';
+
 const SideTabTitle = styled.h2`
   color: ${({ theme: { colors } }) => {
     return colors.gray['100'];
   }};
-  font-size: ${({ theme: { typo } }) => {
-    return typo.size.xs;
-  }};
-  font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.semiBold;
-  }};
+  ${xsmall_600}
   padding-bottom: 10px;
   border-bottom: 1px solid
     ${({ theme: { colors } }) => {
@@ -27,12 +24,7 @@ const SideTabMenuList = styled.li`
   color: ${({ $isActiveMenu, $isContent, theme: { colors } }) => {
     return $isActiveMenu === $isContent ? colors.primary : colors.gray['50'];
   }};
-  font-size: ${({ theme: { typo } }) => {
-    return typo.size.xs;
-  }};
-  font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.medium;
-  }};
+  ${xsmall_500}
   margin-bottom: 15px;
   &:last-child {
     margin-bottom: 35px;

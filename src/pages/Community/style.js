@@ -3,11 +3,8 @@ import { Link } from 'react-router-dom';
 
 import { primaryColorBoxStyle } from '@/styles/commonStyle/box';
 import { postsHeaderStyle, ellipsisStyle } from '@/styles/commonStyle/etc';
-import {
-  paginationWrapperStyle,
-  pageArrowWrapperStyle,
-  pageNumberWrapperStyle,
-} from '@/styles/commonStyle/wrapper';
+import { paginationWrapperStyle } from '@/styles/commonStyle/wrapper';
+import { small_500, small_600 } from '@/styles/commonStyle/localTextStyle';
 
 const ContentsAlignBox = styled.div`
   display: flex;
@@ -25,9 +22,7 @@ const PostCreateButton = styled(Link)`
   width: 135px;
   height: 40px;
   padding: 5px 12px;
-  font-size: ${({ theme: { typo } }) => {
-    return typo.size.sm;
-  }};
+  ${small_600}
   > img {
     width: 24px;
     height: 24px;
@@ -60,12 +55,7 @@ const PostHeaderBox = styled.div`
     margin-right: 20px;
   }
   p {
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.sm;
-    }};
-    font-weight: ${({ theme: { typo } }) => {
-      return typo.weight.medium;
-    }};
+    ${small_500}
   }
 `;
 
@@ -74,20 +64,10 @@ const PageWrapper = styled.section`
   margin: 50px auto 95px;
 `;
 
-const ArrowBox = styled.div`
-  ${pageArrowWrapperStyle}
-`;
-
-const PageNumberBox = styled.ul`
-  ${pageNumberWrapperStyle}
-`;
-
 export {
   ContentsAlignBox,
   PostCreateButton,
   PostWrapper,
   PostHeaderBox,
   PageWrapper,
-  ArrowBox,
-  PageNumberBox,
 };

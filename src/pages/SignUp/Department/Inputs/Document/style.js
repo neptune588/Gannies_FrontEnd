@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 import { defaultBorderBoxStyle } from '@/styles/commonStyle/box';
 import { placeholderTextStyle } from '@/styles/commonStyle/text';
+import { small_400 } from '@/styles/commonStyle/localTextStyle';
 
 export const InactiveInputBox = styled.div`
   ${defaultBorderBoxStyle};
@@ -21,8 +22,7 @@ export const InactiveInputBox = styled.div`
 
 export const ActiveInputBox = styled.div`
   ${defaultBorderBoxStyle};
-  font-size: ${(props) => props.theme.typo.size.sm};
-  font-weight: ${(props) => props.theme.typo.weight.regular};
+  ${small_400}
   color: ${(props) => props.theme.colors.primary};
   width: 448px;
   height: 48px;

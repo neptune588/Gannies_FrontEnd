@@ -4,6 +4,11 @@ import {
   defaultBorderBoxStyle,
   primaryColorBoxStyle,
 } from '@/styles/commonStyle/box';
+import {
+  xsmall_500,
+  xsmall_600,
+  medium_400,
+} from '@/styles/commonStyle/localTextStyle';
 
 const PasswordChangeWrapper = styled.div`
   margin-top: 15px;
@@ -27,12 +32,7 @@ const PasswordChgngeBox = styled.section`
     color: ${({ theme: { colors } }) => {
       return colors.gray['80'];
     }};
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.xs;
-    }};
-    font-weight: ${({ theme: { typo } }) => {
-      return typo.weight.medium;
-    }};
+    ${xsmall_500}
   }
 `;
 
@@ -45,12 +45,7 @@ const InputBox = styled.label`
   height: 50px;
   > input {
     width: 90%;
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.xs;
-    }};
-    font-weight: ${({ theme: { typo } }) => {
-      return typo.weight.semiBold;
-    }};
+    ${xsmall_600}
   }
   > div {
     display: flex;
@@ -68,12 +63,7 @@ const NoticeMent = styled.p`
   color: ${({ theme: { colors } }) => {
     return colors.gray['60'];
   }};
-  font-size: ${({ theme: { typo } }) => {
-    return typo.size.xs;
-  }};
-  font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.medium;
-  }};
+  ${xsmall_500}
 `;
 
 const EditSaveBox = styled.section`
@@ -82,12 +72,7 @@ const EditSaveBox = styled.section`
     ${primaryColorBoxStyle}
     height: 50px;
     padding: 10px 35px;
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.md;
-    }};
-    font-weight: ${({ theme: { typo } }) => {
-      return typo.weight.regular;
-    }};
+    ${medium_400}
   }
 `;
 

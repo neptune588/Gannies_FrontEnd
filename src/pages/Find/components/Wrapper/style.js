@@ -1,20 +1,20 @@
-import styled from "styled-components";
+import styled from 'styled-components';
+
+import { medium_400, small_400 } from '@/styles/commonStyle/localTextStyle';
 
 export const StyledWrapper = styled.div`
-  display:flex;
+  display: flex;
   align-items: center;
   flex-direction: column;
 
   > p {
-    font-size: ${props => props.theme.typo.size.md};
-    font-weight: ${props => props.theme.typo.weight.regular};
-    color: ${props => props.theme.colors.gray[100]};  
+    ${medium_400}
+    color: ${(props) => props.theme.colors.gray[100]};
   }
 
   > span {
-    font-size: ${props => props.theme.typo.size.sm};
-    font-weight: ${props => props.theme.typo.weight.regular};
-    color: ${props => props.theme.colors.gray[60]};
-    margin-top: 23px;  
+    ${small_400}
+    color: ${(props) => props.theme.colors.gray[60]};
+    margin-top: 23px;
   }
 `;

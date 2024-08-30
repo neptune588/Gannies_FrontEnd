@@ -1,5 +1,11 @@
 import styled from 'styled-components';
+
 import { ellipsisStyle } from '@/styles/commonStyle/etc';
+import {
+  xsmall_400,
+  small_400,
+  small_500,
+} from '@/styles/commonStyle/localTextStyle';
 
 const PostContainer = styled.li`
   display: flex;
@@ -24,12 +30,7 @@ const PostNumberBox = styled.p`
   color: ${({ theme: { colors } }) => {
     return colors.gray['90'];
   }};
-  font-size: ${({ theme: { typo } }) => {
-    return typo.size.sm;
-  }};
-  font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.medium;
-  }};
+  ${small_500}
 `;
 const PostBodyBox = styled.div`
   display: flex;
@@ -43,21 +44,11 @@ const PostBodyBox = styled.div`
     }};
   }
   p:first-child {
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.xs;
-    }};
-    font-weight: ${({ theme: { typo } }) => {
-      return typo.weight.regular;
-    }};
+    ${xsmall_400}
     margin-bottom: 24px;
   }
   p:last-child {
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.sm;
-    }};
-    font-weight: ${({ theme: { typo } }) => {
-      return typo.weight.regular;
-    }};
+    ${small_400}
   }
 `;
 
@@ -80,12 +71,7 @@ const PostDateBox = styled.p`
   color: ${({ theme: { colors } }) => {
     return colors.gray['70'];
   }};
-  font-size: ${({ theme: { typo } }) => {
-    return typo.size.sm;
-  }};
-  font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.medium;
-  }};
+  ${small_500}
 `;
 
 export {

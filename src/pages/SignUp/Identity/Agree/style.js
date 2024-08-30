@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import { instructionTextStyle } from '@/styles/commonStyle/text';
+import { small_400, small_600 } from '@/styles/commonStyle/localTextStyle';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -26,15 +27,13 @@ export const AgreeWrapper = styled.div`
 
   span {
     color: ${(props) => props.theme.colors.gray[100]};
-    font-size: ${(props) => props.theme.typo.size.sm};
-    font-weight: ${(props) => props.theme.typo.weight.regular};
+    ${small_400}
     margin-right: 10px;
   }
 
   p {
     color: ${(props) => props.theme.colors.gray[100]};
-    font-size: ${(props) => props.theme.typo.size.sm};
-    font-weight: ${(props) => props.theme.typo.weight.semiBold};
+    ${small_600}
   }
 `;
 export const Info = styled.span`

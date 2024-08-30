@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+import { xsmall_500 } from '@/styles/commonStyle/localTextStyle';
 export const IconBox = styled.div`
   display: flex;
   align-items: center;
@@ -9,11 +10,6 @@ export const IconBox = styled.div`
     color: ${({ theme: { colors } }) => {
       return colors.gray['60'];
     }};
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.xs;
-    }};
-    font-weight: ${({ theme: { typo } }) => {
-      return typo.weight.medium;
-    }};
+    ${xsmall_500}
   }
 `;

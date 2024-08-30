@@ -1,17 +1,11 @@
 import { useState } from 'react';
 
+import CommunityPost from '@/pages/Community/CommunityPost';
 import CommunityBanner from '@/components/CommunityBanner';
 import CommunityBannerText from '@/components/CommunityBannerText';
-import CommunityPost from '@/pages/Community/CommunityPost';
-import PageControlArrow from '@/components/PageControlArrow';
-import PageNumber from '@/components/PageNumber';
+import Pagination from '@/components/Pagination';
 import AlignSelectMenu from '@/components/AlignSelectMenu';
 import brush from '@/assets/icons/etc/brush.svg';
-
-import prevArrow from '@/assets/icons/arrows/chevron_left.svg';
-import nextArrow from '@/assets/icons/arrows/chevron_right.svg';
-import prev10PagesArrow from '@/assets/icons/arrows/double_chevron_lef.svg';
-import next10PagesArrow from '@/assets/icons/arrows/double_chevron_right.svg';
 
 import {
   ContentsAlignBox,
@@ -19,8 +13,6 @@ import {
   PostWrapper,
   PostHeaderBox,
   PageWrapper,
-  ArrowBox,
-  PageNumberBox,
 } from '@/pages/Community/style';
 
 export default function Community() {
@@ -32,9 +24,7 @@ export default function Community() {
 
   const [tempPageNumber, setTempPageNumber] = useState(0);
   const handlePageClick = (idx) => {
-    return () => {
-      setTempPageNumber(idx);
-    };
+    setTempPageNumber(idx);
   };
   return (
     <>
@@ -68,32 +58,11 @@ export default function Community() {
         })}
       </ul>
       <PageWrapper>
-        <ArrowBox>
-          <PageControlArrow arrowImg={prevArrow} alt={'prev-button'} />
-          <PageControlArrow
-            arrowImg={prev10PagesArrow}
-            alt={'prev-10pages-button'}
-          />
-        </ArrowBox>
-        <PageNumberBox>
-          {tempData.map((item, idx) => {
-            return (
-              <PageNumber
-                key={item + 'pageNumber'}
-                myNumber={idx}
-                activeNumber={tempPageNumber}
-                onClick={handlePageClick(idx)}
-              />
-            );
-          })}
-        </PageNumberBox>
-        <ArrowBox>
-          <PageControlArrow arrowImg={nextArrow} alt={'next-button'} />
-          <PageControlArrow
-            arrowImg={next10PagesArrow}
-            alt={'next-10pages-button'}
-          />
-        </ArrowBox>
+        <Pagination
+          pageNumberData={tempData}
+          activePageNumber={tempPageNumber}
+          handlePageNumberClick={handlePageClick}
+        />
       </PageWrapper>
     </>
   );

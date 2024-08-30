@@ -36,6 +36,12 @@ export default function MyPage() {
       return index;
     })
   );
+
+  const [tempPageNumber, setTempPageNumber] = useState(0);
+  const handlePageClick = (idx) => {
+    setTempPageNumber(idx);
+  };
+
   return (
     <>
       <Title>마이페이지</Title>
@@ -84,9 +90,11 @@ export default function MyPage() {
               </ActiveTabTitleBox>
               <PostContents
                 postData={postData}
-                pageData={pageData}
                 pageName={'my-page'}
                 scrapViewState={false}
+                activePageNumber={tempPageNumber}
+                pageNumberData={pageData}
+                handlePageNumberClick={handlePageClick}
               />
             </>
           )}
@@ -101,10 +109,12 @@ export default function MyPage() {
               </ActiveTabTitleBox>
               <PostContents
                 postData={postData}
-                pageData={pageData}
                 pageName={'my-page'}
                 scrapViewState={true}
                 scrapClickState={true}
+                activePageNumber={tempPageNumber}
+                pageNumberData={pageData}
+                handlePageNumberClick={handlePageClick}
               />
             </>
           )}
@@ -119,9 +129,11 @@ export default function MyPage() {
               </ActiveTabTitleBox>
               <PostContents
                 postData={postData}
-                pageData={pageData}
                 pageName={'my-page'}
                 scrapViewState={false}
+                activePageNumber={tempPageNumber}
+                pageNumberData={pageData}
+                handlePageNumberClick={handlePageClick}
               />
             </>
           )}
