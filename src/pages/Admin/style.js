@@ -1,10 +1,7 @@
 import styled from 'styled-components';
 
-import {
-  pageArrowWrapperStyle,
-  pageNumberWrapperStyle,
-  paginationWrapperStyle,
-} from '@/styles/commonStyle/wrapper';
+import { paginationWrapperStyle } from '@/styles/commonStyle/wrapper';
+import { h1_600 } from '@/styles/commonStyle/localTextStyle';
 
 const Container = styled.div`
   display: flex;
@@ -34,12 +31,7 @@ const TitleCategory = styled.h2`
       ? colors.gray['100']
       : colors.gray['50'];
   }};
-  font-size: ${({ theme: { typo } }) => {
-    return typo.size.h1;
-  }};
-  font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.semiBold;
-  }};
+  ${h1_600}
   cursor: pointer;
   user-select: none;
 `;
@@ -68,14 +60,6 @@ const PageWrapper = styled.section`
   margin: 70px auto 165px;
 `;
 
-const ArrowBox = styled.div`
-  ${pageArrowWrapperStyle}
-`;
-
-const PageNumberBox = styled.ul`
-  ${pageNumberWrapperStyle}
-`;
-
 export {
   Container,
   ContentsWrapper,
@@ -84,6 +68,4 @@ export {
   ListCount,
   ListWrapper,
   PageWrapper,
-  ArrowBox,
-  PageNumberBox,
 };

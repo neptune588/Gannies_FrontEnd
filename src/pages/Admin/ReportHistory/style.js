@@ -8,6 +8,7 @@ import {
 import { ellipsisStyle } from '@/styles/commonStyle/etc';
 import { defaultBorderBoxStyle } from '@/styles/commonStyle/box';
 import { centerAlignStyle } from '@/styles/commonStyle/etc';
+import { xsmall_700 } from '@/styles/commonStyle/localTextStyle';
 
 const ListHeader = styled.div`
   ${adminPageListHeaderStyle}
@@ -34,12 +35,7 @@ const ReportList = styled.li`
     color: ${({ theme: { colors } }) => {
       return colors.gray['90'];
     }};
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.xs;
-    }};
-    font-weight: ${({ theme: { typo } }) => {
-      return typo.weight.bold;
-    }};
+    ${xsmall_700}
   }
 `;
 
@@ -58,12 +54,7 @@ const ProcessBox = styled.div`
       return colors.negative;
     }
   }};
-  font-size: ${({ theme: { typo } }) => {
-    return typo.size.xs;
-  }};
-  font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.bold;
-  }};
+  ${xsmall_700}
   > img {
     width: 18px;
     height: 18px;
@@ -97,12 +88,7 @@ const ProcessList = styled.li`
 
   user-select: none;
   cursor: pointer;
-  font-size: ${({ theme: { typo } }) => {
-    return typo.size.xs;
-  }};
-  font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.bold;
-  }};
+  ${xsmall_700}
   padding: 10px 0;
   &:nth-child(1n) {
     color: ${({ theme: { colors } }) => {

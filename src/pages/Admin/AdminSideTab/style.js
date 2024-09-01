@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import { medium_600, medium_700 } from '@/styles/commonStyle/localTextStyle';
+
 const TabContainer = styled.div`
   position: fixed;
   width: 405px;
@@ -28,12 +30,7 @@ const ProfileBox = styled.div`
     color: ${({ theme: { colors } }) => {
       return colors.white;
     }};
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.md;
-    }};
-    font-weight: ${({ theme: { typo } }) => {
-      return typo.weight.semiBold;
-    }};
+    ${medium_600}
   }
 `;
 
@@ -59,12 +56,7 @@ const TabMenuList = styled.li`
     color: ${({ $activeMenu, $ownContent, theme: { colors } }) => {
       return $activeMenu === $ownContent ? colors.primary : colors.white;
     }};
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.md;
-    }};
-    font-weight: ${({ theme: { typo } }) => {
-      return typo.weight.bold;
-    }};
+    ${medium_700}
   }
 `;
 

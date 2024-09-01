@@ -6,6 +6,7 @@ import {
   medium_600,
   small_400,
 } from '@/styles/commonStyle/localTextStyle';
+import { modalCloseAreaStyle } from '@/styles/commonStyle/etc';
 
 const ModalWrapper = styled.div`
   display: flex;
@@ -119,10 +120,7 @@ const ModalInnerRightBox = styled.div`
 `;
 
 const ModalCloseArea = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
+  ${modalCloseAreaStyle}
 `;
 
 export {

@@ -1,14 +1,9 @@
 import { useState } from 'react';
 
 import AdminSideTab from '@/pages/Admin/AdminSideTab';
-import PageControlArrow from '@/components/PageControlArrow';
-import PageNumber from '@/components/PageNumber';
 import ReeportHistory from '@/pages/Admin/ReportHistory';
-
-import prevArrow from '@/assets/icons/arrows/chevron_left.svg';
-import nextArrow from '@/assets/icons/arrows/chevron_right.svg';
-import prev10PagesArrow from '@/assets/icons/arrows/double_chevron_lef.svg';
-import next10PagesArrow from '@/assets/icons/arrows/double_chevron_right.svg';
+import Pagination from '@/components/Pagination';
+import ReportedReviewModal from '@/pages/Admin/ReportedReviewModal';
 
 import {
   Container,
@@ -18,8 +13,6 @@ import {
   ListCount,
   ListWrapper,
   PageWrapper,
-  ArrowBox,
-  PageNumberBox,
 } from '@/pages/Admin/style';
 
 import { adminTabMenuData, reportListTempData } from '@/pages/Admin/data';
@@ -27,9 +20,11 @@ import { adminTabMenuData, reportListTempData } from '@/pages/Admin/data';
 export default function Admin() {
   const [tabData] = useState(adminTabMenuData);
 
-  const [activeMenu, setActiveMenu] = useState(adminTabMenuData[0].content);
+  const [activeTabMenu, setActiveTabMenu] = useState(
+    adminTabMenuData[0].content
+  );
   const handleTabMenuClick = (content) => {
-    setActiveMenu(content);
+    setActiveTabMenu(content);
   };
 
   const [activeCategory, setActiveCategory] = useState('게시글');
@@ -73,74 +68,75 @@ export default function Admin() {
   };
 
   return (
-    <Container>
-      <AdminSideTab
-        activeMenu={activeMenu}
-        handleTabMenuClick={handleTabMenuClick}
-        tabMenuList={tabData}
-      />
-      <ContentsWrapper>
-        <TitleCategorySection>
-          {activeMenu === '신고내역' && (
+    <>
+      {/* <ReportedReviewModal activeCategory={activeCategory} /> */}
+      <Container>
+        <AdminSideTab
+          activeMenu={activeTabMenu}
+          handleTabMenuClick={handleTabMenuClick}
+          tabMenuList={tabData}
+        />
+        <ContentsWrapper>
+          {activeTabMenu === '신고내역' && (
             <>
-              <TitleCategory
-                $activeCategory={activeCategory}
-                $ownCategory={'게시글'}
-                onClick={() => {
-                  handleCategoryClick('게시글');
-                }}
-              >
-                게시글
-              </TitleCategory>
-              <TitleCategory
-                $activeCategory={activeCategory}
-                $ownCategory={'댓글'}
-                onClick={() => {
-                  handleCategoryClick('댓글');
-                }}
-              >
-                댓글
-              </TitleCategory>
+              <TitleCategorySection>
+                <TitleCategory
+                  $activeCategory={activeCategory}
+                  $ownCategory={'게시글'}
+                  onClick={() => {
+                    handleCategoryClick('게시글');
+                  }}
+                >
+                  게시글
+                </TitleCategory>
+                <TitleCategory
+                  $activeCategory={activeCategory}
+                  $ownCategory={'댓글'}
+                  onClick={() => {
+                    handleCategoryClick('댓글');
+                  }}
+                >
+                  댓글
+                </TitleCategory>
+              </TitleCategorySection>
+              <ListCount>총 n개</ListCount>
+              <ListWrapper>
+                <ReeportHistory
+                  reportData={reportData}
+                  handleProcessingModalControl={handleProcessingModalControl}
+                  handleProcessingChange={handleProcessingChange}
+                />
+              </ListWrapper>
+              <PageWrapper>
+                <Pagination
+                  pageNumberData={tempData}
+                  activePageNumber={tempPageNumber}
+                  handlePageNumberClick={handlePageClick}
+                />
+              </PageWrapper>
             </>
           )}
-        </TitleCategorySection>
-        <ListCount>총 n개</ListCount>
-        <ListWrapper>
-          <ReeportHistory
-            reportData={reportData}
-            handleProcessingModalControl={handleProcessingModalControl}
-            handleProcessingChange={handleProcessingChange}
-          />
-        </ListWrapper>
-        <PageWrapper>
-          <ArrowBox>
-            <PageControlArrow arrowImg={prevArrow} alt={'prev-button'} />
-            <PageControlArrow
-              arrowImg={prev10PagesArrow}
-              alt={'prev-10pages-button'}
-            />
-          </ArrowBox>
-          <PageNumberBox>
-            {tempData.map((item, idx) => {
-              return (
-                <PageNumber
-                  key={item + 'pageNumber'}
-                  myNumber={idx}
-                  activeNumber={tempPageNumber}
-                  onClick={handlePageClick(idx)}
+          {activeTabMenu === '신고내역' && (
+            <>
+              <ListCount>총 n개</ListCount>
+              <ListWrapper>
+                <ReeportHistory
+                  reportData={reportData}
+                  handleProcessingModalControl={handleProcessingModalControl}
+                  handleProcessingChange={handleProcessingChange}
                 />
-              );
-            })}
-          </PageNumberBox>
-          <ArrowBox>
-            <PageControlArrow arrowImg={nextArrow} alt={'next-button'} />
-            <PageControlArrow
-              arrowImg={next10PagesArrow}
-              alt={'next-10pages-button'}
-            />
-          </ArrowBox>
-        </PageWrapper>
-      </ContentsWrapper>
-    </Container>
+              </ListWrapper>
+              <PageWrapper>
+                <Pagination
+                  pageNumberData={tempData}
+                  activePageNumber={tempPageNumber}
+                  handlePageNumberClick={handlePageClick}
+                />
+              </PageWrapper>
+            </>
+          )}
+        </ContentsWrapper>
+      </Container>
+    </>
   );
 }
