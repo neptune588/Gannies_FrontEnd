@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import { instructionTextStyle } from '@/styles/commonStyle/text';
+import { h3_600 } from '@/styles/commonStyle/localTextStyle';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -10,8 +11,7 @@ export const Wrapper = styled.div`
 `;
 
 export const Font = styled.span`
-  font-size: 28px;
-  font-weight: ${(props) => props.theme.typo.weight.semiBold};
+  ${h3_600}
   color: ${(props) => props.theme.colors.primary};
   margin-bottom: 21px;
 `;

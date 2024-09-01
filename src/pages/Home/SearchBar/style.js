@@ -4,6 +4,8 @@ import { InputBox } from '@/components/Input/style';
 
 import { inactiveColorBoxStyle, primaryColorBoxStyle } from '@/styles/commonStyle/box';
 import { centerAlignStyle } from '@/styles/commonStyle/etc';
+import { large_400 } from '@/styles/commonStyle/localTextStyle';
+import { Link } from 'react-router-dom';
 
 export const Wrapper = styled.div`
   ${centerAlignStyle};
@@ -41,16 +43,15 @@ export const Input = styled(InputBox)`
   margin-left: 23px;
 `;
 
-export const InactiveButton = styled.button`
-  ${inactiveColorBoxStyle};
-  font-size: ${props => props.theme.typo.size.lg};
-  width: 90px;
-  height: 50px;
-  cursor: pointer;
-  border-radius: 0px 4px 4px 0px;  
-`;
-
-export const ActiveButton = styled(InactiveButton)`
+export const ActiveButton = styled(Link)`
   ${primaryColorBoxStyle};
   border-radius: 0px 4px 4px 0px;  
+  ${large_400}
+  width: 90px;
+  height: 50px;
+  cursor: pointer;  
+`;
+
+export const InactiveButton = styled(ActiveButton)`
+  ${inactiveColorBoxStyle};
 `;

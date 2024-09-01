@@ -21,10 +21,6 @@ export const Wrapper = styled.div`
     display: flex;
     align-items: center;  
     margin-top: 26px;
-
-    > div {
-      // cursor: pointer;    
-    }
   }
 
   > div {

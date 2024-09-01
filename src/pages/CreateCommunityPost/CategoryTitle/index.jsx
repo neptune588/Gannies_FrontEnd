@@ -1,24 +1,16 @@
 import styled from 'styled-components';
 
+import { xsmall_500, h4_500 } from '@/styles/commonStyle/localTextStyle';
+
 const Title = styled.h2`
-  font-size: ${({ theme: { typo } }) => {
-    return typo.size.h4;
-  }};
-  font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.medium;
-  }};
+  ${h4_500}
   margin-left: 30px;
 `;
 const Notice = styled.p`
   color: ${({ theme: { colors } }) => {
     return colors.black;
   }};
-  font-size: ${({ theme: { typo } }) => {
-    return typo.size.xs;
-  }};
-  font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.medium;
-  }};
+  ${xsmall_500}
   margin-right: 70px;
 `;
 

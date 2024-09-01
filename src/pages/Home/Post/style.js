@@ -1,6 +1,10 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+import {
+  small_600,
+  h4_600
+} from '@/styles/commonStyle/localTextStyle';
 export const Wrapper = styled.div`
   margin-top: 52px;
   height: 48px;
@@ -13,16 +17,19 @@ export const Wrapper = styled.div`
 
   > h3 {
     color: ${props => props.theme.colors.gray[90]};  
-    font-size: ${props => props.theme.typo.size.h4};
-    font-weight: ${props => props.theme.typo.weight.semiBold};  
+    ${h4_600}
   }
 `;
 
+export const UpperTitle = styled.span`
+  color: ${(props) => props.theme.colors.gray[90]};
+  ${h4_600}
+`;
+
 export const ShowMoreButton = styled(Link)`
-  font-size: ${props => props.theme.typo.size.sm};
-  font-weight: ${props => props.theme.typo.weight.semiBold};
   height: 28px;
-  color: ${props => props.theme.colors.gray[60]};
+  color: ${(props) => props.theme.colors.gray[60]};
+  ${small_600}
   cursor: pointer;
   border: none;
   margin-left: auto;

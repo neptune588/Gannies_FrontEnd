@@ -1,3 +1,4 @@
+import { h3_600 } from '@/styles/commonStyle/localTextStyle';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
@@ -8,8 +9,7 @@ export const Wrapper = styled.div`
   width: 1128px;
 
   > span {
-    font-size: ${props => props.theme.typo.size.h3};
-    font-weight: ${props => props.theme.typo.weight.semiBold};
+    ${h3_600}
     color: ${props => props.theme.colors.primary};
     margin-bottom: 12px;
   }

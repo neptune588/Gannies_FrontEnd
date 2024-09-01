@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import { xsmall_500, xsmall_600 } from '@/styles/commonStyle/localTextStyle';
+
 export const PostWrapper = styled.li`
   display: flex;
   justify-content: space-between;
@@ -26,12 +28,7 @@ export const PostNumber = styled.p`
   color: ${({ theme: { colors } }) => {
     return colors.gray['80'];
   }};
-  font-size: ${({ theme: { typo } }) => {
-    return typo.size.xs;
-  }};
-  font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.semiBold;
-  }};
+  ${xsmall_600}
 `;
 
 export const Category = styled.div`
@@ -79,11 +76,7 @@ export const Date = styled.p`
   color: ${({ theme: { colors } }) => {
     return colors.gray['60'];
   }};
-  font-size: ${({ theme: { typo } }) => {
-    return typo.size.xs;
-  }};
-  font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.medium;
+  ${xsmall_500}
   }};
 `;
 

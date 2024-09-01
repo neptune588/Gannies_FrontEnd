@@ -5,6 +5,7 @@ import {
   inactiveColorBoxStyle,
   primaryColorBoxStyle,
 } from '@/styles/commonStyle/box';
+import { medium_400 } from '@/styles/commonStyle/localTextStyle';
 
 export const ButtonWrapper = styled.div`
   margin-top: 80px;
@@ -18,8 +19,7 @@ export const ActiveButton = styled(Link)`
   ${primaryColorBoxStyle};
   width: 360px;
   height: 48px;
-  font-size: ${(props) => props.theme.typo.size.md};
-  font-weight: ${(props) => props.theme.typo.weight.regular};
+  ${medium_400}
   display: flex;
   align-items: center;
   justify-content: center;

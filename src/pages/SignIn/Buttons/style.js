@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 import { Link } from 'react-router-dom';
 import { instructionTextStyle } from '@/styles/commonStyle/text';
+import { xsmall_500 } from '@/styles/commonStyle/localTextStyle';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -33,8 +34,7 @@ export const Wrapper = styled.div`
       }
       > span {
         color: ${(props) => props.theme.colors.gray[70]};
-        font-size: ${(props) => props.theme.typo.size.xs};
-        font-weight: ${(props) => props.theme.typo.weight.medium};  
+        ${xsmall_500}
       }  
     }  
   }
@@ -48,8 +48,7 @@ export const FindButton = styled(Link)`
   cursor: pointer;
   margin-left: auto;
   color: ${(props) => props.theme.colors.gray[70]};
-  font-size: ${(props) => props.theme.typo.size.xs};
-  font-weight: ${(props) => props.theme.typo.weight.medium};
+  ${xsmall_500}
 
   &:hover {
     color: ${(props) => props.theme.colors.primary};

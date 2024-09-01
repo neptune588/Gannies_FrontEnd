@@ -1,6 +1,13 @@
-import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+
+import styled from 'styled-components';
+
 import { primaryColorBoxStyle } from '@/styles/commonStyle/box';
+import {
+  h3_700,
+  medium_400,
+  medium_500,
+} from '@/styles/commonStyle/localTextStyle';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -18,15 +25,13 @@ export const Wrapper = styled.div`
   > h2 {
     margin-top: 343px;
     color: ${(props) => props.theme.colors.gray[100]};
-    font-size: ${(props) => props.theme.typo.size.h3};
-    font-weight: ${(props) => props.theme.typo.weight.bold};
+    ${h3_700}
     margin-bottom: 59px;
   }
 
   > h4 {
     color: ${(props) => props.theme.colors.gray[100]};
-    font-size: ${(props) => props.theme.typo.size.md};
-    font-weight: ${(props) => props.theme.typo.weight.medium};
+    ${medium_500}
     line-height: 24px;
   }
 `;
@@ -39,10 +44,5 @@ export const Button = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: ${({ theme: { typo } }) => {
-    return typo.size.md;
-  }};
-  font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.regular;
-  }};
+  ${medium_400}
 `;

@@ -1,3 +1,4 @@
+import { medium_400, tiny_400 } from '@/styles/commonStyle/localTextStyle';
 import styled from 'styled-components';
 
 export const Wrapper = styled.footer`
@@ -15,53 +16,53 @@ export const ButtonWrapper = styled.div`
   width: 1078px;
   height: 84px;
   border-bottom: 1px solid black;
+
+  > button {
+    margin-top: 46px;
+    ${medium_400}
+    color: ${(props) => props.theme.colors.primary};
+    cursor: pointer;
+    border: none;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-right: 1px solid #d5d5d5;
+    color: black;
+
+    &:last-of-type {
+      border-right: none;
+    }
+
+    &:focus {
+      outline: none;
+    }  
+  }
 `;
 
-export const Button = styled.button`
-  margin-top: 46px;
-  font-size: ${(props) => props.theme.typo.size.md};
-  color: ${(props) => props.theme.colors.primary};
-  cursor: pointer;
-  border: none;
-  padding-left: 10px;
-  padding-right: 10px;
-  border-right: 1px solid #d5d5d5;
-  color: black;
-
-  &:last-of-type {
-    border-right: none;
-  }
-
-  &:focus {
-    outline: none;
-  }
-`;
 
 export const DetailsWrapper = styled.div`
   width: 1078px;
   margin-top: 34px;
   margin-bottom: 19px;
-`;
+  ${tiny_400}
 
-export const Detail = styled.span`
-  padding-left: 10px;
-  padding-right: 10px;
-  font-size: 12px;
-  border-right: 1px solid black;
-  color: black;
+  > span {
+    padding-left: 10px;
+    padding-right: 10px;
+    border-right: 1px solid black;
+    color: black;
 
-  &:last-of-type {
-    border-right: none;
+    &:last-of-type {
+      border-right: none;
+    }  
+
+    > span {
+      text-decoration: underline;
+    }
   }
-`;
 
-export const Underline = styled.span`
-  text-decoration: underline;
-`;
-
-export const Copyright = styled.div`
-  margin-top: 14px;
-  margin-left: 10px;
-  margin-right: 10px;
-  font-size: 12px;
+  > div {
+    margin-top: 14px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
 `;

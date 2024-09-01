@@ -10,6 +10,7 @@ import {
 } from '@/styles/commonStyle/box';
 import { placeholderTextStyle } from '@/styles/commonStyle/text';
 import { centerAlignStyle } from '@/styles/commonStyle/etc';
+import { small_400, xsmall_500 } from '@/styles/commonStyle/localTextStyle';
 
 export const InputBox = styled(Input)`
   padding-left: 16px;
@@ -27,8 +28,7 @@ export const ButtonStyle = css`
   width: 112px;
   height: 48px;
   margin-top: 10px;
-  font-size: ${(props) => props.theme.typo.size.xs};
-  font-weight: ${(props) => props.theme.typo.weight.medium};
+  ${xsmall_500}
   margin-left: 11px;
 `;
 export const ActiveButton = styled.button`
@@ -67,7 +67,7 @@ export const InfoWrapper = styled.div`
     border: 1px solid ${({ theme }) => theme.colors.gray[40]};
     background-color: transparent;
     color: ${({ theme }) => theme.colors.black};
-    font-size: ${({ theme }) => theme.typo.size.sm};
+    ${small_400}
     cursor: pointer;
     margin-top: 10px;
     appearance: none;

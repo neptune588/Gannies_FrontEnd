@@ -4,6 +4,7 @@ import {
   primaryBorderBoxStyle,
   primaryColorBoxStyle,
 } from '@/styles/commonStyle/box';
+import { medium_400 } from '@/styles/commonStyle/localTextStyle';
 
 export const Wrapper = styled.header`
   display: flex;
@@ -12,6 +13,7 @@ export const Wrapper = styled.header`
   background-color: white;
   height: 111px;
   width: 1128px;
+  ${medium_400}  
 `;
 
 export const Logo = styled(Link)`
@@ -28,7 +30,6 @@ export const Logo = styled(Link)`
 export const LoginButton = styled(Link)`
   ${primaryBorderBoxStyle};
   cursor: pointer;
-  font-size: ${(props) => props.theme.typo.size.md};
   padding: 12px 8px;
   margin-left: auto;
   margin-right: 20px;
@@ -36,7 +37,6 @@ export const LoginButton = styled(Link)`
 
 export const SignUpButton = styled(Link)`
   ${primaryColorBoxStyle};
-  font-size: ${(props) => props.theme.typo.size.md};
   cursor: pointer;
   padding: 12px 8px;
   border: 1px solid ${(props) => props.theme.colors.primary};

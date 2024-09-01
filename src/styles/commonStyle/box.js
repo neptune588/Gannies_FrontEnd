@@ -1,5 +1,7 @@
 import { css } from 'styled-components';
 
+import { medium_600 } from '@/styles/commonStyle/localTextStyle';
+
 const defaultBorderBoxStyle = css`
   border: 1px solid
     ${({ theme: { colors } }) => {
@@ -54,8 +56,7 @@ const createPostPageInputBoxStyle = css`
 
 const authEmailColorBoxStyle = css`
   background-color: ${(props) => props.theme.colors.gray[10]};
-  font-size: ${(props) => props.theme.typo.size.md};
-  font-weight: ${(props) => props.theme.typo.weight.semiBold};
+  ${medium_600}
   color: ${(props) => props.theme.colors.primary};
   width: 336px;
   height: 58px;

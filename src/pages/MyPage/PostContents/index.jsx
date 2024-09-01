@@ -1,13 +1,5 @@
-import { useState } from 'react';
-
 import PostList from '@/components/PostList';
-import PageControlArrow from '@/components/PageControlArrow';
-import PageNumber from '@/components/PageNumber';
-
-import prevArrow from '@/assets/icons/arrows/chevron_left.svg';
-import nextArrow from '@/assets/icons/arrows/chevron_right.svg';
-import prev10PagesArrow from '@/assets/icons/arrows/double_chevron_lef.svg';
-import next10PagesArrow from '@/assets/icons/arrows/double_chevron_right.svg';
+import Pagination from '@/components/Pagination';
 
 import {
   PostsWrapper,
@@ -16,24 +8,17 @@ import {
   PostsHeaderRightBox,
   PostListBox,
   PageWrapper,
-  ArrowBox,
-  PageNumberBox,
 } from '@/pages/MyPage/PostContents/style';
 
 export default function PostContents({
-  pageData,
   postData,
   pageName,
   scrapViewState = false,
   scrapClickState = false,
+  pageNumberData,
+  activePageNumber = 0,
+  handlePageNumberClick = null,
 }) {
-  const [tempPageNumber, setTempPageNumber] = useState(0);
-  const handlePageClick = (idx) => {
-    return () => {
-      setTempPageNumber(idx);
-    };
-  };
-
   return (
     <PostsWrapper>
       <PostsHeader>
@@ -78,32 +63,11 @@ export default function PostContents({
           })}
       </PostListBox>
       <PageWrapper>
-        <ArrowBox>
-          <PageControlArrow arrowImg={prevArrow} alt={'prev-button'} />
-          <PageControlArrow
-            arrowImg={prev10PagesArrow}
-            alt={'prev-10pages-button'}
-          />
-        </ArrowBox>
-        <PageNumberBox>
-          {pageData.map((item, idx) => {
-            return (
-              <PageNumber
-                key={item + 'pageNumber'}
-                myNumber={idx}
-                activeNumber={tempPageNumber}
-                onClick={handlePageClick(idx)}
-              />
-            );
-          })}
-        </PageNumberBox>
-        <ArrowBox>
-          <PageControlArrow arrowImg={nextArrow} alt={'next-button'} />
-          <PageControlArrow
-            arrowImg={next10PagesArrow}
-            alt={'next-10pages-button'}
-          />
-        </ArrowBox>
+        <Pagination
+          pageNumberData={pageNumberData}
+          activePageNumber={activePageNumber}
+          handlePageNumberClick={handlePageNumberClick}
+        />
       </PageWrapper>
     </PostsWrapper>
   );

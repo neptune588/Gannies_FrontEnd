@@ -6,8 +6,11 @@ import {
   primaryBorderBoxStyle,
   primaryColorBoxStyle,
 } from '@/styles/commonStyle/box';
+
 import { Link } from 'react-router-dom';
 import { centerAlignStyle } from '@/styles/commonStyle/etc';
+
+import { small_400, h3_600, medium_400 } from '@/styles/commonStyle/localTextStyle';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -15,9 +18,8 @@ export const Wrapper = styled.div`
   flex-direction: column;
 
   > h3 {
-    font-weight: ${(props) => props.theme.typo.weight.semiBold};
-    font-size: ${(props) => props.theme.typo.size.h3};
     color: ${(props) => props.theme.colors.gray[100]};
+    ${h3_600}
     margin-top: 31px;
   }
 
@@ -34,9 +36,8 @@ export const Wrapper = styled.div`
   }
 
   > span {
-    font-size: ${(props) => props.theme.typo.size.sm};
-    font-weight: ${(props) => props.theme.typo.weight.regular};
     color: ${(props) => props.theme.colors.gray[60]};
+    ${small_400}
     margin-top: 38px;
   }
 
@@ -57,19 +58,18 @@ export const ButtonWrapper = styled.div`
   margin-top: 70px;
   width: 434px;
   justify-content: space-between;
+  ${medium_400}
 `;
 
 export const LeftButton = styled(Link)`
   ${primaryBorderBoxStyle};
   ${centerAlignStyle};
-  font-size: ${(props) => props.theme.typo.size.md};
   width: 205px;
   height: 48px;
 `;
 
 export const RightButton = styled.button`
   ${primaryColorBoxStyle};
-  font-size: ${(props) => props.theme.typo.size.md};
   width: 205px;
   height: 48px;  
 `;
