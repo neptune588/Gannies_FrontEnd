@@ -48,10 +48,12 @@ export const ActiveButton = styled(Link)`
   border-radius: 0px 4px 4px 0px;  
   ${large_400}
   width: 90px;
+  ${centerAlignStyle}
   height: 50px;
   cursor: pointer;  
 `;
 
 export const InactiveButton = styled(ActiveButton)`
   ${inactiveColorBoxStyle};
+  border-radius: 0px 4px 4px 0px;    
 `;

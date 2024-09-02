@@ -1,5 +1,6 @@
-import Close from '@/components/Icons/Close';
 import styled from 'styled-components';
+
+import Close from '@/components/Icons/Close';
 
 import { modalBoxStyle } from '@/styles/commonStyle/box';
 import { h4_600, small_400 } from '@/styles/commonStyle/localTextStyle';

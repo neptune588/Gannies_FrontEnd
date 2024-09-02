@@ -1,11 +1,12 @@
+import ModalContainer from '@/components/ModalContainer';
+import warn from '@/assets/images/warn.png';
+
 import {
   CloseIcon,
   Image,
   ModalBox
 } from '@/components/MismatchModal/style';
 
-import ModalContainer from '@/components/ModalContainer';
-import warn from '@/assets/images/warn.png';
 
 function MismatchModal({openModal}) {
 

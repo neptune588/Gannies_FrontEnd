@@ -1,5 +1,6 @@
-import Negative from "@/components/Instruction/Negative";
 import styled from "styled-components";
+
+import Negative from "@/components/Instruction/Negative";
 
 const NegativeBox = styled.div`
   width: 456px;

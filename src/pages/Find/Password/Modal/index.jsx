@@ -1,10 +1,10 @@
+import ModalContainer from '@/components/ModalContainer';
+import warn from '@/assets/images/warn.png';
+
 import {
   Image,
   ModalBox
 } from '@/pages/Find/Modal/style';
-
-import ModalContainer from '@/components/ModalContainer';
-import warn from '@/assets/images/warn.png';
 import { LeftButton } from '@/pages/SignUp/Success/style';
 
 function Modal({openModal}) {

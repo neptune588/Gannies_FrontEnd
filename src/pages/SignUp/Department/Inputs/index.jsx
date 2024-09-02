@@ -1,7 +1,8 @@
+import { useState } from "react";
+
 import NextButton from "@/pages/SignUp/components/NextButton";
 import Document from "@/pages/SignUp/Department/Inputs/Document";
 import Status from "@/pages/SignUp/Department/Inputs/Status";
-import { useState } from "react";
 
 function Inputs() {
   const [allow, setAllow] = useState([false, false]);

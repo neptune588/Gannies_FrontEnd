@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-
 import { Link } from 'react-router-dom';
+
 import { instructionTextStyle } from '@/styles/commonStyle/text';
 import { xsmall_500 } from '@/styles/commonStyle/localTextStyle';
 

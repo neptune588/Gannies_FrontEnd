@@ -1,5 +1,6 @@
-import { medium_400, tiny_400 } from '@/styles/commonStyle/localTextStyle';
 import styled from 'styled-components';
+
+import { medium_400, tiny_400 } from '@/styles/commonStyle/localTextStyle';
 
 export const Wrapper = styled.footer`
   display: flex;

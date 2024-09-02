@@ -1,16 +1,14 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
-import { authDefaultTextStyle } from '@/styles/commonStyle/text';
 import {
   authEmailColorBoxStyle,
   primaryBorderBoxStyle,
   primaryColorBoxStyle,
 } from '@/styles/commonStyle/box';
-
-import { Link } from 'react-router-dom';
 import { centerAlignStyle } from '@/styles/commonStyle/etc';
-
 import { small_400, h3_600, medium_400 } from '@/styles/commonStyle/localTextStyle';
+import { authDefaultTextStyle } from '@/styles/commonStyle/text';
 
 export const Wrapper = styled.div`
   display: flex;

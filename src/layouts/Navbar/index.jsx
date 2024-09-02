@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Wrapper, Button } from '@/layouts/Navbar/style';
 
 function Navbar() {

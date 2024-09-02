@@ -1,11 +1,12 @@
+import ModalContainer from '@/components/ModalContainer';
+import warn from '@/assets/images/warn.png';
+
 import {
   CloseIcon,
   Image,
   ModalBox
 } from '@/pages/Find/Modal/style';
 
-import ModalContainer from '@/components/ModalContainer';
-import warn from '@/assets/images/warn.png';
 
 function ModalVerifyFail({openModal}) {
 

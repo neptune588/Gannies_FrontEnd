@@ -40,6 +40,9 @@ export const ActiveInputBox = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    height: 40px;
+    display: flex;
+    align-items: center;
   }
 `;
 
