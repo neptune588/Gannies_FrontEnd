@@ -1,87 +1,142 @@
+import HeaderRow from '@/components/HeaderRow';
+
 import bottomArrow from '@/assets/icons/arrows/chevron_down.svg';
 
 import {
-  ListHeader,
-  ReportList,
+  TitleCategorySection,
+  TitleCategory,
+  ListWrapper,
+  DataList,
+  DataCell,
   ProcessBox,
+  Arrow,
   ProcessModal,
   ProcessList,
+  ListLength,
 } from '@/pages/Admin/ReportHistory/style';
 
 export default function ReeportHistory({
-  reportData,
+  currentActiveTab = '신고내역',
+  currenntActiveCategory = '게시글',
+  headerColumns,
+  tableData,
+  handleCategoryChange,
   handleProcessingModalControl,
   handleProcessingChange,
 }) {
-  const tempformatting = (arr) => {
-    arr[1] = String(arr[1]).padStart(2, '0');
-    arr[2] = String(arr[2]).padStart(2, '0');
-
-    return arr.join('-');
-  };
   return (
     <>
-      <ListHeader>
-        <p>순서</p>
-        <p>제목</p>
-        <p>작성자</p>
-        <p>신고일자</p>
-        <p>신고자</p>
-        <p>신고사유</p>
-        <p>
-          상태
-          <img src={bottomArrow} alt='bottom-arrow' />
-        </p>
-      </ListHeader>
-      <ul>
-        {reportData?.map((list, idx) => {
-          return (
-            <ReportList key={list.key}>
-              <p>{String(list.order).padStart(2, '0')}</p>
-              <p>{list.contents}</p>
-              <p>{list.contributor}</p>
-              <p>{tempformatting(list.reportDate)}</p>
-              <p>{list.complainant}</p>
-              <p>{list.reportDetail}</p>
-              <ProcessBox
-                $processingStatus={list.processingStatus}
-                $modalState={list.processingModalState}
-                onClick={() => {
-                  handleProcessingModalControl(idx);
-                }}
-              >
-                {list.processingStatus}
-                <img src={bottomArrow} alt='bottom-arrow' />
-                {list.processingModalState && (
-                  <ProcessModal>
-                    <ProcessList
+      {currentActiveTab === '신고내역' && (
+        <TitleCategorySection>
+          <TitleCategory
+            $currenntActiveCategory={currenntActiveCategory}
+            $ownCategory={'게시글'}
+            onClick={() => {
+              handleCategoryChange('게시글');
+            }}
+          >
+            게시글
+          </TitleCategory>
+          <TitleCategory
+            $currenntActiveCategory={currenntActiveCategory}
+            $ownCategory={'댓글'}
+            onClick={() => {
+              handleCategoryChange('댓글');
+            }}
+          >
+            댓글
+          </TitleCategory>
+        </TitleCategorySection>
+      )}
+      <ListLength>총 n개</ListLength>
+      <ListWrapper>
+        <table>
+          <thead>
+            <HeaderRow currentActiveTab={currentActiveTab}>
+              {headerColumns.map((data, idx) => {
+                return (
+                  <th key={data.header + idx}>
+                    {data.header}
+                    {idx === headerColumns.length - 1 && (
+                      <img src={bottomArrow} alt='bottom-arrow' />
+                    )}
+                  </th>
+                );
+              })}
+            </HeaderRow>
+          </thead>
+          <tbody>
+            {tableData?.map((data, idx) => {
+              return (
+                <DataList key={data.contributor + idx}>
+                  <DataCell $currentActiveTab={currentActiveTab}>
+                    {String(data.order).padStart(2, '0')}
+                  </DataCell>
+                  <DataCell $currentActiveTab={currentActiveTab}>
+                    {data.contents}
+                  </DataCell>
+                  <DataCell $currentActiveTab={currentActiveTab}>
+                    {data.contributor}
+                  </DataCell>
+                  <DataCell $currentActiveTab={currentActiveTab}>
+                    {data.reportDate}
+                  </DataCell>
+                  <DataCell $currentActiveTab={currentActiveTab}>
+                    {data.complainant}
+                  </DataCell>
+                  <DataCell $currentActiveTab={currentActiveTab}>
+                    {data.reportDetail}
+                  </DataCell>
+                  <DataCell $currentActiveTab={currentActiveTab}>
+                    {data.processingModalState && (
+                      <ProcessModal>
+                        <ProcessList
+                          onClick={() => {
+                            handleProcessingChange('처리 중', idx);
+                            handleProcessingModalControl(idx);
+                          }}
+                        >
+                          처리 중
+                        </ProcessList>
+                        <ProcessList
+                          onClick={() => {
+                            handleProcessingChange('처리완료', idx);
+                            handleProcessingModalControl(idx);
+                          }}
+                        >
+                          처리완료
+                        </ProcessList>
+                        <ProcessList
+                          onClick={() => {
+                            handleProcessingChange('신고반려', idx);
+                            handleProcessingModalControl(idx);
+                          }}
+                        >
+                          신고반려
+                        </ProcessList>
+                      </ProcessModal>
+                    )}
+                    <ProcessBox
+                      $processingStatus={data.processingStatus}
+                      $modalState={data.processingModalState}
                       onClick={() => {
-                        handleProcessingChange('처리 중', idx);
+                        handleProcessingModalControl(idx);
                       }}
                     >
-                      처리 중
-                    </ProcessList>
-                    <ProcessList
-                      onClick={() => {
-                        handleProcessingChange('처리완료', idx);
-                      }}
-                    >
-                      처리완료
-                    </ProcessList>
-                    <ProcessList
-                      onClick={() => {
-                        handleProcessingChange('신고반려', idx);
-                      }}
-                    >
-                      신고반려
-                    </ProcessList>
-                  </ProcessModal>
-                )}
-              </ProcessBox>
-            </ReportList>
-          );
-        })}
-      </ul>
+                      {data.processingStatus}
+                      <Arrow
+                        $modalState={data.processingModalState}
+                        src={bottomArrow}
+                        alt='bottom-arrow'
+                      />
+                    </ProcessBox>
+                  </DataCell>
+                </DataList>
+              );
+            })}
+          </tbody>
+        </table>
+      </ListWrapper>
     </>
   );
 }

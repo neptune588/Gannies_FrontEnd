@@ -1,46 +1,72 @@
 import styled from 'styled-components';
 
 import {
-  adminPageListHeaderStyle,
-  adminPageListStyle,
-  adminPageContentStyle,
+  adminPageHeaderRowStyle,
+  adminPageCellStyle,
+  adminPageRowStyle,
 } from '@/styles/commonStyle/etc';
-import { ellipsisStyle } from '@/styles/commonStyle/etc';
+
+import { ellipsisStyle, centerAlignStyle } from '@/styles/commonStyle/etc';
 import { defaultBorderBoxStyle } from '@/styles/commonStyle/box';
-import { centerAlignStyle } from '@/styles/commonStyle/etc';
-import { xsmall_700 } from '@/styles/commonStyle/localTextStyle';
+import { xsmall_700, h1_600 } from '@/styles/commonStyle/localTextStyle';
 
-const ListHeader = styled.div`
-  ${adminPageListHeaderStyle}
-  > p {
-    ${adminPageContentStyle}
-
-    &:last-child {
-      display: flex;
-      align-items: center;
-      > img {
-        width: 18px
-        height: 18px;
-        margin-left: 5px;
-      }
-    }
-  }
+const TitleCategorySection = styled.section`
+  display: flex;
+  align-items: center;
+  padding: 115px 0 0 25px;
+  margin-bottom: 100px;
 `;
 
-const ReportList = styled.li`
-  ${adminPageListStyle}
-  > p {
-    ${adminPageContentStyle}
-    ${ellipsisStyle}
-    color: ${({ theme: { colors } }) => {
-      return colors.gray['90'];
-    }};
-    ${xsmall_700}
-  }
+const TitleCategory = styled.h2`
+  margin-right: 65px;
+  color: ${({ $currenntActiveCategory, $ownCategory, theme: { colors } }) => {
+    return $currenntActiveCategory === $ownCategory
+      ? colors.gray['100']
+      : colors.gray['50'];
+  }};
+  ${h1_600}
+  cursor: pointer;
+  user-select: none;
 `;
 
-const ProcessBox = styled.div`
+const ListLength = styled.p`
+  font-size: ${({ theme: { typo } }) => {
+    return typo.size.h4;
+  }};
+  font-weight: ${({ theme: { typo } }) => {
+    return typo.weight.semiBold;
+  }};
+  margin: 0 0 35px 20px;
+`;
+
+const ListWrapper = styled.div`
+  min-height: 830px;
+  padding: 45px 42px 12px 42px;
+  background-color: ${({ theme: { colors } }) => {
+    return colors.white;
+  }};
+  border-radius: 24px;
+`;
+
+const DataList = styled.tr`
+  ${adminPageRowStyle}
+`;
+
+const DataCell = styled.td`
+  ${ellipsisStyle}
+  ${adminPageCellStyle}
   position: relative;
+  color: ${({ theme: { colors } }) => {
+    return colors.gray['90'];
+  }};
+  ${xsmall_700}
+
+  &:last-child {
+    overflow: visible;
+  }
+`;
+
+const ProcessBox = styled.button`
   display: flex;
   align-items: center;
   user-select: none;
@@ -55,23 +81,24 @@ const ProcessBox = styled.div`
     }
   }};
   ${xsmall_700}
-  > img {
-    width: 18px;
-    height: 18px;
-    transition: all 0.1s;
-    rotate: ${({ $modalState }) => {
-      return $modalState ? '180deg' : '0';
-    }};
-    margin-left: 5px;
-  }
+`;
+
+const Arrow = styled.img`
+  width: 18px;
+  height: 18px;
+  transition: all 0.1s;
+  rotate: ${({ $modalState }) => {
+    return $modalState ? '180deg' : '0';
+  }};
+  margin-left: 5px;
 `;
 
 const ProcessModal = styled.ul`
   ${defaultBorderBoxStyle}
   position: absolute;
   width: 90px;
-  top: 25px;
-  left: -12px;
+  top: 28px;
+  right: 65px;
   background-color: ${({ theme: { colors } }) => {
     return colors.white;
   }};
@@ -104,7 +131,19 @@ const ProcessList = styled.li`
     color: ${({ theme: { colors } }) => {
       return colors.negative;
     }};
+    border-bottom: none;
   }
 `;
 
-export { ListHeader, ReportList, ProcessBox, ProcessModal, ProcessList };
+export {
+  TitleCategorySection,
+  TitleCategory,
+  ListWrapper,
+  DataList,
+  DataCell,
+  ProcessBox,
+  Arrow,
+  ProcessModal,
+  ProcessList,
+  ListLength,
+};

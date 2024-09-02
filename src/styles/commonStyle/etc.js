@@ -23,7 +23,7 @@ const postsHeaderStyle = css`
     }};
 `;
 
-const adminPageListHeaderStyle = css`
+const adminPageHeaderRowStyle = css`
   display: flex;
   padding-bottom: 24px;
   align-items: center;
@@ -42,7 +42,7 @@ const adminPageListHeaderStyle = css`
   }};
 `;
 
-const adminPageListStyle = css`
+const adminPageRowStyle = css`
   display: flex;
   padding: 28px 0;
   border-bottom: 1px solid
@@ -60,28 +60,92 @@ const adminPageListStyle = css`
   }
 `;
 
-const adminPageContentStyle = css`
+const adminPageCellStyle = css`
   text-align: left;
+
   &:nth-child(1n) {
     width: 115px;
   }
+
   &:nth-child(2n) {
-    width: 413px;
+    width: ${({ $currentActiveTab }) => {
+      if ($currentActiveTab === '신고내역') {
+        return '413px';
+      } else if (
+        $currentActiveTab === '회원관리' ||
+        $currentActiveTab === '회원 가입승인'
+      ) {
+        return '302px';
+      } else if ($currentActiveTab === '게시물') {
+        return '142px';
+      }
+    }};
   }
+
   &:nth-child(3n) {
-    width: 110px;
+    width: ${({ $currentActiveTab }) => {
+      if (
+        $currentActiveTab === '신고내역' ||
+        $currentActiveTab === '회원관리'
+      ) {
+        return '110px';
+      } else if ($currentActiveTab === '회원 가입승인') {
+        return '134px';
+      } else if ($currentActiveTab === '게시물') {
+        return '413px';
+      }
+    }};
   }
+
   &:nth-child(4n) {
-    width: 110px;
+    width: ${({ $currentActiveTab }) => {
+      if (
+        $currentActiveTab === '신고내역' ||
+        $currentActiveTab === '회원관리'
+      ) {
+        return '110px';
+      } else if ($currentActiveTab === '회원 가입승인') {
+        return '134px';
+      } else if ($currentActiveTab === '게시물') {
+        return '110px';
+      }
+    }};
   }
+
   &:nth-child(5n) {
-    width: 110px;
+    width: ${({ $currentActiveTab }) => {
+      if ($currentActiveTab === '신고내역') {
+        return '110px';
+      } else if ($currentActiveTab === '회원관리') {
+        return '131px';
+      } else if ($currentActiveTab === '회원 가입승인') {
+        return '375px';
+      } else if ($currentActiveTab === '게시물') {
+        return '519px';
+      }
+    }};
   }
+
   &:nth-child(6n) {
-    width: 295px;
+    width: ${({ $currentActiveTab }) => {
+      if ($currentActiveTab === '신고내역') {
+        return '295px';
+      } else if ($currentActiveTab === '회원관리') {
+        return '110px';
+      } else if ($currentActiveTab === '회원 가입승인') {
+        return '239px';
+      }
+    }};
   }
+
   &:nth-child(7n) {
-    width: 146px;
+    width: ${({ $currentActiveTab }) => {
+      if ($currentActiveTab === '신고내역') {
+        return '146px';
+      } else if ($currentActiveTab === '회원관리') {
+        return '418px';
+      }
+    }};
   }
 `;
 
@@ -96,8 +160,8 @@ export {
   ellipsisStyle,
   centerAlignStyle,
   postsHeaderStyle,
-  adminPageListHeaderStyle,
-  adminPageListStyle,
-  adminPageContentStyle,
+  adminPageHeaderRowStyle,
+  adminPageRowStyle,
+  adminPageCellStyle,
   modalCloseAreaStyle,
 };
