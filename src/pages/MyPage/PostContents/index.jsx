@@ -1,3 +1,5 @@
+import uuid from 'react-uuid';
+
 import PostList from '@/components/PostList';
 import Pagination from '@/components/Pagination';
 
@@ -47,7 +49,7 @@ export default function PostContents({
           postData.map((list, idx) => {
             return (
               <PostList
-                key={list.category + idx}
+                key={uuid()}
                 postNumber={String(idx + 1).padStart(2, '0')}
                 category={list.category}
                 title={list.title}

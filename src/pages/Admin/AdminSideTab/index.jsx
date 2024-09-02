@@ -1,3 +1,5 @@
+import uuid from 'react-uuid';
+
 import {
   TabContainer,
   ProfileBox,
@@ -19,7 +21,7 @@ export default function AdminSideTab({
         {tabMenuList?.map((menu, idx) => {
           return (
             <TabMenuList
-              key={menu + idx}
+              key={uuid()}
               $activeMenu={activeMenu}
               $ownContent={menu.content}
               onClick={() => {

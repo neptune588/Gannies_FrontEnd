@@ -1,3 +1,5 @@
+import uuid from 'react-uuid';
+
 import HeaderRow from '@/components/HeaderRow';
 
 import bottomArrow from '@/assets/icons/arrows/chevron_down.svg';
@@ -55,7 +57,7 @@ export default function ReeportHistory({
             <HeaderRow currentActiveTab={currentActiveTab}>
               {headerColumns.map((data, idx) => {
                 return (
-                  <th key={data.header + idx}>
+                  <th key={uuid()}>
                     {data.header}
                     {idx === headerColumns.length - 1 && (
                       <img src={bottomArrow} alt='bottom-arrow' />
@@ -68,7 +70,7 @@ export default function ReeportHistory({
           <tbody>
             {tableData?.map((data, idx) => {
               return (
-                <DataList key={data.contributor + idx}>
+                <DataList key={uuid()}>
                   <DataCell $currentActiveTab={currentActiveTab}>
                     {String(data.order).padStart(2, '0')}
                   </DataCell>
