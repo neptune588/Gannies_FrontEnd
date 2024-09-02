@@ -1,18 +1,23 @@
+import { Link } from 'react-router-dom';
+
 import Close from '@/components/Icons/Close';
 import styled from 'styled-components';
 
 import { modalBoxStyle, primaryBorderBoxStyle } from '@/styles/commonStyle/box';
+import { centerAlignStyle } from '@/styles/commonStyle/etc';
+
 import {
   xsmall_500,
   xsmall_600,
   small_400,
   h4_600,
+  medium_400,
 } from '@/styles/commonStyle/localTextStyle';
 
 export const ModalBox = styled.div`
   ${modalBoxStyle};
   width: 524px;
-  height: 414px;
+  height: 388px;
   padding: 26px 36px;
 
   > h4 {
@@ -53,9 +58,11 @@ export const Image = styled.img`
   height: 80px;
 `;
 
-export const Button = styled.button`
+export const Button = styled(Link)`
   ${primaryBorderBoxStyle};
+  ${centerAlignStyle};
   width: 205px;
   height: 48px;
   margin-top: 39px;
+  ${medium_400}
 `;

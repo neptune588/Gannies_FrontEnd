@@ -1,12 +1,9 @@
-import {
-  Font,
-  Wrapper
-} from '@/pages/SignIn/Title/style';
+import { Wrapper } from "@/pages/SignIn/Title/style";
 
-function Title({title}) {
+function Title() {
   return (
     <Wrapper>
-      <Font>{title}</Font>
+      <span>로그인</span>
     </Wrapper>
   );
 }

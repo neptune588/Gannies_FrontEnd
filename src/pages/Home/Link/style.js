@@ -18,7 +18,15 @@ export const LeftWrapper = styled.div`
   flex-direction: column;
   color: white;
   padding-left: 48px;
+
+  > h3 {
+    color: ${props => props.theme.colors.gray[10]};
+    ${h4_400}
+    letter-spacing: 0px;  
+  }
 `;
+
+export const LowerBox = styled.div``
 
 export const Title = styled.span`
   color: ${(props) => props.theme.colors.gray[10]};
@@ -31,6 +39,16 @@ export const Goto = styled.div`
   ${h4_600}
   display: flex;
   align-items: center;
+
+  > div {
+    display: flex;
+    margin-left: 9px;
+    background-color: rgba(256, 256, 256, 0.5);
+    width: 30px;
+    height: 30px;
+    padding: 3px;
+    border-radius: 4px;  
+  }
 `;
 
 export const ArrowIconWrapper = styled.div`
@@ -60,4 +78,11 @@ export const LinkIcon = styled.img`
 export const RightWrapper = styled.div`
   margin-right: 48px;
   margin-left: 20px;
+
+  > img {
+    width: 106px;
+    height: 106px;
+    margin-left: 20px;
+    cursor: pointer;  
+  }
 `;

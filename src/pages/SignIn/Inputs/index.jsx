@@ -1,20 +1,50 @@
+import { useState } from 'react';
+
+// import Negative from '@/components/Instruction/Negative';
+
 import {
   InputBox,
   Wrapper,
-  InputWrapper,
-  Icon
+  EyeIcon,
+  EyeSlashIcon
 } from '@/pages/SignIn/Inputs/style';
 
 function Inputs() {
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  // const [allow, setAllow] = useState(false);
+
+  const handleEmail = (e) => {
+    setEmail(e.target.value);
+  }
+
+  const handlePassword = (e) => {
+    setPassword(e.target.value);
+  }
+  
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  }
+
   return (
     <Wrapper>
-      <InputWrapper>
-        <InputBox type="text" placeholder='이메일'/>
-      </InputWrapper>
-      <InputWrapper>
-        <InputBox type="password" placeholder='비밀번호'/>
-        <Icon />
-      </InputWrapper>
+      <form>
+        <InputBox type="text" placeholder='이메일' value={email} onChange={handleEmail} />
+      </form>
+      <form>
+        <InputBox type={showPassword ? "text" : "password"} placeholder='비밀번호' value={password} onChange={handlePassword} />
+        { showPassword ? 
+          <EyeIcon onClick={handleShowPassword} /> :
+          <EyeSlashIcon onClick={handleShowPassword} />
+        }
+      </form>
+      {/* <div>
+        {
+          allow && <Negative text="이메일과 비밀번호를 정확히 입력해 주세요" />
+        }
+      </div> */}
     </Wrapper>
   );
 }

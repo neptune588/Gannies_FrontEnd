@@ -8,22 +8,11 @@ import {
   ButtonWrapper,
   LeftButton,
   RightButton,
-} from "@/pages/SignUp/Success/style";
-
-import { useState } from "react";
-import Modal from "@/pages/Find/ID/Success/Modal";
+} from "@/pages/Find/ID/Success/style";
 
 function Success() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
-    
   return (
-    <Wrapper>
-      {
-        isModalOpen ? <Modal closeModal={closeModal} /> : <></>
-      }      
+    <Wrapper>  
       <FindBox $margin="80px">
         <Active type="id" text={"이메일 찾기"}/>
         <Inactive type="password" text={"비밀번호 찾기"} />
@@ -32,10 +21,10 @@ function Success() {
       <span>개인정보 보호를 위해 일부 주소는 *처리되었습니다</span>    
       <EmailBox text="hihi@gmail.com" />
       <ButtonWrapper>
-        <LeftButton onClick={openModal}>모달 확인</LeftButton>
-        <RightButton />
+        <LeftButton to="/sign-in">로그인 하기</LeftButton>
+        <RightButton to="/find/password">비밀번호 찾기</RightButton>
       </ButtonWrapper>    
-   </Wrapper>
+    </Wrapper>
   );
 }
 

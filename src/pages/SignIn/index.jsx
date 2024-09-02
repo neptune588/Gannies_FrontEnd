@@ -5,7 +5,7 @@ import Title from '@/pages/SignIn/Title';
 function Login() {
  return (
    <>
-     <Title title="로그인" />
+     <Title />
      <Inputs />
      <Buttons />
    </>

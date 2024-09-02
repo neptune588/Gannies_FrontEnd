@@ -1,7 +1,7 @@
-const posts = [
+export const posts = [
   {
     category: '이론정보',
-    title: '효율적인 업무 관리를 위한 5가지 팁',
+    title: 'ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ',
     comment: 10,
     views: 12520,
     likes: 134,
@@ -48,5 +48,3 @@ const posts = [
     date: '2024-08-01',
   },
 ];
-
-export { posts };

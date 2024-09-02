@@ -8,9 +8,9 @@ const Icon = styled.img`
   height: 18px;
 `;
 
-export default function EyeSlash({ handlePasswordViewClick = null }) {
+export default function EyeSlash({ handlePasswordViewClick = null, ...props }) {
   return (
-    <IconBox onClick={handlePasswordViewClick || undefined}>
+    <IconBox onClick={handlePasswordViewClick || undefined} {...props}>
       <Icon src={eyeSlash} alt='eyeSlash' />
     </IconBox>
   );

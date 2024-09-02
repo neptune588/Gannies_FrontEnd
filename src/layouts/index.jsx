@@ -1,9 +1,10 @@
+import styled from 'styled-components';
+import { Outlet } from 'react-router-dom';
+
 import Header from '@/layouts/Header';
 import Footer from '@/layouts/Footer';
 import Navbar from '@/layouts/Navbar';
 
-import styled from 'styled-components';
-import { Outlet } from 'react-router-dom';
 
 const CenterdContainer = styled.div`
   width: 1128px;
@@ -13,6 +14,10 @@ const CenterdContainer = styled.div`
 const MypageCenterdContainer = styled.div`
   width: 975px;
   margin: 0 auto;
+`;
+
+const EmptyFooterBox = styled.div`
+  height: 167px;
 `;
 
 export function MainLayout() {
@@ -37,6 +42,18 @@ export function MypageLayout() {
         <Outlet />
       </MypageCenterdContainer>
       <Footer />
+    </>
+  );
+}
+
+export function HeaderLayout() {
+  return (
+    <>
+      <Header />
+      <CenterdContainer>
+        <Outlet />
+      </CenterdContainer>
+      <EmptyFooterBox />
     </>
   );
 }

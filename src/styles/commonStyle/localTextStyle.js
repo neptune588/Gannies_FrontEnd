@@ -18,6 +18,15 @@ const caption = css`
   }};
 `;
 
+const tiny_400 = css`
+  font-size: ${({ theme: { typo } }) => {
+    return typo.size.tiny;
+  }};
+  font-weight: ${({ theme: { typo } }) => {
+    return typo.weight.regular;
+  }};
+`;
+
 const xsmall_400 = css`
   font-size: ${({ theme: { typo } }) => {
     return typo.size.xs;
@@ -217,6 +226,7 @@ const h1_600 = css`
 export {
   body,
   caption,
+  tiny_400,  
   xsmall_400,
   xsmall_500,
   xsmall_600,

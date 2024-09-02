@@ -1,24 +1,67 @@
-import {
-  InputBox,
-  InputWrapper
-} from '@/pages/SignUp/Info/Inputs/Password/style';
+import { useState } from 'react';
 
-// import Positive from '@/components/Instruction/Positive';
+import Positive from '@/components/Instruction/Positive';
 import Instruction from '@/components/Instruction';
 import InputSection from '@/pages/SignUp/components/InputSection';
-import EyeSlash from "@/components/Icons/EyeSlash";
+import Negative from '@/components/Instruction/Negative';
 
-function Password() {
+import {
+  InputBox,
+  InputWrapper,
+  EyeIcon,
+  EyeSlashIcon  
+} from '@/pages/SignUp/Info/Inputs/Password/style';
+
+
+function Password({password, setPassword, setAllow}) {
+  const [passwordValid, setPasswordValid] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  }
+  
+  const handlePassword = (e) => {
+    const value = e.target.value.slice(0, 16);
+    setPassword(value);
+    
+    const regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$^&*?_])[A-Za-z\d!@#$^&*?_]{8,16}$/;
+    const state = regex.test(value) && value.length >= 8;
+
+    setPasswordValid(state);
+    setAllow((prev) => {
+      const newAllow = [...prev];
+      newAllow[2] = state;
+      return newAllow;
+    });
+  }
+
   return (
     <InputSection $margin="37px" title="비밀번호*">
       <InputWrapper>
-        <InputBox type="text" placeholder='이메일' />
-        <EyeSlash />
+        <InputBox type={showPassword ? "text" : "password"} placeholder='비밀번호를 입력해주세요' value={password} onChange={handlePassword}/>
+        { showPassword ? 
+          <EyeIcon onClick={handleShowPassword} /> :
+          <EyeSlashIcon onClick={handleShowPassword} />
+        }
       </InputWrapper>
-      <Instruction text="*최소 8자에서 16자의 비밀번호를 입력해주세요" />
-      <Instruction text="*영문 대문자, 소문자, 숫자, 특수문자 하나씩을 포함해주세요" />
-      <Instruction text="*특수문자는 '!@#$%^&*?_'만 가능" />
-      {/* <Positive text="사용가능한 닉네임입니다"/> */}
+      {
+        password.length > 0 && passwordValid ?
+          <Positive text="사용가능한 비밀번호입니다" />
+          : password.length > 0 ?
+            <>
+              <Instruction text="*최소 8자에서 16자의 비밀번호를 입력해주세요" />
+              <Instruction text="*영문 대문자, 소문자, 숫자, 특수문자 하나씩을 포함해주세요" />
+              <Instruction text="*특수문자는 '!@#$%^&*?_'만 가능" />
+              <Negative text="비밀번호를 조건에 맞게 다시 입력해주세요" />
+            </>
+          :
+            <>
+              <Instruction text="*최소 8자에서 16자의 비밀번호를 입력해주세요" />
+              <Instruction text="*영문 대문자, 소문자, 숫자, 특수문자 하나씩을 포함해주세요" />
+              <Instruction text="*특수문자는 '!@#$%^&*?_'만 가능" />
+            </>
+      }
     </InputSection>
   );
 }

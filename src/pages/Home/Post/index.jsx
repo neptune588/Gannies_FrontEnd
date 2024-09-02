@@ -1,26 +1,36 @@
+import PostList from '@/components/PostList';
+import chevron_right from '@/assets/icons/arrows/chevron_right.svg';
+
 import {
   ShowMoreButton,
-  ShowMoreButtonIcon,
-  UpperTitle,
-  UpperWrapper,
-  Wrapper,
+  Wrapper
 } from '@/pages/Home/Post/style';
-
-import chevron_right from '@/assets/icons/arrows/chevron_right.svg';
-import PostList from '@/components/PostList';
 
 function Post({ title, posts }) {
   return (
     <>
-      <Wrapper>
-        <UpperWrapper>
-          <UpperTitle>{title}</UpperTitle>
+        <Wrapper>
+          <h3>{title}</h3>
           <ShowMoreButton>
             <span>더보기</span>
-            <ShowMoreButtonIcon src={chevron_right} alt='chevron_right' />
+            <img src={chevron_right} alt='chevron_right' />
           </ShowMoreButton>
-        </UpperWrapper>
-      </Wrapper>
+        </Wrapper>
+        {
+          posts.map((post, index) => {
+            return (
+              <PostList
+                key={index}
+                category={post.category}
+                title={post.title}
+                comment={post.comment}
+                views={post.views}
+                likes={post.likes}
+                date={post.date}
+                />
+            )
+          })
+        }
     </>
   );
 }

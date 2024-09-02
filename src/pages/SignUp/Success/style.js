@@ -1,12 +1,14 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
-import { authDefaultTextStyle } from '@/styles/commonStyle/text';
 import {
   authEmailColorBoxStyle,
   primaryBorderBoxStyle,
   primaryColorBoxStyle,
 } from '@/styles/commonStyle/box';
-import { small_400, h3_600 } from '@/styles/commonStyle/localTextStyle';
+import { centerAlignStyle } from '@/styles/commonStyle/etc';
+import { small_400, h3_600, medium_400 } from '@/styles/commonStyle/localTextStyle';
+import { authDefaultTextStyle } from '@/styles/commonStyle/text';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -36,12 +38,12 @@ export const Wrapper = styled.div`
     ${small_400}
     margin-top: 38px;
   }
-`;
 
-export const Image = styled.img`
-  width: 100px;
-  height: 100px;
-  margin-top: 60px;
+  > img {
+    width: 100px;
+    height: 100px;
+    margin-top: 60px;  
+  }
 `;
 
 export const EmailBox = styled.div`
@@ -54,10 +56,12 @@ export const ButtonWrapper = styled.div`
   margin-top: 70px;
   width: 434px;
   justify-content: space-between;
+  ${medium_400}
 `;
 
-export const LeftButton = styled.button`
+export const LeftButton = styled(Link)`
   ${primaryBorderBoxStyle};
+  ${centerAlignStyle};
   width: 205px;
   height: 48px;
 `;
@@ -65,5 +69,5 @@ export const LeftButton = styled.button`
 export const RightButton = styled.button`
   ${primaryColorBoxStyle};
   width: 205px;
-  height: 48px;
+  height: 48px;  
 `;

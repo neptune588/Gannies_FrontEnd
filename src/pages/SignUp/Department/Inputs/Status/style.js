@@ -5,8 +5,9 @@ import {
   primaryBorderBoxStyle,
 } from '@/styles/commonStyle/box';
 import { placeholderTextStyle } from '@/styles/commonStyle/text';
+import { small_400 } from '@/styles/commonStyle/localTextStyle';
 
-export const ButtonWrapper = styled.div`
+export const Wrapper = styled.div`
   width: 448px;
   height: 48px;
   display: flex;
@@ -25,5 +26,5 @@ export const ActiveButton = styled.button`
   ${primaryBorderBoxStyle};
   width: 220px;
   height: 48px;
-  font-size: ${(props) => props.theme.typo.size.sm};
+  ${small_400}
 `;

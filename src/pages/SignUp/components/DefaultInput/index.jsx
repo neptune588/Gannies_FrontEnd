@@ -3,10 +3,10 @@ import {
   InputWrapper
 } from '@/pages/SignUp/components/DefaultInput/style';
 
-function DefaultInput({placeholder}) {
+function DefaultInput({placeholder, ...props}) {
   return (
     <InputWrapper>
-      <InputBox type="text" placeholder={placeholder} />
+      <InputBox type="text" placeholder={placeholder} {...props} />
     </InputWrapper>
   );
 }
