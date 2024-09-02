@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
+
 import Modal from '@/pages/SignUp/Identity/Agree/Modal';
+
 import {
   Wrapper,
   SectionWrapper,

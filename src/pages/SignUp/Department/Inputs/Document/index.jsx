@@ -1,15 +1,17 @@
 import React, { useState, useRef } from 'react';
-import {
-  ActiveInputBox,
-  InactiveInputBox,
-  InputBox
-} from '@/pages/SignUp/Department/Inputs/Document/style';
+
 import Upload from '@/components/Icons/Upload';
 import InputSection from '@/pages/SignUp/components/InputSection';
 import Instruction from '@/components/Instruction';
 import Clip from '@/components/Icons/Clip';
 import Close from '@/components/Icons/Close';
 import Negative from '@/components/Instruction/Negative';
+
+import {
+  ActiveInputBox,
+  InactiveInputBox,
+  InputBox
+} from '@/pages/SignUp/Department/Inputs/Document/style';
 
 function Document({setAllow}) {
   const [fileName, setFileName] = useState('');

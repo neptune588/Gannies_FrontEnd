@@ -1,4 +1,15 @@
 import {
+  useEffect,
+  useRef,
+  useState
+} from 'react';
+
+import ModalContainer from '@/components/ModalContainer';
+import { agreeList } from '@/pages/SignUp/Identity/Agree/Modal/data';
+import inactive from "@/assets/icons/etc/check_circle_inactive.svg";
+import active from "@/assets/icons/etc/check_circle_active.svg";
+
+import {
   ActiveButton,
   Blur,
   Body,
@@ -9,17 +20,6 @@ import {
   InactiveButton,
   ModalBox
 } from '@/pages/SignUp/Identity/Agree/Modal/style';
-
-import {
-  useEffect,
-  useRef,
-  useState
-} from 'react';
-
-import ModalContainer from '@/components/ModalContainer';
-import inactive from "@/assets/icons/etc/check_circle_inactive.svg";
-import active from "@/assets/icons/etc/check_circle_active.svg";
-import { agreeList } from '@/pages/SignUp/Identity/Agree/Modal/data';
 
 function Modal({ index, openModal, handleCheckTrue }) {
   const bodyRef = useRef(null);

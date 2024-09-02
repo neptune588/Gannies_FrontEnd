@@ -1,5 +1,6 @@
-import Close from '@/components/Icons/Close';
 import styled from 'styled-components';
+
+import Close from '@/components/Icons/Close';
 
 import { modalBoxStyle } from '@/styles/commonStyle/box';
 import { h4_600, small_400 } from '@/styles/commonStyle/localTextStyle';
@@ -7,7 +8,6 @@ import { h4_600, small_400 } from '@/styles/commonStyle/localTextStyle';
 export const ModalBox = styled.div`
   ${modalBoxStyle};
   width: 524px;
-  height: 333px;
   padding: 26px 36px;
 
   > h4 {

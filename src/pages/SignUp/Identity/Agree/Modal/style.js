@@ -1,5 +1,6 @@
-import Close from '@/components/Icons/Close';
 import styled from 'styled-components';
+
+import Close from '@/components/Icons/Close';
 
 import { centerAlignStyle } from '@/styles/commonStyle/etc';
 import { modalBoxStyle, primaryBorderBoxStyle } from '@/styles/commonStyle/box';

@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import Agree from '@/pages/SignUp/Identity/Agree';
 import Icons from '@/pages/SignUp/components/Icons';
 import Inputs from '@/pages/SignUp/Identity/Inputs';
@@ -6,7 +8,6 @@ import identity from '@/assets/icons/etc/identity_verification_active.svg';
 import info from '@/assets/icons/etc/info_input_inactive.svg';
 import department from '@/assets/icons/etc/department_verification_inactive.svg';
 import NextButton from '@/pages/SignUp/components/NextButton';
-import { useState } from 'react';
 
 function Identity() {
   const sequence = ['active', 'inactive', 'inactive'];

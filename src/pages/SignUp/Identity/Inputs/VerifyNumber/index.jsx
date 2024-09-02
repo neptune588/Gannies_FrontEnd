@@ -1,3 +1,10 @@
+import { useState } from 'react';
+
+import Clock from '@/components/Icons/Clock';
+import InputSection from '@/pages/SignUp/components/InputSection';
+import Positive from '@/components/Instruction/Positive';
+import Negative from '@/components/Instruction/Negative';
+
 import {
   InputBox,
   InputWrapper,
@@ -6,12 +13,6 @@ import {
   InactiveButton,
   DisabledButton
 } from '@/pages/SignUp/Identity/Inputs/VerifyNumber/style';
-
-import Clock from '@/components/Icons/Clock';
-import InputSection from '@/pages/SignUp/components/InputSection';
-import Positive from '@/components/Instruction/Positive';
-import Negative from '@/components/Instruction/Negative';
-import { useState } from 'react';
 
 function VerifyNumber({ allow, setAllow, setVisible }) {
 

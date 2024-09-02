@@ -1,10 +1,11 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 import {
   primaryBorderBoxStyle,
   primaryColorBoxStyle,
 } from '@/styles/commonStyle/box';
-import { Link } from 'react-router-dom';
+
 import { centerAlignStyle } from '@/styles/commonStyle/etc';
 import { medium_400 } from '@/styles/commonStyle/localTextStyle';
 

@@ -1,7 +1,8 @@
+import { useState } from "react";
+
 import Name from "@/pages/SignUp/Identity/Inputs/Name";
 import PhoneNumber from "@/pages/SignUp/Identity/Inputs/PhoneNumber";
 import VerifyNumber from "@/pages/SignUp/Identity/Inputs/VerifyNumber";
-import { useState } from "react";
 
 function Inputs({ allow, setAllow, visible, setVisible }) {
   const [buttonAllow, setButtonAllow] = useState([false, false]);

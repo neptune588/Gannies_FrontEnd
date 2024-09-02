@@ -1,8 +1,9 @@
+import { Link } from 'react-router-dom';
+
 import Close from '@/components/Icons/Close';
 import styled from 'styled-components';
 
 import { modalBoxStyle, primaryBorderBoxStyle } from '@/styles/commonStyle/box';
-import { Link } from 'react-router-dom';
 import { centerAlignStyle } from '@/styles/commonStyle/etc';
 
 import {

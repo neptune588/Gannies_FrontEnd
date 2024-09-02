@@ -7,7 +7,7 @@ import FindBox from "@/pages/Find/components/FindBox";
 import Inactive from "@/pages/Find/components/Inactive";
 import Wrapper from "@/pages/Find/components/Wrapper";
 import Email from "@/pages/SignUp/Info/Inputs/Email";
-import Modal from "@/pages/Find/Password/Modal";
+import Modal from "@/pages/Find/Modal";
 
 function Password() {
 

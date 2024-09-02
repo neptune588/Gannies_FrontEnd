@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import PhoneNumber from "@/pages/SignUp/Identity/Inputs/PhoneNumber";
 import Name from "@/pages/SignUp/Identity/Inputs/Name";
 import VerifyNumber from "@/pages/SignUp/Identity/Inputs/VerifyNumber";
@@ -6,7 +8,6 @@ import Active from "@/pages/Find/components/Active";
 import FindBox from "@/pages/Find/components/FindBox";
 import Inactive from "@/pages/Find/components/Inactive";
 import Wrapper from "@/pages/Find/components/Wrapper";
-import { useEffect, useState } from "react";
 
 
 function ID() {
@@ -14,7 +15,6 @@ function ID() {
   const [buttonAllow, setButtonAllow] = useState([false, false]);
   const [visible, setVisible] = useState([true, false]);
 
-  useEffect(() => {console.log(buttonAllow)}, [buttonAllow])
   return (
     <Wrapper>
       <FindBox $margin="30px">

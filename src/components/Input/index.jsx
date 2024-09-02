@@ -1,6 +1,4 @@
-import {
-  InputBox
-} from '@/components/Input/style';
+import { InputBox } from '@/components/Input/style';
 
 function Input(props) {
   return (
