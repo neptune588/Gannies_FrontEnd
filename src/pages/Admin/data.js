@@ -302,10 +302,136 @@ const memberManagementData = [
   },
 ];
 
+const userApprovalHeaderColumns = [
+  {
+    header: '닉네임',
+  },
+  {
+    header: '이메일',
+  },
+  {
+    header: '가입날짜',
+  },
+  {
+    header: '재학여부',
+  },
+  {
+    header: '첨부파일',
+  },
+  {
+    header: '상태',
+  },
+];
+
+const userApprovalData = [
+  {
+    order: 1,
+    nickname: '바이바이',
+    email: 'hihi@gmail.com',
+    signUpDate: '2024-08-26',
+    enrollmentStatus: '재학생',
+    attachedFile: '재학증명서.jpg',
+    statusValue: '승인대기',
+    innerModalState: false,
+  },
+  {
+    order: 2,
+    nickname: '김두한',
+    email: 'hihi@gmail.com',
+    signUpDate: '2024-08-26',
+    enrollmentStatus: '재학생',
+    attachedFile: '재학증명서.jpg',
+    statusValue: '승인거절',
+    innerModalState: false,
+  },
+  {
+    order: 3,
+    nickname: '시라소니',
+    email: 'hihi@gmail.com',
+    signUpDate: '2024-08-26',
+    enrollmentStatus: '졸업생',
+    attachedFile: '졸업증명서.jpg',
+    statusValue: '승인완료',
+    innerModalState: false,
+  },
+  {
+    order: 4,
+    nickname: '문영철',
+    email: 'hihi@gmail.com',
+    signUpDate: '2024-08-26',
+    enrollmentStatus: '재학생',
+    attachedFile: '재학증명서.jpg',
+    statusValue: '승인대기',
+    innerModalState: false,
+  },
+  {
+    order: 5,
+    nickname: '이정재',
+    email: 'hihi@gmail.com',
+    signUpDate: '2024-08-26',
+    enrollmentStatus: '재학생',
+    attachedFile: '재학증명서.jpg',
+    statusValue: '승인완료',
+    innerModalState: false,
+  },
+  {
+    order: 6,
+    nickname: '임화수',
+    email: 'hihi@gmail.com',
+    signUpDate: '2024-08-26',
+    enrollmentStatus: '졸업생',
+    attachedFile: '졸업증명서.jpg',
+    statusValue: '승인거절',
+    innerModalState: false,
+  },
+  {
+    order: 7,
+    nickname: '낙화유수',
+    email: 'hihi@gmail.com',
+    signUpDate: '2024-08-26',
+    enrollmentStatus: '졸업생',
+    attachedFile: '졸업증명서.jpg',
+    statusValue: '승인완료',
+    innerModalState: false,
+  },
+  {
+    order: 8,
+    nickname: '유지광',
+    email: 'hihi@gmail.com',
+    signUpDate: '2024-08-26',
+    enrollmentStatus: '재학생',
+    attachedFile: '재학증명서.jpg',
+    statusValue: '승인대기',
+    innerModalState: false,
+  },
+  {
+    order: 9,
+    nickname: '구마적',
+    email: 'hihi@gmail.com',
+    signUpDate: '2024-08-26',
+    enrollmentStatus: '재학생',
+    attachedFile: '재학증명서.jpg',
+    statusValue: '승인거절',
+    innerModalState: false,
+  },
+  {
+    order: 10,
+    nickname: '신마적',
+    email: 'hihi@gmail.com',
+    signUpDate: '2024-08-26',
+    enrollmentStatus: '재학생',
+    attachedFile: '재학증명서.jpg',
+    statusValue: '승인완료',
+    innerModalState: false,
+  },
+];
+
 export {
   adminTabMenuData,
   reportedHeaderColumns,
   reportedData,
   memberManagementHeaderColumns,
   memberManagementData,
+  userApprovalHeaderColumns,
+  userApprovalData,
 };

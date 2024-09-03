@@ -24,6 +24,14 @@ const ButtonBox = styled.button`
       } else {
         return colors.negative;
       }
+    } else if ($currentActiveTab === '회원 가입승인') {
+      if ($currentValue === '승인대기') {
+        return colors.gray['90'];
+      } else if ($currentValue === '승인완료') {
+        return colors.gray['50'];
+      } else {
+        return colors.negative;
+      }
     }
   }};
   > img {
@@ -50,7 +58,7 @@ export default function InnerModalOpenButton({
       $modalState={innerModalState}
     >
       {currentValue}
-      <img src={arrow} alt='arrow' />
+      <img src={arrow} alt='bottom-arrow' />
     </ButtonBox>
   );
 }

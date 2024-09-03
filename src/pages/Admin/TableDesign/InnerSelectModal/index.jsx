@@ -14,6 +14,8 @@ const ModalBox = styled.ul`
       return '75px';
     } else if ($currentActiveTab === '회원관리') {
       return '35px';
+    } else if ($currentActiveTab === '회원 가입승인') {
+      return '160px';
     }
   }};
   background-color: ${({ theme: { colors } }) => {

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import AdminSideTab from '@/pages/Admin/AdminSideTab';
 import ReeportHistory from '@/pages/Admin/ReportHistory';
 import MemberManagement from '@/pages/Admin/MemberManagement';
+import UserApproval from '@/pages/Admin/UserApproval';
 import Pagination from '@/components/Pagination';
 import ReportedReviewModal from '@/pages/Admin/ReportedReviewModal';
 import UserBanModal from '@/pages/Admin/UserBanModal';
@@ -15,6 +16,8 @@ import {
   reportedData,
   memberManagementHeaderColumns,
   memberManagementData,
+  userApprovalHeaderColumns,
+  userApprovalData,
 } from '@/pages/Admin/data';
 
 export default function Admin() {
@@ -74,6 +77,9 @@ export default function Admin() {
     } else if (currentActiveTabMenu === '회원관리') {
       setTableData(memberManagementData);
       setHeaderData(memberManagementHeaderColumns);
+    } else if (currentActiveTabMenu === '회원 가입승인') {
+      setTableData(userApprovalData);
+      setHeaderData(userApprovalHeaderColumns);
     }
   }, [currentActiveTabMenu]);
 
@@ -101,6 +107,15 @@ export default function Admin() {
           )}
           {currentActiveTabMenu === '회원관리' && (
             <MemberManagement
+              currentActiveTab={currentActiveTabMenu}
+              headerColumns={headerData}
+              tableData={tableData}
+              handleInnerModalToggle={handleInnerModalToggle}
+              handleStatusValueChange={handleStatusValueChange}
+            />
+          )}
+          {currentActiveTabMenu === '회원 가입승인' && (
+            <UserApproval
               currentActiveTab={currentActiveTabMenu}
               headerColumns={headerData}
               tableData={tableData}
