@@ -42,26 +42,12 @@ const adminPageHeaderRowStyle = css`
   }};
 `;
 
-const adminPageRowStyle = css`
-  display: flex;
-  padding: 28px 0;
-  border-bottom: 1px solid
-    ${({ theme: { colors } }) => {
-      return colors.black;
-    }};
-  &:last-child {
-    border: none;
-  }
-  &:first-child {
-    border-bottom: 1px solid
-      ${({ theme: { colors } }) => {
-        return colors.black;
-      }};
-  }
-`;
-
 const adminPageCellStyle = css`
-  text-align: left;
+  display: flex;
+  align-items: center;
+  color: ${({ theme: { colors } }) => {
+    return colors.gray['90'];
+  }};
 
   &:nth-child(1n) {
     width: 115px;
@@ -149,11 +135,10 @@ const adminPageCellStyle = css`
   }
 `;
 
-const modalCloseAreaStyle = css`
+const modalCloseButtonStyle = css`
   position: absolute;
-  width: 100%;
-  height: 100%;
   cursor: pointer;
+  user-select: none;
 `;
 
 export {
@@ -161,7 +146,6 @@ export {
   centerAlignStyle,
   postsHeaderStyle,
   adminPageHeaderRowStyle,
-  adminPageRowStyle,
   adminPageCellStyle,
-  modalCloseAreaStyle,
+  modalCloseButtonStyle,
 };

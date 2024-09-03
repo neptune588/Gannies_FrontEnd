@@ -2,6 +2,7 @@ import { css } from 'styled-components';
 
 import {
   xsmall_500,
+  xsmall_600,
   small_400,
   large_400,
   h4_600,
@@ -46,6 +47,22 @@ const authDefaultTextStyle = css`
   ${small_400}
 `;
 
+const adminPageModalTitleStyle = css`
+  ${h3_600}
+  color: ${({ theme: { colors } }) => {
+    return colors.primary;
+  }};
+`;
+
+const adminPageModalInnerDataTitleStyle = css`
+    ${xsmall_600}
+    color: ${({ theme: { colors } }) => {
+      return colors.gray['60'];
+    }};
+    margin-bottom: 10px;
+  }
+`;
+
 export {
   bannerTitleStyle,
   bannerTextStyle,
@@ -53,4 +70,6 @@ export {
   authTitleTextStyle,
   placeholderTextStyle,
   authDefaultTextStyle,
+  adminPageModalTitleStyle,
+  adminPageModalInnerDataTitleStyle,
 };

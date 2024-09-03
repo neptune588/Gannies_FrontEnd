@@ -1,10 +1,6 @@
 import { css } from 'styled-components';
 
-import {
-  xsmall_600,
-  small_400,
-  medium_600,
-} from '@/styles/commonStyle/localTextStyle';
+import { small_400, medium_600 } from '@/styles/commonStyle/localTextStyle';
 
 const defaultBorderBoxStyle = css`
   border: 1px solid
@@ -79,26 +75,16 @@ const modalBoxStyle = css`
   align-items: center;
 `;
 
-const adminPageModalDataBoxStyle = css`
-  flex: 0 0 auto;
-  > p {
-    ${xsmall_600}
-    color: ${({ theme: { colors } }) => {
-      return colors.gray['60'];
-    }};
-    margin-bottom: 10px;
-  }
-  > div {
-    ${small_400}
-    color: ${({ theme: { colors } }) => {
-      return colors.gray['100'];
-    }};
-    background-color: ${({ theme: { colors } }) => {
-      return colors.gray['10'];
-    }};
-    border-radius: 8px;
-    padding: 15px 20px;
-  }
+const adminPageModalInnerDataBoxStyle = css`
+  ${small_400}
+  color: ${({ theme: { colors } }) => {
+    return colors.gray['100'];
+  }};
+  background-color: ${({ theme: { colors } }) => {
+    return colors.gray['10'];
+  }};
+  border-radius: 8px;
+  padding: 15px 20px;
 `;
 
 export {
@@ -110,5 +96,5 @@ export {
   createPostPageInputBoxStyle,
   authEmailColorBoxStyle,
   modalBoxStyle,
-  adminPageModalDataBoxStyle,
+  adminPageModalInnerDataBoxStyle,
 };

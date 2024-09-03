@@ -6,7 +6,6 @@ import {
   medium_600,
   small_400,
 } from '@/styles/commonStyle/localTextStyle';
-import { modalCloseAreaStyle } from '@/styles/commonStyle/etc';
 
 const ModalWrapper = styled.div`
   display: flex;
@@ -119,10 +118,6 @@ const ModalInnerRightBox = styled.div`
   height: 670px;
 `;
 
-const ModalCloseArea = styled.div`
-  ${modalCloseAreaStyle}
-`;
-
 export {
   ModalWrapper,
   ModalInnerLeftBox,
@@ -133,5 +128,4 @@ export {
   HospitalLocationInfo,
   HospitalContact,
   ModalInnerRightBox,
-  ModalCloseArea,
 };

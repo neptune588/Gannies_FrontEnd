@@ -1,65 +1,45 @@
 import uuid from 'react-uuid';
 
 import TitleSection from '@/pages/Admin/TitleSection';
+import Title from '@/pages/Admin/Title';
 import ArrLengthSection from '@/pages/Admin/ArrLengthSection';
 import ArrLengthView from '@/pages/Admin/ArrLengthView';
+import SearchInput from '@/pages/Admin/SearchInput';
 import TableWrapper from '@/pages/Admin/TableDesign/TableWrapper';
 import TableHeaderRow from '@/pages/Admin/TableDesign/TableHeaderRow';
 import TableBodyRow from '@/pages/Admin/TableDesign/TableBodyRow';
 import TableBodyCell from '@/pages/Admin/TableDesign/TableBodyCell';
+import InnerModalOpenButton from '@/pages/Admin/TableDesign/InnerModalOpenButton';
 import InnerSelectModal from '@/pages/Admin/TableDesign/InnerSelectModal';
 import ModalInnerList from '@/pages/Admin/TableDesign/InnerSelectModal/ModalInnerList';
-import InnerModalOpenButton from '@/pages/Admin/TableDesign/InnerModalOpenButton';
 
 import arrow from '@/assets/icons/arrows/chevron_down.svg';
 
-import { TitleCategory } from '@/pages/Admin/ReportHistory/style';
-
-export default function ReeportHistory({
-  currentActiveTab = '신고내역',
-  currenntActiveCategory = '게시글',
+export default function MemberManagement({
+  currentActiveTab = '회원 관리',
   headerColumns,
   tableData,
-  handleCategoryChange,
   handleInnerModalToggle,
   handleStatusValueChange,
 }) {
   return (
     <>
       <TitleSection>
-        <TitleCategory
-          $currenntActiveCategory={currenntActiveCategory}
-          $ownCategory={'게시글'}
-          onClick={() => {
-            handleCategoryChange('게시글');
-          }}
-        >
-          게시글
-        </TitleCategory>
-        <TitleCategory
-          $currenntActiveCategory={currenntActiveCategory}
-          $ownCategory={'댓글'}
-          onClick={() => {
-            handleCategoryChange('댓글');
-          }}
-        >
-          댓글
-        </TitleCategory>
+        <Title>회원관리</Title>
       </TitleSection>
       <ArrLengthSection>
-        <ArrLengthView length={10} />
+        <ArrLengthView length={tableData.length} />
+        <SearchInput />
       </ArrLengthSection>
       <TableWrapper>
         <table>
           <thead>
             <TableHeaderRow currentActiveTab={currentActiveTab}>
-              {headerColumns.map((data, idx) => {
+              {headerColumns?.map((data, idx) => {
                 return (
                   <th key={uuid()}>
                     {data.header}
-                    {idx === headerColumns.length - 1 && (
-                      <img src={arrow} alt='bottom-arrow' />
-                    )}
+                    {idx === 5 && <img src={arrow} alt='bottom-arrow' />}
                   </th>
                 );
               })}
@@ -70,22 +50,19 @@ export default function ReeportHistory({
               return (
                 <TableBodyRow key={uuid()}>
                   <TableBodyCell currentActiveTab={currentActiveTab}>
-                    {String(data.order).padStart(2, '0')}
+                    {data.nickname}
                   </TableBodyCell>
                   <TableBodyCell currentActiveTab={currentActiveTab}>
-                    {data.contents}
+                    {data.email}
                   </TableBodyCell>
                   <TableBodyCell currentActiveTab={currentActiveTab}>
-                    {data.contributor}
+                    {data.postLength}
                   </TableBodyCell>
                   <TableBodyCell currentActiveTab={currentActiveTab}>
-                    {data.complainant}
+                    {data.commentLength}
                   </TableBodyCell>
                   <TableBodyCell currentActiveTab={currentActiveTab}>
-                    {data.reportDate}
-                  </TableBodyCell>
-                  <TableBodyCell currentActiveTab={currentActiveTab}>
-                    {data.reportDetail}
+                    {data.signUpDate}
                   </TableBodyCell>
                   <TableBodyCell currentActiveTab={currentActiveTab}>
                     {data.innerModalState && (
@@ -93,40 +70,43 @@ export default function ReeportHistory({
                         <ModalInnerList
                           currentActiveTab={currentActiveTab}
                           handleStatusValueChange={() => {
-                            handleStatusValueChange('처리 중', idx);
+                            handleStatusValueChange('해당없음', idx);
                             handleInnerModalToggle(idx);
                           }}
                         >
-                          처리 중
+                          해당없음
                         </ModalInnerList>
                         <ModalInnerList
                           currentActiveTab={currentActiveTab}
                           handleStatusValueChange={() => {
-                            handleStatusValueChange('처리완료', idx);
+                            handleStatusValueChange('정지', idx);
                             handleInnerModalToggle(idx);
                           }}
                         >
-                          처리완료
+                          정지
                         </ModalInnerList>
                         <ModalInnerList
                           currentActiveTab={currentActiveTab}
                           handleStatusValueChange={() => {
-                            handleStatusValueChange('신고반려', idx);
+                            handleStatusValueChange('탈퇴', idx);
                             handleInnerModalToggle(idx);
                           }}
                         >
-                          신고반려
+                          탈퇴
                         </ModalInnerList>
                       </InnerSelectModal>
                     )}
                     <InnerModalOpenButton
-                      handleInnerModalToggle={() => {
-                        handleInnerModalToggle(idx);
-                      }}
                       currentActiveTab={currentActiveTab}
                       currentValue={data.statusValue}
                       innerModalState={data.innerModalState}
+                      handleInnerModalToggle={() => {
+                        handleInnerModalToggle(idx);
+                      }}
                     />
+                  </TableBodyCell>
+                  <TableBodyCell currentActiveTab={currentActiveTab}>
+                    {data.managementReason}
                   </TableBodyCell>
                 </TableBodyRow>
               );

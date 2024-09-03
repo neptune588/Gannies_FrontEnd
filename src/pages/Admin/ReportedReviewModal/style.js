@@ -1,9 +1,11 @@
 import styled from 'styled-components';
 
-import { modalCloseAreaStyle } from '@/styles/commonStyle/etc';
-import { ellipsisStyle } from '@/styles/commonStyle/etc';
-import { h3_600 } from '@/styles/commonStyle/localTextStyle';
-import { adminPageModalDataBoxStyle } from '@/styles/commonStyle/box';
+import { ellipsisStyle, modalCloseButtonStyle } from '@/styles/commonStyle/etc';
+import {
+  adminPageModalTitleStyle,
+  adminPageModalInnerDataTitleStyle,
+} from '@/styles/commonStyle/text';
+import { adminPageModalInnerDataBoxStyle } from '@/styles/commonStyle/box';
 
 const ModalWrapper = styled.div`
   position: relative;
@@ -17,10 +19,7 @@ const ModalWrapper = styled.div`
 `;
 
 const ModalTitle = styled.h2`
-  ${h3_600}
-  color: ${({ theme: { colors } }) => {
-    return colors.primary;
-  }};
+  ${adminPageModalTitleStyle}
   margin-left: -5px;
   margin-bottom: 45px;
 `;
@@ -42,20 +41,30 @@ const DataAreaTop = styled(OnlyExtension)`
 const DataAreaBottom = styled(OnlyExtension)``;
 
 const DataBox = styled.div`
-  ${adminPageModalDataBoxStyle}
+  flex: 0 0 auto;
   ${ellipsisStyle}
   width: calc((745px - 110px - 20px) / 2);
   margin: 0 20px 25px 0;
   &:nth-child(2n) {
     margin-right: 0;
   }
+
+  > p {
+    ${adminPageModalInnerDataTitleStyle}
+  }
+  > div {
+    ${adminPageModalInnerDataBoxStyle}
+  }
 `;
 
 const TopAreaLastDataBox = styled.div`
   width: 100%;
-  ${adminPageModalDataBoxStyle}
+  > p {
+    ${adminPageModalInnerDataTitleStyle}
+  }
 
   > div {
+    ${adminPageModalInnerDataBoxStyle}
     overflow-y: ${({ $activeCategory }) => {
       return $activeCategory === '댓글' && 'scroll';
     }};
@@ -67,21 +76,21 @@ const TopAreaLastDataBox = styled.div`
 
 const BottomAreaLastDataBox = styled.div`
   width: 100%;
-  ${adminPageModalDataBoxStyle}
+  > p {
+    ${adminPageModalInnerDataTitleStyle}
+  }
+
+  > div {
+    ${adminPageModalInnerDataBoxStyle}
+  }
 `;
 
 const ModalCloseButton = styled.img`
-  position: absolute;
+  ${modalCloseButtonStyle}
   width: 24px;
-  heghit: 24px;
+  height: 24px;
   top: 40px;
   right: 40px;
-  cursor: pointer;
-  user-select: none;
-`;
-
-const ModalCloseArea = styled.div`
-  ${modalCloseAreaStyle}
 `;
 
 export {
@@ -93,5 +102,4 @@ export {
   TopAreaLastDataBox,
   BottomAreaLastDataBox,
   ModalCloseButton,
-  ModalCloseArea,
 };

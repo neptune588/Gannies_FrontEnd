@@ -1,5 +1,7 @@
-import searchIcon from '@/assets/icons/search/search_black.svg';
 import ModalContainer from '@/components/ModalContainer';
+import ModalCloseArea from '@/components/ModalCloseArea';
+
+import searchIcon from '@/assets/icons/search/search_black.svg';
 
 import {
   ModalWrapper,
@@ -11,7 +13,6 @@ import {
   HospitalLocationInfo,
   HospitalContact,
   ModalInnerRightBox,
-  ModalCloseArea,
 } from '@/pages/CreateCommunityPost/HospitalSearchModal/style';
 
 export default function HospitalSearchModal() {

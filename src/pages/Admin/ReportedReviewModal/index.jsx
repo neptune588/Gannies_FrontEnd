@@ -1,6 +1,7 @@
 import ModalContainer from '@/components/ModalContainer';
+import ModalCloseArea from '@/components/ModalCloseArea';
 
-import crossCheck from '@/assets/icons/etc/close.svg';
+import cross from '@/assets/icons/etc/close.svg';
 
 import {
   ModalWrapper,
@@ -11,7 +12,6 @@ import {
   TopAreaLastDataBox,
   BottomAreaLastDataBox,
   ModalCloseButton,
-  ModalCloseArea,
 } from '@/pages/Admin/ReportedReviewModal/style';
 
 export default function ReportedReviewModal({ activeCategory }) {
@@ -21,7 +21,7 @@ export default function ReportedReviewModal({ activeCategory }) {
         <ModalTitle>
           {activeCategory === '게시글' ? '신고된 게시글' : '신고된 댓글'}
         </ModalTitle>
-        <ModalCloseButton src={crossCheck} alt={'close-button'} />
+        <ModalCloseButton src={cross} alt={'modal-close-button'} />
         <DataAreaTop $activeCategory={activeCategory}>
           <DataBox>
             <p>작성자</p>
