@@ -8,16 +8,18 @@ import {
   Info,
   AgreeWrapper,
   ShowButton,
-  CheckBox
+  CheckBox,
 } from '@/pages/SignUp/Identity/Agree/style';
 
 function Agree({ setAllow }) {
   const checkListCount = 2;
-  const [openModalList, setOpenModalList] = useState(Array(checkListCount).fill(false));
+  const [openModalList, setOpenModalList] = useState(
+    Array(checkListCount).fill(false)
+  );
   const [checkList, setCheckList] = useState(Array(checkListCount).fill(false));
 
   const openModal = (index) => {
-    setOpenModalList(prev => {
+    setOpenModalList((prev) => {
       const newOpenModalList = [...prev];
       newOpenModalList[index] = !newOpenModalList[index];
       return newOpenModalList;
@@ -25,8 +27,8 @@ function Agree({ setAllow }) {
   };
 
   useEffect(() => {
-    const allChecked = checkList.every(item => item === true);
-    setAllow(prevAllow => {
+    const allChecked = checkList.every((item) => item === true);
+    setAllow((prevAllow) => {
       const newAllow = [...prevAllow];
       newAllow[3] = allChecked;
       return newAllow;
@@ -34,19 +36,19 @@ function Agree({ setAllow }) {
   }, [checkList]);
 
   const handleCheck = (index) => {
-    setCheckList(prev => {
+    setCheckList((prev) => {
       const newCheckList = [...prev];
       newCheckList[index] = !newCheckList[index];
       return newCheckList;
     });
   };
-  
+
   const handleCheckTrue = (index) => {
-    setCheckList(prev => {
+    setCheckList((prev) => {
       const newCheckList = [...prev];
       newCheckList[index] = true;
-      const allChecked = newCheckList.every(item => item === true);
-      setAllow(prevAllow => {
+      const allChecked = newCheckList.every((item) => item === true);
+      setAllow((prevAllow) => {
         const newAllow = [...prevAllow];
         newAllow[3] = allChecked;
         return newAllow;
@@ -54,11 +56,11 @@ function Agree({ setAllow }) {
       return newCheckList;
     });
   };
-  
+
   const handleAllCheck = () => {
-    const newCheckState = !checkList.every(item => item === true);
+    const newCheckState = !checkList.every((item) => item === true);
     setCheckList(Array(checkListCount).fill(newCheckState));
-    setAllow(prevAllow => {
+    setAllow((prevAllow) => {
       const newAllow = [...prevAllow];
       newAllow[3] = newCheckState;
       return newAllow;
@@ -71,8 +73,8 @@ function Agree({ setAllow }) {
         <Info>회원약관</Info>
         <AgreeWrapper>
           <CheckBox
-            type="checkbox"
-            checked={checkList.every(item => item === true)}
+            type='checkbox'
+            checked={checkList.every((item) => item === true)}
             onChange={handleAllCheck}
           />
           <p>전체약관동의</p>
@@ -80,7 +82,7 @@ function Agree({ setAllow }) {
         {Array.from({ length: checkListCount }).map((_, index) => (
           <AgreeWrapper key={index}>
             <CheckBox
-              type="checkbox"
+              type='checkbox'
               checked={checkList[index]}
               onChange={() => handleCheck(index)}
             />

@@ -118,13 +118,6 @@ const ModalInnerRightBox = styled.div`
   height: 670px;
 `;
 
-const ModalCloseArea = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-`;
-
 export {
   ModalWrapper,
   ModalInnerLeftBox,
@@ -135,5 +128,4 @@ export {
   HospitalLocationInfo,
   HospitalContact,
   ModalInnerRightBox,
-  ModalCloseArea,
 };

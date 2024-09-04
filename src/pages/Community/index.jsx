@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import uuid from 'react-uuid';
 
 import CommunityPost from '@/pages/Community/CommunityPost';
 import CommunityBanner from '@/components/CommunityBanner';
@@ -55,7 +56,7 @@ export default function Community() {
       </PostWrapper>
       <ul>
         {tempData.map((item) => {
-          return <CommunityPost key={item + 'post'} />;
+          return <CommunityPost key={uuid()} />;
         })}
       </ul>
       <PageWrapper>

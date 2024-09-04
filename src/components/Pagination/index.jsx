@@ -1,3 +1,5 @@
+import uuid from 'react-uuid';
+
 import PageNumber from '@/components/PageNumber';
 
 import prevArrow from '@/assets/icons/arrows/chevron_left.svg';
@@ -34,7 +36,7 @@ export default function Pagination({
         {pageNumberData?.map((item, idx) => {
           return (
             <PageNumber
-              key={item + 'pageNumber'}
+              key={uuid()}
               myPageNumber={idx}
               activePageNumber={activePageNumber}
               handlePageNumberClick={() => {

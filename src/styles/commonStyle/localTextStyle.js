@@ -50,7 +50,7 @@ const xsmall_600 = css`
     return typo.size.xs;
   }};
   font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.semoBold;
+    return typo.weight.semiBold;
   }};
 `;
 
@@ -86,7 +86,7 @@ const small_600 = css`
     return typo.size.sm;
   }};
   font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.semoBold;
+    return typo.weight.semiBold;
   }};
 `;
 
@@ -122,7 +122,16 @@ const medium_600 = css`
     return typo.size.md;
   }};
   font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.semoBold;
+    return typo.weight.semiBold;
+  }};
+`;
+
+const medium_700 = css`
+  font-size: ${({ theme: { typo } }) => {
+    return typo.size.md;
+  }};
+  font-weight: ${({ theme: { typo } }) => {
+    return typo.weight.semiBold;
   }};
 `;
 
@@ -149,7 +158,7 @@ const large_600 = css`
     return typo.size.lg;
   }};
   font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.semoBold;
+    return typo.weight.semiBold;
   }};
 `;
 
@@ -184,7 +193,7 @@ const h4_600 = css`
     return typo.size.h4;
   }};
   font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.semoBold;
+    return typo.weight.semiBold;
   }};
 `;
 
@@ -193,7 +202,7 @@ const h3_600 = css`
     return typo.size.h3;
   }};
   font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.semoBold;
+    return typo.weight.semiBold;
   }};
 `;
 const h3_700 = css`
@@ -210,7 +219,7 @@ const h2_600 = css`
     return typo.size.h2;
   }};
   font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.semoBold;
+    return typo.weight.semiBold;
   }};
 `;
 
@@ -219,7 +228,7 @@ const h1_600 = css`
     return typo.size.h1;
   }};
   font-weight: ${({ theme: { typo } }) => {
-    return typo.weight.semoBold;
+    return typo.weight.semiBold;
   }};
 `;
 
@@ -238,6 +247,7 @@ export {
   medium_400,
   medium_500,
   medium_600,
+  medium_700,
   large_400,
   large_500,
   large_600,
