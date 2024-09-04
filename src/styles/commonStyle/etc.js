@@ -62,7 +62,7 @@ const adminPageCellStyle = css`
         $currentActiveTab === '회원 가입승인'
       ) {
         return '302px';
-      } else if ($currentActiveTab === '게시물') {
+      } else if ($currentActiveTab === '게시물 관리') {
         return '142px';
       }
     }};
@@ -77,7 +77,7 @@ const adminPageCellStyle = css`
         return '110px';
       } else if ($currentActiveTab === '회원 가입승인') {
         return '134px';
-      } else if ($currentActiveTab === '게시물') {
+      } else if ($currentActiveTab === '게시물 관리') {
         return '413px';
       }
     }};
@@ -92,7 +92,7 @@ const adminPageCellStyle = css`
         return '110px';
       } else if ($currentActiveTab === '회원 가입승인') {
         return '134px';
-      } else if ($currentActiveTab === '게시물') {
+      } else if ($currentActiveTab === '게시물 관리') {
         return '110px';
       }
     }};
@@ -106,7 +106,7 @@ const adminPageCellStyle = css`
         return '131px';
       } else if ($currentActiveTab === '회원 가입승인') {
         return '375px';
-      } else if ($currentActiveTab === '게시물') {
+      } else if ($currentActiveTab === '게시물 관리') {
         return '519px';
       }
     }};

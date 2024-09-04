@@ -30,7 +30,7 @@ const adminTabMenuData = [
     activeAlt: 'check-active',
   },
   {
-    content: '게시물',
+    content: '게시물 관리',
     defaultIcon: documentDefault,
     activeIcon: documentActive,
     defaultAlt: 'document-default',
@@ -426,6 +426,106 @@ const userApprovalData = [
   },
 ];
 
+const postManagementHeaderColumns = [
+  {
+    header: '순서',
+  },
+  {
+    header: '카테고리',
+  },
+  {
+    header: '제목',
+  },
+  {
+    header: '작성자',
+  },
+  {
+    header: '작성일자',
+  },
+];
+
+const postManagementData = [
+  {
+    order: 1,
+    category: '이론정보',
+    postTitle: '상대방보다 싸움을 잘하는 24가지 방법',
+    contributor: '한마유지로',
+    postCreatedDate: '2024-08-26',
+    postDeleteSelectState: false,
+  },
+  {
+    order: 2,
+    category: '이론정보',
+    postTitle: '상대방보다 싸움을 잘하는 24가지 방법',
+    contributor: '한마유지로',
+    postCreatedDate: '2024-08-26',
+    postDeleteSelectState: false,
+  },
+  {
+    order: 3,
+    category: '이론정보',
+    postTitle: '상대방보다 싸움을 잘하는 24가지 방법',
+    contributor: '한마유지로',
+    postCreatedDate: '2024-08-26',
+    postDeleteSelectState: false,
+  },
+  {
+    order: 4,
+    category: '이론정보',
+    postTitle: '상대방보다 싸움을 잘하는 24가지 방법',
+    contributor: '한마유지로',
+    postCreatedDate: '2024-08-26',
+    postDeleteSelectState: false,
+  },
+  {
+    order: 5,
+    category: '이론정보',
+    postTitle: '상대방보다 싸움을 잘하는 24가지 방법',
+    contributor: '한마유지로',
+    postCreatedDate: '2024-08-26',
+    postDeleteSelectState: false,
+  },
+  {
+    order: 6,
+    category: '이론정보',
+    postTitle: '상대방보다 싸움을 잘하는 24가지 방법',
+    contributor: '한마유지로',
+    postCreatedDate: '2024-08-26',
+    postDeleteSelectState: false,
+  },
+  {
+    order: 7,
+    category: '이론정보',
+    postTitle: '상대방보다 싸움을 잘하는 24가지 방법',
+    contributor: '한마유지로',
+    postCreatedDate: '2024-08-26',
+    postDeleteSelectState: false,
+  },
+  {
+    order: 8,
+    category: '이론정보',
+    postTitle: '상대방보다 싸움을 잘하는 24가지 방법',
+    contributor: '한마유지로',
+    postCreatedDate: '2024-08-26',
+    postDeleteSelectState: false,
+  },
+  {
+    order: 9,
+    category: '이론정보',
+    postTitle: '상대방보다 싸움을 잘하는 24가지 방법',
+    contributor: '한마유지로',
+    postCreatedDate: '2024-08-26',
+    postDeleteSelectState: false,
+  },
+  {
+    order: 10,
+    category: '이론정보',
+    postTitle: '상대방보다 싸움을 잘하는 24가지 방법',
+    contributor: '한마유지로',
+    postCreatedDate: '2024-08-26',
+    postDeleteSelectState: false,
+  },
+];
 export {
   adminTabMenuData,
   reportedHeaderColumns,
@@ -434,4 +534,6 @@ export {
   memberManagementData,
   userApprovalHeaderColumns,
   userApprovalData,
+  postManagementHeaderColumns,
+  postManagementData,
 };

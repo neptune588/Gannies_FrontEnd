@@ -3,7 +3,8 @@ import styled from 'styled-components';
 const BodyRow = styled.tr`
   display: flex;
   align-items: center;
-  padding: 28px 0;
+  position: relative;
+  height: 72px;
   border-bottom: 1px solid
     ${({ theme: { colors } }) => {
       return colors.black;
