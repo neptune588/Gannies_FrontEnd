@@ -6,14 +6,15 @@ export const PostWrapper = styled.li`
   display: flex;
   justify-content: space-between;
   height: ${({ $pageName }) => {
-    return $pageName === 'home' ? '55px' : '75px';
+    return $pageName === 'home' ? '57px' : '75px';
   }};
   padding-left: ${({ $pageName }) => {
     return $pageName === 'home' && '8px';
   }};
   padding-right: ${({ $pageName }) => {
     return $pageName === 'home' && '8px';
-  }};
+}};
+  cursor: pointer;
 `;
 
 export const PostLeftBox = styled.div`
@@ -63,6 +64,12 @@ export const PostTitle = styled.p`
   margin-left: ${({ $pageName }) => {
     return $pageName === 'home' && '18px';
   }};
+  width: ${({ $pageName }) => {
+    return $pageName === 'home' ? '732px' : '373px';
+  }};  
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const Date = styled.p`
@@ -83,7 +90,7 @@ export const DescriptionBox = styled.div`
 
 export const IconBox = styled.div`
   margin-right: ${({ $pageName }) => {
-    return $pageName === 'my-page' && '20px';
+    return $pageName === 'home' ? '20px' : '20px';
   }};
 `;
 

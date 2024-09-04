@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { MainLayout, MypageLayout } from '@/layouts';
+import { HeaderLayout, MainLayout, MypageLayout } from '@/layouts';
 import Home from '@/pages/Home';
 import SignIn from '@/pages/SignIn';
 import Community from '@/pages/Community';
@@ -36,6 +36,10 @@ export const router = createBrowserRouter([
     ],
   },
   {
+    path: '/secure-admin/123456',
+    element: <Admin />,
+  },
+  {
     path: '/my-page',
     element: <MypageLayout />,
     children: [
@@ -46,47 +50,49 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '/sign-in',
-    element: <SignIn />,
-  },
-  {
-    path: '/sign-up/identity',
-    element: <Identity />,
-  },
-  {
-    path: '/sign-up/info',
-    element: <Info />,
-  },
-  {
-    path: '/sign-up/department',
-    element: <Department />,
-  },
-  {
-    path: '/sign-up/success',
-    element: <SignUpSuccess />,
-  },
-  {
-    path: '/find/id',
-    element: <ID />,
-  },
-  {
-    path: '/find/id/success',
-    element: <FindIDSuccess />,
-  },
-  {
-    path: '/find/password',
-    element: <Password />,
-  },
-  {
-    path: '/find/password/success',
-    element: <FindPasswordSuccess />,
-  },
-  {
-    path: '/secure-admin/123456',
-    element: <Admin />,
-  },
-  {
-    path: '*',
-    element: <Error />,
+    path: '/',
+    element: <HeaderLayout />,
+    children: [
+      {
+        path: '/sign-in',
+        element: <SignIn />,
+      },
+      {
+        path: '/sign-up/identity',
+        element: <Identity />,
+      },
+      {
+        path: '/sign-up/info',
+        element: <Info />,
+      },
+      {
+        path: '/sign-up/department',
+        element: <Department />,
+      },
+      {
+        path: '/sign-up/success',
+        element: <SignUpSuccess />,
+      },
+      {
+        path: '/find/id',
+        element: <ID />,
+      },
+      {
+        path: '/find/id/success',
+        element: <FindIDSuccess />,
+      },
+      {
+        path: '/find/password',
+        element: <Password />,
+      },
+      {
+        path: '/find/password/success',
+        element: <FindPasswordSuccess />,
+      },
+      {
+        path: '*',
+        element: <Error />,
+      },
+    ],
   },
 ]);

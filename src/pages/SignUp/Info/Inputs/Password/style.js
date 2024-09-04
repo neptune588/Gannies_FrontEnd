@@ -1,8 +1,12 @@
 import Input from '@/components/Input';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+import Eye from '@/components/Icons/Eye';
+import EyeSlash from '@/components/Icons/EyeSlash';
 
 import { defaultBorderBoxStyle } from '@/styles/commonStyle/box';
 import { placeholderTextStyle } from '@/styles/commonStyle/text';
+
 
 export const InputWrapper = styled.form`
   ${defaultBorderBoxStyle};
@@ -23,4 +27,19 @@ export const InputBox = styled(Input)`
   &::placeholder {
     ${placeholderTextStyle};
   }
+`;
+
+export const IconStyle = css`
+  width: 18px;
+  height: 18px;
+  margin-right: 12px;
+  cursor: pointer;  
+`;
+
+export const EyeIcon = styled(Eye)`
+  ${IconStyle};
+`;
+
+export const EyeSlashIcon = styled(EyeSlash)`
+  ${IconStyle};  
 `;

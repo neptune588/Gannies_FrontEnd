@@ -1,4 +1,4 @@
-import uuid from 'react-uuid';
+import React, { useEffect, useState } from 'react';
 
 import Modal from '@/pages/SignUp/Identity/Agree/Modal';
 
@@ -8,35 +8,94 @@ import {
   Info,
   AgreeWrapper,
   ShowButton,
+  CheckBox,
 } from '@/pages/SignUp/Identity/Agree/style';
 
-// import InactiveButton from '@/components/Buttons/AuthButtons/Inactive';
-import { CheckBox } from '@/pages/SignUp/Identity/Agree/style';
-import { useState } from 'react';
+function Agree({ setAllow }) {
+  const checkListCount = 2;
+  const [openModalList, setOpenModalList] = useState(
+    Array(checkListCount).fill(false)
+  );
+  const [checkList, setCheckList] = useState(Array(checkListCount).fill(false));
 
-function Agree() {
-  const agreeCount = 2;
+  const openModal = (index) => {
+    setOpenModalList((prev) => {
+      const newOpenModalList = [...prev];
+      newOpenModalList[index] = !newOpenModalList[index];
+      return newOpenModalList;
+    });
+  };
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  useEffect(() => {
+    const allChecked = checkList.every((item) => item === true);
+    setAllow((prevAllow) => {
+      const newAllow = [...prevAllow];
+      newAllow[3] = allChecked;
+      return newAllow;
+    });
+  }, [checkList]);
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const handleCheck = (index) => {
+    setCheckList((prev) => {
+      const newCheckList = [...prev];
+      newCheckList[index] = !newCheckList[index];
+      return newCheckList;
+    });
+  };
+
+  const handleCheckTrue = (index) => {
+    setCheckList((prev) => {
+      const newCheckList = [...prev];
+      newCheckList[index] = true;
+      const allChecked = newCheckList.every((item) => item === true);
+      setAllow((prevAllow) => {
+        const newAllow = [...prevAllow];
+        newAllow[3] = allChecked;
+        return newAllow;
+      });
+      return newCheckList;
+    });
+  };
+
+  const handleAllCheck = () => {
+    const newCheckState = !checkList.every((item) => item === true);
+    setCheckList(Array(checkListCount).fill(newCheckState));
+    setAllow((prevAllow) => {
+      const newAllow = [...prevAllow];
+      newAllow[3] = newCheckState;
+      return newAllow;
+    });
+  };
 
   return (
     <Wrapper>
-      {isModalOpen ? <Modal closeModal={closeModal} /> : <></>}
       <SectionWrapper>
         <Info>회원약관</Info>
         <AgreeWrapper>
-          <CheckBox type='checkbox' />
+          <CheckBox
+            type='checkbox'
+            checked={checkList.every((item) => item === true)}
+            onChange={handleAllCheck}
+          />
           <p>전체약관동의</p>
         </AgreeWrapper>
-        {Array.from({ length: agreeCount }).map((_, index) => (
-          <AgreeWrapper key={uuid()}>
-            <CheckBox type='checkbox' />
+        {Array.from({ length: checkListCount }).map((_, index) => (
+          <AgreeWrapper key={index}>
+            <CheckBox
+              type='checkbox'
+              checked={checkList[index]}
+              onChange={() => handleCheck(index)}
+            />
             <span>[필수]</span>
             <p>약관동의</p>
-            <ShowButton onClick={openModal}>약관보기</ShowButton>
+            <ShowButton onClick={() => openModal(index)}>약관보기</ShowButton>
+            {openModalList[index] && (
+              <Modal
+                index={index}
+                openModal={openModal}
+                handleCheckTrue={handleCheckTrue}
+              />
+            )}
           </AgreeWrapper>
         ))}
       </SectionWrapper>

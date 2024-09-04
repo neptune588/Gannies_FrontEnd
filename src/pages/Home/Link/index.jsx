@@ -1,32 +1,29 @@
+import chevron_right_white from '@/assets/icons/arrows/chevron_right_white.svg';
+import department from '@/assets/images/homepage_example.png';
+
 import {
-	Wrapper,
-	LeftWrapper,
-	Title,
-	Goto,
-	ArrowIcon,
-	ArrowIconWrapper,
-	RightWrapper,
-	LinkIcon
+		Wrapper,
+		LeftWrapper,
+		RightWrapper,
+		LowerBox
 } from '@/pages/Home/Link/style';
 
-import chevron_right from '@/assets/icons/arrows/chevron_right.svg';
-import department from '@/assets/images/homepage_example.png';
 
 function Link() {
   return (
-    <Wrapper>
-						<LeftWrapper>
-							<Title>우리학교 다른홈페이지</Title>
-							<Goto>바로가기<ArrowIconWrapper><ArrowIcon src={chevron_right} alt="chevron_left"/></ArrowIconWrapper></Goto>
-						</LeftWrapper>
-						<RightWrapper>
-							<LinkIcon src={department} alt="LinkIcon"/>
-							<LinkIcon src={department} alt="LinkIcon"/>
-							<LinkIcon src={department} alt="LinkIcon"/>
-							<LinkIcon src={department} alt="LinkIcon"/>
-							<LinkIcon src={department} alt="LinkIcon"/>
-							<LinkIcon src={department} alt="LinkIcon"/>
-						</RightWrapper>
+			<Wrapper>
+				<LeftWrapper>
+						<h3>우리학교 다른홈페이지</h3>
+					<LowerBox>바로가기<div><img src={chevron_right_white} alt="chevron_left_white"/></div></LowerBox>
+				</LeftWrapper>
+				<RightWrapper>
+					<img src={department} alt="LinkIcon"/>
+					<img src={department} alt="LinkIcon"/>
+					<img src={department} alt="LinkIcon"/>
+					<img src={department} alt="LinkIcon"/>
+					<img src={department} alt="LinkIcon"/>
+					<img src={department} alt="LinkIcon"/>
+				</RightWrapper>
     </Wrapper>
   );
 }

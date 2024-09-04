@@ -6,9 +6,8 @@ import Wrapper from "@/pages/Find/components/Wrapper";
 
 import {
   ButtonWrapper,
-  LeftButton,
-  RightButton,
-} from "@/pages/SignUp/Success/style";
+  MiddleButton
+} from "@/pages/Find/ID/Success/style";
 
 function Success() {
   return (
@@ -21,10 +20,9 @@ function Success() {
       <span>임시비밀번호로 로그인 후 반드시 비밀번호 변경을 해주세요</span>    
       <EmailBox text="hihi@gmail.com" />
       <ButtonWrapper>
-        <LeftButton />
-        <RightButton />
+        <MiddleButton to="/sign-in">로그인 하기</MiddleButton>
       </ButtonWrapper>    
-   </Wrapper>
+    </Wrapper>
   );
 }
 

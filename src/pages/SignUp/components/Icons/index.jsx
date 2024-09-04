@@ -1,4 +1,5 @@
 import uuid from 'react-uuid';
+import arrow from '@/assets/icons/arrows/chevron_right.svg';
 
 import {
   Arrow,
@@ -11,8 +12,6 @@ import {
   Instruction,
   FontFinished,
 } from '@/pages/SignUp/components/Icons/style';
-
-import arrow from '@/assets/icons/arrows/chevron_right.svg';
 
 function Icons({ identity, info, department, sequence }) {
   const fonts = ['본인인증', '정보입력', '학과인증'];

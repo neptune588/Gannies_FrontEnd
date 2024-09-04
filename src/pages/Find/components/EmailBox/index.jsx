@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 import { authEmailColorBoxStyle } from '@/styles/commonStyle/box';
 
 const StyledEmailBox = styled.div`
