@@ -55,12 +55,11 @@ const adminPageModalTitleStyle = css`
 `;
 
 const adminPageModalInnerDataTitleStyle = css`
-    ${xsmall_600}
-    color: ${({ theme: { colors } }) => {
-      return colors.gray['60'];
-    }};
-    margin-bottom: 10px;
-  }
+  ${xsmall_600}
+  color: ${({ theme: { colors } }) => {
+    return colors.gray['60'];
+  }};
+  margin-bottom: 10px;
 `;
 
 export {

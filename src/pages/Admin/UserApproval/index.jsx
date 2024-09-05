@@ -94,7 +94,7 @@ export default function UserApproval() {
           <tbody>
             {tableData?.map((data, idx) => {
               return (
-                <TableBodyRow key={uuid()}>
+                <TableBodyRow key={uuid()} currentActiveTab={'회원 가입승인'}>
                   <td>{data.nickname}</td>
                   <td>{data.email}</td>
                   <td>{data.signUpDate}</td>

@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { medium_600, medium_700 } from '@/styles/commonStyle/localTextStyle';
@@ -35,7 +34,7 @@ const ProfileBox = styled.div`
   }
 `;
 
-const TabMenuList = styled(Link)`
+const TabMenuList = styled.li`
   display: flex;
   align-items: center;
   width: 300px;

@@ -12,6 +12,7 @@ import ModalInnerList from '@/pages/Admin/TableDesign/InnerSelectModal/ModalInne
 import InnerModalOpenButton from '@/pages/Admin/TableDesign/InnerModalOpenButton';
 import PaginationWrapper from '@/pages/Admin/PaginationWrapper';
 import Pagination from '@/components/Pagination';
+import ReportedReviewModal from '@/pages/Admin/ReportedReviewModal';
 
 import arrow from '@/assets/icons/arrows/chevron_down.svg';
 
@@ -68,6 +69,7 @@ export default function ReportHistory() {
 
   return (
     <>
+      <ReportedReviewModal activeCategory={currenntActiveCategory} />
       <TitleSection>
         <TitleCategory
           $currenntActiveCategory={currenntActiveCategory}

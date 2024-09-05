@@ -37,7 +37,7 @@ export default function AdminSideTab() {
               $ownMenu={tab.label}
               onClick={() => {
                 handleClickChange(tab.label);
-                navigate(`${tab.path}`);
+                navigate(tab.path);
               }}
             >
               <img

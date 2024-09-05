@@ -14,6 +14,7 @@ import InnerSelectModal from '@/pages/Admin/TableDesign/InnerSelectModal';
 import ModalInnerList from '@/pages/Admin/TableDesign/InnerSelectModal/ModalInnerList';
 import PaginationWrapper from '@/pages/Admin/PaginationWrapper';
 import Pagination from '@/components/Pagination';
+import UserBanModal from '@/pages/Admin/UserBanModal';
 
 import arrow from '@/assets/icons/arrows/chevron_down.svg';
 
@@ -66,6 +67,7 @@ export default function MemberManagement() {
 
   return (
     <>
+      {/* <UserBanModal /> */}
       <TitleSection>
         <Title>회원관리</Title>
       </TitleSection>
