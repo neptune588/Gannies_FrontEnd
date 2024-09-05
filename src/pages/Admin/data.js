@@ -9,28 +9,32 @@ import documentActive from '@/assets/icons/document/document_active.svg';
 
 const adminTabMenuData = [
   {
-    content: '신고내역',
+    label: '신고내역',
+    path: '/admin/report-history',
     defaultIcon: bellDefault,
     activeIcon: bellActive,
     defaultAlt: 'bell-default',
     activeAlt: 'bell-active',
   },
   {
-    content: '회원관리',
+    label: '회원관리',
+    path: '/admin/member-management',
     defaultIcon: profileDefault,
     activeIcon: profileActive,
     defaultAlt: 'profile-default',
     activeAlt: 'profile-active',
   },
   {
-    content: '회원 가입승인',
+    label: '회원 가입승인',
+    path: '/admin/user-approval',
     defaultIcon: checkDefault,
     activeIcon: checkActive,
     defaultAlt: 'check-default',
     activeAlt: 'check-active',
   },
   {
-    content: '게시물 관리',
+    label: '게시물 관리',
+    path: '/admin/post-management',
     defaultIcon: documentDefault,
     activeIcon: documentActive,
     defaultAlt: 'document-default',

@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { HeaderLayout, MainLayout, MypageLayout } from '@/layouts';
+import { AdminLayout, HeaderLayout, MainLayout, MypageLayout } from '@/layouts';
 import Home from '@/pages/Home';
 import SignIn from '@/pages/SignIn';
 import Community from '@/pages/Community';
@@ -14,7 +14,10 @@ import FindIDSuccess from '@/pages/Find/ID/Success';
 import Password from '@/pages/Find/Password';
 import FindPasswordSuccess from '@/pages/Find/Password/Success';
 import MyPage from '@/pages/MyPage';
-import Admin from '@/pages/Admin';
+import ReportHistory from '@/pages/Admin/ReportHistory';
+import MemberManagement from '@/pages/Admin/MemberManagement';
+import UserApproval from '@/pages/Admin/UserApproval';
+import PostManagement from '@/pages/Admin/PostManagement';
 
 export const router = createBrowserRouter([
   {
@@ -36,8 +39,26 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '/secure-admin/123456',
-    element: <Admin />,
+    path: '/admin',
+    element: <AdminLayout />,
+    children: [
+      {
+        path: '/admin/report-history',
+        element: <ReportHistory />,
+      },
+      {
+        path: '/admin/member-management',
+        element: <MemberManagement />,
+      },
+      {
+        path: '/admin/user-approval',
+        element: <UserApproval />,
+      },
+      {
+        path: '/admin/post-management',
+        element: <PostManagement />,
+      },
+    ],
   },
   {
     path: '/my-page',

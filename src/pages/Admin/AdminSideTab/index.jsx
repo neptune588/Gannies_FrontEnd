@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import uuid from 'react-uuid';
 
 import {
@@ -6,11 +8,20 @@ import {
   TabMenuList,
 } from '@/pages/Admin/AdminSideTab/style';
 
-export default function AdminSideTab({
-  activeMenu,
-  handleTabMenuClick,
-  tabMenuList,
-}) {
+import { adminTabMenuData } from '@/pages/Admin/data';
+
+import { useEventHandler } from '@/hooks/useEventHandler';
+
+export default function AdminSideTab() {
+  const navigate = useNavigate();
+
+  const { clickChangeState: currentActiveTabMenu, handleClickChange } =
+    useEventHandler({
+      clickChangeDefaultValue: adminTabMenuData[0].label,
+    });
+
+  const [tabData] = useState(adminTabMenuData);
+
   return (
     <TabContainer>
       <ProfileBox>
@@ -18,27 +29,30 @@ export default function AdminSideTab({
         <p>관리자 입니다</p>
       </ProfileBox>
       <ul>
-        {tabMenuList?.map((menu, idx) => {
+        {tabData?.map((tab) => {
           return (
             <TabMenuList
               key={uuid()}
-              $activeMenu={activeMenu}
-              $ownContent={menu.content}
+              $currentActiveTabMenu={currentActiveTabMenu}
+              $ownMenu={tab.label}
               onClick={() => {
-                handleTabMenuClick(menu.content);
+                handleClickChange(tab.label);
+                navigate(`${tab.path}`);
               }}
             >
               <img
                 src={
-                  activeMenu === menu.content
-                    ? menu.activeIcon
-                    : menu.defaultIcon
+                  currentActiveTabMenu === tab.label
+                    ? tab.activeIcon
+                    : tab.defaultIcon
                 }
                 alt={
-                  activeMenu === menu.content ? menu.activeAlt : menu.default
+                  currentActiveTabMenu === tab.label
+                    ? tab.activeAlt
+                    : tab.default
                 }
               />
-              <p>{menu.content}</p>
+              <p>{tab.label}</p>
             </TabMenuList>
           );
         })}

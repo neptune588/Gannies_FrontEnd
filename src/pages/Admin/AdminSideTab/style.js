@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { medium_600, medium_700 } from '@/styles/commonStyle/localTextStyle';
@@ -34,7 +35,7 @@ const ProfileBox = styled.div`
   }
 `;
 
-const TabMenuList = styled.li`
+const TabMenuList = styled(Link)`
   display: flex;
   align-items: center;
   width: 300px;
@@ -42,8 +43,12 @@ const TabMenuList = styled.li`
   padding-left: 30px;
   user-select: none;
   cursor: pointer;
-  background-color: ${({ $activeMenu, $ownContent, theme: { colors } }) => {
-    return $activeMenu === $ownContent && colors.white;
+  background-color: ${({
+    $currentActiveTabMenu,
+    $ownMenu,
+    theme: { colors },
+  }) => {
+    return $currentActiveTabMenu === $ownMenu && colors.white;
   }};
   border-radius: 16px;
 
@@ -53,8 +58,8 @@ const TabMenuList = styled.li`
     margin-right: 25px;
   }
   > p {
-    color: ${({ $activeMenu, $ownContent, theme: { colors } }) => {
-      return $activeMenu === $ownContent ? colors.primary : colors.white;
+    color: ${({ $currentActiveTabMenu, $ownMenu, theme: { colors } }) => {
+      return $currentActiveTabMenu === $ownMenu ? colors.primary : colors.white;
     }};
     ${medium_700}
   }

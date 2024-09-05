@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import uuid from 'react-uuid';
 
 import TitleSection from '@/pages/Admin/TitleSection';
@@ -15,15 +16,19 @@ import arrow from '@/assets/icons/arrows/chevron_down.svg';
 
 import { TitleCategory } from '@/pages/Admin/ReportHistory/style';
 
-export default function ReeportHistory({
-  currentActiveTab = '신고내역',
-  currenntActiveCategory = '게시글',
-  headerColumns,
-  tableData,
-  handleCategoryChange,
-  handleInnerModalToggle,
-  handleStatusValueChange,
-}) {
+import { reportedHeaderColumns, reportedData } from '@/pages/Admin/data';
+
+import { useEventHandler } from '@/hooks/useEventHandler';
+
+export default function ReportHistory() {
+  const [tableData, setTableData] = useState(reportedData);
+  const [headerColumns, setHeaderColumns] = useState(reportedHeaderColumns);
+
+  const { clickChangeState: currenntActiveCategory, handleClickChange } =
+    useEventHandler({
+      clickChangeDefaultValue: '게시글',
+    });
+
   return (
     <>
       <TitleSection>
@@ -31,7 +36,7 @@ export default function ReeportHistory({
           $currenntActiveCategory={currenntActiveCategory}
           $ownCategory={'게시글'}
           onClick={() => {
-            handleCategoryChange('게시글');
+            handleClickChange('게시글');
           }}
         >
           게시글
@@ -40,19 +45,19 @@ export default function ReeportHistory({
           $currenntActiveCategory={currenntActiveCategory}
           $ownCategory={'댓글'}
           onClick={() => {
-            handleCategoryChange('댓글');
+            handleClickChange('댓글');
           }}
         >
           댓글
         </TitleCategory>
       </TitleSection>
       <ArrLengthSection>
-        <ArrLengthView length={10} />
+        <ArrLengthView length={tableData.length} />
       </ArrLengthSection>
       <TableWrapper>
         <table>
           <thead>
-            <TableHeaderRow currentActiveTab={currentActiveTab}>
+            <TableHeaderRow currentActiveTab={'신고내역'}>
               {headerColumns.map((data, idx) => {
                 return (
                   <th key={uuid()}>
@@ -69,29 +74,29 @@ export default function ReeportHistory({
             {tableData?.map((data, idx) => {
               return (
                 <TableBodyRow key={uuid()}>
-                  <TableBodyCell currentActiveTab={currentActiveTab}>
+                  <TableBodyCell currentActiveTab={'신고내역'}>
                     {String(data.order).padStart(2, '0')}
                   </TableBodyCell>
-                  <TableBodyCell currentActiveTab={currentActiveTab}>
+                  <TableBodyCell currentActiveTab={'신고내역'}>
                     {data.contents}
                   </TableBodyCell>
-                  <TableBodyCell currentActiveTab={currentActiveTab}>
+                  <TableBodyCell currentActiveTab={'신고내역'}>
                     {data.contributor}
                   </TableBodyCell>
-                  <TableBodyCell currentActiveTab={currentActiveTab}>
+                  <TableBodyCell currentActiveTab={'신고내역'}>
                     {data.complainant}
                   </TableBodyCell>
-                  <TableBodyCell currentActiveTab={currentActiveTab}>
+                  <TableBodyCell currentActiveTab={'신고내역'}>
                     {data.reportDate}
                   </TableBodyCell>
-                  <TableBodyCell currentActiveTab={currentActiveTab}>
+                  <TableBodyCell currentActiveTab={'신고내역'}>
                     {data.reportDetail}
                   </TableBodyCell>
-                  <TableBodyCell currentActiveTab={currentActiveTab}>
+                  <TableBodyCell currentActiveTab={'신고내역'}>
                     {data.innerModalState && (
-                      <InnerSelectModal currentActiveTab={currentActiveTab}>
+                      <InnerSelectModal currentActiveTab={'신고내역'}>
                         <ModalInnerList
-                          currentActiveTab={currentActiveTab}
+                          currentActiveTab={'신고내역'}
                           handleStatusValueChange={() => {
                             handleStatusValueChange('처리 중', idx);
                             handleInnerModalToggle(idx);
@@ -100,7 +105,7 @@ export default function ReeportHistory({
                           처리 중
                         </ModalInnerList>
                         <ModalInnerList
-                          currentActiveTab={currentActiveTab}
+                          currentActiveTab={'신고내역'}
                           handleStatusValueChange={() => {
                             handleStatusValueChange('처리완료', idx);
                             handleInnerModalToggle(idx);
@@ -109,7 +114,7 @@ export default function ReeportHistory({
                           처리완료
                         </ModalInnerList>
                         <ModalInnerList
-                          currentActiveTab={currentActiveTab}
+                          currentActiveTab={'신고내역'}
                           handleStatusValueChange={() => {
                             handleStatusValueChange('신고반려', idx);
                             handleInnerModalToggle(idx);

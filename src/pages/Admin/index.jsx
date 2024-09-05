@@ -1,14 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import AdminSideTab from '@/pages/Admin/AdminSideTab';
-import ReeportHistory from '@/pages/Admin/ReportHistory';
-import MemberManagement from '@/pages/Admin/MemberManagement';
-import UserApproval from '@/pages/Admin/UserApproval';
-import PostManagement from '@/pages/Admin/PostManagement';
 import Pagination from '@/components/Pagination';
-import ReportedReviewModal from '@/pages/Admin/ReportedReviewModal';
-import UserBanModal from '@/pages/Admin/UserBanModal';
-import DeleteModal from '@/pages/Admin/DeleteModal';
 
 import { Container, ContentsWrapper, PageWrapper } from '@/pages/Admin/style';
 
@@ -29,10 +22,10 @@ export default function Admin() {
   const [tabData] = useState(adminTabMenuData);
 
   const [currentActiveTabMenu, setCurrentActiveTabMenu] = useState(
-    adminTabMenuData[0].content
+    adminTabMenuData[0].label
   );
-  const handleTabMenuClick = (content) => {
-    setCurrentActiveTabMenu(content);
+  const handleTabMenuClick = (label) => {
+    setCurrentActiveTabMenu(label);
   };
 
   const [currentActiveCategory, setCurrentActiveCategory] = useState('게시글');
@@ -100,83 +93,11 @@ export default function Admin() {
     return tableData.filter((list) => list.postDeleteSelectState).length;
   };
 
-  useEffect(() => {
-    //본격적으로 데이터 받으면 redux에 저장해서 편하게 구현
-    if (currentActiveTabMenu === '신고내역') {
-      setTableData(reportedData);
-      setHeaderData(reportedHeaderColumns);
-    } else if (currentActiveTabMenu === '회원관리') {
-      setTableData(memberManagementData);
-      setHeaderData(memberManagementHeaderColumns);
-    } else if (currentActiveTabMenu === '회원 가입승인') {
-      setTableData(userApprovalData);
-      setHeaderData(userApprovalHeaderColumns);
-    } else if (currentActiveTabMenu === '게시물 관리') {
-      setTableData(postManagementData);
-      setHeaderData(postManagementHeaderColumns);
-    }
-  }, [currentActiveTabMenu]);
-
   return (
     <>
       {/* <ReportedReviewModal activeCategory={activeCategory} /> */}
       {/*       {<UserBanModal />} */}
       {/*       <DeleteModal deleteSelectCalc={deleteSelectCalc} /> */}
-      <Container>
-        <AdminSideTab
-          activeMenu={currentActiveTabMenu}
-          handleTabMenuClick={handleTabMenuClick}
-          tabMenuList={tabData}
-        />
-        <ContentsWrapper>
-          {currentActiveTabMenu === '신고내역' && (
-            <ReeportHistory
-              currentActiveTab={currentActiveTabMenu}
-              currenntActiveCategory={currentActiveCategory}
-              headerColumns={headerData}
-              tableData={tableData}
-              handleCategoryChange={handleCategoryChange}
-              handleInnerModalToggle={handleInnerModalToggle}
-              handleStatusValueChange={handleStatusValueChange}
-            />
-          )}
-          {currentActiveTabMenu === '회원관리' && (
-            <MemberManagement
-              currentActiveTab={currentActiveTabMenu}
-              headerColumns={headerData}
-              tableData={tableData}
-              handleInnerModalToggle={handleInnerModalToggle}
-              handleStatusValueChange={handleStatusValueChange}
-            />
-          )}
-          {currentActiveTabMenu === '회원 가입승인' && (
-            <UserApproval
-              currentActiveTab={currentActiveTabMenu}
-              headerColumns={headerData}
-              tableData={tableData}
-              handleInnerModalToggle={handleInnerModalToggle}
-              handleStatusValueChange={handleStatusValueChange}
-            />
-          )}
-          {currentActiveTabMenu === '게시물 관리' && (
-            <PostManagement
-              currentActiveTab={currentActiveTabMenu}
-              headerColumns={headerData}
-              tableData={tableData}
-              handleDeleteSelectStateChange={handleDeleteSelectStateChange}
-              handleDeleteSelectStateReset={handleDeleteSelectStateReset}
-            />
-          )}
-
-          <PageWrapper>
-            <Pagination
-              pageNumberData={tempData}
-              activePageNumber={tempPageNumber}
-              handlePageNumberClick={handlePageClick}
-            />
-          </PageWrapper>
-        </ContentsWrapper>
-      </Container>
     </>
   );
 }
