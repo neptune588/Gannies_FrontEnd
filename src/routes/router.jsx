@@ -39,7 +39,6 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '/admin',
     element: <AdminLayout />,
     children: [
       {

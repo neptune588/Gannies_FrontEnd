@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import uuid from 'react-uuid';
 
 import {
@@ -14,13 +14,29 @@ import { useEventHandler } from '@/hooks/useEventHandler';
 
 export default function AdminSideTab() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { clickChangeState: currentActiveTabMenu, handleClickChange } =
     useEventHandler({
-      clickChangeDefaultValue: adminTabMenuData[0].label,
+      clickChangeDefaultValue: null,
     });
 
   const [tabData] = useState(adminTabMenuData);
+
+  useEffect(() => {
+    const url = location.pathname.split('/admin')[1];
+    console.log(url);
+
+    if (url === '/report-history') {
+      handleClickChange('신고내역');
+    } else if (url === '/member-management') {
+      handleClickChange('회원관리');
+    } else if (url === '/user-approval') {
+      handleClickChange('회원 가입승인');
+    } else if (url === '/post-management') {
+      handleClickChange('게시물 관리');
+    }
+  }, []);
 
   return (
     <TabContainer>
