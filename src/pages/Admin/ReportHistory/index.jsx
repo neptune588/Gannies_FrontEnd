@@ -22,12 +22,36 @@ import { useEventHandler } from '@/hooks/useEventHandler';
 
 export default function ReportHistory() {
   const [tableData, setTableData] = useState(reportedData);
-  const [headerColumns, setHeaderColumns] = useState(reportedHeaderColumns);
+  const [headerColumns] = useState(reportedHeaderColumns);
 
   const { clickChangeState: currenntActiveCategory, handleClickChange } =
     useEventHandler({
       clickChangeDefaultValue: '게시글',
     });
+
+  const handleStatusValueChange = (status, listNumber) => {
+    const statusChangefnc = (arr) => {
+      return arr.map((list, idx) => {
+        return {
+          ...list,
+          statusValue: idx === listNumber ? status : list.statusValue,
+        };
+      });
+    };
+    setTableData((prev) => statusChangefnc(prev));
+  };
+
+  const handleInnerModalToggle = (listNumber) => {
+    const toggleFnc = (arr) => {
+      return arr.map((list, idx) => {
+        return {
+          ...list,
+          innerModalState: idx === listNumber ? !list.innerModalState : false,
+        };
+      });
+    };
+    setTableData((prev) => toggleFnc(prev));
+  };
 
   return (
     <>
@@ -73,26 +97,14 @@ export default function ReportHistory() {
           <tbody>
             {tableData?.map((data, idx) => {
               return (
-                <TableBodyRow key={uuid()}>
-                  <TableBodyCell currentActiveTab={'신고내역'}>
-                    {String(data.order).padStart(2, '0')}
-                  </TableBodyCell>
-                  <TableBodyCell currentActiveTab={'신고내역'}>
-                    {data.contents}
-                  </TableBodyCell>
-                  <TableBodyCell currentActiveTab={'신고내역'}>
-                    {data.contributor}
-                  </TableBodyCell>
-                  <TableBodyCell currentActiveTab={'신고내역'}>
-                    {data.complainant}
-                  </TableBodyCell>
-                  <TableBodyCell currentActiveTab={'신고내역'}>
-                    {data.reportDate}
-                  </TableBodyCell>
-                  <TableBodyCell currentActiveTab={'신고내역'}>
-                    {data.reportDetail}
-                  </TableBodyCell>
-                  <TableBodyCell currentActiveTab={'신고내역'}>
+                <TableBodyRow key={uuid()} currentActiveTab={'신고내역'}>
+                  <td>{String(data.order).padStart(2, '0')}</td>
+                  <td>{data.contents}</td>
+                  <td>{data.contributor}</td>
+                  <td>{data.complainant}</td>
+                  <td>{data.reportDate}</td>
+                  <td>{data.reportDetail}</td>
+                  <td>
                     {data.innerModalState && (
                       <InnerSelectModal currentActiveTab={'신고내역'}>
                         <ModalInnerList
@@ -128,11 +140,11 @@ export default function ReportHistory() {
                       handleInnerModalToggle={() => {
                         handleInnerModalToggle(idx);
                       }}
-                      currentActiveTab={currentActiveTab}
+                      currentActiveTab={'신고내역'}
                       currentValue={data.statusValue}
                       innerModalState={data.innerModalState}
                     />
-                  </TableBodyCell>
+                  </td>
                 </TableBodyRow>
               );
             })}
