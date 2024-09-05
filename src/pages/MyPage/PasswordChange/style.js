@@ -8,7 +8,13 @@ import {
   xsmall_500,
   xsmall_600,
   medium_400,
+  h4_600,
 } from '@/styles/commonStyle/localTextStyle';
+
+const Title = styled.h2`
+  ${h4_600}
+  padding: 0 10px;
+`;
 
 const PasswordChangeWrapper = styled.div`
   margin-top: 15px;
@@ -77,6 +83,7 @@ const EditSaveBox = styled.section`
 `;
 
 export {
+  Title,
   PasswordChangeWrapper,
   PasswordChgngeBox,
   InputBox,

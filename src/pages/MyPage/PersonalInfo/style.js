@@ -8,7 +8,13 @@ import {
   xsmall_500,
   small_600,
   medium_400,
+  h4_600,
 } from '@/styles/commonStyle/localTextStyle';
+
+const Title = styled.h2`
+  ${h4_600}
+  padding: 0 10px;
+`;
 
 const PersonalInfoWrapper = styled.div`
   margin-top: 15px;
@@ -92,6 +98,7 @@ const EditSaveAndAccountDeleteBox = styled.section`
   }
 `;
 export {
+  Title,
   PersonalInfoWrapper,
   PersonalInfoBox,
   NicknameEditBox,

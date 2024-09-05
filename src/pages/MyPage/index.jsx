@@ -19,17 +19,6 @@ import { tabMenuData } from '@/pages/MyPage/data';
 import { posts } from '@/pages/Home/data';
 
 export default function MyPage() {
-  const [activeMenu, setActiveMenu] = useState(tabMenuData[0].content);
-  const handleTabMenuClick = (content) => {
-    setActiveMenu(content);
-  };
-
-  const [passwordView, setPasswordView] = useState(true);
-  const handlePasswordViewClick = () => {
-    setPasswordView((prev) => !prev);
-    console.log(passwordView);
-  };
-
   const [postData] = useState(posts);
   const [pageData] = useState(
     Array.from({ length: 10 }, (_, index) => {
@@ -44,28 +33,6 @@ export default function MyPage() {
 
   return (
     <>
-      <Title>마이페이지</Title>
-      <ContentsContainer>
-        <SideTabMenuWrapper>
-          <SideTabMenu
-            activeMenu={activeMenu}
-            tabMenu={tabMenuData}
-            handleTabMenuClick={handleTabMenuClick}
-          />
-        </SideTabMenuWrapper>
-        <MainContentsWrapper>
-          {activeMenu === tabMenuData[0].content && (
-            <>
-              <ActiveTabTitleBox>
-                <ActiveTabTitle>
-                  {'회원' + tabMenuData[0].content}
-                </ActiveTabTitle>
-              </ActiveTabTitleBox>
-              <form>
-                <PersonalInfo />
-              </form>
-            </>
-          )}
           {activeMenu === tabMenuData[1].content && (
             <>
               <ActiveTabTitleBox>

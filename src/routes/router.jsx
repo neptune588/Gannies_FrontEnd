@@ -4,6 +4,8 @@ import Home from '@/pages/Home';
 import SignIn from '@/pages/SignIn';
 import Community from '@/pages/Community';
 import CreateCommunityPost from '@/pages/CreateCommunityPost';
+import PersonalInfo from '@/pages/MyPage/PersonalInfo';
+import PasswordChange from '@/pages/MyPage/PasswordChange';
 import Identity from '@/pages/SignUp/Identity';
 import Info from '@/pages/SignUp/Info';
 import Department from '@/pages/SignUp/Department';
@@ -13,7 +15,6 @@ import ID from '@/pages/Find/ID';
 import FindIDSuccess from '@/pages/Find/ID/Success';
 import Password from '@/pages/Find/Password';
 import FindPasswordSuccess from '@/pages/Find/Password/Success';
-import MyPage from '@/pages/MyPage';
 import ReportHistory from '@/pages/Admin/ReportHistory';
 import MemberManagement from '@/pages/Admin/MemberManagement';
 import UserApproval from '@/pages/Admin/UserApproval';
@@ -62,8 +63,12 @@ export const router = createBrowserRouter([
     element: <MypageLayout />,
     children: [
       {
-        path: '/mypage',
-        element: <MyPage />,
+        path: '/mypage/profile/edit',
+        element: <PersonalInfo />,
+      },
+      {
+        path: '/mypage/profile/change-password',
+        element: <PasswordChange />,
       },
     ],
   },
