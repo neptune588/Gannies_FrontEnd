@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import uuid from 'react-uuid';
 
 import TitleSection from '@/pages/Admin/TitleSection';
@@ -8,22 +9,65 @@ import SearchInput from '@/pages/Admin/SearchInput';
 import TableWrapper from '@/pages/Admin/TableDesign/TableWrapper';
 import TableHeaderRow from '@/pages/Admin/TableDesign/TableHeaderRow';
 import TableBodyRow from '@/pages/Admin/TableDesign/TableBodyRow';
-import TableBodyCell from '@/pages/Admin/TableDesign/TableBodyCell';
 import InnerModalOpenButton from '@/pages/Admin/TableDesign/InnerModalOpenButton';
 import InnerSelectModal from '@/pages/Admin/TableDesign/InnerSelectModal';
 import ModalInnerList from '@/pages/Admin/TableDesign/InnerSelectModal/ModalInnerList';
+import PaginationWrapper from '@/pages/Admin/PaginationWrapper';
+import Pagination from '@/components/Pagination';
+import UserBanModal from '@/pages/Admin/UserBanModal';
 
 import arrow from '@/assets/icons/arrows/chevron_down.svg';
 
-export default function MemberManagement({
-  currentActiveTab = '회원 관리',
-  headerColumns,
-  tableData,
-  handleInnerModalToggle,
-  handleStatusValueChange,
-}) {
+import {
+  memberManagementHeaderColumns,
+  memberManagementData,
+} from '@/pages/Admin/data';
+
+import { useEventHandler } from '@/hooks/useEventHandler';
+
+export default function MemberManagement() {
+  const [tableData, setTableData] = useState(memberManagementData);
+  const [headerColumns] = useState(memberManagementHeaderColumns);
+  const [tempPageData] = useState(
+    Array.from({ length: 10 }, (_, index) => {
+      return index;
+    })
+  );
+
+  const {
+    clickChangeState: currentPageNumber,
+    handleClickChange: handlePageNumberClick,
+  } = useEventHandler({
+    clickChangeDefaultValue: 0,
+  });
+
+  const handleStatusValueChange = (status, listNumber) => {
+    const statusChangefnc = (arr) => {
+      return arr.map((list, idx) => {
+        return {
+          ...list,
+          statusValue: idx === listNumber ? status : list.statusValue,
+        };
+      });
+    };
+    setTableData((prev) => statusChangefnc(prev));
+  };
+
+  const handleInnerModalToggle = (listNumber) => {
+    const toggleFnc = (arr) => {
+      return arr.map((list, idx) => {
+        return {
+          ...list,
+          innerModalState: idx === listNumber ? !list.innerModalState : false,
+        };
+      });
+    };
+    setTableData((prev) => toggleFnc(prev));
+  };
+
   return (
     <>
+      {/* <UserBanModal /> */}
       <TitleSection>
         <Title>회원관리</Title>
       </TitleSection>
@@ -34,7 +78,7 @@ export default function MemberManagement({
       <TableWrapper>
         <table>
           <thead>
-            <TableHeaderRow currentActiveTab={currentActiveTab}>
+            <TableHeaderRow currentActiveTab={'회원관리'}>
               {headerColumns?.map((data, idx) => {
                 return (
                   <th key={uuid()}>
@@ -48,27 +92,17 @@ export default function MemberManagement({
           <tbody>
             {tableData?.map((data, idx) => {
               return (
-                <TableBodyRow key={uuid()}>
-                  <TableBodyCell currentActiveTab={currentActiveTab}>
-                    {data.nickname}
-                  </TableBodyCell>
-                  <TableBodyCell currentActiveTab={currentActiveTab}>
-                    {data.email}
-                  </TableBodyCell>
-                  <TableBodyCell currentActiveTab={currentActiveTab}>
-                    {data.postLength}
-                  </TableBodyCell>
-                  <TableBodyCell currentActiveTab={currentActiveTab}>
-                    {data.commentLength}
-                  </TableBodyCell>
-                  <TableBodyCell currentActiveTab={currentActiveTab}>
-                    {data.signUpDate}
-                  </TableBodyCell>
-                  <TableBodyCell currentActiveTab={currentActiveTab}>
+                <TableBodyRow key={uuid()} currentActiveTab={'회원관리'}>
+                  <td>{data.nickname}</td>
+                  <td>{data.email}</td>
+                  <td>{data.postLength}</td>
+                  <td>{data.commentLength}</td>
+                  <td>{data.signUpDate}</td>
+                  <td>
                     {data.innerModalState && (
-                      <InnerSelectModal currentActiveTab={currentActiveTab}>
+                      <InnerSelectModal currentActiveTab={'회원관리'}>
                         <ModalInnerList
-                          currentActiveTab={currentActiveTab}
+                          currentActiveTab={'회원관리'}
                           handleStatusValueChange={() => {
                             handleStatusValueChange('해당없음', idx);
                             handleInnerModalToggle(idx);
@@ -77,7 +111,7 @@ export default function MemberManagement({
                           해당없음
                         </ModalInnerList>
                         <ModalInnerList
-                          currentActiveTab={currentActiveTab}
+                          currentActiveTab={'회원관리'}
                           handleStatusValueChange={() => {
                             handleStatusValueChange('정지', idx);
                             handleInnerModalToggle(idx);
@@ -86,7 +120,7 @@ export default function MemberManagement({
                           정지
                         </ModalInnerList>
                         <ModalInnerList
-                          currentActiveTab={currentActiveTab}
+                          currentActiveTab={'회원관리'}
                           handleStatusValueChange={() => {
                             handleStatusValueChange('탈퇴', idx);
                             handleInnerModalToggle(idx);
@@ -97,23 +131,28 @@ export default function MemberManagement({
                       </InnerSelectModal>
                     )}
                     <InnerModalOpenButton
-                      currentActiveTab={currentActiveTab}
+                      currentActiveTab={'회원관리'}
                       currentValue={data.statusValue}
                       innerModalState={data.innerModalState}
                       handleInnerModalToggle={() => {
                         handleInnerModalToggle(idx);
                       }}
                     />
-                  </TableBodyCell>
-                  <TableBodyCell currentActiveTab={currentActiveTab}>
-                    {data.managementReason}
-                  </TableBodyCell>
+                  </td>
+                  <td>{data.managementReason}</td>
                 </TableBodyRow>
               );
             })}
           </tbody>
         </table>
       </TableWrapper>
+      <PaginationWrapper>
+        <Pagination
+          pageNumberData={tempPageData}
+          activePageNumber={currentPageNumber}
+          handlePageNumberClick={handlePageNumberClick}
+        />
+      </PaginationWrapper>
     </>
   );
 }

@@ -9,7 +9,9 @@ import SearchInput from '@/pages/Admin/SearchInput';
 import TableWrapper from '@/pages/Admin/TableDesign/TableWrapper';
 import TableHeaderRow from '@/pages/Admin/TableDesign/TableHeaderRow';
 import TableBodyRow from '@/pages/Admin/TableDesign/TableBodyRow';
-import TableBodyCell from '@/pages/Admin/TableDesign/TableBodyCell';
+import PaginationWrapper from '@/pages/Admin/PaginationWrapper';
+import Pagination from '@/components/Pagination';
+import DeleteModal from '@/pages/Admin/DeleteModal';
 
 import deleteDefault from '@/assets/icons/trush/trush_default.svg';
 import deleteActive from '@/assets/icons/trush/trush_active.svg';
@@ -23,25 +25,68 @@ import {
   TableRowSelectWrapper,
 } from '@/pages/Admin/PostManagement/style';
 
-export default function PostManagement({
-  currentActiveTab,
-  headerColumns,
-  tableData,
-  handleDeleteSelectStateChange,
-  handleDeleteSelectStateReset,
-}) {
-  const [deleteButtonActive, setDeleteButtonActive] = useState(false);
+import {
+  postManagementHeaderColumns,
+  postManagementData,
+} from '@/pages/Admin/data';
 
-  const handleDeleteButtonActive = () => {
-    setDeleteButtonActive(true);
+import { useEventHandler } from '@/hooks/useEventHandler';
+
+export default function PostManagement() {
+  const [tableData, setTableData] = useState(postManagementData);
+  const [headerColumns] = useState(postManagementHeaderColumns);
+  const [tempPageData] = useState(
+    Array.from({ length: 10 }, (_, index) => {
+      return index;
+    })
+  );
+
+  const {
+    clickChangeState: currentPageNumber,
+    handleClickChange: handlePageNumberClick,
+  } = useEventHandler({
+    clickChangeDefaultValue: 0,
+  });
+
+  const { clickChangeState: deleteButtonActive, handleClickChange } =
+    useEventHandler({
+      clickChangeDefaultValue: false,
+    });
+
+  const handleDeleteSelectStateChange = (listNumber) => {
+    const changeFnc = (arr) => {
+      return arr.map((list, idx) => {
+        return {
+          ...list,
+          postDeleteSelectState:
+            listNumber === idx
+              ? !list.postDeleteSelectState
+              : list.postDeleteSelectState,
+        };
+      });
+    };
+    setTableData((prev) => changeFnc(prev));
   };
 
-  const handleDeleteButtonInActive = () => {
-    setDeleteButtonActive(false);
+  const handleDeleteSelectStateReset = () => {
+    const resetFnc = (arr) => {
+      return arr.map((list) => {
+        return {
+          ...list,
+          postDeleteSelectState: false,
+        };
+      });
+    };
+    setTableData((prev) => resetFnc(prev));
+  };
+
+  const deleteSelectCalc = () => {
+    return tableData.filter((list) => list.postDeleteSelectState).length;
   };
 
   return (
     <>
+      {/* <DeleteModal deleteSelectCalc={deleteSelectCalc} /> */}
       <TitleSection>
         <Title>게시물 관리</Title>
       </TitleSection>
@@ -52,7 +97,9 @@ export default function PostManagement({
         </ArrLengthSection>
         <div>
           <PostDeleteButton
-            onClick={handleDeleteButtonActive}
+            onClick={() => {
+              handleClickChange(true);
+            }}
             $deleteButtonState={deleteButtonActive}
           >
             <img
@@ -64,7 +111,7 @@ export default function PostManagement({
           {deleteButtonActive && (
             <PostDeleteButton
               onClick={() => {
-                handleDeleteButtonInActive();
+                handleClickChange(false);
                 handleDeleteSelectStateReset();
               }}
             >
@@ -76,7 +123,7 @@ export default function PostManagement({
       <TableWrapper>
         <table>
           <thead>
-            <TableHeaderRow currentActiveTab={currentActiveTab}>
+            <TableHeaderRow currentActiveTab={'게시물 관리'}>
               {headerColumns?.map((data) => {
                 return <th key={uuid()}>{data.header}</th>;
               })}
@@ -85,20 +132,12 @@ export default function PostManagement({
           <tbody>
             {tableData?.map((data, idx) => {
               return (
-                <TableBodyRow key={uuid()}>
-                  <TableBodyCell currentActiveTab={currentActiveTab}>
-                    {String(data.order).padStart(2, '0')}
-                  </TableBodyCell>
-                  <TableBodyCell currentActiveTab={currentActiveTab}>
-                    {data.category}
-                  </TableBodyCell>
-                  <TableBodyCell currentActiveTab={currentActiveTab}>
-                    {data.postTitle}
-                  </TableBodyCell>
-                  <TableBodyCell currentActiveTab={currentActiveTab}>
-                    {data.contributor}
-                  </TableBodyCell>
-                  <TableBodyCell currentActiveTab={currentActiveTab}>
+                <TableBodyRow key={uuid()} currentActiveTab={'게시물 관리'}>
+                  <td>{String(data.order).padStart(2, '0')}</td>
+                  <td>{data.category}</td>
+                  <td>{data.postTitle}</td>
+                  <td>{data.contributor}</td>
+                  <td>
                     {data.postCreatedDate}
                     {deleteButtonActive && (
                       <PostDeletetSelectButton
@@ -107,7 +146,7 @@ export default function PostManagement({
                         <img src={checkThick} alt={'post-delete-check'} />
                       </PostDeletetSelectButton>
                     )}
-                  </TableBodyCell>
+                  </td>
                   {deleteButtonActive && (
                     <TableRowSelectWrapper
                       onClick={() => {
@@ -121,6 +160,13 @@ export default function PostManagement({
           </tbody>
         </table>
       </TableWrapper>
+      <PaginationWrapper>
+        <Pagination
+          pageNumberData={tempPageData}
+          activePageNumber={currentPageNumber}
+          handlePageNumberClick={handlePageNumberClick}
+        />
+      </PaginationWrapper>
     </>
   );
 }

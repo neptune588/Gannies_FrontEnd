@@ -42,8 +42,12 @@ const TabMenuList = styled.li`
   padding-left: 30px;
   user-select: none;
   cursor: pointer;
-  background-color: ${({ $activeMenu, $ownContent, theme: { colors } }) => {
-    return $activeMenu === $ownContent && colors.white;
+  background-color: ${({
+    $currentActiveTabMenu,
+    $ownMenu,
+    theme: { colors },
+  }) => {
+    return $currentActiveTabMenu === $ownMenu && colors.white;
   }};
   border-radius: 16px;
 
@@ -53,8 +57,8 @@ const TabMenuList = styled.li`
     margin-right: 25px;
   }
   > p {
-    color: ${({ $activeMenu, $ownContent, theme: { colors } }) => {
-      return $activeMenu === $ownContent ? colors.primary : colors.white;
+    color: ${({ $currentActiveTabMenu, $ownMenu, theme: { colors } }) => {
+      return $currentActiveTabMenu === $ownMenu ? colors.primary : colors.white;
     }};
     ${medium_700}
   }

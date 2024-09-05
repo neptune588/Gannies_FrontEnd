@@ -4,7 +4,9 @@ import { Outlet } from 'react-router-dom';
 import Header from '@/layouts/Header';
 import Footer from '@/layouts/Footer';
 import Navbar from '@/layouts/Navbar';
+import AdminSideTab from '@/pages/Admin/AdminSideTab';
 
+import { paginationWrapperStyle } from '@/styles/commonStyle/wrapper';
 
 const CenterdContainer = styled.div`
   width: 1128px;
@@ -18,6 +20,20 @@ const MypageCenterdContainer = styled.div`
 
 const EmptyFooterBox = styled.div`
   height: 167px;
+`;
+
+const AdminContainer = styled.div`
+  display: flex;
+  background-color: ${({ theme: { colors } }) => {
+    return colors.gray['10'];
+  }};
+`;
+
+const AdminContentsWrapper = styled.div`
+  position: relative;
+  width: 1385px;
+  top: 0;
+  left: 465px;
 `;
 
 export function MainLayout() {
@@ -42,6 +58,19 @@ export function MypageLayout() {
         <Outlet />
       </MypageCenterdContainer>
       <Footer />
+    </>
+  );
+}
+
+export function AdminLayout() {
+  return (
+    <>
+      <AdminSideTab />
+      <AdminContainer>
+        <AdminContentsWrapper>
+          <Outlet />
+        </AdminContentsWrapper>
+      </AdminContainer>
     </>
   );
 }

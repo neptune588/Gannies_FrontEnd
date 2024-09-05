@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 
+import { adminPageCellStyle } from '@/styles/commonStyle/etc';
+import { xsmall_700 } from '@/styles/commonStyle/localTextStyle';
+
 const BodyRow = styled.tr`
   display: flex;
   align-items: center;
@@ -18,8 +21,18 @@ const BodyRow = styled.tr`
         return colors.black;
       }};
   }
+
+  > td {
+    ${adminPageCellStyle}
+    ${xsmall_700}
+    position: relative;
+    text-align: left;
+    color: ${({ theme: { colors } }) => {
+      return colors.gray['90'];
+    }};
+  }
 `;
 
-export default function TableBodyRow({ children }) {
-  return <BodyRow>{children}</BodyRow>;
+export default function TableBodyRow({ children, currentActiveTab }) {
+  return <BodyRow $currentActiveTab={currentActiveTab}>{children}</BodyRow>;
 }
