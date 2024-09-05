@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import uuid from 'react-uuid';
 
 import TitleSection from '@/pages/Admin/TitleSection';
@@ -8,22 +9,63 @@ import SearchInput from '@/pages/Admin/SearchInput';
 import TableWrapper from '@/pages/Admin/TableDesign/TableWrapper';
 import TableHeaderRow from '@/pages/Admin/TableDesign/TableHeaderRow';
 import TableBodyRow from '@/pages/Admin/TableDesign/TableBodyRow';
-import TableBodyCell from '@/pages/Admin/TableDesign/TableBodyCell';
 import InnerModalOpenButton from '@/pages/Admin/TableDesign/InnerModalOpenButton';
 import InnerSelectModal from '@/pages/Admin/TableDesign/InnerSelectModal';
 import ModalInnerList from '@/pages/Admin/TableDesign/InnerSelectModal/ModalInnerList';
+import PaginationWrapper from '@/pages/Admin/PaginationWrapper';
+import Pagination from '@/components/Pagination';
 
 import arrow from '@/assets/icons/arrows/chevron_down.svg';
 
 import { PrimaryColor } from '@/pages/Admin/UserApproval/style';
 
-export default function UserApproval({
-  currentActiveTab,
-  headerColumns,
-  tableData,
-  handleInnerModalToggle,
-  handleStatusValueChange,
-}) {
+import {
+  userApprovalHeaderColumns,
+  userApprovalData,
+} from '@/pages/Admin/data';
+
+import { useEventHandler } from '@/hooks/useEventHandler';
+
+export default function UserApproval() {
+  const [tableData, setTableData] = useState(userApprovalData);
+  const [headerColumns] = useState(userApprovalHeaderColumns);
+  const [tempPageData] = useState(
+    Array.from({ length: 10 }, (_, index) => {
+      return index;
+    })
+  );
+
+  const {
+    clickChangeState: currentPageNumber,
+    handleClickChange: handlePageNumberClick,
+  } = useEventHandler({
+    clickChangeDefaultValue: 0,
+  });
+
+  const handleStatusValueChange = (status, listNumber) => {
+    const statusChangefnc = (arr) => {
+      return arr.map((list, idx) => {
+        return {
+          ...list,
+          statusValue: idx === listNumber ? status : list.statusValue,
+        };
+      });
+    };
+    setTableData((prev) => statusChangefnc(prev));
+  };
+
+  const handleInnerModalToggle = (listNumber) => {
+    const toggleFnc = (arr) => {
+      return arr.map((list, idx) => {
+        return {
+          ...list,
+          innerModalState: idx === listNumber ? !list.innerModalState : false,
+        };
+      });
+    };
+    setTableData((prev) => toggleFnc(prev));
+  };
+
   return (
     <>
       <TitleSection>
@@ -36,7 +78,7 @@ export default function UserApproval({
       <TableWrapper>
         <table>
           <thead>
-            <TableHeaderRow currentActiveTab={currentActiveTab}>
+            <TableHeaderRow currentActiveTab={'회원 가입승인'}>
               {headerColumns?.map((data, idx) => {
                 return (
                   <th key={uuid()}>
@@ -53,26 +95,18 @@ export default function UserApproval({
             {tableData?.map((data, idx) => {
               return (
                 <TableBodyRow key={uuid()}>
-                  <TableBodyCell currentActiveTab={currentActiveTab}>
-                    {data.nickname}
-                  </TableBodyCell>
-                  <TableBodyCell currentActiveTab={currentActiveTab}>
-                    {data.email}
-                  </TableBodyCell>
-                  <TableBodyCell currentActiveTab={currentActiveTab}>
-                    {data.signUpDate}
-                  </TableBodyCell>
-                  <TableBodyCell currentActiveTab={currentActiveTab}>
-                    {data.enrollmentStatus}
-                  </TableBodyCell>
-                  <TableBodyCell currentActiveTab={currentActiveTab}>
+                  <td>{data.nickname}</td>
+                  <td>{data.email}</td>
+                  <td>{data.signUpDate}</td>
+                  <td>{data.enrollmentStatus}</td>
+                  <td>
                     <PrimaryColor>{data.attachedFile}</PrimaryColor>
-                  </TableBodyCell>
-                  <TableBodyCell currentActiveTab={currentActiveTab}>
+                  </td>
+                  <td>
                     {data.innerModalState && (
-                      <InnerSelectModal currentActiveTab={currentActiveTab}>
+                      <InnerSelectModal currentActiveTab={'회원 가입승인'}>
                         <ModalInnerList
-                          currentActiveTab={currentActiveTab}
+                          currentActiveTab={'회원 가입승인'}
                           handleStatusValueChange={() => {
                             handleStatusValueChange('승인대기', idx);
                             handleInnerModalToggle(idx);
@@ -81,7 +115,7 @@ export default function UserApproval({
                           승인대기
                         </ModalInnerList>
                         <ModalInnerList
-                          currentActiveTab={currentActiveTab}
+                          currentActiveTab={'회원 가입승인'}
                           handleStatusValueChange={() => {
                             handleStatusValueChange('승인완료', idx);
                             handleInnerModalToggle(idx);
@@ -90,7 +124,7 @@ export default function UserApproval({
                           승인완료
                         </ModalInnerList>
                         <ModalInnerList
-                          currentActiveTab={currentActiveTab}
+                          currentActiveTab={'회원 가입승인'}
                           handleStatusValueChange={() => {
                             handleStatusValueChange('승인거절', idx);
                             handleInnerModalToggle(idx);
@@ -100,23 +134,28 @@ export default function UserApproval({
                         </ModalInnerList>
                       </InnerSelectModal>
                     )}
-                    {
-                      <InnerModalOpenButton
-                        currentActiveTab={currentActiveTab}
-                        currentValue={data.statusValue}
-                        handleInnerModalToggle={() => {
-                          handleInnerModalToggle(idx);
-                        }}
-                        innerModalState={data.innerModalState}
-                      />
-                    }
-                  </TableBodyCell>
+                    <InnerModalOpenButton
+                      currentActiveTab={'회원 가입승인'}
+                      currentValue={data.statusValue}
+                      handleInnerModalToggle={() => {
+                        handleInnerModalToggle(idx);
+                      }}
+                      innerModalState={data.innerModalState}
+                    />
+                  </td>
                 </TableBodyRow>
               );
             })}
           </tbody>
         </table>
       </TableWrapper>
+      <PaginationWrapper>
+        <Pagination
+          pageNumberData={tempPageData}
+          activePageNumber={currentPageNumber}
+          handlePageNumberClick={handlePageNumberClick}
+        />
+      </PaginationWrapper>
     </>
   );
 }
