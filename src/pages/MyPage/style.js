@@ -20,10 +20,7 @@ const SideTabMenuWrapper = styled.div`
   padding: 25px 15px 65px;
 `;
 
-const MainContentsWrapper = styled.div`
-  width: 795px;
-  margin-left: 30px;
-`;
+const MainContentsWrapper = styled.div``;
 
 const ActiveTabTitleBox = styled.section`
   display: flex;

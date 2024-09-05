@@ -21,7 +21,6 @@ import PostManagement from '@/pages/Admin/PostManagement';
 
 export const router = createBrowserRouter([
   {
-    path: '/',
     element: <MainLayout />,
     children: [
       {
@@ -60,11 +59,10 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '/my-page',
     element: <MypageLayout />,
     children: [
       {
-        path: '/my-page',
+        path: '/mypage',
         element: <MyPage />,
       },
     ],

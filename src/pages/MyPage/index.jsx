@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import SideTabMenu from '@/pages/MyPage/SideTabMenu';
+import SideTabMenu from '@/pages/MyPage/MyPageSideTab';
 import PersonalInfo from '@/pages/MyPage/PersonalInfo';
 import PasswordChange from '@/pages/MyPage/PasswordChange';
 import AlignSelectMenu from '@/components/AlignSelectMenu';

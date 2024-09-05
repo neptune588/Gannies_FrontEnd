@@ -1,40 +1,21 @@
-import styled from 'styled-components';
 import { Outlet } from 'react-router-dom';
 
 import Header from '@/layouts/Header';
 import Footer from '@/layouts/Footer';
 import Navbar from '@/layouts/Navbar';
+import MyPageSideTab from '@/pages/MyPage/MyPageSideTab';
 import AdminSideTab from '@/pages/Admin/AdminSideTab';
 
-import { paginationWrapperStyle } from '@/styles/commonStyle/wrapper';
-
-const CenterdContainer = styled.div`
-  width: 1128px;
-  margin: 0 auto;
-`;
-
-const MypageCenterdContainer = styled.div`
-  width: 975px;
-  margin: 0 auto;
-`;
-
-const EmptyFooterBox = styled.div`
-  height: 167px;
-`;
-
-const AdminContainer = styled.div`
-  display: flex;
-  background-color: ${({ theme: { colors } }) => {
-    return colors.gray['10'];
-  }};
-`;
-
-const AdminContentsWrapper = styled.div`
-  position: relative;
-  width: 1385px;
-  top: 0;
-  left: 465px;
-`;
+import {
+  CenterdContainer,
+  MyPageCenterdContainer,
+  MyPageTitle,
+  MyPageFlexWrapper,
+  MyPageContentsBox,
+  EmptyFooterBox,
+  AdminContainer,
+  AdminContentsWrapper,
+} from '@/pages/CreateCommunityPost/style';
 
 export function MainLayout() {
   return (
@@ -54,9 +35,15 @@ export function MypageLayout() {
     <>
       <Header />
       <Navbar />
-      <MypageCenterdContainer>
-        <Outlet />
-      </MypageCenterdContainer>
+      <MyPageCenterdContainer>
+        <MyPageTitle>마이페이지</MyPageTitle>
+        <MyPageFlexWrapper>
+          <MyPageSideTab />
+          <MyPageContentsBox>
+            <Outlet />
+          </MyPageContentsBox>
+        </MyPageFlexWrapper>
+      </MyPageCenterdContainer>
       <Footer />
     </>
   );
