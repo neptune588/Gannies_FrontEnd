@@ -7,10 +7,11 @@ import ArrLengthView from '@/pages/Admin/ArrLengthView';
 import TableWrapper from '@/pages/Admin/TableDesign/TableWrapper';
 import TableHeaderRow from '@/pages/Admin/TableDesign/TableHeaderRow';
 import TableBodyRow from '@/pages/Admin/TableDesign/TableBodyRow';
-import TableBodyCell from '@/pages/Admin/TableDesign/TableBodyCell';
 import InnerSelectModal from '@/pages/Admin/TableDesign/InnerSelectModal';
 import ModalInnerList from '@/pages/Admin/TableDesign/InnerSelectModal/ModalInnerList';
 import InnerModalOpenButton from '@/pages/Admin/TableDesign/InnerModalOpenButton';
+import PaginationWrapper from '@/pages/Admin/PaginationWrapper';
+import Pagination from '@/components/Pagination';
 
 import arrow from '@/assets/icons/arrows/chevron_down.svg';
 
@@ -23,6 +24,18 @@ import { useEventHandler } from '@/hooks/useEventHandler';
 export default function ReportHistory() {
   const [tableData, setTableData] = useState(reportedData);
   const [headerColumns] = useState(reportedHeaderColumns);
+  const [tempPageData] = useState(
+    Array.from({ length: 10 }, (_, index) => {
+      return index;
+    })
+  );
+
+  const {
+    clickChangeState: currentPageNumber,
+    handleClickChange: handlePageNumberClick,
+  } = useEventHandler({
+    clickChangeDefaultValue: 0,
+  });
 
   const { clickChangeState: currenntActiveCategory, handleClickChange } =
     useEventHandler({
@@ -151,6 +164,13 @@ export default function ReportHistory() {
           </tbody>
         </table>
       </TableWrapper>
+      <PaginationWrapper>
+        <Pagination
+          pageNumberData={tempPageData}
+          activePageNumber={currentPageNumber}
+          handlePageNumberClick={handlePageNumberClick}
+        />
+      </PaginationWrapper>
     </>
   );
 }
