@@ -8,6 +8,7 @@ import PersonalInfo from '@/pages/MyPage/PersonalInfo';
 import PasswordChange from '@/pages/MyPage/PasswordChange';
 import WrittenPost from '@/pages/MyPage/WrittenPost';
 import WrittenComment from '@/pages/MyPage/WrittenComment';
+import ScrappedPost from '@/pages/MyPage/ScrappedPost';
 import Identity from '@/pages/SignUp/Identity';
 import Info from '@/pages/SignUp/Info';
 import Department from '@/pages/SignUp/Department';
@@ -75,6 +76,10 @@ export const router = createBrowserRouter([
       {
         path: '/mypage/written-posts',
         element: <WrittenPost />,
+      },
+      {
+        path: '/mypage/scrap-posts',
+        element: <ScrappedPost />,
       },
       {
         path: '/mypage/written-comment',

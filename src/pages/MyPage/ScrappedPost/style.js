@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
-import { defaultBorderBoxStyle } from '@/styles/commonStyle/box';
-import { h4_600, medium_600 } from '@/styles/commonStyle/localTextStyle';
+import { medium_600, h4_600 } from '@/styles/commonStyle/localTextStyle';
+import { paginationWrapperStyle } from '@/styles/commonStyle/wrapper';
 
-const TitelBox = styled.section`
+const TitleBox = styled.section`
   display: flex;
   justify-content: space-between;
   padding: 0 10px;
@@ -24,11 +24,9 @@ const Title = styled.h2`
   ${h4_600}
 `;
 
-export {
-  Title,
-  ContentsContainer,
-  SideTabMenuWrapper,
-  MainContentsWrapper,
-  ActiveTabTitleBox,
-  ActiveTabTitle,
-};
+const PageWrapper = styled.section`
+  ${paginationWrapperStyle}
+  margin: 50px auto 130px;
+`;
+
+export { TitleBox, Title, PageWrapper };

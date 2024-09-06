@@ -26,9 +26,18 @@ export default function PostContents({
             <p>제목</p>
           </PostsHeaderLeftBox>
           <PostsHeaderRightBox>
-            <p>조회수</p>
-            <p>공감수</p>
-            <p>작성일</p>
+            {scrapViewState ? (
+              <>
+                <p>작성일</p>
+                <p>스크랩</p>
+              </>
+            ) : (
+              <>
+                <p>조회수</p>
+                <p>공감수</p>
+                <p>작성일</p>
+              </>
+            )}
           </PostsHeaderRightBox>
         </PostsHeader>
         <PostListBox>
@@ -44,6 +53,8 @@ export default function PostContents({
                   views={list.views}
                   likes={list.likes}
                   date={list.date}
+                  scrapViewState={scrapViewState}
+                  scrapClickState={scrapClickState}
                   pageName={pageName}
                 />
               );
