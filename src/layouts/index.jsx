@@ -15,7 +15,7 @@ import {
   EmptyFooterBox,
   AdminContainer,
   AdminContentsWrapper,
-} from '@/pages/CreateCommunityPost/style';
+} from '@/layouts/style';
 
 export function MainLayout() {
   return (

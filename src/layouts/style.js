@@ -18,7 +18,7 @@ const MyPageTitle = styled.h2`
   padding-left: 10px;
 `;
 
-const MyPageFlexWrapper = styled.did`
+const MyPageFlexWrapper = styled.div`
   display: flex;
 `;
 

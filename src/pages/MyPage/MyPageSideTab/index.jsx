@@ -76,8 +76,6 @@ export default function MyPageSideTab() {
         >
           {tabMenuData[2].label}
         </SideTabMenuList>
-      </SideTabMenuBox>
-      <SideTabMenuBox>
         <SideTabMenuList
           $currentActiveMenu={currentActiveTabMenu}
           $ownMenu={tabMenuData[3].label}

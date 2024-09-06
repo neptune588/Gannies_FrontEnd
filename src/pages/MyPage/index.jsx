@@ -19,7 +19,7 @@ import { tabMenuData } from '@/pages/MyPage/data';
 import { posts } from '@/pages/Home/data';
 
 export default function MyPage() {
-  const [postData] = useState(posts);
+
   const [pageData] = useState(
     Array.from({ length: 10 }, (_, index) => {
       return index;
@@ -33,19 +33,7 @@ export default function MyPage() {
 
   return (
     <>
-          {activeMenu === tabMenuData[1].content && (
-            <>
-              <ActiveTabTitleBox>
-                <ActiveTabTitle>{tabMenuData[1].content}</ActiveTabTitle>
-              </ActiveTabTitleBox>
-              <form>
-                <PasswordChange
-                  passwordView={passwordView}
-                  handlePasswordViewClick={handlePasswordViewClick}
-                />
-              </form>
-            </>
-          )}
+
           {activeMenu === tabMenuData[2].content && (
             <>
               <ActiveTabTitleBox>

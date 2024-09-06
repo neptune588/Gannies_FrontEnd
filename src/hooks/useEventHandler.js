@@ -1,13 +1,14 @@
 import { useState } from 'react';
 
-export function useEventHandler({ clickChangeDefaultValue = null }) {
+export function useEventHandler({ clickChangeDefaultValue } = {}) {
   const [clickChangeState, setclickChangeState] = useState(
-    clickChangeDefaultValue
+    clickChangeDefaultValue === undefined ? '' : clickChangeDefaultValue
   );
 
   const handleClickChange = (value) => {
     setclickChangeState(value);
   };
+
   return {
     clickChangeState,
     handleClickChange,
