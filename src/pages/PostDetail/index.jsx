@@ -3,7 +3,7 @@ import CommunityBannerText from '@/components/CommunityBannerText';
 import PageCategory from '@/components/PageCategory';
 import PostTitleSection from '@/pages/PostDetail/PostHeader/PostTitleSection';
 import PostInfo from '@/pages/PostDetail/PostHeader/PostInfo';
-import PostCommentCreate from '@/pages/PostDetail/PostCommentCreate';
+import CommentCreate from '@/pages/PostDetail/CommentCreate';
 
 import heartActive from '@/assets/icons/hearts/heart_active.svg';
 
@@ -15,6 +15,8 @@ import {
   PostContentBox,
   IconBox,
   CommentArea,
+  CommentLengthView,
+  CommentCreateBox,
 } from '@/pages/PostDetail/style';
 
 export default function PostDetail() {
@@ -58,7 +60,10 @@ export default function PostDetail() {
           <p>공감해요</p>
         </IconBox>
         <CommentArea>
-          <PostCommentCreate />
+          <CommentLengthView>댓글 0개</CommentLengthView>
+          <CommentCreateBox>
+            <CommentCreate />
+          </CommentCreateBox>
         </CommentArea>
       </ContentsWrapper>
     </>

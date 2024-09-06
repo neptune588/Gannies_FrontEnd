@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {
   small_600,
   medium_400,
+  medium_600,
   body,
 } from '@/styles/commonStyle/localTextStyle';
 
@@ -70,7 +71,24 @@ const IconBox = styled.div`
 `;
 
 const CommentArea = styled.div`
-  padding: 0 20px;
+  padding: 25px 20px 60px;
+`;
+
+const CommentLengthView = styled.p`
+  ${medium_600}
+  color: ${({ theme: { colors } }) => {
+    return colors.gray['100'];
+  }};
+  margin-bottom: 25px;
+`;
+
+const CommentCreateBox = styled.div`
+  padding: 30px 25px;
+  border: 1px solid
+    ${({ theme: { colors } }) => {
+      return colors.gray['20'];
+    }};
+  border-radius: 8px;
 `;
 
 export {
@@ -81,4 +99,6 @@ export {
   PostContentBox,
   IconBox,
   CommentArea,
+  CommentLengthView,
+  CommentCreateBox,
 };
