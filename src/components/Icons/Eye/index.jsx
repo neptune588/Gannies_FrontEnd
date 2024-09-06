@@ -8,11 +8,15 @@ const Icon = styled.img`
   height: 18px;
 `;
 
-export default function Eye({ viewCount, handlePasswordViewClick = null, ...props }) {
+export default function Eye({
+  postViewCount = null,
+  handlePasswordViewClick = null,
+  ...props
+}) {
   return (
     <IconBox onClick={handlePasswordViewClick || undefined} {...props}>
       <Icon src={eye} alt='eye' />
-      {viewCount ? <p>{viewCount.toLocaleString()}</p> : <></>}
+      {postViewCount && <p>{postViewCount.toLocaleString()}</p>}
     </IconBox>
   );
 }
