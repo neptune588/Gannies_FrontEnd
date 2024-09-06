@@ -4,6 +4,11 @@ import Home from '@/pages/Home';
 import SignIn from '@/pages/SignIn';
 import Community from '@/pages/Community';
 import CreateCommunityPost from '@/pages/CreateCommunityPost';
+import PersonalInfo from '@/pages/MyPage/PersonalInfo';
+import PasswordChange from '@/pages/MyPage/PasswordChange';
+import WrittenPost from '@/pages/MyPage/WrittenPost';
+import WrittenComment from '@/pages/MyPage/WrittenComment';
+import ScrappedPost from '@/pages/MyPage/ScrappedPost';
 import Identity from '@/pages/SignUp/Identity';
 import Info from '@/pages/SignUp/Info';
 import Department from '@/pages/SignUp/Department';
@@ -13,7 +18,6 @@ import ID from '@/pages/Find/ID';
 import FindIDSuccess from '@/pages/Find/ID/Success';
 import Password from '@/pages/Find/Password';
 import FindPasswordSuccess from '@/pages/Find/Password/Success';
-import MyPage from '@/pages/MyPage';
 import ReportHistory from '@/pages/Admin/ReportHistory';
 import MemberManagement from '@/pages/Admin/MemberManagement';
 import UserApproval from '@/pages/Admin/UserApproval';
@@ -21,7 +25,6 @@ import PostManagement from '@/pages/Admin/PostManagement';
 
 export const router = createBrowserRouter([
   {
-    path: '/',
     element: <MainLayout />,
     children: [
       {
@@ -60,17 +63,31 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '/my-page',
     element: <MypageLayout />,
     children: [
       {
-        path: '/my-page',
-        element: <MyPage />,
+        path: '/mypage/profile/edit',
+        element: <PersonalInfo />,
+      },
+      {
+        path: '/mypage/profile/change-password',
+        element: <PasswordChange />,
+      },
+      {
+        path: '/mypage/written-posts',
+        element: <WrittenPost />,
+      },
+      {
+        path: '/mypage/scrap-posts',
+        element: <ScrappedPost />,
+      },
+      {
+        path: '/mypage/written-comment',
+        element: <WrittenComment />,
       },
     ],
   },
   {
-    path: '/',
     element: <HeaderLayout />,
     children: [
       {

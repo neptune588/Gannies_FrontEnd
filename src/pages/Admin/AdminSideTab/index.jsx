@@ -24,16 +24,16 @@ export default function AdminSideTab() {
   const [tabData] = useState(adminTabMenuData);
 
   useEffect(() => {
-    const url = location.pathname.split('/admin')[1];
-    console.log(url);
+    const path = location.pathname.split('/admin')[1];
+    console.log(path);
 
-    if (url === '/report-history') {
+    if (path === '/report-history') {
       handleClickChange('신고내역');
-    } else if (url === '/member-management') {
+    } else if (path === '/member-management') {
       handleClickChange('회원관리');
-    } else if (url === '/user-approval') {
+    } else if (path === '/user-approval') {
       handleClickChange('회원 가입승인');
-    } else if (url === '/post-management') {
+    } else if (path === '/post-management') {
       handleClickChange('게시물 관리');
     }
   }, []);

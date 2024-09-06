@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 import { postsHeaderStyle } from '@/styles/commonStyle/etc';
-import { paginationWrapperStyle } from '@/styles/commonStyle/wrapper';
 import { xsmall_500 } from '@/styles/commonStyle/localTextStyle';
 
 const PostsWrapper = styled.div`
@@ -44,16 +43,10 @@ const PostListBox = styled.ul`
   }
 `;
 
-const PageWrapper = styled.section`
-  ${paginationWrapperStyle}
-  margin: 50px auto 130px;
-`;
-
 export {
   PostsWrapper,
   PostsHeader,
   PostsHeaderLeftBox,
   PostsHeaderRightBox,
   PostListBox,
-  PageWrapper,
 };
