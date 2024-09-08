@@ -1,10 +1,6 @@
 import React from 'react';
 
-import {
-  Wrapper,
-  ButtonWrapper,
-  DetailsWrapper
-} from '@/layouts/Footer/style';
+import { Wrapper, ButtonWrapper, DetailsWrapper } from '@/layouts/Footer/style';
 
 function Footer() {
   return (

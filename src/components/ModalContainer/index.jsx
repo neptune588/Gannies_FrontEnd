@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const Container = styled.div`
   position: fixed;
@@ -13,13 +13,8 @@ const Container = styled.div`
   z-index: 1000;
 `;
 
-function ModalContainer({children}) {
-
-  return (
-    <Container>
-      {children}
-    </Container>
-  );
+function ModalContainer({ children }) {
+  return <Container>{children}</Container>;
 }
 
 export default ModalContainer;

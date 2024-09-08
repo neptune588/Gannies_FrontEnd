@@ -13,7 +13,8 @@ import ScrappedPost from '@/pages/MyPage/ScrappedPost';
 import Identity from '@/pages/SignUp/Identity';
 import Info from '@/pages/SignUp/Info';
 import Department from '@/pages/SignUp/Department';
-import Error from '@/pages/Error';
+import Error404 from '@/pages/Error/Error404';
+// import Error500 from '@/pages/Error/Error500';
 import SignUpSuccess from '@/pages/SignUp/Success';
 import ID from '@/pages/Find/ID';
 import FindIDSuccess from '@/pages/Find/ID/Success';
@@ -133,7 +134,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '*',
-        element: <Error />,
+        element: <Error404 />,
       },
     ],
   },

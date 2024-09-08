@@ -35,10 +35,9 @@ export const ButtonWrapper = styled.div`
 
     &:focus {
       outline: none;
-    }  
+    }
   }
 `;
-
 
 export const DetailsWrapper = styled.div`
   width: 1078px;
@@ -54,7 +53,7 @@ export const DetailsWrapper = styled.div`
 
     &:last-of-type {
       border-right: none;
-    }  
+    }
 
     > span {
       text-decoration: underline;

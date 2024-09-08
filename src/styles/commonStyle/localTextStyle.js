@@ -235,7 +235,7 @@ const h1_600 = css`
 export {
   body,
   caption,
-  tiny_400,  
+  tiny_400,
   xsmall_400,
   xsmall_500,
   xsmall_600,

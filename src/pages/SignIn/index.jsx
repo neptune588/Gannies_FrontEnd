@@ -3,12 +3,12 @@ import Inputs from '@/pages/SignIn/Inputs';
 import Title from '@/pages/SignIn/Title';
 
 function Login() {
- return (
-   <>
-     <Title />
-     <Inputs />
-     <Buttons />
-   </>
+  return (
+    <>
+      <Title />
+      <Inputs />
+      <Buttons />
+    </>
   );
 }
 

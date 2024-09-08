@@ -1,13 +1,10 @@
-import {
-  useEffect,
-  useRef,
-  useState
-} from 'react';
+import { useEffect, useRef, useState } from 'react';
+import uuid from 'react-uuid';
 
 import ModalContainer from '@/components/ModalContainer';
 import { agreeList } from '@/pages/SignUp/Identity/Agree/Modal/data';
-import inactive from "@/assets/icons/etc/check_circle_inactive.svg";
-import active from "@/assets/icons/etc/check_circle_active.svg";
+import inactive from '@/assets/icons/etc/check_circle_inactive.svg';
+import active from '@/assets/icons/etc/check_circle_active.svg';
 
 import {
   ActiveButton,
@@ -18,7 +15,7 @@ import {
   Footer,
   Header,
   InactiveButton,
-  ModalBox
+  ModalBox,
 } from '@/pages/SignUp/Identity/Agree/Modal/style';
 
 function Modal({ index, openModal, handleCheckTrue }) {
@@ -53,10 +50,9 @@ function Modal({ index, openModal, handleCheckTrue }) {
   }, []);
 
   useEffect(() => {
-    if (scrollTop && (scrollTop + scrollClientHeight >= scrollHeight - 10)) {
+    if (scrollTop && scrollTop + scrollClientHeight >= scrollHeight - 10) {
       setIsActive(true);
-    }
-    else {
+    } else {
       setIsActive(false);
     }
   }, [scrollTop]);
@@ -64,7 +60,7 @@ function Modal({ index, openModal, handleCheckTrue }) {
   const handleButton = () => {
     handleCheckTrue(index);
     openModal(index);
-  }
+  };
 
   return (
     <ModalContainer>
@@ -75,22 +71,28 @@ function Modal({ index, openModal, handleCheckTrue }) {
         </Header>
         <Body ref={bodyRef}>
           <h4>{agreeList[index].title}</h4>
-          {
-            agreeList[index].subTitles.map((subTitle, i) => {
-              return (
-                <div key={i}>
-                  <h5>{subTitle}</h5>
-                  <p>{agreeList[index].contents[i]}</p>
-                </div>
-              );
-            })
-          }
+          {agreeList[index].subTitles.map((subTitle, i) => {
+            return (
+              <div key={uuid()}>
+                <h5>{subTitle}</h5>
+                <p>{agreeList[index].contents[i]}</p>
+              </div>
+            );
+          })}
         </Body>
         <Blur />
         <Footer>
-          {
-            isActive ? <ActiveButton onClick={handleButton}><CheckIcon src={icon} alt="checkIcon" />동의합니다</ActiveButton> : <InactiveButton><CheckIcon src={icon} alt="checkIcon" />동의합니다</InactiveButton>
-          }
+          {isActive ? (
+            <ActiveButton onClick={handleButton}>
+              <CheckIcon src={icon} alt='checkIcon' />
+              동의합니다
+            </ActiveButton>
+          ) : (
+            <InactiveButton>
+              <CheckIcon src={icon} alt='checkIcon' />
+              동의합니다
+            </InactiveButton>
+          )}
         </Footer>
       </ModalBox>
     </ModalContainer>

@@ -10,7 +10,7 @@ function Name({ allow, setAllow, setButtonAllow }) {
     if (e.target.value) {
       setAllow((prev) => {
         const newAllow = [...prev];
-        newAllow[0] = true;      
+        newAllow[0] = true;
         return newAllow;
       });
       setButtonAllow((prev) => {
@@ -18,24 +18,28 @@ function Name({ allow, setAllow, setButtonAllow }) {
         newButtonAllow[0] = true;
         return newButtonAllow;
       });
-    }
-    else {
+    } else {
       setAllow((prev) => {
         const newAllow = [...prev];
-        newAllow[0] = false;  
+        newAllow[0] = false;
         return newAllow;
-      });   
+      });
       setButtonAllow((prev) => {
         const newButtonAllow = [...prev];
         newButtonAllow[0] = false;
         return newButtonAllow;
-      });      
+      });
     }
-  }
+  };
 
   return (
-    <InputSection $margin="15px" title="이름*">
-      <DefaultInput placeholder="이름을 입력해주세요" value={name} onChange={handleName} disabled={allow[2]} />    
+    <InputSection $margin='15px' title='이름*'>
+      <DefaultInput
+        placeholder='이름을 입력해주세요'
+        value={name}
+        onChange={handleName}
+        disabled={allow[2]}
+      />
     </InputSection>
   );
 }

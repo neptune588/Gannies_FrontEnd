@@ -6,11 +6,10 @@ import {
   InputBox,
   Wrapper,
   EyeIcon,
-  EyeSlashIcon
+  EyeSlashIcon,
 } from '@/pages/SignIn/Inputs/style';
 
 function Inputs() {
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -18,27 +17,38 @@ function Inputs() {
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
-  }
+  };
 
   const handlePassword = (e) => {
     setPassword(e.target.value);
-  }
-  
+  };
+
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
-  }
+  };
 
   return (
     <Wrapper>
       <form>
-        <InputBox type="text" placeholder='이메일' value={email} onChange={handleEmail} />
+        <InputBox
+          type='text'
+          placeholder='이메일'
+          value={email}
+          onChange={handleEmail}
+        />
       </form>
       <form>
-        <InputBox type={showPassword ? "text" : "password"} placeholder='비밀번호' value={password} onChange={handlePassword} />
-        { showPassword ? 
-          <EyeIcon onClick={handleShowPassword} /> :
+        <InputBox
+          type={showPassword ? 'text' : 'password'}
+          placeholder='비밀번호'
+          value={password}
+          onChange={handlePassword}
+        />
+        {showPassword ? (
+          <EyeIcon onClick={handleShowPassword} />
+        ) : (
           <EyeSlashIcon onClick={handleShowPassword} />
-        }
+        )}
       </form>
       {/* <div>
         {

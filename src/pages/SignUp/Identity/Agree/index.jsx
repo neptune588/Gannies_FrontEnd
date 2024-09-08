@@ -10,6 +10,7 @@ import {
   ShowButton,
   CheckBox,
 } from '@/pages/SignUp/Identity/Agree/style';
+import uuid from 'react-uuid';
 
 function Agree({ setAllow }) {
   const checkListCount = 2;
@@ -80,7 +81,7 @@ function Agree({ setAllow }) {
           <p>전체약관동의</p>
         </AgreeWrapper>
         {Array.from({ length: checkListCount }).map((_, index) => (
-          <AgreeWrapper key={index}>
+          <AgreeWrapper key={uuid()}>
             <CheckBox
               type='checkbox'
               checked={checkList[index]}
