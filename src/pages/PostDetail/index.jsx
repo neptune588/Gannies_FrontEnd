@@ -1,9 +1,13 @@
+import { useEffect, useState } from 'react';
+
 import CommunityBanner from '@/components/CommunityBanner';
 import CommunityBannerText from '@/components/CommunityBannerText';
 import PageCategory from '@/components/PageCategory';
 import PostTitleSection from '@/pages/PostDetail/PostHeader/PostTitleSection';
 import PostInfo from '@/pages/PostDetail/PostHeader/PostInfo';
 import CommentCreate from '@/pages/PostDetail/CommentCreate';
+import PostCommentArea from '@/pages/PostDetail/PostCommentArea';
+import OtherPosts from '@/pages/PostDetail/OtherPosts';
 
 import heartActive from '@/assets/icons/hearts/heart_active.svg';
 
@@ -19,7 +23,33 @@ import {
   CommentCreateBox,
 } from '@/pages/PostDetail/style';
 
+import { useEventHandler } from '@/hooks/useEventHandler';
+
 export default function PostDetail() {
+  const [commentPageData] = useState(
+    Array.from({ length: 10 }, (_, index) => {
+      return index;
+    })
+  );
+  const [otherPostPageData] = useState(
+    Array.from({ length: 10 }, (_, index) => {
+      return index;
+    })
+  );
+
+  const {
+    clickChangeState: currentCommentPageNumber,
+    handleClickChange: handleCommentPageNumberChange,
+  } = useEventHandler({
+    clickChangeDefaultValue: 0,
+  });
+  const {
+    clickChangeState: currentOtherPostPageNumber,
+    handleClickChange: handleOtherPostPageNumberChange,
+  } = useEventHandler({
+    clickChangeDefaultValue: 0,
+  });
+
   return (
     <>
       <CommunityBanner>
@@ -65,6 +95,16 @@ export default function PostDetail() {
             <CommentCreate />
           </CommentCreateBox>
         </CommentArea>
+        <PostCommentArea
+          pageCountData={commentPageData}
+          currentPageNumber={currentCommentPageNumber}
+          handlePageNumberChange={handleCommentPageNumberChange}
+        />
+        <OtherPosts
+          pageCountData={otherPostPageData}
+          currentPageNumber={currentOtherPostPageNumber}
+          handlePageNumberChange={handleOtherPostPageNumberChange}
+        />
       </ContentsWrapper>
     </>
   );

@@ -56,6 +56,9 @@ const ButtonBox = styled.div`
 `;
 const CancelButton = styled(ButtonDefaultStyle)`
   ${primaryBorderBoxStyle}
+  background-color: ${({ theme: { colors } }) => {
+    return colors.white;
+  }};
   margin-right: 10px;
 `;
 

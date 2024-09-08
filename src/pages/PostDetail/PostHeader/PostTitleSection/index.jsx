@@ -40,7 +40,7 @@ export default function PostTitleSection({
           handleScrapClick={handleScrapClick}
           scrapClickState={scrapClickState}
         />
-        <More handleMoreButtonClick={handleMoreButtonClick} />
+        <More onClick={handleMoreButtonClick} />
       </IconBox>
     </TitleSection>
   );

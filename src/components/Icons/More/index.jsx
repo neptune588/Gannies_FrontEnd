@@ -14,17 +14,9 @@ const MoreButton = styled.button`
   }
 `;
 
-export default function More({
-  width = '24px',
-  height = '24px',
-  handleMoreButtonClick = null,
-}) {
+export default function More({ width = '24px', height = '24px', ...props }) {
   return (
-    <MoreButton
-      $width={width}
-      $height={height}
-      onClick={handleMoreButtonClick || undefined}
-    >
+    <MoreButton $width={width} $height={height} {...props}>
       <img src={eclipse} alt='more-button' />
     </MoreButton>
   );

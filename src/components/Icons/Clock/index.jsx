@@ -8,11 +8,11 @@ const Icon = styled.img`
   height: 18px;
 `;
 
-export default function Clock({ time = 0 }) {
+export default function Clock({ time = 0, isVerify = true }) {
   return (
     <IconBox>
       <Icon src={clock} alt='clock' />
-        <p>{time}</p>
+      {isVerify && <p>{time}</p>}
     </IconBox>
   );
 }
