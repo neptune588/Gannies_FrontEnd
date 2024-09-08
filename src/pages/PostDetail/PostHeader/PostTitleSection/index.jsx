@@ -1,32 +1,22 @@
-import styled from 'styled-components';
+import MorePopup from '@/pages/PostDetail/MorePopup';
 
 import Scrap from '@/components/Icons/Scrap';
 import More from '@/components/Icons/More';
 
-import { h3_600 } from '@/styles/commonStyle/localTextStyle';
-
-const TitleSection = styled.section`
-  display: flex;
-  justify-content: space-between;
-  margin: 30px 0 40px;
-`;
-
-const PostTitle = styled.h2`
-  ${h3_600}
-  color: ${({ theme: { colors } }) => {
-    return colors.gray['100'];
-  }};
-`;
-
-const IconBox = styled.div`
-  display: flex;
-  width: 80px;
-  justify-content: space-between;
-`;
+import {
+  TitleSection,
+  PostTitle,
+  IconBox,
+} from '@/pages/PostDetail/PostHeader/PostTitleSection/style';
 
 export default function PostTitleSection({
   title = '',
   pageName = '',
+  isMoreButtonClick = false,
+  isLogin = true,
+  handlePutClick = null,
+  handleDeleteClick = null,
+  handleReportClick = null,
   scrapClickState = null,
   handleScrapClick = null,
   handleMoreButtonClick = null,
@@ -41,6 +31,7 @@ export default function PostTitleSection({
           scrapClickState={scrapClickState}
         />
         <More onClick={handleMoreButtonClick} />
+        {isMoreButtonClick && <MorePopup />}
       </IconBox>
     </TitleSection>
   );

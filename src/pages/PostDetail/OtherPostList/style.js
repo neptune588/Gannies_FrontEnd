@@ -6,8 +6,10 @@ import {
   small_500,
   small_600,
 } from '@/styles/commonStyle/localTextStyle';
+import { ellipsisStyle } from '@/styles/commonStyle/etc';
 
 const TableRow = styled.tr`
+  ${ellipsisStyle}
   display: flex;
   align-items: center;
   cursor: pointer;
