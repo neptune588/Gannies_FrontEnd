@@ -16,16 +16,30 @@ function Identity() {
 
   return (
     <>
-      <Title title="회원가입" onClick={() => setAllow('123')} />
-      <Icons identity={identity} info={info} department={department} sequence={sequence}/>
-      <Inputs allow={allow} setAllow={setAllow} visible={visible} setVisible={setVisible} />
-      {
-        visible[2] && 
+      <Title title='회원가입' onClick={() => setAllow('123')} />
+      <Icons
+        identity={identity}
+        info={info}
+        department={department}
+        sequence={sequence}
+      />
+      <Inputs
+        allow={allow}
+        setAllow={setAllow}
+        visible={visible}
+        setVisible={setVisible}
+      />
+      {visible[2] && (
         <>
           <Agree allow={allow} setAllow={setAllow} />
-          <NextButton $margin="80px" text="다음" to="/sign-up/info" active={allow.every(value => value === true) ? true : false} />
+          <NextButton
+            $margin='80px'
+            text='다음'
+            to='/sign-up/info'
+            active={allow.every((value) => value === true) ? true : false}
+          />
         </>
-      }
+      )}
     </>
   );
 }

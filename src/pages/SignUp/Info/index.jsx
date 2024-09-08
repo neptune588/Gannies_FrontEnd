@@ -10,10 +10,15 @@ function Info() {
 
   return (
     <>
-      <Title title="회원가입" />
-      <Icons identity={identity} info={info} department={department} sequence={sequence}/>
+      <Title title='회원가입' />
+      <Icons
+        identity={identity}
+        info={info}
+        department={department}
+        sequence={sequence}
+      />
       <Inputs />
-   </>
+    </>
   );
 }
 

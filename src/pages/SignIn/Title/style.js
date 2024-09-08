@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
 
   > span {
     ${h3_600}
-    color: ${props => props.theme.colors.primary};
+    color: ${(props) => props.theme.colors.primary};
     margin-bottom: 12px;
   }
 `;

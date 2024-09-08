@@ -8,7 +8,11 @@ const Icon = styled.img`
   height: 18px;
 `;
 
-export default function Eye({ viewCount, handlePasswordViewClick = null, ...props }) {
+export default function Eye({
+  viewCount,
+  handlePasswordViewClick = null,
+  ...props
+}) {
   return (
     <IconBox onClick={handlePasswordViewClick || undefined} {...props}>
       <Icon src={eye} alt='eye' />

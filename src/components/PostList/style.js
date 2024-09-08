@@ -13,7 +13,7 @@ export const PostWrapper = styled.li`
   }};
   padding-right: ${({ $pageName }) => {
     return $pageName === 'home' && '8px';
-}};
+  }};
   cursor: pointer;
 `;
 
@@ -66,7 +66,7 @@ export const PostTitle = styled.p`
   }};
   width: ${({ $pageName }) => {
     return $pageName === 'home' ? '732px' : '373px';
-  }};  
+  }};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

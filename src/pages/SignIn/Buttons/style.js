@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   margin: auto;
-  width: 1128px;  
+  width: 1128px;
   margin-top: 21px;
 
   > div {
@@ -30,17 +30,17 @@ export const Wrapper = styled.div`
         width: 20px;
         height: 20px;
         margin-right: 8px;
-        cursor: pointer;  
+        cursor: pointer;
       }
       > span {
         color: ${(props) => props.theme.colors.gray[70]};
         ${xsmall_500}
-      }  
-    }  
+      }
+    }
   }
   > span {
     ${instructionTextStyle};
-    margin-top: 36px;  
+    margin-top: 36px;
   }
 `;
 

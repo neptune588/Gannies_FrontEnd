@@ -14,13 +14,13 @@ export const Wrapper = styled.header`
   background-color: white;
   height: 111px;
   width: 1128px;
-  ${medium_400}  
+  ${medium_400}
 
   > form {
     width: 482px;
     height: 40px;
     border-radius: 100px;
-    border: 1px solid ${props => props.theme.colors.gray[40]};
+    border: 1px solid ${(props) => props.theme.colors.gray[40]};
     display: flex;
     align-items: center;
     padding-left: 20px;
@@ -30,12 +30,12 @@ export const Wrapper = styled.header`
     > img {
       width: 24px;
       height: 24px;
-    }  
+    }
   }
 
   > span {
     cursor: default;
-    color: ${(props) => props.theme.colors.primary}
+    color: ${(props) => props.theme.colors.primary};
   }
 `;
 
@@ -76,20 +76,19 @@ export const Input = styled(InputBox)`
 `;
 
 export const LogoutButton = styled(Link)`
-  ${medium_400}  
+  ${medium_400}
   cursor: pointer;
   padding: 12px 5px;
   margin-left: auto;
   margin-right: 10px;
-  color: ${(props) => props.theme.colors.primary}  
+  color: ${(props) => props.theme.colors.primary};
 `;
 
-
 export const MypageButton = styled(Link)`
-  ${medium_400}  
+  ${medium_400}
   cursor: pointer;
   padding: 12px 5px;
   margin-left: 10px;
   margin-right: 10px;
-  color: ${(props) => props.theme.colors.primary}
+  color: ${(props) => props.theme.colors.primary};
 `;

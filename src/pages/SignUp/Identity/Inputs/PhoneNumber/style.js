@@ -56,7 +56,7 @@ export const InfoWrapper = styled.div`
     display: flex;
     align-items: center;
     margin-top: 10px;
-    margin-left: 15px;  
+    margin-left: 15px;
   }
 
   > select {
@@ -74,8 +74,8 @@ export const InfoWrapper = styled.div`
 
     &:focus {
       outline: none;
-    }  
-  }  
+    }
+  }
 `;
 
 export const ImageWrapper = styled.div`

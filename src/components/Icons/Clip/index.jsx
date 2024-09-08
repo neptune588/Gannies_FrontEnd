@@ -8,7 +8,5 @@ const Icon = styled.img`
 `;
 
 export default function Clip() {
-  return (
-    <Icon src={clip} alt='clip' />
-  );
+  return <Icon src={clip} alt='clip' />;
 }

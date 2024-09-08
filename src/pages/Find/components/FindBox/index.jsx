@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const Find = styled.div`
   width: 508px;
@@ -8,10 +8,8 @@ const Find = styled.div`
   margin-bottom: ${({ $margin }) => $margin || '0px'};
 `;
 
-function FindBox({$margin, children}) {
-  return (
-    <Find $margin={$margin}>{children}</Find>
-  );
+function FindBox({ $margin, children }) {
+  return <Find $margin={$margin}>{children}</Find>;
 }
 
 export default FindBox;

@@ -7,7 +7,6 @@ import EyeSlash from '@/components/Icons/EyeSlash';
 import { defaultBorderBoxStyle } from '@/styles/commonStyle/box';
 import { placeholderTextStyle } from '@/styles/commonStyle/text';
 
-
 export const InputWrapper = styled.form`
   ${defaultBorderBoxStyle};
   width: 456px;
@@ -33,7 +32,7 @@ export const IconStyle = css`
   width: 18px;
   height: 18px;
   margin-right: 12px;
-  cursor: pointer;  
+  cursor: pointer;
 `;
 
 export const EyeIcon = styled(Eye)`
@@ -41,5 +40,5 @@ export const EyeIcon = styled(Eye)`
 `;
 
 export const EyeSlashIcon = styled(EyeSlash)`
-  ${IconStyle};  
+  ${IconStyle};
 `;

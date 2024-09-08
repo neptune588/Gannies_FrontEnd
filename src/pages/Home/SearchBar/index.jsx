@@ -6,28 +6,33 @@ import {
   Wrapper,
   Input,
   InactiveButton,
-  ActiveButton
+  ActiveButton,
 } from '@/pages/Home/SearchBar/style';
 
 function SearchBar() {
-
   const [text, setText] = useState('');
   const [allowButton, setAllowButton] = useState(false);
 
   const handlePassword = (e) => {
     setAllowButton(e.target.value.length >= 1 ? true : false);
     setText(e.target.value);
-  }
+  };
 
   return (
     <Wrapper>
       <form>
         <img src={search} alt='searchIcon' />
-        <Input placeholder='관심있는 이야기를 검색해보세요' value={text} onChange={handlePassword}/>
+        <Input
+          placeholder='관심있는 이야기를 검색해보세요'
+          value={text}
+          onChange={handlePassword}
+        />
       </form>
-      {
-        allowButton ? <ActiveButton>검색</ActiveButton> : <InactiveButton>검색</InactiveButton>
-      }
+      {allowButton ? (
+        <ActiveButton>검색</ActiveButton>
+      ) : (
+        <InactiveButton>검색</InactiveButton>
+      )}
     </Wrapper>
   );
 }

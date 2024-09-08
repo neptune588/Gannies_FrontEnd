@@ -20,13 +20,13 @@ export const LeftWrapper = styled.div`
   padding-left: 48px;
 
   > h3 {
-    color: ${props => props.theme.colors.gray[10]};
+    color: ${(props) => props.theme.colors.gray[10]};
     ${h4_400}
-    letter-spacing: 0px;  
+    letter-spacing: 0px;
   }
 `;
 
-export const LowerBox = styled.div``
+export const LowerBox = styled.div``;
 
 export const Title = styled.span`
   color: ${(props) => props.theme.colors.gray[10]};
@@ -47,7 +47,7 @@ export const Goto = styled.div`
     width: 30px;
     height: 30px;
     padding: 3px;
-    border-radius: 4px;  
+    border-radius: 4px;
   }
 `;
 
@@ -83,6 +83,6 @@ export const RightWrapper = styled.div`
     width: 106px;
     height: 106px;
     margin-left: 20px;
-    cursor: pointer;  
+    cursor: pointer;
   }
 `;
