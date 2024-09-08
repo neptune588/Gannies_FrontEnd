@@ -10,10 +10,10 @@ import Negative from '@/components/Instruction/Negative';
 import {
   ActiveInputBox,
   InactiveInputBox,
-  InputBox
+  InputBox,
 } from '@/pages/SignUp/Department/Inputs/Document/style';
 
-function Document({setAllow}) {
+function Document({ setAllow }) {
   const [fileName, setFileName] = useState('');
   const inputRef = useRef();
   const fileTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
@@ -32,18 +32,17 @@ function Document({setAllow}) {
           newAllow[1] = true;
           return newAllow;
         });
-      }
-      else {
+      } else {
         setValid(false);
         setAllow((prev) => {
           const newAllow = [...prev];
           newAllow[1] = false;
           return newAllow;
-        });        
+        });
       }
     }
   };
-  
+
   const deleteFile = (e) => {
     e.stopPropagation();
     setFileName('');
@@ -51,7 +50,7 @@ function Document({setAllow}) {
       const newAllow = [...prev];
       newAllow[1] = false;
       return newAllow;
-    });       
+    });
   };
 
   const handleBoxClick = () => {
@@ -59,9 +58,9 @@ function Document({setAllow}) {
       inputRef.current.click();
     }
   };
-  
+
   return (
-    <InputSection $margin="37px" title="인증서류 업로드*">
+    <InputSection $margin='37px' title='인증서류 업로드*'>
       {fileName ? (
         <ActiveInputBox onClick={handleBoxClick}>
           <Clip />
@@ -74,19 +73,19 @@ function Document({setAllow}) {
           <Upload />
         </InactiveInputBox>
       )}
-      <InputBox 
-        type="file" 
-        name="file" 
-        id="file" 
-        accept=".png, .jpeg, .jpg, .gif" 
-        onChange={uploadFile} 
+      <InputBox
+        type='file'
+        name='file'
+        id='file'
+        accept='.png, .jpeg, .jpg, .gif'
+        onChange={uploadFile}
         ref={inputRef}
       />
-      <Instruction text="*졸업증명서, 재학증면서만 가능 (최대 1MB 이내)" />
-      <Instruction text="*JPG / JPEG / PNG / GIF (이미지만)" />
-      {
-        valid === false && <Negative text="파일 형식 또는 크기를 확인해주세요"/>
-      }
+      <Instruction text='*졸업증명서, 재학증면서만 가능 (최대 1MB 이내)' />
+      <Instruction text='*JPG / JPEG / PNG / GIF (이미지만)' />
+      {valid === false && (
+        <Negative text='파일 형식 또는 크기를 확인해주세요' />
+      )}
     </InputSection>
   );
 }

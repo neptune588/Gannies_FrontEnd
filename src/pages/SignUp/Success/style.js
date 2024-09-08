@@ -7,7 +7,11 @@ import {
   primaryColorBoxStyle,
 } from '@/styles/commonStyle/box';
 import { centerAlignStyle } from '@/styles/commonStyle/etc';
-import { small_400, h3_600, medium_400 } from '@/styles/commonStyle/localTextStyle';
+import {
+  small_400,
+  h3_600,
+  medium_400,
+} from '@/styles/commonStyle/localTextStyle';
 import { authDefaultTextStyle } from '@/styles/commonStyle/text';
 
 export const Wrapper = styled.div`
@@ -42,7 +46,7 @@ export const Wrapper = styled.div`
   > img {
     width: 100px;
     height: 100px;
-    margin-top: 60px;  
+    margin-top: 60px;
   }
 `;
 
@@ -69,5 +73,5 @@ export const LeftButton = styled(Link)`
 export const RightButton = styled.button`
   ${primaryColorBoxStyle};
   width: 205px;
-  height: 48px;  
+  height: 48px;
 `;

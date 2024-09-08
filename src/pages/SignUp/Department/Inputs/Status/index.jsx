@@ -5,10 +5,10 @@ import InputSection from '@/pages/SignUp/components/InputSection';
 import {
   ActiveButton,
   InactiveButton,
-  Wrapper
+  Wrapper,
 } from '@/pages/SignUp/Department/Inputs/Status/style';
 
-function Status({setAllow}) {
+function Status({ setAllow }) {
   const [isStudent, setIsStudent] = useState(false);
   const [isGraduate, setIsGraduate] = useState(false);
 
@@ -25,7 +25,7 @@ function Status({setAllow}) {
     if (isGraduate) {
       setIsGraduate(false);
     }
-    setIsStudent(prev => !prev);
+    setIsStudent((prev) => !prev);
     updateAllow(!isStudent, isGraduate);
   };
 
@@ -33,17 +33,23 @@ function Status({setAllow}) {
     if (isStudent) {
       setIsStudent(false);
     }
-    setIsGraduate(prev => !prev);
+    setIsGraduate((prev) => !prev);
     updateAllow(isStudent, !isGraduate);
   };
-  
+
   return (
-    <InputSection $margin="15px" title="학적 구분*">
+    <InputSection $margin='15px' title='학적 구분*'>
       <Wrapper>
-        <InactiveButton as={isStudent ? ActiveButton : undefined} onClick={handleIsStudent}>
+        <InactiveButton
+          as={isStudent ? ActiveButton : undefined}
+          onClick={handleIsStudent}
+        >
           재학생
         </InactiveButton>
-        <InactiveButton as={isGraduate ? ActiveButton : undefined} onClick={handleIsGraduate}>
+        <InactiveButton
+          as={isGraduate ? ActiveButton : undefined}
+          onClick={handleIsGraduate}
+        >
           졸업생
         </InactiveButton>
       </Wrapper>

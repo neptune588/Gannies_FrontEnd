@@ -14,6 +14,7 @@ import {
   ImageWrapper,
   DisabledButton,
 } from '@/pages/SignUp/Identity/Inputs/PhoneNumber/style';
+import uuid from 'react-uuid';
 
 function PhoneNumber({
   allow,
@@ -74,9 +75,9 @@ function PhoneNumber({
     <InputSection $margin='37px' title='휴대폰 번호*'>
       <InfoWrapper>
         <select disabled={allow[2]}>
-          {numberKinds.map((number, e) => {
+          {numberKinds.map((number) => {
             return (
-              <option value={number} key={e}>
+              <option value={number} key={uuid()}>
                 {number}
               </option>
             );

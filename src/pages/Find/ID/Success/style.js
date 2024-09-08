@@ -30,7 +30,7 @@ export const RightButton = styled(Link)`
   ${centerAlignStyle};
   ${medium_400}
   width: 205px;
-  height: 48px;  
+  height: 48px;
 `;
 
 export const MiddleButton = styled(Link)`
@@ -38,5 +38,5 @@ export const MiddleButton = styled(Link)`
   ${centerAlignStyle};
   ${medium_400}
   width: 360px;
-  height: 48px;  
+  height: 48px;
 `;

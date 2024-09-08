@@ -1,4 +1,4 @@
-import { Wrapper } from "@/pages/SignIn/Title/style";
+import { Wrapper } from '@/pages/SignIn/Title/style';
 
 function Title() {
   return (

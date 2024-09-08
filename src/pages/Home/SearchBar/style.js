@@ -2,7 +2,10 @@ import styled from 'styled-components';
 
 import { InputBox } from '@/components/Input/style';
 
-import { inactiveColorBoxStyle, primaryColorBoxStyle } from '@/styles/commonStyle/box';
+import {
+  inactiveColorBoxStyle,
+  primaryColorBoxStyle,
+} from '@/styles/commonStyle/box';
 import { centerAlignStyle } from '@/styles/commonStyle/etc';
 import { large_400 } from '@/styles/commonStyle/localTextStyle';
 import { Link } from 'react-router-dom';
@@ -20,7 +23,7 @@ export const Wrapper = styled.div`
     height: 50px;
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
-    border: 1px solid ${props => props.theme.colors.gray[40]};
+    border: 1px solid ${(props) => props.theme.colors.gray[40]};
     display: flex;
     align-items: center;
     padding-left: 24px;
@@ -45,15 +48,15 @@ export const Input = styled(InputBox)`
 
 export const ActiveButton = styled(Link)`
   ${primaryColorBoxStyle};
-  border-radius: 0px 4px 4px 0px;  
+  border-radius: 0px 4px 4px 0px;
   ${large_400}
   width: 90px;
   ${centerAlignStyle}
   height: 50px;
-  cursor: pointer;  
+  cursor: pointer;
 `;
 
 export const InactiveButton = styled(ActiveButton)`
   ${inactiveColorBoxStyle};
-  border-radius: 0px 4px 4px 0px;    
+  border-radius: 0px 4px 4px 0px;
 `;

@@ -7,17 +7,23 @@ import {
   InputBox,
   InputWrapper,
   EyeIcon,
-  EyeSlashIcon    
+  EyeSlashIcon,
 } from '@/pages/SignUp/Info/Inputs/Password/style';
 import Negative from '@/components/Instruction/Negative';
 
-function PasswordCheck({password, passwordCheck, setPasswordCheck, allow, setAllow }) {
+function PasswordCheck({
+  password,
+  passwordCheck,
+  setPasswordCheck,
+  allow,
+  setAllow,
+}) {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
-  }
-  
+  };
+
   const handlePassword = (e) => {
     const value = e.target.value.slice(0, 16);
     setPasswordCheck(value);
@@ -28,19 +34,29 @@ function PasswordCheck({password, passwordCheck, setPasswordCheck, allow, setAll
       newAllow[3] = state;
       return newAllow;
     });
-  }
+  };
 
   return (
-    <InputSection $margin="37px" title="비밀번호 확인*">
+    <InputSection $margin='37px' title='비밀번호 확인*'>
       <InputWrapper>
-        <InputBox type={showPassword ? "text" : "password"} placeholder='확인을 위해 비밀번호를 입력해주세요' value={passwordCheck} onChange={handlePassword} />
-        {
-          showPassword ? 
-          <EyeIcon onClick={handleShowPassword} /> :
+        <InputBox
+          type={showPassword ? 'text' : 'password'}
+          placeholder='확인을 위해 비밀번호를 입력해주세요'
+          value={passwordCheck}
+          onChange={handlePassword}
+        />
+        {showPassword ? (
+          <EyeIcon onClick={handleShowPassword} />
+        ) : (
           <EyeSlashIcon onClick={handleShowPassword} />
-        }
+        )}
       </InputWrapper>
-      { passwordCheck.length > 0 && (allow[3] ? <Positive text="비밀번호가 일치합니다" /> : <Negative text="비밀번호가 일치하지 않습니다" />)}
+      {passwordCheck.length > 0 &&
+        (allow[3] ? (
+          <Positive text='비밀번호가 일치합니다' />
+        ) : (
+          <Negative text='비밀번호가 일치하지 않습니다' />
+        ))}
     </InputSection>
   );
 }

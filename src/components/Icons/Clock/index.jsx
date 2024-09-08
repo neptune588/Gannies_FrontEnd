@@ -12,7 +12,7 @@ export default function Clock({ time = 0 }) {
   return (
     <IconBox>
       <Icon src={clock} alt='clock' />
-        <p>{time}</p>
+      <p>{time}</p>
     </IconBox>
   );
 }
