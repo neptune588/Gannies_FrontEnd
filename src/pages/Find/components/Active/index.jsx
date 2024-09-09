@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { medium_600 } from '@/styles/commonStyle/localTextStyle';
+import { useDispatch } from 'react-redux';
+import { resetFindIdPasswordData } from '@/store/findIdPasswordSlice';
 
 const ActiveBox = styled(Link)`
   width: 254px;
@@ -13,9 +15,17 @@ const ActiveBox = styled(Link)`
   justify-content: center;
   cursor: pointer;
 `;
-
 function Active({ type, text }) {
-  return <ActiveBox to={`/find/${type}`}>{text}</ActiveBox>;
+  const dispatch = useDispatch();
+  const clickButton = () => {
+    dispatch(resetFindIdPasswordData());
+  };
+
+  return (
+    <ActiveBox to={`/find/${type}`} onClick={clickButton}>
+      {text}
+    </ActiveBox>
+  );
 }
 
 export default Active;

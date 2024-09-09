@@ -7,10 +7,17 @@ import info from '@/assets/icons/etc/info_input_inactive.svg';
 import department from '@/assets/icons/etc/department_verification_inactive.svg';
 import NextButton from '@/pages/SignUp/components/NextButton';
 import { useAuthAllow } from '@/hooks/useAuthAllow';
+import { useDispatch } from 'react-redux';
+import { handleSignUpData } from '@/store/signUpSlice';
 
 function Identity() {
   const sequence = ['active', 'inactive', 'inactive'];
   const { allow, handleAllow } = useAuthAllow([false, false, false, false]);
+  const dispatch = useDispatch();
+
+  const handleNextButton = () => {
+    dispatch(handleSignUpData({ key: 'identityCompleted', value: true }));
+  };
 
   return (
     <>
@@ -28,6 +35,7 @@ function Identity() {
           $margin='80px'
           text='다음'
           active={allow.every((value) => value === true)}
+          onClick={handleNextButton}
           to={'/sign-up/info'}
         />
       )}

@@ -12,8 +12,14 @@ const findIdPasswordSlice = createSlice({
       const { key, value } = action.payload;
       state[key] = value;
     },
+    resetFindIdPasswordData(state) {
+      state.name = '';
+      state.phoneNumber = '';
+      state.email = '';
+    },
   },
 });
 
 export default findIdPasswordSlice.reducer;
-export const { handleFindIdPasswordData } = findIdPasswordSlice.actions;
+export const { handleFindIdPasswordData, resetFindIdPasswordData } =
+  findIdPasswordSlice.actions;

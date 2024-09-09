@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { medium_600 } from '@/styles/commonStyle/localTextStyle';
+import { useDispatch } from 'react-redux';
+import { resetFindIdPasswordData } from '@/store/findIdPasswordSlice';
 
 const InactiveBox = styled(Link)`
   width: 254px;
@@ -15,7 +17,15 @@ const InactiveBox = styled(Link)`
 `;
 
 function Inactive({ type, text }) {
-  return <InactiveBox to={`/find/${type}`}>{text}</InactiveBox>;
+  const dispatch = useDispatch();
+  const clickButton = () => {
+    dispatch(resetFindIdPasswordData());
+  };
+  return (
+    <InactiveBox to={`/find/${type}`} onClick={clickButton}>
+      {text}
+    </InactiveBox>
+  );
 }
 
 export default Inactive;

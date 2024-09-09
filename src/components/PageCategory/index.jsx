@@ -28,7 +28,7 @@ export default function PageCategory({
   bottomCategory = null,
   activeCategory = null,
 }) {
-  //전역변수 써야할것같음. 지금은 대충해놓자.
+  //전역변수 써야할것같음. 지금은 대충해놓자. 화이팅~
   return (
     <CategoryBox>
       <CategoryList>게시글</CategoryList>
