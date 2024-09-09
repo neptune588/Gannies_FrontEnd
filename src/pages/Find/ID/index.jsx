@@ -8,9 +8,11 @@ import Active from '@/pages/Find/components/Active';
 import FindBox from '@/pages/Find/components/FindBox';
 import Inactive from '@/pages/Find/components/Inactive';
 import Wrapper from '@/pages/Find/components/Wrapper';
+import { useAuthAllow } from '@/hooks/useAuthAllow';
 
 function ID() {
-  const [allow, setAllow] = useState([false, false, false]);
+  const { allow, handleAllow } = useAuthAllow([false, false, false]);
+
   const [buttonAllow, setButtonAllow] = useState([false, false]);
   const [visible, setVisible] = useState([true, false]);
 
@@ -20,17 +22,21 @@ function ID() {
         <Active type='id' text={'이메일 찾기'} />
         <Inactive type='password' text={'비밀번호 찾기'} />
       </FindBox>
-      <Name allow={allow} setAllow={setAllow} setButtonAllow={setButtonAllow} />
+      <Name
+        allow={allow}
+        handleAllow={handleAllow}
+        setButtonAllow={setButtonAllow}
+      />
       <PhoneNumber
         allow={allow}
-        setAllow={setAllow}
+        handleAllow={handleAllow}
         setVisible={setVisible}
         buttonAllow={buttonAllow}
         setButtonAllow={setButtonAllow}
       />
       {visible[1] && (
         <>
-          <VerifyNumber allow={allow} setAllow={setAllow} />
+          <VerifyNumber allow={allow} handleAllow={handleAllow} />
           <NextButton
             $margin='80px'
             text='다음'

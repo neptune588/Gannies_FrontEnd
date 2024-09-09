@@ -4,24 +4,23 @@ import InputSection from '@/pages/SignUp/components/InputSection';
 import DefaultInput from '@/pages/SignUp/components/DefaultInput';
 import Negative from '@/components/Instruction/Negative';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { handleSignUpData } from '@/store/signUpSlice';
 
-function Nickname({ setAllow }) {
-  const [nickname, setNickname] = useState('');
+function Nickname({ handleAllow }) {
+  const nickname = useSelector((state) => state.signUpSlice.nickname);
   const [nicknameValid, setNicknameValid] = useState(false);
+  const dispatch = useDispatch();
 
   const handleNickname = (e) => {
     const value = e.target.value;
-    setNickname(value);
+    dispatch(handleSignUpData({ key: 'nickname', value: value }));
 
     const regex = /^[a-zA-Z가-힣]{2,8}$/;
     const state = value.length >= 2 && regex.test(value);
 
     setNicknameValid(state);
-    setAllow((prev) => {
-      const newAllow = [...prev];
-      newAllow[0] = state;
-      return newAllow;
-    });
+    handleAllow(0, state);
   };
 
   return (

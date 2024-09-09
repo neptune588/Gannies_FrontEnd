@@ -7,10 +7,13 @@ import {
   InactiveButton,
   Wrapper,
 } from '@/pages/SignUp/Department/Inputs/Status/style';
+import { useDispatch } from 'react-redux';
+import { handleSignUpData } from '@/store/signUpSlice';
 
 function Status({ setAllow }) {
   const [isStudent, setIsStudent] = useState(false);
   const [isGraduate, setIsGraduate] = useState(false);
+  const dispatch = useDispatch();
 
   const updateAllow = (isStudent, isGraduate) => {
     const state = isStudent || isGraduate;
@@ -19,6 +22,12 @@ function Status({ setAllow }) {
       newAllow[0] = state;
       return newAllow;
     });
+    const getStatusValue = () => {
+      if (state === isStudent) return 'current_student';
+      else if (state === isGraduate) return 'graduated_student';
+      return '';
+    };
+    dispatch(handleSignUpData({ key: 'status', value: getStatusValue() }));
   };
 
   const handleIsStudent = () => {

@@ -5,24 +5,23 @@ import Negative from '@/components/Instruction/Negative';
 
 import InputSection from '@/pages/SignUp/components/InputSection';
 import { useState } from 'react';
+import { handleSignUpData } from '@/store/signUpSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
-function Email({ setAllow }) {
-  const [email, setEmail] = useState('');
+function Email({ handleAllow }) {
+  const email = useSelector((state) => state.signUpSlice.email);
   const [emailValid, setEmailValid] = useState(false);
+  const dispatch = useDispatch();
 
   const handleEmail = (e) => {
-    const value = e.target.value;
-    setEmail(value);
+    const email = e.target.value;
+    dispatch(handleSignUpData({ key: 'email', value: email }));
 
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const isValid = regex.test(value);
+    const isValid = regex.test(email);
 
     setEmailValid(isValid);
-    setAllow((prev) => {
-      const newAllow = [...prev];
-      newAllow[1] = isValid;
-      return newAllow;
-    });
+    handleAllow(1, isValid);
   };
 
   return (

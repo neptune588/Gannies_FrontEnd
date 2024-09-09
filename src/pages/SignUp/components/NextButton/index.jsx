@@ -4,11 +4,11 @@ import {
   ButtonWrapper,
 } from '@/pages/SignUp/components/NextButton/style';
 
-function NextButton({ $margin, active = true, text, to }) {
+function NextButton({ $margin, active = true, text, ...props }) {
   return (
     <ButtonWrapper $margin={$margin}>
       {active ? (
-        <ActiveButton to={to}>{text}</ActiveButton>
+        <ActiveButton {...props}>{text}</ActiveButton>
       ) : (
         <InactiveButton>{text}</InactiveButton>
       )}

@@ -13,7 +13,7 @@ import {
   InputBox,
 } from '@/pages/SignUp/Department/Inputs/Document/style';
 
-function Document({ setAllow }) {
+function Document({ handleAllow }) {
   const [fileName, setFileName] = useState('');
   const inputRef = useRef();
   const fileTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
@@ -27,18 +27,10 @@ function Document({ setAllow }) {
       if (fileTypes.includes(file.type) && file.size <= maxSize) {
         setFileName(file.name);
         setValid(true);
-        setAllow((prev) => {
-          const newAllow = [...prev];
-          newAllow[1] = true;
-          return newAllow;
-        });
+        handleAllow(1, true);
       } else {
         setValid(false);
-        setAllow((prev) => {
-          const newAllow = [...prev];
-          newAllow[1] = false;
-          return newAllow;
-        });
+        handleAllow(1, false);
       }
     }
   };
@@ -46,11 +38,7 @@ function Document({ setAllow }) {
   const deleteFile = (e) => {
     e.stopPropagation();
     setFileName('');
-    setAllow((prev) => {
-      const newAllow = [...prev];
-      newAllow[1] = false;
-      return newAllow;
-    });
+    handleAllow(1, false);
   };
 
   const handleBoxClick = () => {

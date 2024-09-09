@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import num from './num-slice';
+import signUpSlice from '@/store/signUpSlice';
 
 const store = configureStore({
   reducer: {
-    num: num,
+    signUpSlice: signUpSlice,
   },
 });
 

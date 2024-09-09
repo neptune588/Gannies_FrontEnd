@@ -14,65 +14,59 @@ import {
   DisabledButton,
 } from '@/pages/SignUp/Identity/Inputs/VerifyNumber/style';
 
-function VerifyNumber({ allow, setAllow, setVisible }) {
+function VerifyNumber({ allow, handleAllow }) {
   const [verifyNumber, setVerifyNumber] = useState('');
   const [buttonAllow, setButtonAllow] = useState(false);
   const [instructionState, setInstructionState] = useState(undefined);
 
   const handleVerifyNumber = (e) => {
-    setVerifyNumber(e.target.value);
-
-    e.target.value ? setButtonAllow(true) : setButtonAllow(false);
+    const verifyNumber = e.target.value;
+    setVerifyNumber(verifyNumber);
+    setButtonAllow(!!verifyNumber);
   };
 
   const handleActiveButton = () => {
     if (verifyNumber === '000000') {
-      setAllow((prev) => {
-        const newAllow = [...prev];
-        newAllow[2] = true;
-        return newAllow;
-      });
-      if (setVisible) {
-        setVisible((prev) => {
-          const newVisible = [...prev];
-          newVisible[2] = true;
-          return newVisible;
-        });
-      }
+      handleAllow(2, true);
       setInstructionState(true);
     } else {
+      handleAllow(2, false);
       setInstructionState(false);
     }
   };
 
   return (
-    <InputSection $margin='37px' title='인증번호*'>
-      <InfoWrapper>
-        <InputWrapper>
-          <InputBox
-            type='text'
-            placeholder='인증번호를 입력해주세요'
-            value={verifyNumber}
-            onChange={handleVerifyNumber}
-            disabled={allow[2]}
-          />
-          <Clock time={0} />
-        </InputWrapper>
-        {!buttonAllow ? (
-          <InactiveButton>인증확인</InactiveButton>
-        ) : allow[2] ? (
-          <DisabledButton>인증번호 발송</DisabledButton>
-        ) : (
-          <ActiveButton onClick={handleActiveButton}>인증확인</ActiveButton>
-        )}
-      </InfoWrapper>
-      {instructionState !== undefined && instructionState === false && (
-        <Negative text='인증번호가 일치하지 않습니다' />
+    <>
+      {allow[0] && allow[1] && (
+        <InputSection $margin='37px' title='인증번호*'>
+          <InfoWrapper>
+            <InputWrapper>
+              <InputBox
+                type='text'
+                placeholder='인증번호를 입력해주세요'
+                value={verifyNumber}
+                onChange={handleVerifyNumber}
+                disabled={allow[2]}
+              />
+              <Clock time={0} />
+            </InputWrapper>
+            {!buttonAllow ? (
+              <InactiveButton>인증확인</InactiveButton>
+            ) : allow[2] ? (
+              <DisabledButton>인증번호 발송</DisabledButton>
+            ) : (
+              <ActiveButton onClick={handleActiveButton}>인증확인</ActiveButton>
+            )}
+          </InfoWrapper>
+          {instructionState !== undefined && instructionState === false && (
+            <Negative text='인증번호가 일치하지 않습니다' />
+          )}
+          {instructionState !== undefined && instructionState === true && (
+            <Positive text='인증이 완료되었습니다' />
+          )}
+        </InputSection>
       )}
-      {instructionState !== undefined && instructionState === true && (
-        <Positive text='인증이 완료되었습니다' />
-      )}
-    </InputSection>
+    </>
   );
 }
 

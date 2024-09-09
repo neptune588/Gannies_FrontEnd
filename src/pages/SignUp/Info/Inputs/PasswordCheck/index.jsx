@@ -11,13 +11,7 @@ import {
 } from '@/pages/SignUp/Info/Inputs/Password/style';
 import Negative from '@/components/Instruction/Negative';
 
-function PasswordCheck({
-  password,
-  passwordCheck,
-  setPasswordCheck,
-  allow,
-  setAllow,
-}) {
+function PasswordCheck({ allow, passwordCheck, setPasswordCheck }) {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleShowPassword = () => {
@@ -25,15 +19,8 @@ function PasswordCheck({
   };
 
   const handlePassword = (e) => {
-    const value = e.target.value.slice(0, 16);
-    setPasswordCheck(value);
-
-    const state = password === value;
-    setAllow((prev) => {
-      const newAllow = [...prev];
-      newAllow[3] = state;
-      return newAllow;
-    });
+    const passwordCheck = e.target.value.slice(0, 16);
+    setPasswordCheck(passwordCheck);
   };
 
   return (
