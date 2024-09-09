@@ -76,3 +76,17 @@ export const userStatusVerify = async (pwFindData) => {
   const response = await api.get(url, pwFindData);
   return response;
 };
+
+//인증서 업로드 하기 위해 필요한 URL 받기
+export const getPresigneUrl = async (params) => {
+  const url = '/certificates/upload-info?';
+  const response = await api.get(url, params);
+  return response;
+};
+
+//받아온 URL에 IMAGE url 보내기
+export const certificatesImageUpload = async (presigneUrl, imageData) => {
+  const url = presigneUrl;
+  const response = await api.get(url, imageData);
+  return response;
+};
