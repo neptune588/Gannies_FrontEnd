@@ -20,7 +20,7 @@ function VerifyNumber({ allow, handleAllow }) {
   const [verifyNumber, setVerifyNumber] = useState('');
   const [buttonAllow, setButtonAllow] = useState(false);
   const [instructionState, setInstructionState] = useState(undefined);
-  // const phoneNumber = useSelector((state) => state.signUpSlice.phoneNumber);
+  // const phoneNumber = useSelector((state) => state.findIdPasswordSlice.phoneNumber);
 
   const handleVerifyNumber = (e) => {
     const verifyNumber = e.target.value;
@@ -31,15 +31,15 @@ function VerifyNumber({ allow, handleAllow }) {
   const handleActiveButton = async () => {
     try {
       // const response = await axios.post('/auth/phone-verification', { phoneNumber, code: verifyNumber});
+      if (verifyNumber === '000000') {
+        handleAllow(2, true);
+        setInstructionState(true);
+      } else {
+        handleAllow(2, false);
+        setInstructionState(false);
+      }
     } catch (error) {
       alert('error');
-    }
-    if (verifyNumber === '000000') {
-      handleAllow(2, true);
-      setInstructionState(true);
-    } else {
-      handleAllow(2, false);
-      setInstructionState(false);
     }
   };
 

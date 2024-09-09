@@ -1,21 +1,39 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuthAllow } from '@/hooks/useAuthAllow';
 
-import Name from '@/pages/SignUp/Identity/Inputs/Name';
 import NextButton from '@/pages/SignUp/components/NextButton';
 import Active from '@/pages/Find/components/Active';
 import FindBox from '@/pages/Find/components/FindBox';
 import Inactive from '@/pages/Find/components/Inactive';
 import Wrapper from '@/pages/Find/components/Wrapper';
-import Email from '@/pages/SignUp/Info/Inputs/Email';
 import Modal from '@/pages/Find/Modal';
-import { useAuthAllow } from '@/hooks/useAuthAllow';
+import Email from '@/pages/Find/Password/Inputs/Email';
+import Name from '@/pages/Find/ID/Inputs/Name';
+import { useSelector } from 'react-redux';
 
 function Password() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { allow, handleAllow } = useAuthAllow([false, false]);
+  const { name, email } = useSelector((state) => state.findIdPasswordSlice);
+
+  const navigate = useNavigate();
 
   const openModal = () => {
     setIsModalOpen(!isModalOpen);
+  };
+
+  const findPassword = async () => {
+    try {
+      // const response = await axios.post('/auth/password', { username: name, email });
+      if (name === 'abc' && email === 'abc') {
+        navigate('/find/password/success');
+      } else {
+        openModal();
+      }
+    } catch (error) {
+      // openModal();
+    }
   };
 
   return (
@@ -29,10 +47,9 @@ function Password() {
       <NextButton
         $margin='80px'
         text='다음'
-        active={allow[0] && allow[1] ? true : false}
-        to='/find/password/success'
+        active={allow[0] && allow[1]}
+        onClick={findPassword}
       />
-      <button onClick={openModal}>모달 확인</button>
       {isModalOpen && <Modal openModal={openModal} />}
     </Wrapper>
   );

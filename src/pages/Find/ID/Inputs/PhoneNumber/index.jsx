@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import uuid from 'react-uuid';
+// import axios from 'axios';
 
-import Modal from '@/pages/Find/Modal';
 import InputSection from '@/pages/SignUp/components/InputSection';
 import chevronDown from '@/assets/icons/arrows/chevron_down.svg';
 
@@ -14,25 +14,22 @@ import {
   ImageWrapper,
   DisabledButton,
 } from '@/pages/SignUp/Identity/Inputs/PhoneNumber/style';
-import uuid from 'react-uuid';
+import { handleFindIdPasswordData } from '@/store/findIdPasswordSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { handleSignUpData } from '@/store/signUpSlice';
-// import axios from 'axios';
 
 function PhoneNumber({ allow, handleAllow }) {
-  const dispatch = useDispatch();
-
-  const phoneNumber = useSelector((state) => state.signUpSlice.phoneNumber);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const numberKinds = ['010', '011', '012', '016', '017', '018', '019'];
-
-  const openModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
+  const phoneNumber = useSelector(
+    (state) => state.findIdPasswordSlice.phoneNumber
+  );
+  const dispatch = useDispatch();
 
   const handlePhoneNumber = (e) => {
     const phoneNumber = e.target.value.slice(0, 8);
-    dispatch(handleSignUpData({ key: 'phoneNumber', value: phoneNumber }));
+    dispatch(
+      handleFindIdPasswordData({ key: 'phoneNumber', value: phoneNumber })
+    );
+
     handleAllow(1, false);
   };
 
@@ -70,7 +67,7 @@ function PhoneNumber({ allow, handleAllow }) {
           />
         </form>
         {!allow[0] || phoneNumber.length < 7 ? (
-          <InactiveButton onClick={openModal}>인증번호 발송</InactiveButton>
+          <InactiveButton>인증번호 발송</InactiveButton>
         ) : allow[2] ? (
           <DisabledButton>인증번호 재발송</DisabledButton>
         ) : allow[1] ? (
@@ -81,7 +78,6 @@ function PhoneNumber({ allow, handleAllow }) {
           <ActiveButton onClick={handleSendButton}>인증번호 발송</ActiveButton>
         )}
       </InfoWrapper>
-      {isModalOpen && <Modal openModal={openModal} />}
     </InputSection>
   );
 }
