@@ -43,7 +43,7 @@ function PostList({
         {!scrapViewState && (
           <>
             <IconBox $pageName={pageName}>
-              <Eye viewCount={views} />
+              <Eye postViewCount={views} />
             </IconBox>
             <IconBox $pageName={pageName}>
               <HeartInactive likeCount={likes} />

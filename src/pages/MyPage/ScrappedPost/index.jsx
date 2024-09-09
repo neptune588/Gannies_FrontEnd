@@ -43,7 +43,7 @@ export default function ScrappedPost() {
       />
       <PageWrapper>
         <Pagination
-          pageNumberData={pageData}
+          pageCountData={pageData}
           activePageNumber={currentActivePageNumber}
           handlePageNumberClick={handlePageNumberChange}
         />

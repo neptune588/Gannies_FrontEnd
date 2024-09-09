@@ -168,7 +168,7 @@ export default function ReportHistory() {
       </TableWrapper>
       <PaginationWrapper>
         <Pagination
-          pageNumberData={tempPageData}
+          pageCountData={tempPageData}
           activePageNumber={currentPageNumber}
           handlePageNumberClick={handlePageNumberClick}
         />

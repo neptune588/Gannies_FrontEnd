@@ -4,6 +4,7 @@ import Home from '@/pages/Home';
 import SignIn from '@/pages/SignIn';
 import Community from '@/pages/Community';
 import CreateCommunityPost from '@/pages/CreateCommunityPost';
+import PostDetail from '@/pages/PostDetail';
 import PersonalInfo from '@/pages/MyPage/PersonalInfo';
 import PasswordChange from '@/pages/MyPage/PasswordChange';
 import WrittenPost from '@/pages/MyPage/WrittenPost';
@@ -39,6 +40,10 @@ export const router = createBrowserRouter([
       {
         path: '/community/create-community-post',
         element: <CreateCommunityPost />,
+      },
+      {
+        path: '/community/detail',
+        element: <PostDetail />,
       },
     ],
   },

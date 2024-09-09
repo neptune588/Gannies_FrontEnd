@@ -38,7 +38,7 @@ export default function WrittenPost() {
       <PostContents postData={postData} pageName={'my-page'} />
       <PageWrapper>
         <Pagination
-          pageNumberData={pageData}
+          pageCountData={pageData}
           activePageNumber={currentActivePageNumber}
           handlePageNumberClick={handlePageNumberChange}
         />

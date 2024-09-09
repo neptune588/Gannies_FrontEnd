@@ -162,7 +162,7 @@ export default function PostManagement() {
       </TableWrapper>
       <PaginationWrapper>
         <Pagination
-          pageNumberData={tempPageData}
+          pageCountData={tempPageData}
           activePageNumber={currentPageNumber}
           handlePageNumberClick={handlePageNumberClick}
         />

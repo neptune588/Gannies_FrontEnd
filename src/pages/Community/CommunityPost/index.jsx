@@ -23,7 +23,7 @@ export default function CommunityPost() {
       </PostContentsWrapper>
       <PostInfoBox>
         <PostIconBox>
-          <Eye viewCount={125000} />
+          <Eye postViewCount={125000} />
           <HeartInactive likeCount={125000} />
         </PostIconBox>
         <PostDateBox>2024-08-22</PostDateBox>

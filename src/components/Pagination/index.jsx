@@ -14,7 +14,7 @@ import {
 } from '@/components/Pagination/style';
 
 export default function Pagination({
-  pageNumberData,
+  pageCountData,
   activePageNumber = 0,
   handlePrevPageButtonClick = null,
   handlePrev10PageButtonClick = null,
@@ -33,7 +33,7 @@ export default function Pagination({
         </ArrowButton>
       </ArrowBox>
       <PageNumberBox>
-        {pageNumberData?.map((item, idx) => {
+        {pageCountData?.map((_, idx) => {
           return (
             <PageNumber
               key={uuid()}

@@ -61,7 +61,7 @@ export default function Community() {
       </ul>
       <PageWrapper>
         <Pagination
-          pageNumberData={tempData}
+          pageCountData={tempData}
           activePageNumber={tempPageNumber}
           handlePageNumberClick={handlePageClick}
         />

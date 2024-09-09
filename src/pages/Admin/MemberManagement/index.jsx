@@ -148,7 +148,7 @@ export default function MemberManagement() {
       </TableWrapper>
       <PaginationWrapper>
         <Pagination
-          pageNumberData={tempPageData}
+          pageCountData={tempPageData}
           activePageNumber={currentPageNumber}
           handlePageNumberClick={handlePageNumberClick}
         />
