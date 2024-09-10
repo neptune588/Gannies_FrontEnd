@@ -10,16 +10,13 @@ import {
   // LogoutButton,
   // MypageButton,
 } from '@/layouts/Header/style';
-import { resetSignUpData } from '@/store/signUpSlice';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 
 function Header() {
   const [text, setText] = useState('');
   const location = useLocation().pathname;
   const [showSearchBar, setShowSearchBar] = useState(false);
-  const dispatch = useDispatch();
 
   const handleSearchBar = (e) => {
     setText(e.target.value);
@@ -33,13 +30,9 @@ function Header() {
     }
   }, [location]);
 
-  const resetState = () => {
-    dispatch(resetSignUpData());
-  };
-
   return (
     <Wrapper>
-      <Logo to='/' onClick={resetState}>
+      <Logo to='/'>
         <img src={logo} alt='logo' />
       </Logo>
       {showSearchBar && (
@@ -52,12 +45,8 @@ function Header() {
           />
         </form>
       )}
-      <LoginButton to='/sign-in' onClick={resetState}>
-        로그인
-      </LoginButton>
-      <SignUpButton to='/sign-up/identity' onClick={resetState}>
-        회원가입
-      </SignUpButton>
+      <LoginButton to='/sign-in'>로그인</LoginButton>
+      <SignUpButton to='/sign-up/identity'>회원가입</SignUpButton>
       {/* <LogoutButton>로그아웃</LogoutButton>
       <span>|</span>
       <MypageButton>마이페이지</MypageButton> */}
