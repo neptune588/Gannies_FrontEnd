@@ -7,16 +7,14 @@ import info from '@/assets/icons/etc/info_input_inactive.svg';
 import department from '@/assets/icons/etc/department_verification_inactive.svg';
 import NextButton from '@/pages/SignUp/components/NextButton';
 import { useAuthAllow } from '@/hooks/useAuthAllow';
-import { useDispatch } from 'react-redux';
-import { handleSignUpData } from '@/store/signUpSlice';
+import { useOutletContext } from 'react-router-dom';
 
 function Identity() {
-  const sequence = ['active', 'inactive', 'inactive'];
   const { allow, handleAllow } = useAuthAllow([false, false, false, false]);
-  const dispatch = useDispatch();
+  const { stepsIcon, handleSteps } = useOutletContext();
 
   const handleNextButton = () => {
-    dispatch(handleSignUpData({ key: 'identityCompleted', value: true }));
+    handleSteps(0, true);
   };
 
   return (
@@ -26,19 +24,17 @@ function Identity() {
         identity={identity}
         info={info}
         department={department}
-        sequence={sequence}
+        sequence={stepsIcon[0]}
       />
       <Inputs allow={allow} handleAllow={handleAllow} />
       <Agree allow={allow} handleAllow={handleAllow} />
-      {allow[2] && (
-        <NextButton
-          $margin='80px'
-          text='다음'
-          active={allow.every((value) => value === true)}
-          onClick={handleNextButton}
-          to={'/sign-up/info'}
-        />
-      )}
+      <NextButton
+        $margin='80px'
+        text='다음'
+        active={allow.every((value) => value === true)}
+        onClick={handleNextButton}
+        to={'/sign-up/info'}
+      />
     </>
   );
 }

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import uuid from 'react-uuid';
 // import axios from 'axios';
 
@@ -7,29 +8,27 @@ import chevronDown from '@/assets/icons/arrows/chevron_down.svg';
 import {
   InputBox,
   InfoWrapper,
-  // ActiveButton,
-  // DisabledButton,
   InactiveButton,
   ActiveButton,
   ImageWrapper,
   DisabledButton,
 } from '@/pages/SignUp/Identity/Inputs/PhoneNumber/style';
-import { handleFindIdPasswordData } from '@/store/findIdPasswordSlice';
-import { useDispatch, useSelector } from 'react-redux';
 
-function PhoneNumber({ allow, handleAllow }) {
+function PhoneNumber({ phoneNumber, setPhoneNumber, allow, handleAllow }) {
   const numberKinds = ['010', '011', '012', '016', '017', '018', '019'];
-  const phoneNumber = useSelector(
-    (state) => state.findIdPasswordSlice.phoneNumber
-  );
-  const dispatch = useDispatch();
+  const [prefix, setPrefix] = useState('010');
+  const [suffix, setSuffix] = useState('');
 
-  const handlePhoneNumber = (e) => {
-    const phoneNumber = e.target.value.slice(0, 8);
-    dispatch(
-      handleFindIdPasswordData({ key: 'phoneNumber', value: phoneNumber })
-    );
+  const handlePrefix = (e) => {
+    const prefix = e.target.value;
+    setPrefix(prefix);
+    setPhoneNumber(`${prefix}${suffix}`);
+  };
 
+  const handleSuffix = (e) => {
+    const suffix = e.target.value.slice(0, 8);
+    setSuffix(suffix);
+    setPhoneNumber(`${prefix}${suffix}`);
     handleAllow(1, false);
   };
 
@@ -45,7 +44,7 @@ function PhoneNumber({ allow, handleAllow }) {
   return (
     <InputSection $margin='37px' title='휴대폰 번호*'>
       <InfoWrapper>
-        <select disabled={allow[2]}>
+        <select disabled={allow[2]} value={prefix} onChange={handlePrefix}>
           {numberKinds.map((number) => {
             return (
               <option value={number} key={uuid()}>
@@ -61,12 +60,12 @@ function PhoneNumber({ allow, handleAllow }) {
           <InputBox
             type='text'
             placeholder='-없이 입력해주세요'
-            value={phoneNumber}
-            onChange={handlePhoneNumber}
+            value={suffix}
+            onChange={handleSuffix}
             disabled={allow[2]}
           />
         </form>
-        {!allow[0] || phoneNumber.length < 7 ? (
+        {!allow[0] || phoneNumber.length < 10 ? (
           <InactiveButton>인증번호 발송</InactiveButton>
         ) : allow[2] ? (
           <DisabledButton>인증번호 재발송</DisabledButton>

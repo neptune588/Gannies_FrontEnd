@@ -13,7 +13,7 @@ import {
   InputBox,
 } from '@/pages/SignUp/Department/Inputs/Document/style';
 
-function Document({ handleAllow }) {
+function Document({ allow, handleAllow }) {
   const [fileName, setFileName] = useState('');
   const inputRef = useRef();
   const fileTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
@@ -48,33 +48,37 @@ function Document({ handleAllow }) {
   };
 
   return (
-    <InputSection $margin='37px' title='인증서류 업로드*'>
-      {fileName ? (
-        <ActiveInputBox onClick={handleBoxClick}>
-          <Clip />
-          <div>{fileName}</div>
-          <Close onClick={deleteFile} />
-        </ActiveInputBox>
-      ) : (
-        <InactiveInputBox onClick={handleBoxClick}>
-          <span>파일업로드하기</span>
-          <Upload />
-        </InactiveInputBox>
+    <>
+      {allow[0] && (
+        <InputSection $margin='37px' title='인증서류 업로드*'>
+          {fileName ? (
+            <ActiveInputBox onClick={handleBoxClick}>
+              <Clip />
+              <div>{fileName}</div>
+              <Close onClick={deleteFile} />
+            </ActiveInputBox>
+          ) : (
+            <InactiveInputBox onClick={handleBoxClick}>
+              <span>파일업로드하기</span>
+              <Upload />
+            </InactiveInputBox>
+          )}
+          <InputBox
+            type='file'
+            name='file'
+            id='file'
+            accept='.png, .jpeg, .jpg, .gif'
+            onChange={uploadFile}
+            ref={inputRef}
+          />
+          <Instruction text='*졸업증명서, 재학증면서만 가능 (최대 1MB 이내)' />
+          <Instruction text='*JPG / JPEG / PNG / GIF (이미지만)' />
+          {valid === false && (
+            <Negative text='파일 형식 또는 크기를 확인해주세요' />
+          )}
+        </InputSection>
       )}
-      <InputBox
-        type='file'
-        name='file'
-        id='file'
-        accept='.png, .jpeg, .jpg, .gif'
-        onChange={uploadFile}
-        ref={inputRef}
-      />
-      <Instruction text='*졸업증명서, 재학증면서만 가능 (최대 1MB 이내)' />
-      <Instruction text='*JPG / JPEG / PNG / GIF (이미지만)' />
-      {valid === false && (
-        <Negative text='파일 형식 또는 크기를 확인해주세요' />
-      )}
-    </InputSection>
+    </>
   );
 }
 

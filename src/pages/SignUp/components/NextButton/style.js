@@ -26,4 +26,5 @@ export const ActiveButton = styled(Link)`
 
 export const InactiveButton = styled(ActiveButton)`
   ${inactiveColorBoxStyle};
+  cursor: default;
 `;

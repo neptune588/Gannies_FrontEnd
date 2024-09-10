@@ -10,7 +10,6 @@ import {
   // LogoutButton,
   // MypageButton,
 } from '@/layouts/Header/style';
-import { resetFindIdPasswordData } from '@/store/findIdPasswordSlice';
 import { resetSignUpData } from '@/store/signUpSlice';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -36,7 +35,6 @@ function Header() {
 
   const resetState = () => {
     dispatch(resetSignUpData());
-    dispatch(resetFindIdPasswordData());
   };
 
   return (

@@ -7,23 +7,19 @@ import Wrapper from '@/pages/Find/components/Wrapper';
 import { useAuthAllow } from '@/hooks/useAuthAllow';
 import Name from '@/pages/Find/ID/Inputs/Name';
 import PhoneNumber from '@/pages/Find/ID/Inputs/PhoneNumber';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 function ID() {
   const { allow, handleAllow } = useAuthAllow([false, false, false]);
-  const { name, phoneNumber } = useSelector(
-    (state) => state.findIdPasswordSlice
-  );
+  const [name, setName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const navigator = useNavigate();
+
   const findID = async () => {
     try {
       // const response = await axios.post('/auth/email', { username: name, phoneNumber });
-      if (name === 'abc' && phoneNumber === 'abc') {
-        navigator('/find/id/success');
-      } else {
-        alert('error');
-      }
+      navigator('/find/id/success');
     } catch (error) {
       alert('error');
     }
@@ -35,9 +31,23 @@ function ID() {
         <Active type='id' text={'이메일 찾기'} />
         <Inactive type='password' text={'비밀번호 찾기'} />
       </FindBox>
-      <Name allow={allow} handleAllow={handleAllow} />
-      <PhoneNumber allow={allow} handleAllow={handleAllow} />
-      <VerifyNumber allow={allow} handleAllow={handleAllow} />
+      <Name
+        name={name}
+        setName={setName}
+        allow={allow}
+        handleAllow={handleAllow}
+      />
+      <PhoneNumber
+        phoneNumber={phoneNumber}
+        setPhoneNumber={setPhoneNumber}
+        allow={allow}
+        handleAllow={handleAllow}
+      />
+      <VerifyNumber
+        phoneNumber={phoneNumber}
+        allow={allow}
+        handleAllow={handleAllow}
+      />
       {allow[2] && (
         <NextButton
           $margin='80px'

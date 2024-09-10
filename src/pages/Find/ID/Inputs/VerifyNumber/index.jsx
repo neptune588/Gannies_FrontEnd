@@ -16,11 +16,10 @@ import {
 // import { useSelector } from 'react-redux';
 // import axios from 'axios';
 
-function VerifyNumber({ allow, handleAllow }) {
+function VerifyNumber({ phoneNumber, allow, handleAllow }) {
   const [verifyNumber, setVerifyNumber] = useState('');
   const [buttonAllow, setButtonAllow] = useState(false);
   const [instructionState, setInstructionState] = useState(undefined);
-  // const phoneNumber = useSelector((state) => state.findIdPasswordSlice.phoneNumber);
 
   const handleVerifyNumber = (e) => {
     const verifyNumber = e.target.value;

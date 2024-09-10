@@ -1,11 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import signUpSlice from '@/store/signUpSlice';
-import findIdPasswordSlice from '@/store/findIdPasswordSlice';
+import num from './num-slice';
 
 const store = configureStore({
   reducer: {
-    signUpSlice: signUpSlice,
-    findIdPasswordSlice: findIdPasswordSlice,
+    num: num,
   },
 });
 

@@ -1,15 +1,10 @@
 import DefaultInput from '@/pages/SignUp/components/DefaultInput';
 import InputSection from '@/pages/SignUp/components/InputSection';
-import { handleFindIdPasswordData } from '@/store/findIdPasswordSlice';
-import { useDispatch, useSelector } from 'react-redux';
 
-function Email({ handleAllow }) {
-  const email = useSelector((state) => state.findIdPasswordSlice.email);
-  const dispatch = useDispatch();
-
+function Email({ email, setEmail, handleAllow }) {
   const handleEmail = (e) => {
     const email = e.target.value;
-    dispatch(handleFindIdPasswordData({ key: 'email', value: email }));
+    setEmail(email);
     handleAllow(1, true);
   };
 

@@ -4,22 +4,25 @@ import Title from '@/pages/SignUp/components/Title';
 import identity from '@/assets/icons/etc/identity_verification_finished.svg';
 import info from '@/assets/icons/etc/info_input_active.svg';
 import department from '@/assets/icons/etc/department_verification_inactive.svg';
-import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
+import NextButton from '@/pages/SignUp/components/NextButton';
+import { useAuthAllow } from '@/hooks/useAuthAllow';
 
 function Info() {
   const navigate = useNavigate();
-  const sequence = ['finished', 'active', 'inactive'];
-  const identityCompleted = useSelector(
-    (state) => state.signUpSlice.identityCompleted
-  );
+  const { steps, stepsIcon, handleSteps } = useOutletContext();
+  const { allow, handleAllow } = useAuthAllow([false, false, false, false]);
 
   useEffect(() => {
-    identityCompleted
+    steps[0] && !steps[1]
       ? navigate('/sign-up/info')
       : navigate('/sign-up/identity');
-  }, [identityCompleted, navigate]);
+  }, [steps, navigate]);
+
+  const handleNextButton = () => {
+    handleSteps(1, true);
+  };
 
   return (
     <>
@@ -28,9 +31,16 @@ function Info() {
         identity={identity}
         info={info}
         department={department}
-        sequence={sequence}
+        sequence={stepsIcon[1]}
       />
-      <Inputs />
+      <Inputs allow={allow} handleAllow={handleAllow} />
+      <NextButton
+        $margin='80px'
+        active={allow.every((element) => element === true)}
+        text='다음'
+        to='/sign-up/department'
+        onClick={handleNextButton}
+      />
     </>
   );
 }

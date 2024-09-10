@@ -11,15 +11,13 @@ import {
   EyeIcon,
   EyeSlashIcon,
 } from '@/pages/SignUp/Info/Inputs/Password/style';
-import { useDispatch, useSelector } from 'react-redux';
-import { handleSignUpData } from '@/store/signUpSlice';
+import { useOutletContext } from 'react-router-dom';
 
 function Password({ handleAllow }) {
+  const [password, setPassword] = useState('');
+  const { handleDataToSend } = useOutletContext();
   const [passwordValid, setPasswordValid] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const password = useSelector((state) => state.signUpSlice.password);
-
-  const dispatch = useDispatch();
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -27,7 +25,8 @@ function Password({ handleAllow }) {
 
   const handlePassword = (e) => {
     const password = e.target.value.slice(0, 16);
-    dispatch(handleSignUpData({ key: 'password', value: password }));
+    setPassword(password);
+    handleDataToSend('password', password);
 
     const regex =
       /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$^&*?_])[A-Za-z\d!@#$^&*?_]{8,16}$/;

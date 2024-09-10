@@ -5,17 +5,17 @@ import Negative from '@/components/Instruction/Negative';
 
 import InputSection from '@/pages/SignUp/components/InputSection';
 import { useState } from 'react';
-import { handleSignUpData } from '@/store/signUpSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useOutletContext } from 'react-router-dom';
 
 function Email({ handleAllow }) {
-  const email = useSelector((state) => state.signUpSlice.email);
+  const [email, setEmail] = useState('');
+  const { handleDataToSend } = useOutletContext();
   const [emailValid, setEmailValid] = useState(false);
-  const dispatch = useDispatch();
 
   const handleEmail = (e) => {
     const email = e.target.value;
-    dispatch(handleSignUpData({ key: 'email', value: email }));
+    setEmail(email);
+    handleDataToSend('email', email);
 
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const isValid = regex.test(email);

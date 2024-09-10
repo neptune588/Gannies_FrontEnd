@@ -1,16 +1,10 @@
-import { useDispatch, useSelector } from 'react-redux';
-
 import InputSection from '@/pages/SignUp/components/InputSection';
 import DefaultInput from '@/pages/SignUp/components/DefaultInput';
-import { handleFindIdPasswordData } from '@/store/findIdPasswordSlice';
 
-function Name({ allow, handleAllow }) {
-  const name = useSelector((state) => state.findIdPasswordSlice.name);
-  const dispatch = useDispatch();
-
+function Name({ name, setName, allow, handleAllow }) {
   const handleName = (e) => {
     const name = e.target.value;
-    dispatch(handleFindIdPasswordData({ key: 'name', value: name }));
+    setName(name);
     handleAllow(0, !!name);
   };
 

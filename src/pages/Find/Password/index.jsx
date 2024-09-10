@@ -10,14 +10,14 @@ import Wrapper from '@/pages/Find/components/Wrapper';
 import Modal from '@/pages/Find/Modal';
 import Email from '@/pages/Find/Password/Inputs/Email';
 import Name from '@/pages/Find/ID/Inputs/Name';
-import { useSelector } from 'react-redux';
 
 function Password() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { allow, handleAllow } = useAuthAllow([false, false]);
-  const { name, email } = useSelector((state) => state.findIdPasswordSlice);
-
   const navigate = useNavigate();
+
+  const { allow, handleAllow } = useAuthAllow([false, false]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
 
   const openModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -26,13 +26,9 @@ function Password() {
   const findPassword = async () => {
     try {
       // const response = await axios.post('/auth/password', { username: name, email });
-      if (name === 'abc' && email === 'abc') {
-        navigate('/find/password/success');
-      } else {
-        openModal();
-      }
+      navigate('/find/password/success');
     } catch (error) {
-      // openModal();
+      openModal();
     }
   };
 
@@ -42,8 +38,13 @@ function Password() {
         <Inactive type='id' text={'이메일 찾기'} />
         <Active type='password' text={'비밀번호 찾기'} />
       </FindBox>
-      <Name allow={allow} handleAllow={handleAllow} />
-      <Email handleAllow={handleAllow} />
+      <Name
+        name={name}
+        setName={setName}
+        allow={allow}
+        handleAllow={handleAllow}
+      />
+      <Email email={email} setEmail={setEmail} handleAllow={handleAllow} />
       <NextButton
         $margin='80px'
         text='다음'

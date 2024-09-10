@@ -24,6 +24,7 @@ import ReportHistory from '@/pages/Admin/ReportHistory';
 import MemberManagement from '@/pages/Admin/MemberManagement';
 import UserApproval from '@/pages/Admin/UserApproval';
 import PostManagement from '@/pages/Admin/PostManagement';
+import SignUp from '@/pages/SignUp/SignUp';
 
 export const router = createBrowserRouter([
   {
@@ -101,20 +102,26 @@ export const router = createBrowserRouter([
         element: <SignIn />,
       },
       {
-        path: '/sign-up/identity',
-        element: <Identity />,
-      },
-      {
-        path: '/sign-up/info',
-        element: <Info />,
-      },
-      {
-        path: '/sign-up/department',
-        element: <Department />,
-      },
-      {
-        path: '/sign-up/success',
-        element: <SignUpSuccess />,
+        path: '/sign-up',
+        element: <SignUp />,
+        children: [
+          {
+            path: 'identity',
+            element: <Identity />,
+          },
+          {
+            path: 'info',
+            element: <Info />,
+          },
+          {
+            path: 'department',
+            element: <Department />,
+          },
+          {
+            path: 'success',
+            element: <SignUpSuccess />,
+          },
+        ],
       },
       {
         path: '/find/id',
