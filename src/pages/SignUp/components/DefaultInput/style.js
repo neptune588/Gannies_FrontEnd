@@ -4,6 +4,7 @@ import Input from '@/components/Input';
 
 import { defaultBorderBoxStyle } from '@/styles/commonStyle/box';
 import { placeholderTextStyle } from '@/styles/commonStyle/text';
+import { inputBorderStyle } from '@/styles/commonStyle/input';
 
 export const InputWrapper = styled.form`
   ${defaultBorderBoxStyle};
@@ -12,6 +13,9 @@ export const InputWrapper = styled.form`
   display: flex;
   align-items: center;
   margin-top: 10px;
+  border: ${(props) => {
+    inputBorderStyle(props);
+  }};
 `;
 
 export const InputBox = styled(Input)`

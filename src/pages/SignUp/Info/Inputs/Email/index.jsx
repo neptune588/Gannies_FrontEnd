@@ -6,11 +6,13 @@ import Negative from '@/components/Instruction/Negative';
 import InputSection from '@/pages/SignUp/components/InputSection';
 import { useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
+import { useInputFocus } from '@/hooks/useInputFocus';
 
 function Email({ handleAllow }) {
   const [email, setEmail] = useState('');
   const { handleDataToSend } = useOutletContext();
   const [emailValid, setEmailValid] = useState(false);
+  const { isFocused, handleIsFocused } = useInputFocus();
 
   const handleEmail = (e) => {
     const email = e.target.value;
@@ -30,6 +32,9 @@ function Email({ handleAllow }) {
         placeholder='예) abc@gmail.com'
         onChange={handleEmail}
         value={email}
+        isFocused={isFocused}
+        onFocus={() => handleIsFocused(true)}
+        onBlur={() => handleIsFocused(undefined)}
       />
       {email.length > 0 &&
         (emailValid ? (

@@ -1,12 +1,20 @@
 import { useState } from 'react';
 
 export function useEventHandler({ clickChangeDefaultValue } = {}) {
-  const [clickChangeState, setclickChangeState] = useState(
+  const [clickChangeState, setClickChangeState] = useState(
     clickChangeDefaultValue === undefined ? '' : clickChangeDefaultValue
   );
 
-  const handleClickChange = (value) => {
-    setclickChangeState(value);
+  const handleClickChange = (indexOrValue, value) => {
+    if (Array.isArray(clickChangeState)) {
+      setClickChangeState((prevState) => {
+        const newState = [...prevState];
+        newState[indexOrValue] = value;
+        return newState;
+      });
+    } else {
+      setClickChangeState(indexOrValue);
+    }
   };
 
   return {
