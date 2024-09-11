@@ -1,18 +1,31 @@
-import React from 'react';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+
+import uuid from 'react-uuid';
 
 import { Wrapper, Button } from '@/layouts/Navbar/style';
 
+import { setBoardType } from '@/store/boardTypeSlice';
+
+import { navBarMenuData } from '@/layouts/Navbar/data';
+
+import useSelectorList from '@/hooks/useSelectorList';
+
 function Navbar() {
+  const dispatch = useDispatch();
+
+  const { currentBoardType, bannerTitle, bannerDesc } = useSelectorList();
+  const [navBarMenus, setNavBarMenus] = useState(navBarMenuData);
+
   return (
     <Wrapper>
-      <Button to='/'>메인</Button>
-      <Button>이론정보</Button>
-      <Button>실습정보</Button>
-      <Button>국가고시준비</Button>
-      <Button>취업정보</Button>
-      <Button>구인구직</Button>
-      <Button>이벤트</Button>
-      <Button>공지사항</Button>
+      {navBarMenus.map((navBarMenu) => {
+        return (
+          <Button key={uuid()} to={navBarMenu.path}>
+            {navBarMenu.label}
+          </Button>
+        );
+      })}
     </Wrapper>
   );
 }
