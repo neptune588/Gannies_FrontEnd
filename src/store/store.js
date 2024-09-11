@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import num from './num-slice';
-import boardTypeReducer from '@/store/boardTypeSlice';
+import navBarOptionsReducer from '@/store/navBarOptions';
 
 const store = configureStore({
   reducer: {
     num: num,
-    boardType: boardTypeReducer,
+    navBarOptions: navBarOptionsReducer,
   },
 });
 

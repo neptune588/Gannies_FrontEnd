@@ -31,10 +31,7 @@ export default function Community() {
   return (
     <>
       <CommunityBanner>
-        <CommunityBannerText
-          title='실습정보'
-          text='실습에 관련된 유용한 정보를 제공합니다.'
-        ></CommunityBannerText>
+        <CommunityBannerText />
       </CommunityBanner>
       <ContentsAlignBox>
         <PostCreateButton to='/community/create-community-post'>

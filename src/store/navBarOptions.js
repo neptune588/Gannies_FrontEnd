@@ -6,8 +6,8 @@ const initialState = {
   bannerDesc: '',
 };
 
-const boardTypeSlice = createSlice({
-  name: 'boardType',
+const navBarOptionsSlice = createSlice({
+  name: 'navBarOptions',
   initialState,
   reducers: {
     setBoardType(state, action) {
@@ -20,5 +20,5 @@ const boardTypeSlice = createSlice({
   },
 });
 
-export const { setBoardType } = boardTypeSlice.actions;
-export default boardTypeSlice.reducer;
+export const { setBoardType } = navBarOptionsSlice.actions;
+export default navBarOptionsSlice.reducer;
