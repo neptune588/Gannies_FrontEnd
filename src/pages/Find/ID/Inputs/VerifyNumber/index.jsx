@@ -17,13 +17,12 @@ import { useTimer } from '@/hooks/useTimer';
 // import { useSelector } from 'react-redux';
 // import axios from 'axios';
 
-function VerifyNumber({ allow, handleAllow }) {
+function VerifyNumber({ phoneNumber, allow, handleAllow }) {
   const [verifyNumber, setVerifyNumber] = useState('');
   const [buttonAllow, setButtonAllow] = useState(false);
   const [instructionState, setInstructionState] = useState(undefined);
   const timerTime = 180;
   const { time, start, stop, reset } = useTimer(timerTime);
-  // const phoneNumber = useSelector((state) => state.signUpSlice.phoneNumber);
 
   useEffect(() => {
     if (allow[2]) stop();
@@ -40,15 +39,16 @@ function VerifyNumber({ allow, handleAllow }) {
   const handleActiveButton = async () => {
     try {
       // const response = await axios.post('/auth/phone-verification', { phoneNumber, code: verifyNumber});
+      if (verifyNumber === '000000') {
+        handleAllow(2, true);
+        setInstructionState(true);
+        console.log(phoneNumber, verifyNumber);
+      } else {
+        handleAllow(2, false);
+        setInstructionState(false);
+      }
     } catch (error) {
       alert('error');
-    }
-    if (verifyNumber === '000000') {
-      handleAllow(2, true);
-      setInstructionState(true);
-    } else {
-      handleAllow(2, false);
-      setInstructionState(false);
     }
   };
 

@@ -7,18 +7,22 @@ import {
   InactiveButton,
   Wrapper,
 } from '@/pages/SignUp/Department/Inputs/Status/style';
+import { useOutletContext } from 'react-router-dom';
 
-function Status({ setAllow }) {
+function Status({ handleAllow }) {
+  const { handleDataToSend } = useOutletContext();
   const [isStudent, setIsStudent] = useState(false);
   const [isGraduate, setIsGraduate] = useState(false);
 
   const updateAllow = (isStudent, isGraduate) => {
     const state = isStudent || isGraduate;
-    setAllow((prev) => {
-      const newAllow = [...prev];
-      newAllow[0] = state;
-      return newAllow;
-    });
+    handleAllow(0, state);
+    const getStatusValue = () => {
+      if (state === isStudent) return 'current_student';
+      else if (state === isGraduate) return 'graduated_student';
+      return '';
+    };
+    handleDataToSend(getStatusValue());
   };
 
   const handleIsStudent = () => {
@@ -41,13 +45,13 @@ function Status({ setAllow }) {
     <InputSection $margin='15px' title='학적 구분*'>
       <Wrapper>
         <InactiveButton
-          as={isStudent ? ActiveButton : undefined}
+          as={isStudent && ActiveButton}
           onClick={handleIsStudent}
         >
           재학생
         </InactiveButton>
         <InactiveButton
-          as={isGraduate ? ActiveButton : undefined}
+          as={isGraduate && ActiveButton}
           onClick={handleIsGraduate}
         >
           졸업생

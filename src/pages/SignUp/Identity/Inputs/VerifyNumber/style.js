@@ -60,10 +60,12 @@ export const ActiveButton = styled(Button)`
 
 export const DisabledButton = styled(Button)`
   ${disabledColorBoxStyle};
+  cursor: default;
 `;
 
 export const InactiveButton = styled(Button)`
   ${inactiveColorBoxStyle};
+  cursor: default;
 `;
 
 export const InfoWrapper = styled.div`

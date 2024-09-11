@@ -1,18 +1,30 @@
-import { useState } from 'react';
-
-import PhoneNumber from '@/pages/SignUp/Identity/Inputs/PhoneNumber';
-import Name from '@/pages/SignUp/Identity/Inputs/Name';
 import VerifyNumber from '@/pages/SignUp/Identity/Inputs/VerifyNumber';
 import NextButton from '@/pages/SignUp/components/NextButton';
 import Active from '@/pages/Find/components/Active';
 import FindBox from '@/pages/Find/components/FindBox';
 import Inactive from '@/pages/Find/components/Inactive';
 import Wrapper from '@/pages/Find/components/Wrapper';
+import { useAuthAllow } from '@/hooks/useAuthAllow';
+import Name from '@/pages/Find/ID/Inputs/Name';
+import PhoneNumber from '@/pages/Find/ID/Inputs/PhoneNumber';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 function ID() {
-  const [allow, setAllow] = useState([false, false, false]);
-  const [buttonAllow, setButtonAllow] = useState([false, false]);
-  const [visible, setVisible] = useState([true, false]);
+  const { allow, handleAllow } = useAuthAllow([false, false, false]);
+  const [name, setName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const navigator = useNavigate();
+
+  const findID = async () => {
+    try {
+      // const response = await axios.post('/auth/email', { username: name, phoneNumber });
+      console.log(phoneNumber);
+      navigator('/find/id/success');
+    } catch (error) {
+      alert('error');
+    }
+  };
 
   return (
     <Wrapper>
@@ -20,24 +32,30 @@ function ID() {
         <Active type='id' text={'이메일 찾기'} />
         <Inactive type='password' text={'비밀번호 찾기'} />
       </FindBox>
-      <Name allow={allow} setAllow={setAllow} setButtonAllow={setButtonAllow} />
-      <PhoneNumber
+      <Name
+        name={name}
+        setName={setName}
         allow={allow}
-        setAllow={setAllow}
-        setVisible={setVisible}
-        buttonAllow={buttonAllow}
-        setButtonAllow={setButtonAllow}
+        handleAllow={handleAllow}
       />
-      {visible[1] && (
-        <>
-          <VerifyNumber allow={allow} setAllow={setAllow} />
-          <NextButton
-            $margin='80px'
-            text='다음'
-            to='/find/id/success'
-            active={allow.every((value) => value === true) ? true : false}
-          />
-        </>
+      <PhoneNumber
+        phoneNumber={phoneNumber}
+        setPhoneNumber={setPhoneNumber}
+        allow={allow}
+        handleAllow={handleAllow}
+      />
+      <VerifyNumber
+        phoneNumber={phoneNumber}
+        allow={allow}
+        handleAllow={handleAllow}
+      />
+      {allow[2] && (
+        <NextButton
+          $margin='80px'
+          text='다음'
+          onClick={findID}
+          active={allow.every((value) => value === true)}
+        />
       )}
     </Wrapper>
   );

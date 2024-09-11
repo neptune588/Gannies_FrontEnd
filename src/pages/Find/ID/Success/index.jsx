@@ -9,8 +9,34 @@ import {
   LeftButton,
   RightButton,
 } from '@/pages/Find/ID/Success/style';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+
+const fetchEmail = async () => {
+  try {
+    const response = await axios.get('/auth');
+    return response.data.email;
+  } catch (error) {
+    alert('error');
+  }
+};
 
 function Success() {
+  const [email, setEmail] = useState('hihi@gmail.com');
+
+  // useEffect(() => {
+  //   const fetchEmail = async () => {
+  //     try {
+  //       const response = await axios.get('/auth');
+  //       setEmail(response.data.email);
+  //     } catch (error) {
+  //       alert('error');
+  //     }
+  //   };
+
+  //   fetchEmail();
+  // }, []);
+
   return (
     <Wrapper>
       <FindBox $margin='80px'>
@@ -19,7 +45,7 @@ function Success() {
       </FindBox>
       <p>입력하신 회원님의 정보와 일치하는 이메일 주소입니다</p>
       <span>개인정보 보호를 위해 일부 주소는 *처리되었습니다</span>
-      <EmailBox text='hihi@gmail.com' />
+      <EmailBox text={email} />
       <ButtonWrapper>
         <LeftButton to='/sign-in'>로그인 하기</LeftButton>
         <RightButton to='/find/password'>비밀번호 찾기</RightButton>

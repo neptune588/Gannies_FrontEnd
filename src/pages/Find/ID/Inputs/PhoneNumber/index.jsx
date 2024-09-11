@@ -1,48 +1,34 @@
 import { useState } from 'react';
+import uuid from 'react-uuid';
+// import axios from 'axios';
 
-import Modal from '@/pages/Find/Modal';
 import InputSection from '@/pages/SignUp/components/InputSection';
 import chevronDown from '@/assets/icons/arrows/chevron_down.svg';
 
 import {
   InputBox,
   InfoWrapper,
-  // ActiveButton,
-  // DisabledButton,
   InactiveButton,
   ActiveButton,
   ImageWrapper,
   DisabledButton,
 } from '@/pages/SignUp/Identity/Inputs/PhoneNumber/style';
-import uuid from 'react-uuid';
-import { useOutletContext } from 'react-router-dom';
-// import axios from 'axios';
 
-function PhoneNumber({ allow, handleAllow }) {
+function PhoneNumber({ phoneNumber, setPhoneNumber, allow, handleAllow }) {
   const numberKinds = ['010', '011', '012', '016', '017', '018', '019'];
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [prefix, setPrefix] = useState('010');
   const [suffix, setSuffix] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const { handleDataToSend } = useOutletContext();
-
-  const openModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
 
   const handlePrefix = (e) => {
     const prefix = e.target.value;
     setPrefix(prefix);
-    setPhoneNumber(phoneNumber);
-    handleDataToSend('phoneNumber', phoneNumber);
+    setPhoneNumber(`${prefix}${suffix}`);
   };
 
   const handleSuffix = (e) => {
     const suffix = e.target.value.slice(0, 8);
     setSuffix(suffix);
-    const phoneNumber = `${prefix}${suffix}`;
-    setPhoneNumber(phoneNumber);
-    handleDataToSend('phoneNumber', phoneNumber);
+    setPhoneNumber(`${prefix}${suffix}`);
     handleAllow(1, false);
   };
 
@@ -80,7 +66,7 @@ function PhoneNumber({ allow, handleAllow }) {
           />
         </form>
         {!allow[0] || phoneNumber.length < 10 ? (
-          <InactiveButton onClick={openModal}>인증번호 발송</InactiveButton>
+          <InactiveButton>인증번호 발송</InactiveButton>
         ) : allow[2] ? (
           <DisabledButton>인증번호 재발송</DisabledButton>
         ) : allow[1] ? (
@@ -91,7 +77,6 @@ function PhoneNumber({ allow, handleAllow }) {
           <ActiveButton onClick={handleSendButton}>인증번호 발송</ActiveButton>
         )}
       </InfoWrapper>
-      {isModalOpen && <Modal openModal={openModal} />}
     </InputSection>
   );
 }

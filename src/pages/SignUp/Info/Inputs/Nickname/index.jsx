@@ -4,24 +4,23 @@ import InputSection from '@/pages/SignUp/components/InputSection';
 import DefaultInput from '@/pages/SignUp/components/DefaultInput';
 import Negative from '@/components/Instruction/Negative';
 import { useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
 
-function Nickname({ setAllow }) {
+function Nickname({ handleAllow }) {
   const [nickname, setNickname] = useState('');
+  const { handleDataToSend } = useOutletContext();
   const [nicknameValid, setNicknameValid] = useState(false);
 
   const handleNickname = (e) => {
-    const value = e.target.value;
-    setNickname(value);
+    const nickname = e.target.value;
+    setNickname(nickname);
+    handleDataToSend('nickname', nickname);
 
     const regex = /^[a-zA-Z가-힣]{2,8}$/;
-    const state = value.length >= 2 && regex.test(value);
+    const state = nickname.length >= 2 && regex.test(nickname);
 
     setNicknameValid(state);
-    setAllow((prev) => {
-      const newAllow = [...prev];
-      newAllow[0] = state;
-      return newAllow;
-    });
+    handleAllow(0, state);
   };
 
   return (
