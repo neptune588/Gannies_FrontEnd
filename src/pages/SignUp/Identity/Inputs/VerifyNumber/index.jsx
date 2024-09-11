@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Clock from '@/components/Icons/Clock';
 import InputSection from '@/pages/SignUp/components/InputSection';
@@ -13,6 +13,7 @@ import {
   InactiveButton,
   DisabledButton,
 } from '@/pages/SignUp/Identity/Inputs/VerifyNumber/style';
+import { useTimer } from '@/hooks/useTimer';
 // import { useSelector } from 'react-redux';
 // import axios from 'axios';
 
@@ -20,7 +21,15 @@ function VerifyNumber({ allow, handleAllow }) {
   const [verifyNumber, setVerifyNumber] = useState('');
   const [buttonAllow, setButtonAllow] = useState(false);
   const [instructionState, setInstructionState] = useState(undefined);
+  const timerTime = 180;
+  const { time, start, stop, reset } = useTimer(timerTime);
   // const phoneNumber = useSelector((state) => state.signUpSlice.phoneNumber);
+
+  useEffect(() => {
+    if (allow[2]) stop();
+    else if (allow[0] && allow[1]) start();
+    else reset;
+  }, [allow, start, stop, reset]);
 
   const handleVerifyNumber = (e) => {
     const verifyNumber = e.target.value;
@@ -56,7 +65,7 @@ function VerifyNumber({ allow, handleAllow }) {
                 onChange={handleVerifyNumber}
                 disabled={allow[2]}
               />
-              <Clock time={0} />
+              <Clock time={time} />
             </InputWrapper>
             {!buttonAllow ? (
               <InactiveButton>인증확인</InactiveButton>

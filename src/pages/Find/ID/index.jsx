@@ -19,6 +19,7 @@ function ID() {
   const findID = async () => {
     try {
       // const response = await axios.post('/auth/email', { username: name, phoneNumber });
+      console.log(phoneNumber);
       navigator('/find/id/success');
     } catch (error) {
       alert('error');
