@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import Agree from '@/pages/SignUp/Identity/Agree';
 import Icons from '@/pages/SignUp/components/Icons';
 import Inputs from '@/pages/SignUp/Identity/Inputs';
@@ -8,38 +6,35 @@ import identity from '@/assets/icons/etc/identity_verification_active.svg';
 import info from '@/assets/icons/etc/info_input_inactive.svg';
 import department from '@/assets/icons/etc/department_verification_inactive.svg';
 import NextButton from '@/pages/SignUp/components/NextButton';
+import { useAuthAllow } from '@/hooks/useAuthAllow';
+import { useOutletContext } from 'react-router-dom';
 
 function Identity() {
-  const sequence = ['active', 'inactive', 'inactive'];
-  const [allow, setAllow] = useState([false, false, false, false]);
-  const [visible, setVisible] = useState([true, false, false]);
+  const { allow, handleAllow } = useAuthAllow([false, false, false, false]);
+  const { stepsIcon, handleSteps } = useOutletContext();
+
+  const handleNextButton = () => {
+    handleSteps(0, true);
+  };
 
   return (
     <>
-      <Title title='회원가입' onClick={() => setAllow('123')} />
+      <Title title='회원가입' />
       <Icons
         identity={identity}
         info={info}
         department={department}
-        sequence={sequence}
+        sequence={stepsIcon[0]}
       />
-      <Inputs
-        allow={allow}
-        setAllow={setAllow}
-        visible={visible}
-        setVisible={setVisible}
+      <Inputs allow={allow} handleAllow={handleAllow} />
+      <Agree allow={allow} handleAllow={handleAllow} />
+      <NextButton
+        $margin='80px'
+        text='다음'
+        active={allow.every((value) => value === true)}
+        onClick={handleNextButton}
+        to={'/sign-up/info'}
       />
-      {visible[2] && (
-        <>
-          <Agree allow={allow} setAllow={setAllow} />
-          <NextButton
-            $margin='80px'
-            text='다음'
-            to='/sign-up/info'
-            active={allow.every((value) => value === true) ? true : false}
-          />
-        </>
-      )}
     </>
   );
 }

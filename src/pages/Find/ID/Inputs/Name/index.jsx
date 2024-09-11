@@ -1,10 +1,7 @@
 import InputSection from '@/pages/SignUp/components/InputSection';
 import DefaultInput from '@/pages/SignUp/components/DefaultInput';
-import { useState } from 'react';
 
-function Name({ allow, handleAllow }) {
-  const [name, setName] = useState('');
-
+function Name({ name, setName, allow, handleAllow }) {
   const handleName = (e) => {
     const name = e.target.value;
     setName(name);

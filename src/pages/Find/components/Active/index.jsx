@@ -13,7 +13,6 @@ const ActiveBox = styled(Link)`
   justify-content: center;
   cursor: pointer;
 `;
-
 function Active({ type, text }) {
   return <ActiveBox to={`/find/${type}`}>{text}</ActiveBox>;
 }

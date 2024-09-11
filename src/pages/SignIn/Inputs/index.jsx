@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-// import Negative from '@/components/Instruction/Negative';
+import Negative from '@/components/Instruction/Negative';
 
 import {
   InputBox,
@@ -9,11 +9,8 @@ import {
   EyeSlashIcon,
 } from '@/pages/SignIn/Inputs/style';
 
-function Inputs() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+function Inputs({ email, setEmail, password, setPassword, loginError }) {
   const [showPassword, setShowPassword] = useState(false);
-  // const [allow, setAllow] = useState(false);
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
@@ -50,11 +47,11 @@ function Inputs() {
           <EyeSlashIcon onClick={handleShowPassword} />
         )}
       </form>
-      {/* <div>
-        {
-          allow && <Negative text="이메일과 비밀번호를 정확히 입력해 주세요" />
-        }
-      </div> */}
+      <div>
+        {loginError && (
+          <Negative text='이메일과 비밀번호를 정확히 입력해 주세요' />
+        )}
+      </div>
     </Wrapper>
   );
 }

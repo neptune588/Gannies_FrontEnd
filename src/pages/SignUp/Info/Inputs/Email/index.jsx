@@ -5,24 +5,23 @@ import Negative from '@/components/Instruction/Negative';
 
 import InputSection from '@/pages/SignUp/components/InputSection';
 import { useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
 
-function Email({ setAllow }) {
+function Email({ handleAllow }) {
   const [email, setEmail] = useState('');
+  const { handleDataToSend } = useOutletContext();
   const [emailValid, setEmailValid] = useState(false);
 
   const handleEmail = (e) => {
-    const value = e.target.value;
-    setEmail(value);
+    const email = e.target.value;
+    setEmail(email);
+    handleDataToSend('email', email);
 
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const isValid = regex.test(value);
+    const isValid = regex.test(email);
 
     setEmailValid(isValid);
-    setAllow((prev) => {
-      const newAllow = [...prev];
-      newAllow[1] = isValid;
-      return newAllow;
-    });
+    handleAllow(1, isValid);
   };
 
   return (

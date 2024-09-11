@@ -12,7 +12,7 @@ import {
 } from '@/pages/SignUp/Identity/Agree/style';
 import uuid from 'react-uuid';
 
-function Agree({ setAllow }) {
+function Agree({ allow, handleAllow }) {
   const checkListCount = 2;
   const [openModalList, setOpenModalList] = useState(
     Array(checkListCount).fill(false)
@@ -29,11 +29,7 @@ function Agree({ setAllow }) {
 
   useEffect(() => {
     const allChecked = checkList.every((item) => item === true);
-    setAllow((prevAllow) => {
-      const newAllow = [...prevAllow];
-      newAllow[3] = allChecked;
-      return newAllow;
-    });
+    handleAllow(3, allChecked);
   }, [checkList]);
 
   const handleCheck = (index) => {
@@ -49,11 +45,7 @@ function Agree({ setAllow }) {
       const newCheckList = [...prev];
       newCheckList[index] = true;
       const allChecked = newCheckList.every((item) => item === true);
-      setAllow((prevAllow) => {
-        const newAllow = [...prevAllow];
-        newAllow[3] = allChecked;
-        return newAllow;
-      });
+      handleAllow(3, allChecked);
       return newCheckList;
     });
   };
@@ -61,46 +53,48 @@ function Agree({ setAllow }) {
   const handleAllCheck = () => {
     const newCheckState = !checkList.every((item) => item === true);
     setCheckList(Array(checkListCount).fill(newCheckState));
-    setAllow((prevAllow) => {
-      const newAllow = [...prevAllow];
-      newAllow[3] = newCheckState;
-      return newAllow;
-    });
+    handleAllow(3, newCheckState);
   };
 
   return (
-    <Wrapper>
-      <SectionWrapper>
-        <Info>회원약관</Info>
-        <AgreeWrapper>
-          <CheckBox
-            type='checkbox'
-            checked={checkList.every((item) => item === true)}
-            onChange={handleAllCheck}
-          />
-          <p>전체약관동의</p>
-        </AgreeWrapper>
-        {Array.from({ length: checkListCount }).map((_, index) => (
-          <AgreeWrapper key={uuid()}>
-            <CheckBox
-              type='checkbox'
-              checked={checkList[index]}
-              onChange={() => handleCheck(index)}
-            />
-            <span>[필수]</span>
-            <p>약관동의</p>
-            <ShowButton onClick={() => openModal(index)}>약관보기</ShowButton>
-            {openModalList[index] && (
-              <Modal
-                index={index}
-                openModal={openModal}
-                handleCheckTrue={handleCheckTrue}
+    <>
+      {allow[0] && allow[1] && allow[2] && (
+        <Wrapper>
+          <SectionWrapper>
+            <Info>회원약관</Info>
+            <AgreeWrapper>
+              <CheckBox
+                type='checkbox'
+                checked={checkList.every((item) => item === true)}
+                onChange={handleAllCheck}
               />
-            )}
-          </AgreeWrapper>
-        ))}
-      </SectionWrapper>
-    </Wrapper>
+              <p>전체약관동의</p>
+            </AgreeWrapper>
+            {Array.from({ length: checkListCount }).map((_, index) => (
+              <AgreeWrapper key={uuid()}>
+                <CheckBox
+                  type='checkbox'
+                  checked={checkList[index]}
+                  onChange={() => handleCheck(index)}
+                />
+                <span>[필수]</span>
+                <p>약관동의</p>
+                <ShowButton onClick={() => openModal(index)}>
+                  약관보기
+                </ShowButton>
+                {openModalList[index] && (
+                  <Modal
+                    index={index}
+                    openModal={openModal}
+                    handleCheckTrue={handleCheckTrue}
+                  />
+                )}
+              </AgreeWrapper>
+            ))}
+          </SectionWrapper>
+        </Wrapper>
+      )}
+    </>
   );
 }
 
