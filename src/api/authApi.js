@@ -90,3 +90,10 @@ export const certificatesImageUpload = async (presigneUrl, imageData) => {
   const response = await api.get(url, imageData);
   return response;
 };
+
+//증명서image에서 이름 추출
+export const getOCR = async (userId) => {
+  const url = `/me/${userId}/name-extraction`;
+  const response = await api.post(url);
+  return response;
+};

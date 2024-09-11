@@ -7,6 +7,13 @@ export const getPosts = async (boardType, params) => {
   return response;
 };
 
+//특정 게시물 조회(1개)
+export const getPost = async (boardType, postId) => {
+  const url = `/posts/${boardType}/${postId}`;
+  const response = await cookieApi.get(url);
+  return response;
+};
+
 //게시물 생성
 export const createPost = async (boardType, postData) => {
   const url = `/posts/${boardType}`;
