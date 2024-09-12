@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 import { primaryColorBoxStyle } from '@/styles/commonStyle/box';
-import { postsHeaderStyle, ellipsisStyle } from '@/styles/commonStyle/etc';
+import { postsHeaderStyle } from '@/styles/commonStyle/etc';
 import { paginationWrapperStyle } from '@/styles/commonStyle/wrapper';
 import { small_500, small_600 } from '@/styles/commonStyle/localTextStyle';
 
@@ -10,7 +10,6 @@ const ContentsAlignBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 30px;
   margin-bottom: 15px;
 `;
 
@@ -29,33 +28,31 @@ const PostCreateButton = styled(Link)`
   }
 `;
 
-const PostWrapper = styled.div`
-  padding: 0 43px;
+const TableWrapper = styled.div`
+  width: 1042px;
+  margin: 0 auto;
+  > table {
+    width: 100%;
+  }
 `;
-const PostHeaderBox = styled.div`
+
+const TableHeader = styled.tr`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px 0 15px;
+  padding: 15px 20px 15px;
   ${postsHeaderStyle}
-  > div:first-child {
+  ${small_500}
+  text-align: left;
+  > th:first-child {
     display: flex;
     align-items: center;
     > p:first-child {
-      width: 110px;
-      text-align: center;
-      margin-right: 15px;
+      flex: 0 0 8.5rem;
     }
     > p:last-child {
-      width: 720px;
-      ${ellipsisStyle}
+      flex: 0 0 50rem;
     }
-  }
-  > div:last-child {
-    margin-right: 20px;
-  }
-  p {
-    ${small_500}
   }
 `;
 
@@ -67,7 +64,7 @@ const PageWrapper = styled.section`
 export {
   ContentsAlignBox,
   PostCreateButton,
-  PostWrapper,
-  PostHeaderBox,
+  TableWrapper,
+  TableHeader,
   PageWrapper,
 };

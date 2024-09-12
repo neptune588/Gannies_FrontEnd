@@ -1,3 +1,7 @@
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+
 import search from '@/assets/icons/search/search_default.svg';
 import logo from '@/assets/images/logo.png';
 
@@ -10,12 +14,15 @@ import {
   // LogoutButton,
   // MypageButton,
 } from '@/layouts/Header/style';
-import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+
+import { setBoardType } from '@/store/navBarOptions';
 
 function Header() {
-  const [text, setText] = useState('');
+  const navigate = useNavigate();
   const location = useLocation().pathname;
+  const dispatch = useDispatch();
+
+  const [text, setText] = useState('');
   const [showSearchBar, setShowSearchBar] = useState(false);
 
   const handleSearchBar = (e) => {
@@ -32,7 +39,19 @@ function Header() {
 
   return (
     <Wrapper>
-      <Logo to='/'>
+      <Logo
+        onClick={() => {
+          navigate('/');
+          dispatch(
+            setBoardType({
+              menuNumber: 0,
+              boardType: 'all',
+              bannerTitle: '',
+              bannerText: '',
+            })
+          );
+        }}
+      >
         <img src={logo} alt='logo' />
       </Logo>
       {showSearchBar && (

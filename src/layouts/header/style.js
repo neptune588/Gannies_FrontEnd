@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+
 import {
   primaryBorderBoxStyle,
   primaryColorBoxStyle,
@@ -39,7 +40,7 @@ export const Wrapper = styled.header`
   }
 `;
 
-export const Logo = styled(Link)`
+export const Logo = styled.div`
   cursor: pointer;
   height: 68px;
   width: 164px;

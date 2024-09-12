@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+  currentActiveMenuNumber: 0,
   currentBoardType: '',
   bannerTitle: '',
   bannerDesc: '',
@@ -11,8 +12,9 @@ const navBarOptionsSlice = createSlice({
   initialState,
   reducers: {
     setBoardType(state, action) {
-      const { boardType, bannerTitle, bannerDesc } = action.payload;
+      const { menuNumber, boardType, bannerTitle, bannerDesc } = action.payload;
 
+      state.currentActiveMenuNumber = menuNumber;
       state.currentBoardType = boardType;
       state.bannerTitle = bannerTitle;
       state.bannerDesc = bannerDesc;

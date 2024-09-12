@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import uuid from 'react-uuid';
@@ -9,15 +9,17 @@ import { setBoardType } from '@/store/navBarOptions';
 
 import { navBarMenuData } from '@/layouts/Navbar/data';
 
+import useSelectorList from '@/hooks/useSelectorList';
+
 function Navbar() {
   const dispatch = useDispatch();
 
   const [navBarMenus] = useState(navBarMenuData);
-  const [currentActiveMenuNumber, setCurrentActiveMenuNumber] = useState(0);
 
-  const handleNavBarMenuClick = (data, number) => {
+  const { currentActiveMenuNumber } = useSelectorList();
+
+  const handleNavBarMenuClick = (data) => {
     dispatch(setBoardType(data));
-    setCurrentActiveMenuNumber(number);
   };
 
   return (
@@ -30,14 +32,12 @@ function Navbar() {
             $currentActiveMenuNumber={currentActiveMenuNumber}
             $myMenuNumber={navBarMenu.number}
             onClick={() => {
-              handleNavBarMenuClick(
-                {
-                  boardType: navBarMenu.boardType,
-                  bannerTitle: navBarMenu.bannerTitle,
-                  bannerDesc: navBarMenu.bannerDesc,
-                },
-                navBarMenu.number
-              );
+              handleNavBarMenuClick({
+                menuNumber: navBarMenu.number,
+                boardType: navBarMenu.boardType,
+                bannerTitle: navBarMenu.bannerTitle,
+                bannerDesc: navBarMenu.bannerDesc,
+              });
             }}
           >
             {navBarMenu.label}
