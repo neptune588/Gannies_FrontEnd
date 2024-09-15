@@ -28,13 +28,15 @@ function Identity() {
       />
       <Inputs allow={allow} handleAllow={handleAllow} />
       <Agree allow={allow} handleAllow={handleAllow} />
-      <NextButton
-        $margin='80px'
-        text='다음'
-        active={allow.every((value) => value === true)}
-        onClick={handleNextButton}
-        to={'/sign-up/info'}
-      />
+      {allow[2] && (
+        <NextButton
+          $margin='80px'
+          text='다음'
+          active={allow.every((value) => value === true)}
+          onClick={handleNextButton}
+          to={'/sign-up/info'}
+        />
+      )}
     </>
   );
 }

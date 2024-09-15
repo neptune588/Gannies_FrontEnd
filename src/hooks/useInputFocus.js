@@ -45,7 +45,7 @@ export function useInputFocus(initialState = undefined, validate) {
       if (value) {
         handleIsValid(validate(value));
       } else if (isValid !== false) {
-        handleIsValid(undefined);
+        handleIsValid();
       }
     }
   };

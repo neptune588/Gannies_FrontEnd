@@ -40,13 +40,15 @@ function Department() {
         sequence={stepsIcon[2]}
       />
       <Inputs allow={allow} handleAllow={handleAllow} />
-      <NextButton
-        $margin='80px'
-        active={allow.every((element) => element === true)}
-        text='다음'
-        to='/sign-up/success'
-        onClick={signUp}
-      />
+      {allow[1] && (
+        <NextButton
+          $margin='80px'
+          active={allow.every((element) => element === true)}
+          text='다음'
+          to='/sign-up/success'
+          onClick={signUp}
+        />
+      )}
     </>
   );
 }

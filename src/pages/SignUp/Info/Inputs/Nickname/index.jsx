@@ -43,7 +43,7 @@ function Nickname({ handleAllow }) {
         <Positive text='사용가능한 닉네임입니다' />
       ) : (
         <>
-          <Instruction text='*중복되지않는 한글 또는 영문 2-8자를 입력해주세요' />
+          <Instruction text='*한글 또는 영문 2-8자' />
           <Instruction text='*숫자 및 특수문자 불가' />
           {isValid === false && <Negative text='사용할 수 없는 닉네임입니다' />}
         </>
