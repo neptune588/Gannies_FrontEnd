@@ -11,12 +11,12 @@ const createPostPageInputStyle = css`
 `;
 
 const inputBorderStyle = (props) => {
-  if (props.isFocused) {
-    return `1px solid ${props.theme.colors.primary}`;
+  if (props.$isValid === false) {
+    return `1px solid ${props.theme.colors.negative}`;
   }
-  return props.isFocused === undefined
-    ? `1px solid ${props.theme.colors.gray['30']}`
-    : `1px solid ${props.theme.colors.negative}`;
+  return props.$isFocused
+    ? `1px solid ${props.theme.colors.primary}`
+    : `1px solid ${props.theme.colors.gray['30']}`;
 };
 
 export { createPostPageInputStyle, inputBorderStyle };

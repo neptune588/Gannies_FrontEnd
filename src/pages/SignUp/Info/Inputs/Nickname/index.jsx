@@ -3,24 +3,26 @@ import Instruction from '@/components/Instruction';
 import InputSection from '@/pages/SignUp/components/InputSection';
 import DefaultInput from '@/pages/SignUp/components/DefaultInput';
 import Negative from '@/components/Instruction/Negative';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
+import { useInputFocus } from '@/hooks/useInputFocus';
 
 function Nickname({ handleAllow }) {
   const [nickname, setNickname] = useState('');
   const { handleDataToSend } = useOutletContext();
-  const [nicknameValid, setNicknameValid] = useState(false);
+  const validate = (nickname) => nickname.length >= 2 && regex.test(nickname);
+  const regex = /^[a-zA-Z가-힣]{2,8}$/;
+  const { isFocused, isValid, handleIsFocused, handleInputBorder } =
+    useInputFocus(undefined, validate);
+
+  useEffect(() => {
+    handleAllow(0, isValid ? true : false);
+  }, [isValid]);
 
   const handleNickname = (e) => {
     const nickname = e.target.value;
     setNickname(nickname);
     handleDataToSend('nickname', nickname);
-
-    const regex = /^[a-zA-Z가-힣]{2,8}$/;
-    const state = nickname.length >= 2 && regex.test(nickname);
-
-    setNicknameValid(state);
-    handleAllow(0, state);
   };
 
   return (
@@ -29,19 +31,21 @@ function Nickname({ handleAllow }) {
         placeholder='닉네임을 입력해주세요'
         onChange={handleNickname}
         value={nickname}
+        $isFocused={isFocused}
+        $isValid={isValid}
+        onFocus={() => handleIsFocused(true)}
+        onBlur={() => {
+          handleIsFocused(false);
+          handleInputBorder(nickname);
+        }}
       />
-      {nickname.length > 0 && nicknameValid ? (
+      {isValid ? (
         <Positive text='사용가능한 닉네임입니다' />
-      ) : nickname.length > 0 ? (
-        <>
-          <Instruction text='*중복되지않는 한글 또는 영문 2-8자를 입력해주세요' />
-          <Instruction text='*숫자 및 특수문자 불가' />
-          <Negative text='사용할 수 없는 닉네임입니다' />
-        </>
       ) : (
         <>
           <Instruction text='*중복되지않는 한글 또는 영문 2-8자를 입력해주세요' />
           <Instruction text='*숫자 및 특수문자 불가' />
+          {isValid === false && <Negative text='사용할 수 없는 닉네임입니다' />}
         </>
       )}
     </InputSection>

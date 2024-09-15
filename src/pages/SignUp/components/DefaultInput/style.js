@@ -13,9 +13,7 @@ export const InputWrapper = styled.form`
   display: flex;
   align-items: center;
   margin-top: 10px;
-  border: ${(props) => {
-    inputBorderStyle(props);
-  }};
+  border: ${(props) => inputBorderStyle(props)};
 `;
 
 export const InputBox = styled(Input)`
