@@ -1,4 +1,3 @@
-import VerifyNumber from '@/pages/SignUp/Identity/Inputs/VerifyNumber';
 import NextButton from '@/pages/SignUp/components/NextButton';
 import Active from '@/pages/Find/components/Active';
 import FindBox from '@/pages/Find/components/FindBox';
@@ -9,6 +8,7 @@ import Name from '@/pages/Find/ID/Inputs/Name';
 import PhoneNumber from '@/pages/Find/ID/Inputs/PhoneNumber';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import VerifyNumber from '@/pages/Find/ID/Inputs/VerifyNumber';
 
 function ID() {
   const { allow, handleAllow } = useAuthAllow([false, false, false]);
