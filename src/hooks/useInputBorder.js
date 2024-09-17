@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export function useInputFocus(initialState = undefined, validate) {
+export function useInputBorder(initialState = undefined, validate) {
   const [isFocused, setIsFocused] = useState(initialState);
   const [isValid, setIsValid] = useState(initialState);
 
@@ -32,7 +32,7 @@ export function useInputFocus(initialState = undefined, validate) {
     }
   };
 
-  const handleInputBorder = (indexOrValue, value) => {
+  const handleInputBlur = (indexOrValue, value) => {
     if (Array.isArray(isValid)) {
       const index = indexOrValue;
       if (value) {
@@ -53,7 +53,8 @@ export function useInputFocus(initialState = undefined, validate) {
   return {
     isFocused,
     isValid,
+    handleIsValid,
     handleIsFocused,
-    handleInputBorder,
+    handleInputBlur,
   };
 }

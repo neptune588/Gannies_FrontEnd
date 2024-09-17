@@ -1,6 +1,4 @@
 import { useState } from 'react';
-
-import Modal from '@/pages/Find/Modal';
 import InputSection from '@/pages/SignUp/components/InputSection';
 import chevronDown from '@/assets/icons/arrows/chevron_down.svg';
 
@@ -13,22 +11,31 @@ import {
   ActiveButton,
   ImageWrapper,
   DisabledButton,
+  InputWrapper,
 } from '@/pages/SignUp/Identity/Inputs/PhoneNumber/style';
 import uuid from 'react-uuid';
 import { useOutletContext } from 'react-router-dom';
+import { useInputBorder } from '@/hooks/useInputBorder';
+import Negative from '@/components/Instruction/Negative';
 // import axios from 'axios';
 
 function PhoneNumber({ allow, handleAllow }) {
   const numberKinds = ['010', '011', '012', '016', '017', '018', '019'];
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [prefix, setPrefix] = useState('010');
   const [suffix, setSuffix] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const { handleDataToSend } = useOutletContext();
+  const validate = (phoneNumber) => phoneNumber.length >= 10;
+  const instruction = ['필수 정보입니다', '정확한 휴대폰 번호를 입력해주세요'];
+  const [instructionIndex, setInstructionIndex] = useState(1);
 
-  const openModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
+  const {
+    isFocused,
+    isValid,
+    handleIsFocused,
+    handleIsValid,
+    handleInputBlur,
+  } = useInputBorder(undefined, validate);
 
   const handlePrefix = (e) => {
     const prefix = e.target.value;
@@ -38,7 +45,7 @@ function PhoneNumber({ allow, handleAllow }) {
   };
 
   const handleSuffix = (e) => {
-    const suffix = e.target.value.slice(0, 8);
+    const suffix = e.target.value.replace(/\D/g, '').slice(0, 8);
     setSuffix(suffix);
     const phoneNumber = `${prefix}${suffix}`;
     setPhoneNumber(phoneNumber);
@@ -52,6 +59,14 @@ function PhoneNumber({ allow, handleAllow }) {
       // const response = await axios.post('/auth/phone', { phoneNumber });
     } catch (error) {
       alert('error');
+    }
+  };
+
+  const handleInstruction = () => {
+    if (!suffix) {
+      setInstructionIndex(0);
+    } else {
+      setInstructionIndex(1);
     }
   };
 
@@ -70,17 +85,26 @@ function PhoneNumber({ allow, handleAllow }) {
         <ImageWrapper>
           <img src={chevronDown} alt='chevronDown' />
         </ImageWrapper>
-        <form>
+        <InputWrapper $isFocused={isFocused} $isValid={isValid}>
           <InputBox
             type='text'
-            placeholder='-없이 입력해주세요'
+            placeholder='숫자만 입력해주세요'
             value={suffix}
             onChange={handleSuffix}
             disabled={allow[2]}
+            onFocus={() => handleIsFocused(true)}
+            onBlur={() => {
+              handleIsFocused(false);
+              handleInputBlur(phoneNumber);
+              handleInstruction();
+              if (!phoneNumber) {
+                handleIsValid(false);
+              }
+            }}
           />
-        </form>
+        </InputWrapper>
         {!allow[0] || phoneNumber.length < 10 ? (
-          <InactiveButton onClick={openModal}>인증번호 발송</InactiveButton>
+          <InactiveButton>인증번호 발송</InactiveButton>
         ) : allow[2] ? (
           <DisabledButton>인증번호 재발송</DisabledButton>
         ) : allow[1] ? (
@@ -91,7 +115,7 @@ function PhoneNumber({ allow, handleAllow }) {
           <ActiveButton onClick={handleSendButton}>인증번호 발송</ActiveButton>
         )}
       </InfoWrapper>
-      {isModalOpen && <Modal openModal={openModal} />}
+      {isValid === false && <Negative text={instruction[instructionIndex]} />}
     </InputSection>
   );
 }

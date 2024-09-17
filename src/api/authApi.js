@@ -1,5 +1,19 @@
 import { api, cookieApi } from '@/api/axiosInstance';
 
+//이메일 중복 확인
+export const checkEmailDuplicate = async (email) => {
+  const url = '/users/check/email';
+  const response = await api.post(url, { email: email });
+  return response;
+};
+
+//이메일 중복 확인
+export const checkNicknameDuplicate = async (nickname) => {
+  const url = '/users/check/nickname';
+  const response = await api.post(url, { nickname: nickname });
+  return response;
+};
+
 //회원가입
 export const userSignUp = async (signUpData) => {
   const url = '/auth/sign-up';
