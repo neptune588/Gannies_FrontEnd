@@ -9,17 +9,25 @@ import PhoneNumber from '@/pages/Find/ID/Inputs/PhoneNumber';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import VerifyNumber from '@/pages/Find/ID/Inputs/VerifyNumber';
+import Modal from '@/pages/Find/Modal';
 
 function ID() {
   const { allow, handleAllow } = useAuthAllow([false, false, false]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const navigator = useNavigate();
 
+  const openModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
   const findID = async () => {
     try {
       // const response = await axios.post('/auth/email', { username: name, phoneNumber });
-      console.log(phoneNumber);
+      if (name == '랄라') {
+        openModal();
+      }
       navigator('/find/id/success');
     } catch (error) {
       alert('error');
@@ -57,6 +65,7 @@ function ID() {
           active={allow.every((value) => value === true)}
         />
       )}
+      {isModalOpen && <Modal openModal={openModal} />}
     </Wrapper>
   );
 }

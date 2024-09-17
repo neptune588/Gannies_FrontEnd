@@ -4,7 +4,6 @@ import Clock from '@/components/Icons/Clock';
 import InputSection from '@/pages/SignUp/components/InputSection';
 import Positive from '@/components/Instruction/Positive';
 import Negative from '@/components/Instruction/Negative';
-import Modal from '@/pages/Find/Modal';
 
 import {
   InputBox,
@@ -28,17 +27,12 @@ function VerifyNumber({ allow, handleAllow }) {
   const instruction = ['필수 정보입니다', '인증번호가 일치하지 않습니다'];
   const [instructionIndex, setInstructionIndex] = useState(undefined);
   const { isFocused, handleIsFocused } = useInputBorder(undefined);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (allow[2]) stop();
     else if (allow[0] && allow[1]) start();
     else reset();
   }, [allow, start, stop, reset]);
-
-  const openModal = () => {
-    setIsModalOpen(!isModalOpen);
-  };
 
   const handleVerifyNumber = (e) => {
     const verifyNumber = e.target.value;
@@ -63,7 +57,6 @@ function VerifyNumber({ allow, handleAllow }) {
     } else {
       handleAllow(2, false);
       setInstructionIndex(1);
-      openModal();
     }
   };
 
@@ -102,7 +95,6 @@ function VerifyNumber({ allow, handleAllow }) {
             <Negative text={instruction[instructionIndex]} />
           )}
           {allow[2] && <Positive text='인증이 완료되었습니다' />}
-          {isModalOpen && <Modal openModal={openModal} />}
         </InputSection>
       )}
     </>
