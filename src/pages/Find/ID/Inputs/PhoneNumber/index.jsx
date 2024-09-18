@@ -1,32 +1,30 @@
-import { useState } from 'react';
-import uuid from 'react-uuid';
+import { useEffect, useState } from 'react';
 // import axios from 'axios';
 
 import InputSection from '@/pages/SignUp/components/InputSection';
-import chevronDown from '@/assets/icons/arrows/chevron_down.svg';
 
 import {
   InputBox,
   InfoWrapper,
   InactiveButton,
   ActiveButton,
-  ImageWrapper,
+  // ImageWrapper,
   DisabledButton,
   InputWrapper,
 } from '@/pages/SignUp/Identity/Inputs/PhoneNumber/style';
 import { useInputBorder } from '@/hooks/useInputBorder';
+import Dropdown from '@/pages/SignUp/components/DropDown';
 
 function PhoneNumber({ phoneNumber, setPhoneNumber, allow, handleAllow }) {
-  const numberKinds = ['010', '011', '012', '016', '017', '018', '019'];
   const [prefix, setPrefix] = useState('010');
   const [suffix, setSuffix] = useState('');
   const { isFocused, handleIsFocused } = useInputBorder(undefined);
+  const prefixList = ['010', '011', '012', '016', '017', '018', '019'];
 
-  const handlePrefix = (e) => {
-    const prefix = e.target.value;
-    setPrefix(prefix);
-    setPhoneNumber(`${prefix}${suffix}`);
-  };
+  useEffect(() => {
+    const phoneNumber = `${prefix}${suffix}`;
+    setPhoneNumber(phoneNumber);
+  }, [prefix]);
 
   const handleSuffix = (e) => {
     const suffix = e.target.value.slice(0, 8);
@@ -47,18 +45,12 @@ function PhoneNumber({ phoneNumber, setPhoneNumber, allow, handleAllow }) {
   return (
     <InputSection $margin='37px' title='휴대폰 번호*'>
       <InfoWrapper>
-        <select disabled={allow[2]} value={prefix} onChange={handlePrefix}>
-          {numberKinds.map((number) => {
-            return (
-              <option value={number} key={uuid()}>
-                {number}
-              </option>
-            );
-          })}
-        </select>
-        <ImageWrapper>
-          <img src={chevronDown} alt='chevronDown' />
-        </ImageWrapper>
+        <Dropdown
+          optionList={prefixList}
+          selectedOption={prefix}
+          setSelectedOption={setPrefix}
+          disabled={allow[2]}
+        />
         <InputWrapper $isFocused={isFocused}>
           <InputBox
             type='text'

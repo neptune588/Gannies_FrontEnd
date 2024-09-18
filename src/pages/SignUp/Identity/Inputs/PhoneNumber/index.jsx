@@ -1,6 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import InputSection from '@/pages/SignUp/components/InputSection';
-import chevronDown from '@/assets/icons/arrows/chevron_down.svg';
 
 import {
   InputBox,
@@ -9,18 +8,16 @@ import {
   // DisabledButton,
   InactiveButton,
   ActiveButton,
-  ImageWrapper,
   DisabledButton,
   InputWrapper,
 } from '@/pages/SignUp/Identity/Inputs/PhoneNumber/style';
-import uuid from 'react-uuid';
 import { useOutletContext } from 'react-router-dom';
 import { useInputBorder } from '@/hooks/useInputBorder';
 import Negative from '@/components/Instruction/Negative';
+import Dropdown from '@/pages/SignUp/components/DropDown';
 // import axios from 'axios';
 
 function PhoneNumber({ allow, handleAllow }) {
-  const numberKinds = ['010', '011', '012', '016', '017', '018', '019'];
   const [prefix, setPrefix] = useState('010');
   const [suffix, setSuffix] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -28,6 +25,7 @@ function PhoneNumber({ allow, handleAllow }) {
   const validate = (phoneNumber) => phoneNumber.length >= 10;
   const instruction = ['필수 정보입니다', '정확한 휴대폰 번호를 입력해주세요'];
   const [instructionIndex, setInstructionIndex] = useState(1);
+  const prefixList = ['010', '011', '012', '016', '017', '018', '019'];
 
   const {
     isFocused,
@@ -37,12 +35,11 @@ function PhoneNumber({ allow, handleAllow }) {
     handleInputBlur,
   } = useInputBorder(undefined, validate);
 
-  const handlePrefix = (e) => {
-    const prefix = e.target.value;
-    setPrefix(prefix);
+  useEffect(() => {
+    const phoneNumber = `${prefix}${suffix}`;
     setPhoneNumber(phoneNumber);
     handleDataToSend('phoneNumber', phoneNumber);
-  };
+  }, [prefix]);
 
   const handleSuffix = (e) => {
     const suffix = e.target.value.replace(/\D/g, '').slice(0, 8);
@@ -73,18 +70,12 @@ function PhoneNumber({ allow, handleAllow }) {
   return (
     <InputSection $margin='37px' title='휴대폰 번호*'>
       <InfoWrapper>
-        <select disabled={allow[2]} value={prefix} onChange={handlePrefix}>
-          {numberKinds.map((number) => {
-            return (
-              <option value={number} key={uuid()}>
-                {number}
-              </option>
-            );
-          })}
-        </select>
-        <ImageWrapper>
-          <img src={chevronDown} alt='chevronDown' />
-        </ImageWrapper>
+        <Dropdown
+          optionList={prefixList}
+          selectedOption={prefix}
+          setSelectedOption={setPrefix}
+          disabled={allow[2]}
+        />
         <InputWrapper $isFocused={isFocused} $isValid={isValid}>
           <InputBox
             type='text'

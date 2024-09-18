@@ -9,7 +9,6 @@ import {
   primaryColorBoxStyle,
 } from '@/styles/commonStyle/box';
 import { placeholderTextStyle } from '@/styles/commonStyle/text';
-import { centerAlignStyle } from '@/styles/commonStyle/etc';
 import { small_400, xsmall_500 } from '@/styles/commonStyle/localTextStyle';
 import { inputBorderStyle } from '@/styles/commonStyle/input';
 
@@ -69,17 +68,6 @@ export const InfoWrapper = styled.div`
       outline: none;
     }
   }
-`;
-
-export const ImageWrapper = styled.div`
-  width: 47px;
-  height: 48px;
-  border-left: 1px solid ${({ theme }) => theme.colors.gray[40]};
-  ${centerAlignStyle};
-  position: absolute;
-  z-index: -1;
-  left: 61px;
-  top: 10px;
 `;
 
 export const InputWrapper = styled.form`
