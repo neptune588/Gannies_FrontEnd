@@ -1,33 +1,91 @@
+import { useState } from 'react';
 import styled from 'styled-components';
-
 import bottomArrow from '@/assets/icons/arrows/chevron_down.svg';
-
 import { defaultBorderBoxStyle } from '@/styles/commonStyle/box';
 import { centerAlignStyle } from '@/styles/commonStyle/etc';
 import { xsmall_400 } from '@/styles/commonStyle/localTextStyle';
+import uuid from 'react-uuid';
 
-const SelectBox = styled.div`
+const SelectContainer = styled.div`
   ${defaultBorderBoxStyle}
   ${centerAlignStyle}
+  ${xsmall_400}
   width: 95px;
   height: 35px;
-  padding: 0 10px;
-  ${xsmall_400}
-  > div:first-child {
-    width: 100%;
+  position: relative;
+  > button {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    padding: 0 10px;
+    cursor: pointer;
+    color: ${(props) => props.theme.colors.gray[80]};
+    ${xsmall_400};
+
+    img {
+      width: 18px;
+      height: 18px;
+    }
   }
 `;
 
-export default function AlignSelectMenu() {
+const Dropdown = styled.div`
+  position: absolute;
+  top: 37px;
+  left: -1px;
+  width: 95px;
+  background-color: white;
+  z-index: 1000;
+  ${defaultBorderBoxStyle}
+  padding: 3px 4px;
+
+  button {
+    color: ${(props) => props.theme.colors.gray[80]};
+    ${centerAlignStyle}
+    cursor: pointer;
+    margin: 1px 0px;
+    ${xsmall_400};
+    height: 28px;
+    width: 86px;
+    border-radius: 4px;
+
+    &:hover {
+      background-color: ${(props) => props.theme.colors.secondary};
+      color: ${(props) => props.theme.colors.primary};
+    }
+  }
+`;
+
+export default function AlignSelectMenu({
+  optionList,
+  selectedOption,
+  setSelectedOption,
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleDropdown = () => setIsOpen((prev) => !prev);
+
+  const handleSelectedOption = (option) => {
+    setSelectedOption(option);
+    setIsOpen(false);
+  };
+
   return (
-    <SelectBox>
-      <div>
-        <p>최신순</p>
+    <SelectContainer>
+      <button onClick={toggleDropdown}>
+        <p>{selectedOption}</p>
         <img src={bottomArrow} alt='select-arrow' />
-      </div>
-    </SelectBox>
+      </button>
+      {isOpen && (
+        <Dropdown>
+          {optionList.map((option) => (
+            <button key={uuid()} onClick={() => handleSelectedOption(option)}>
+              {option}
+            </button>
+          ))}
+        </Dropdown>
+      )}
+    </SelectContainer>
   );
 }

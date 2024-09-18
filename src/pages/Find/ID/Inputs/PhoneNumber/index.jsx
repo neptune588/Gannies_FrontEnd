@@ -12,12 +12,15 @@ import {
   ActiveButton,
   ImageWrapper,
   DisabledButton,
+  InputWrapper,
 } from '@/pages/SignUp/Identity/Inputs/PhoneNumber/style';
+import { useInputBorder } from '@/hooks/useInputBorder';
 
 function PhoneNumber({ phoneNumber, setPhoneNumber, allow, handleAllow }) {
   const numberKinds = ['010', '011', '012', '016', '017', '018', '019'];
   const [prefix, setPrefix] = useState('010');
   const [suffix, setSuffix] = useState('');
+  const { isFocused, handleIsFocused } = useInputBorder(undefined);
 
   const handlePrefix = (e) => {
     const prefix = e.target.value;
@@ -56,15 +59,19 @@ function PhoneNumber({ phoneNumber, setPhoneNumber, allow, handleAllow }) {
         <ImageWrapper>
           <img src={chevronDown} alt='chevronDown' />
         </ImageWrapper>
-        <form>
+        <InputWrapper $isFocused={isFocused}>
           <InputBox
             type='text'
             placeholder='-없이 입력해주세요'
             value={suffix}
             onChange={handleSuffix}
             disabled={allow[2]}
+            onFocus={() => handleIsFocused(true)}
+            onBlur={() => {
+              handleIsFocused(false);
+            }}
           />
-        </form>
+        </InputWrapper>
         {!allow[0] || phoneNumber.length < 10 ? (
           <InactiveButton>인증번호 발송</InactiveButton>
         ) : allow[2] ? (

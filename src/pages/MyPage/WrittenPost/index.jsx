@@ -12,6 +12,8 @@ import { useEventHandler } from '@/hooks/useEventHandler';
 
 export default function WrittenPost() {
   const [postData] = useState(posts);
+  const [selectedOption, setSelectedOption] = useState('최신순');
+  const optionList = ['최신순', '인기순'];
 
   const [pageData] = useState(
     Array.from({ length: 10 }, (_, index) => {
@@ -33,7 +35,11 @@ export default function WrittenPost() {
           <Title>내가 쓴 게시글</Title>
           <p>총 {postData.length}개</p>
         </div>
-        <AlignSelectMenu />
+        <AlignSelectMenu
+          optionList={optionList}
+          selectedOption={selectedOption}
+          setSelectedOption={setSelectedOption}
+        />
       </TitleBox>
       <PostContents postData={postData} pageName={'my-page'} />
       <PageWrapper>

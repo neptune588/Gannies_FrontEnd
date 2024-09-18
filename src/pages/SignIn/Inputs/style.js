@@ -6,6 +6,7 @@ import EyeSlash from '@/components/Icons/EyeSlash';
 
 import { defaultBorderBoxStyle } from '@/styles/commonStyle/box';
 import { placeholderTextStyle } from '@/styles/commonStyle/text';
+import { inputBorderStyle } from '@/styles/commonStyle/input';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -14,18 +15,19 @@ export const Wrapper = styled.div`
   margin: auto;
   width: 1128px;
 
-  > form {
-    ${defaultBorderBoxStyle};
-    width: 400px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    margin-top: 26px;
-  }
-
   > div {
     width: 400px;
   }
+`;
+
+export const InputWrapper = styled.form`
+  ${defaultBorderBoxStyle};
+  width: 400px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  margin-top: 26px;
+  border: ${(props) => inputBorderStyle(props)};
 `;
 
 export const InputBox = styled(Input)`

@@ -26,7 +26,7 @@ function Password() {
   const findPassword = async () => {
     try {
       // const response = await axios.post('/auth/password', { username: name, email });
-      navigate('/find/password/success');
+      // navigate('/find/password/success');
     } catch (error) {
       openModal();
     }

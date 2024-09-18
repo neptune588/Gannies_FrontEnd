@@ -10,6 +10,7 @@ import {
 } from '@/styles/commonStyle/box';
 import { placeholderTextStyle } from '@/styles/commonStyle/text';
 import { xsmall_500 } from '@/styles/commonStyle/localTextStyle';
+import { inputBorderStyle } from '@/styles/commonStyle/input';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -44,6 +45,7 @@ export const InputWrapper = styled.form`
   align-items: center;
   margin-top: 10px;
   width: 350px;
+  border: ${(props) => inputBorderStyle(props)};
 `;
 
 export const Button = styled.button`

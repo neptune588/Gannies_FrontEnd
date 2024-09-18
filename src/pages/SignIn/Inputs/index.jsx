@@ -7,10 +7,18 @@ import {
   Wrapper,
   EyeIcon,
   EyeSlashIcon,
+  InputWrapper,
 } from '@/pages/SignIn/Inputs/style';
+import { useInputBorder } from '@/hooks/useInputBorder';
 
 function Inputs({ email, setEmail, password, setPassword, loginError }) {
   const [showPassword, setShowPassword] = useState(false);
+  const { isFocused: isFocusedEmail, handleIsFocused: handleIsFocusedEmail } =
+    useInputBorder(undefined);
+  const {
+    isFocused: isFocusedPassword,
+    handleIsFocused: handleIsFocusedPassword,
+  } = useInputBorder(undefined);
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
@@ -26,30 +34,38 @@ function Inputs({ email, setEmail, password, setPassword, loginError }) {
 
   return (
     <Wrapper>
-      <form>
+      <InputWrapper $isFocused={isFocusedEmail}>
         <InputBox
           type='text'
           placeholder='이메일'
           value={email}
           onChange={handleEmail}
+          onFocus={() => handleIsFocusedEmail(true)}
+          onBlur={() => {
+            handleIsFocusedEmail(false);
+          }}
         />
-      </form>
-      <form>
+      </InputWrapper>
+      <InputWrapper $isFocused={isFocusedPassword}>
         <InputBox
           type={showPassword ? 'text' : 'password'}
           placeholder='비밀번호'
           value={password}
           onChange={handlePassword}
+          onFocus={() => handleIsFocusedPassword(true)}
+          onBlur={() => {
+            handleIsFocusedPassword(false);
+          }}
         />
         {showPassword ? (
           <EyeIcon onClick={handleShowPassword} />
         ) : (
           <EyeSlashIcon onClick={handleShowPassword} />
         )}
-      </form>
+      </InputWrapper>
       <div>
         {loginError && (
-          <Negative text='이메일과 비밀번호를 정확히 입력해 주세요' />
+          <Negative text='일치하는 회원 정보가 없습니다. 입력하신 정보를 확인해주세요.' />
         )}
       </div>
     </Wrapper>
