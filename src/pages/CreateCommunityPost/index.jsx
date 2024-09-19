@@ -88,9 +88,7 @@ export default function CreateCommunityPost() {
     if (!uploadFile.type.startsWith('image/')) {
       alert('이미지 파일만 업로드 가능합니다!');
     } else {
-      //console.log('이미지 변환');
-      setTotalImageType([...totalImageType, uploadFile.type]);
-
+      //console.log('이미지 변환')
       const reader = new FileReader();
       reader.readAsDataURL(uploadFile);
       reader.onload = () => {
