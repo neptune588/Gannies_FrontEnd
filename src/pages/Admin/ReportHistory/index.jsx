@@ -32,16 +32,17 @@ export default function ReportHistory() {
   );
 
   const {
-    clickChangeState: currentPageNumber,
-    handleClickChange: handlePageNumberClick,
+    changeValue: currentPageNumber,
+    handleChange: handlePageNumberClick,
   } = useEventHandler({
-    clickChangeDefaultValue: 0,
+    changeDefaultValue: 0,
   });
 
-  const { clickChangeState: currenntActiveCategory, handleClickChange } =
-    useEventHandler({
-      clickChangeDefaultValue: '게시글',
-    });
+  const { changeValue: currenntActiveCategory, handleChange } = useEventHandler(
+    {
+      changeDefaultValue: '게시글',
+    }
+  );
 
   const handleStatusValueChange = (status, listNumber) => {
     const statusChangefnc = (arr) => {
@@ -75,7 +76,7 @@ export default function ReportHistory() {
           $currenntActiveCategory={currenntActiveCategory}
           $ownCategory={'게시글'}
           onClick={() => {
-            handleClickChange('게시글');
+            handleChange('게시글');
           }}
         >
           게시글
@@ -84,7 +85,7 @@ export default function ReportHistory() {
           $currenntActiveCategory={currenntActiveCategory}
           $ownCategory={'댓글'}
           onClick={() => {
-            handleClickChange('댓글');
+            handleChange('댓글');
           }}
         >
           댓글

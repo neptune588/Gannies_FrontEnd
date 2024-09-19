@@ -19,23 +19,22 @@ export default function MyPageSideTab() {
 
   const [tabMenuData] = useState(myPageTabMenuData);
 
-  const { clickChangeState: currentActiveTabMenu, handleClickChange } =
-    useEventHandler();
+  const { changeValue: currentActiveTabMenu, handleChange } = useEventHandler();
 
   useEffect(() => {
     const path = location.pathname.split('/mypage')[1];
     console.log(path);
 
     if (path === '/profile/edit') {
-      handleClickChange(tabMenuData[0].label);
+      handleChange(tabMenuData[0].label);
     } else if (path === '/profile/change-password') {
-      handleClickChange(tabMenuData[1].label);
+      handleChange(tabMenuData[1].label);
     } else if (path === '/written-posts') {
-      handleClickChange(tabMenuData[2].label);
+      handleChange(tabMenuData[2].label);
     } else if (path === '/scrap-posts') {
-      handleClickChange(tabMenuData[3].label);
+      handleChange(tabMenuData[3].label);
     } else if (path === '/written-comment') {
-      handleClickChange(tabMenuData[4].label);
+      handleChange(tabMenuData[4].label);
     }
   }, []);
 
@@ -47,7 +46,7 @@ export default function MyPageSideTab() {
           $currentActiveMenu={currentActiveTabMenu}
           $ownMenu={tabMenuData[0].label}
           onClick={() => {
-            handleClickChange(tabMenuData[0].label);
+            handleChange(tabMenuData[0].label);
             navigate(tabMenuData[0].path);
           }}
         >
@@ -57,7 +56,7 @@ export default function MyPageSideTab() {
           $currentActiveMenu={currentActiveTabMenu}
           $ownMenu={tabMenuData[1].label}
           onClick={() => {
-            handleClickChange(tabMenuData[1].label);
+            handleChange(tabMenuData[1].label);
             navigate(tabMenuData[1].path);
           }}
         >
@@ -70,7 +69,7 @@ export default function MyPageSideTab() {
           $currentActiveMenu={currentActiveTabMenu}
           $ownMenu={tabMenuData[2].label}
           onClick={() => {
-            handleClickChange(tabMenuData[2].label);
+            handleChange(tabMenuData[2].label);
             navigate(tabMenuData[2].path);
           }}
         >
@@ -80,7 +79,7 @@ export default function MyPageSideTab() {
           $currentActiveMenu={currentActiveTabMenu}
           $ownMenu={tabMenuData[3].label}
           onClick={() => {
-            handleClickChange(tabMenuData[3].label);
+            handleChange(tabMenuData[3].label);
             navigate(tabMenuData[3].path);
           }}
         >
@@ -93,7 +92,7 @@ export default function MyPageSideTab() {
           $currentActiveMenu={currentActiveTabMenu}
           $ownMenu={tabMenuData[4].label}
           onClick={() => {
-            handleClickChange(tabMenuData[4].label);
+            handleChange(tabMenuData[4].label);
             navigate(tabMenuData[4].path);
           }}
         >

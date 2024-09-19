@@ -20,10 +20,10 @@ export default function ScrappedPost() {
   );
 
   const {
-    clickChangeState: currentActivePageNumber,
-    handleClickChange: handlePageNumberChange,
+    changeValue: currentActivePageNumber,
+    handleChange: handlePageNumberChange,
   } = useEventHandler({
-    clickChangeDefaultValue: 0,
+    changeDefaultValue: 0,
   });
 
   return (

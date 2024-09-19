@@ -15,16 +15,19 @@ const ContentsAlignBox = styled.div`
 
 const PostCreateButton = styled(Link)`
   ${primaryColorBoxStyle}
+  ${small_600}
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 135px;
   height: 40px;
   padding: 5px 12px;
-  ${small_600}
   > img {
     width: 24px;
     height: 24px;
+  }
+  &:hover {
+    background-color: #2d6ab7;
   }
 `;
 
@@ -37,12 +40,12 @@ const TableWrapper = styled.div`
 `;
 
 const TableHeader = styled.tr`
+  ${postsHeaderStyle}
+  ${small_500}
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 15px 20px 15px;
-  ${postsHeaderStyle}
-  ${small_500}
   text-align: left;
   > th:first-child {
     display: flex;

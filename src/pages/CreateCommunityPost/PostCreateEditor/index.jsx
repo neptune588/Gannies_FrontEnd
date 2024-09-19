@@ -22,22 +22,30 @@ const EditorStylingBox = styled.div`
     }
   }
 `;
+
+const ImageUploadInput = styled.input`
+  display: none;
+`;
+
 export default function PostCreateEditor({
   editorRef,
+  imageButtonRef,
   editorValue,
-  setEditorValue,
+  handleValueChange,
+  handleImageUploadClick,
+  handleImageUpload,
 }) {
   return (
     <EditorStylingBox>
       <Editor
         apiKey='jhptdx4ycuiptf3whpa2htycwg916lsei466lbf6p2jos9jh'
-        //초기화 이후 실행될 콜백
-        onInit={(evt, editor) => (editorRef.current = editor)}
         initialValue=''
         value={editorValue}
-        onEditorChange={(_, editor) => {
-          setEditorValue(editor.getContent({ format: 'text' }));
-          console.log(editorValue);
+        onEditorChange={(value) => {
+          handleValueChange(value);
+        }}
+        onInit={(_, editor) => {
+          editorRef.current = editor;
         }}
         init={{
           menubar: false,
@@ -52,13 +60,24 @@ export default function PostCreateEditor({
             'lists',
             'preview',
             'searchreplace',
-            'media',
+            //'media',
             'table',
             //'paste',
             'help',
           ],
           toolbar:
-            'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | charmap | link image media | preview | wordcount | searchreplace | help',
+            'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | charmap | link customImageButton | preview | wordcount | searchreplace | help',
+
+          setup: (editor) => {
+            editor.ui.registry.addButton('customImageButton', {
+              icon: 'image',
+              tooltip: '이미지 업로드',
+              onAction: handleImageUploadClick,
+            });
+          },
+          //붙여넣기 했을 시 동작 지정
+          paste_preprocess: (editor, args) => {},
+
           //외부iframe이라 내부 css로 컨트롤불가능
           content_style: `
           html {
@@ -72,6 +91,12 @@ export default function PostCreateEditor({
           `,
           statusbar: false,
         }}
+      />
+      <ImageUploadInput
+        ref={imageButtonRef}
+        type='file'
+        accept='image/*'
+        onChange={handleImageUpload}
       />
     </EditorStylingBox>
   );

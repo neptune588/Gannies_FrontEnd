@@ -38,16 +38,16 @@ export default function PostDetail() {
   );
 
   const {
-    clickChangeState: currentCommentPageNumber,
-    handleClickChange: handleCommentPageNumberChange,
+    changeValue: currentCommentPageNumber,
+    handleChange: handleCommentPageNumberChange,
   } = useEventHandler({
-    clickChangeDefaultValue: 0,
+    changeDefaultValue: 0,
   });
   const {
-    clickChangeState: currentOtherPostPageNumber,
-    handleClickChange: handleOtherPostPageNumberChange,
+    changeValue: currentOtherPostPageNumber,
+    handleChange: handleOtherPostPageNumberChange,
   } = useEventHandler({
-    clickChangeDefaultValue: 0,
+    changeDefaultValue: 0,
   });
 
   return (

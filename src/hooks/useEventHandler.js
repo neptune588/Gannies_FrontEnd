@@ -1,16 +1,16 @@
 import { useState } from 'react';
 
-export function useEventHandler({ clickChangeDefaultValue } = {}) {
-  const [clickChangeState, setclickChangeState] = useState(
-    clickChangeDefaultValue === undefined ? '' : clickChangeDefaultValue
+export function useEventHandler({ changeDefaultValue } = {}) {
+  const [changeValue, setChangeValue] = useState(
+    changeDefaultValue === undefined ? '' : changeDefaultValue
   );
 
-  const handleClickChange = (value) => {
-    setclickChangeState(value);
+  const handleChange = (value) => {
+    setChangeValue(value);
   };
 
   return {
-    clickChangeState,
-    handleClickChange,
+    changeValue,
+    handleChange,
   };
 }

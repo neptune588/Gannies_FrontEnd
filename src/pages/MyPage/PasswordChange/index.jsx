@@ -13,9 +13,9 @@ import {
 import { useEventHandler } from '@/hooks/useEventHandler';
 
 export default function PasswordChange() {
-  const { clickChangeState: passwordView, handleClickChange } = useEventHandler(
-    { clickChangeDefaultValue: true }
-  );
+  const { changeValue: passwordView, handleChange } = useEventHandler({
+    changeDefaultValue: true,
+  });
 
   return (
     <>
@@ -30,7 +30,7 @@ export default function PasswordChange() {
                 <div>
                   <Eye
                     handlePasswordViewClick={() => {
-                      handleClickChange(true);
+                      handleChange(true);
                     }}
                   />
                 </div>
@@ -38,7 +38,7 @@ export default function PasswordChange() {
                 <div>
                   <EyeSlash
                     handlePasswordViewClick={() => {
-                      handleClickChange(false);
+                      handleChange(false);
                     }}
                   />
                 </div>
@@ -53,7 +53,7 @@ export default function PasswordChange() {
                 <div>
                   <Eye
                     handlePasswordViewClick={() => {
-                      handleClickChange(true);
+                      handleChange(true);
                     }}
                   />
                 </div>
@@ -61,7 +61,7 @@ export default function PasswordChange() {
                 <div>
                   <EyeSlash
                     handlePasswordViewClick={() => {
-                      handleClickChange(false);
+                      handleChange(false);
                     }}
                   />
                 </div>
@@ -80,7 +80,7 @@ export default function PasswordChange() {
                 <div>
                   <Eye
                     handlePasswordViewClick={() => {
-                      handleClickChange(true);
+                      handleChange(true);
                     }}
                   />
                 </div>
@@ -88,7 +88,7 @@ export default function PasswordChange() {
                 <div>
                   <EyeSlash
                     handlePasswordViewClick={() => {
-                      handleClickChange(false);
+                      handleChange(false);
                     }}
                   />
                 </div>
