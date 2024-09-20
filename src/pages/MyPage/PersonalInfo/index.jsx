@@ -5,17 +5,30 @@ import {
   NicknameEditBox,
   EditSaveAndAccountDeleteBox,
 } from '@/pages/MyPage/PersonalInfo/style';
+import { useState } from 'react';
 
 export default function PersonalInfo() {
+  const [nickname, setNickname] = useState('');
+
+  const handleNickname = (e) => {
+    const nickname = e.target.value;
+    setNickname(nickname);
+  };
+
   return (
     <>
       <Title>회원정보수정</Title>
       <PersonalInfoWrapper>
         <form>
           <NicknameEditBox>
-            <p>이름</p>
+            <p>닉네임</p>
             <div>
-              <input placeholder='닉네입 입력' maxLength={10} />
+              <input
+                placeholder='닉네임 입력'
+                value={nickname}
+                onChange={handleNickname}
+                maxLength={10}
+              />
               <button disabled>수정하기</button>
             </div>
           </NicknameEditBox>

@@ -3,9 +3,14 @@ import {
   InputWrapper,
 } from '@/pages/SignUp/components/DefaultInput/style';
 
-function DefaultInput({ placeholder, ...props }) {
+function DefaultInput({
+  placeholder,
+  $isFocused = undefined,
+  $isValid = undefined,
+  ...props
+}) {
   return (
-    <InputWrapper>
+    <InputWrapper $isFocused={$isFocused} $isValid={$isValid}>
       <InputBox type='text' placeholder={placeholder} {...props} />
     </InputWrapper>
   );

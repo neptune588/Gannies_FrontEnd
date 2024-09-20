@@ -14,6 +14,7 @@ import {
   DisabledButton,
 } from '@/pages/SignUp/Identity/Inputs/VerifyNumber/style';
 import { useTimer } from '@/hooks/useTimer';
+import { useInputBorder } from '@/hooks/useInputBorder';
 // import { useSelector } from 'react-redux';
 // import axios from 'axios';
 
@@ -23,11 +24,12 @@ function VerifyNumber({ phoneNumber, allow, handleAllow }) {
   const [instructionState, setInstructionState] = useState(undefined);
   const timerTime = 180;
   const { time, start, stop, reset } = useTimer(timerTime);
+  const { isFocused, handleIsFocused } = useInputBorder(undefined);
 
   useEffect(() => {
     if (allow[2]) stop();
     else if (allow[0] && allow[1]) start();
-    else reset;
+    else reset();
   }, [allow, start, stop, reset]);
 
   const handleVerifyNumber = (e) => {
@@ -57,13 +59,17 @@ function VerifyNumber({ phoneNumber, allow, handleAllow }) {
       {allow[0] && allow[1] && (
         <InputSection $margin='37px' title='인증번호*'>
           <InfoWrapper>
-            <InputWrapper>
+            <InputWrapper $isFocused={isFocused}>
               <InputBox
                 type='text'
                 placeholder='인증번호를 입력해주세요'
                 value={verifyNumber}
                 onChange={handleVerifyNumber}
                 disabled={allow[2]}
+                onFocus={() => handleIsFocused(true)}
+                onBlur={() => {
+                  handleIsFocused(false);
+                }}
               />
               <Clock time={time} />
             </InputWrapper>

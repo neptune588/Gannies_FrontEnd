@@ -79,7 +79,6 @@ const EditSaveAndAccountDeleteBox = styled.section`
   display: flex;
   justify-content: space-between;
   margin-top: 70px;
-  align-items: baseline;
 
   >button: first-child {
     ${primaryColorBoxStyle}
@@ -95,6 +94,7 @@ const EditSaveAndAccountDeleteBox = styled.section`
       return colors.gray['90'];
     }};
     ${xsmall_500}
+    margin-top: auto;
   }
 `;
 export {

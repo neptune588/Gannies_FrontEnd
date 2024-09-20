@@ -11,6 +11,7 @@ import {
 import { placeholderTextStyle } from '@/styles/commonStyle/text';
 import { centerAlignStyle } from '@/styles/commonStyle/etc';
 import { small_400, xsmall_500 } from '@/styles/commonStyle/localTextStyle';
+import { inputBorderStyle } from '@/styles/commonStyle/input';
 
 export const InputBox = styled(Input)`
   padding-left: 16px;
@@ -51,16 +52,6 @@ export const InfoWrapper = styled.div`
   width: 456px;
   position: relative;
 
-  > form {
-    ${defaultBorderBoxStyle};
-    width: 213px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-    margin-left: 15px;
-  }
-
   > select {
     width: 108px;
     height: 48px;
@@ -89,4 +80,15 @@ export const ImageWrapper = styled.div`
   z-index: -1;
   left: 61px;
   top: 10px;
+`;
+
+export const InputWrapper = styled.form`
+  ${defaultBorderBoxStyle};
+  width: 213px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  margin-left: 15px;
+  border: ${(props) => inputBorderStyle(props)};
 `;

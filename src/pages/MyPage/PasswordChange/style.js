@@ -25,7 +25,7 @@ const PasswordChangeWrapper = styled.div`
     }};
 `;
 
-const PasswordChgngeBox = styled.section`
+const PasswordChangeBox = styled.section`
   display: flex;
   align-items: center;
   margin-bottom: 35px;
@@ -33,6 +33,7 @@ const PasswordChgngeBox = styled.section`
   &:nth-child(3n) {
     margin-bottom: 0;
   }
+
   > p {
     width: 120px;
     color: ${({ theme: { colors } }) => {
@@ -49,6 +50,13 @@ const InputBox = styled.label`
   padding: 3px 25px;
   width: 455px;
   height: 50px;
+  border: ${(props) =>
+    props.isFocused
+      ? `1px solid ${props.theme.colors.primary}`
+      : props.isFocused === undefined
+        ? defaultBorderBoxStyle.border
+        : `1px solid ${props.theme.colors.negative}`};
+
   > input {
     width: 90%;
     ${xsmall_600}
@@ -85,7 +93,7 @@ const EditSaveBox = styled.section`
 export {
   Title,
   PasswordChangeWrapper,
-  PasswordChgngeBox,
+  PasswordChangeBox,
   InputBox,
   NoticeMent,
   EditSaveBox,

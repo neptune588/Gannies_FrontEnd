@@ -14,27 +14,36 @@ import {
   DisabledButton,
 } from '@/pages/SignUp/Identity/Inputs/VerifyNumber/style';
 import { useTimer } from '@/hooks/useTimer';
+import { useInputBorder } from '@/hooks/useInputBorder';
 // import { useSelector } from 'react-redux';
 // import axios from 'axios';
 
 function VerifyNumber({ allow, handleAllow }) {
   const [verifyNumber, setVerifyNumber] = useState('');
   const [buttonAllow, setButtonAllow] = useState(false);
-  const [instructionState, setInstructionState] = useState(undefined);
   const timerTime = 180;
   const { time, start, stop, reset } = useTimer(timerTime);
   // const phoneNumber = useSelector((state) => state.signUpSlice.phoneNumber);
+  const instruction = ['필수 정보입니다', '인증번호가 일치하지 않습니다'];
+  const [instructionIndex, setInstructionIndex] = useState(undefined);
+  const { isFocused, handleIsFocused } = useInputBorder(undefined);
 
   useEffect(() => {
     if (allow[2]) stop();
     else if (allow[0] && allow[1]) start();
-    else reset;
+    else reset();
   }, [allow, start, stop, reset]);
 
   const handleVerifyNumber = (e) => {
     const verifyNumber = e.target.value;
     setVerifyNumber(verifyNumber);
     setButtonAllow(!!verifyNumber);
+  };
+
+  const handleInstruction = () => {
+    if (!verifyNumber) {
+      setInstructionIndex(0);
+    }
   };
 
   const handleActiveButton = async () => {
@@ -45,10 +54,9 @@ function VerifyNumber({ allow, handleAllow }) {
     }
     if (verifyNumber === '000000') {
       handleAllow(2, true);
-      setInstructionState(true);
     } else {
       handleAllow(2, false);
-      setInstructionState(false);
+      setInstructionIndex(1);
     }
   };
 
@@ -57,13 +65,21 @@ function VerifyNumber({ allow, handleAllow }) {
       {allow[0] && allow[1] && (
         <InputSection $margin='37px' title='인증번호*'>
           <InfoWrapper>
-            <InputWrapper>
+            <InputWrapper
+              $isFocused={isFocused}
+              $isValid={instructionIndex === undefined || allow[2]}
+            >
               <InputBox
                 type='text'
                 placeholder='인증번호를 입력해주세요'
                 value={verifyNumber}
                 onChange={handleVerifyNumber}
                 disabled={allow[2]}
+                onFocus={() => handleIsFocused(true)}
+                onBlur={() => {
+                  handleIsFocused(false);
+                  handleInstruction();
+                }}
               />
               <Clock time={time} />
             </InputWrapper>
@@ -75,12 +91,10 @@ function VerifyNumber({ allow, handleAllow }) {
               <ActiveButton onClick={handleActiveButton}>인증확인</ActiveButton>
             )}
           </InfoWrapper>
-          {instructionState !== undefined && instructionState === false && (
-            <Negative text='인증번호가 일치하지 않습니다' />
+          {allow[2] === false && (
+            <Negative text={instruction[instructionIndex]} />
           )}
-          {instructionState !== undefined && instructionState === true && (
-            <Positive text='인증이 완료되었습니다' />
-          )}
+          {allow[2] && <Positive text='인증이 완료되었습니다' />}
         </InputSection>
       )}
     </>
