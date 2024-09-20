@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 import CommunityBanner from '@/components/CommunityBanner';
 import CommunityBannerText from '@/components/CommunityBannerText';
@@ -24,24 +24,136 @@ import {
 
 import { categoryData } from '@/pages/CreateCommunityPost/data';
 
+import useSelectorList from '@/hooks/useSelectorList';
+import { useEventHandler } from '@/hooks/useEventHandler';
+
+import { createPost } from '@/api/postApi';
+
 export default function CreateCommunityPost() {
-  //전역 변수 사용해서 text 넣어야할것같은
   //제목 - 한글 1글자 이상은 최소로 있어야 한다. 최대는 50자 이하
 
-  //temp -> 후에 customHooks로 옮길예정
-  const [selectCategory] = useState(categoryData);
   const editorRef = useRef(null);
-  const [editorContent, setEditorContent] = useState('');
+  const imageButtonRef = useRef(null);
+
+  const [selectCategory] = useState(categoryData);
+
+  const [previewImage, setPreviewImage] = useState('');
+  const [totalImageType, setTotalImageType] = useState([]);
+
   const [modalState, setModalState] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { currentBoardType } = useSelectorList();
+  const { changeValue: titleValue, handleChange: handleTitleValueChange } =
+    useEventHandler({
+      changeDefaultValue: '',
+    });
+  const { changeValue: editorValue, handleChange: handleEditorValueChange } =
+    useEventHandler({
+      changeDefaultValue: '',
+    });
+
+  //form 제출 로직에서 적용할것들
+  /*     const parser = new DOMParser();
+    const doc = parser.parseFromString(value, 'text/html');
+    const htmlTags = doc.body.querySelectorAll('img');
+    const imageExtensions = [
+      'jpg',
+      'jpeg',
+      'png',
+      'gif',
+      'bmp',
+      'tiff',
+      'webp',
+      'heif',
+      'svg',
+    ];
+
+    htmlTags.forEach((tag) => {
+      imageExtensions.forEach((imageExtension) => {
+        const a = tag.src.includes(`.${imageExtension}`);
+        const b = tag.src.includes(`/${imageExtension}`);
+
+        if (a || b) {
+          setTotalImageType([...totalImageType, `image/${imageExtension}`]);
+        }
+      });
+    });
+
+    console.log(totalImageType); */
+
+  const handleImageUploadClick = () => {
+    imageButtonRef.current.value = '';
+    imageButtonRef.current && imageButtonRef.current.click();
+  };
+
+  const handleImageUpload = (e) => {
+    //console.log('업로드 발동');
+    const uploadFile = e.target.files[0];
+
+    if (!uploadFile.type.startsWith('image/')) {
+      alert('이미지 파일만 업로드 가능합니다!');
+    } else {
+      //console.log('이미지 변환')
+      const reader = new FileReader();
+      reader.readAsDataURL(uploadFile);
+      reader.onload = () => {
+        setPreviewImage(reader.result);
+      };
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (isLoading) {
+      return;
+    }
+
+    setIsLoading(true);
+
+    const condition01 =
+      titleValue === '' || titleValue === undefined || titleValue === null;
+    const condition02 =
+      editorValue === '' || editorValue === undefined || editorValue === null;
+
+    if (condition01 || condition02) {
+      alert('제목 혹은 내용을 입력 해주세요!');
+    } else {
+      const splitByWhitespace = titleValue.trim().split(' ');
+      const title = splitByWhitespace.filter((str) => str !== '').join(' ');
+
+      const postData = {
+        title,
+        content: editorValue,
+      };
+
+      try {
+        const res = await createPost(
+          currentBoardType,
+          JSON.stringify(postData)
+        );
+
+        console.log(res);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    if (editorRef.current && previewImage !== '') {
+      editorRef.current.insertContent(`<img src="${previewImage}" />`);
+      setPreviewImage('');
+    }
+  }, [previewImage]);
 
   return (
     <>
       {modalState && <HospitalSearchModal />}
       <CommunityBanner>
-        <CommunityBannerText
-          title='실습정보'
-          text='실습에 관련된 유용한 정보를 제공합니다.'
-        />
+        <CommunityBannerText />
       </CommunityBanner>
       <CenterdContainer>
         <CategoryBox>
@@ -50,10 +162,19 @@ export default function CreateCommunityPost() {
         <TitleBox>
           <CategoryTitle />
         </TitleBox>
-        <ContentsWrapper>
-          <form>
+        <form onSubmit={handleSubmit}>
+          <ContentsWrapper>
             <InputBox>
-              <input placeholder='*제목입력' maxLength={50} />
+              <input
+                type='text'
+                placeholder='*제목입력'
+                onChange={(e) => {
+                  handleTitleValueChange(e.target.value);
+                }}
+                value={titleValue}
+                minLength={1}
+                maxLength={50}
+              />
             </InputBox>
             <DataInputWrapper>
               <div>
@@ -65,26 +186,32 @@ export default function CreateCommunityPost() {
                   </div>
                 </DataInputBox>
               </div>
-              <div>
-                <DataInputBox>
-                  <p>*병원정보</p>
-                  <label>
-                    <input placeholder='병원찾기' maxLength={30} />
-                    <img src={searchIcon} alt='search-icon' />
-                  </label>
-                </DataInputBox>
-              </div>
+              {currentBoardType === 'practice' ||
+                (currentBoardType === 'job' && (
+                  <div>
+                    <DataInputBox>
+                      <p>*병원정보</p>
+                      <label>
+                        <input placeholder='병원찾기' maxLength={30} />
+                        <img src={searchIcon} alt='search-icon' />
+                      </label>
+                    </DataInputBox>
+                  </div>
+                ))}
             </DataInputWrapper>
             <PostCreateEditor
               editorRef={editorRef}
-              editorValue={editorContent}
-              setEditorValue={setEditorContent}
+              imageButtonRef={imageButtonRef}
+              editorValue={editorValue}
+              handleImageUploadClick={handleImageUploadClick}
+              handleEditorValueChange={handleEditorValueChange}
+              handleImageUpload={handleImageUpload}
             />
-          </form>
-        </ContentsWrapper>
-        <ButtonBox>
-          <Buttons />
-        </ButtonBox>
+          </ContentsWrapper>
+          <ButtonBox>
+            <Buttons />
+          </ButtonBox>
+        </form>
       </CenterdContainer>
     </>
   );

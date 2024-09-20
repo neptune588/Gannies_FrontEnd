@@ -1,5 +1,8 @@
 import styled from 'styled-components';
+
 import { bannerTitleStyle, bannerTextStyle } from '@/styles/commonStyle/text';
+
+import useSelectorList from '@/hooks/useSelectorList';
 
 const BannerTitle = styled.h2`
   ${bannerTitleStyle}
@@ -11,11 +14,12 @@ const BannerText = styled.h2`
   letter-spacing: 0.3px
 `;
 
-export default function CommunityBannerText({ title, text }) {
+export default function CommunityBannerText() {
+  const { bannerTitle, bannerDesc } = useSelectorList();
   return (
     <>
-      <BannerTitle>{title}</BannerTitle>
-      <BannerText>{text}</BannerText>
+      <BannerTitle>{bannerTitle}</BannerTitle>
+      <BannerText>{bannerDesc}</BannerText>
     </>
   );
 }
