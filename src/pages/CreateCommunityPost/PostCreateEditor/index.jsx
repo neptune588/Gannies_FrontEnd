@@ -31,7 +31,7 @@ export default function PostCreateEditor({
   editorRef,
   imageButtonRef,
   editorValue,
-  handleValueChange,
+  handleEditorValueChange,
   handleImageUploadClick,
   handleImageUpload,
 }) {
@@ -42,7 +42,8 @@ export default function PostCreateEditor({
         initialValue=''
         value={editorValue}
         onEditorChange={(value) => {
-          handleValueChange(value);
+          const str = value.substring(0, 1500);
+          handleEditorValueChange(str);
         }}
         onInit={(_, editor) => {
           editorRef.current = editor;
