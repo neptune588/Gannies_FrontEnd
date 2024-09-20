@@ -17,6 +17,8 @@ import {
   PageWrapper,
 } from '@/pages/Community/style';
 
+import useSelectorList from '@/hooks/useSelectorList';
+
 import { getPosts } from '@/api/postApi';
 
 export default function Community() {
@@ -30,6 +32,24 @@ export default function Community() {
   const handlePageClick = (idx) => {
     setTempPageNumber(idx);
   };
+
+  const { currentBoardType } = useSelectorList();
+
+  useEffect(() => {
+    (async () => {
+      const query = {
+        page: 0,
+        limit: 10,
+      };
+
+      try {
+        const res = await getPosts(currentBoardType, query);
+        console.log(res);
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  }, [currentBoardType]);
 
   return (
     <>
