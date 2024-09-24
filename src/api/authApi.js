@@ -7,7 +7,7 @@ export const checkEmailDuplicate = async (email) => {
   return response;
 };
 
-//이메일 중복 확인
+//닉네임 중복 확인
 export const checkNicknameDuplicate = async (nickname) => {
   const url = '/users/check/nickname';
   const response = await api.post(url, { nickname: nickname });
@@ -36,9 +36,9 @@ export const userSignIn = async (signInData) => {
 };
 
 //로그아웃
-export const userSignOut = async (signInData) => {
+export const userSignOut = async () => {
   const url = '/auth/sign-out';
-  const response = await cookieApi.post(url, signInData);
+  const response = await cookieApi.post(url);
   return response;
 };
 

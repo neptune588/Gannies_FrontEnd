@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import InputSection from '@/pages/SignUp/components/InputSection';
 
@@ -18,19 +18,22 @@ function Status({ handleAllow }) {
     const state = isStudent || isGraduate;
     handleAllow(0, state);
     const getStatusValue = () => {
-      if (state === isStudent) return 'current_student';
-      else if (state === isGraduate) return 'graduated_student';
+      if (isStudent) return 'current_student';
+      else if (isGraduate) return 'graduated_student';
       return '';
     };
-    handleDataToSend(getStatusValue());
+    handleDataToSend('status', getStatusValue());
   };
+
+  useEffect(() => {
+    updateAllow(isStudent, isGraduate);
+  }, [isStudent, isGraduate]);
 
   const handleIsStudent = () => {
     if (isGraduate) {
       setIsGraduate(false);
     }
     setIsStudent((prev) => !prev);
-    updateAllow(!isStudent, isGraduate);
   };
 
   const handleIsGraduate = () => {
@@ -38,7 +41,6 @@ function Status({ handleAllow }) {
       setIsStudent(false);
     }
     setIsGraduate((prev) => !prev);
-    updateAllow(isStudent, !isGraduate);
   };
 
   return (

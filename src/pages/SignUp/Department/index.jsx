@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useAuthAllow } from '@/hooks/useAuthAllow';
 import NextButton from '@/pages/SignUp/components/NextButton';
+import { userSignUp } from '@/api/authApi';
 
 function Department() {
   const navigate = useNavigate();
@@ -23,8 +24,11 @@ function Department() {
   const signUp = async () => {
     try {
       handleSteps(2, true);
-      // const responseSignUp = await axios.post('/auth/sign-up', { dataToSend });
-      // const responseEmail = await axios.post('/auth/sign-up/email', { email: dataToSend.email });
+      const responseSignUp = await userSignUp(dataToSend);
+      console.log(responseSignUp);
+      // const responseEmail = await axios.post('/auth/sign-up/email', {
+      //   email: dataToSend.email,
+      // });
     } catch (error) {
       alert('error');
     }
