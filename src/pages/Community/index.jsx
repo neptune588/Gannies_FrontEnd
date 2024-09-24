@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import uuid from 'react-uuid';
 
 import CommunityPost from '@/pages/Community/CommunityPost';
@@ -12,10 +12,14 @@ import brush from '@/assets/icons/etc/brush.svg';
 import {
   ContentsAlignBox,
   PostCreateButton,
-  PostWrapper,
-  PostHeaderBox,
+  TableWrapper,
+  TableHeader,
   PageWrapper,
 } from '@/pages/Community/style';
+
+import useSelectorList from '@/hooks/useSelectorList';
+
+import { getPosts } from '@/api/postApi';
 
 export default function Community() {
   const [tempData] = useState(
@@ -28,37 +32,57 @@ export default function Community() {
   const handlePageClick = (idx) => {
     setTempPageNumber(idx);
   };
+
+  const { currentBoardType } = useSelectorList();
+
+  useEffect(() => {
+    (async () => {
+      const query = {
+        page: 0,
+        limit: 10,
+      };
+
+      try {
+        const res = await getPosts(currentBoardType, query);
+        console.log(res);
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  }, [currentBoardType]);
+
   return (
     <>
       <CommunityBanner>
-        <CommunityBannerText
-          title='실습정보'
-          text='실습에 관련된 유용한 정보를 제공합니다.'
-        ></CommunityBannerText>
+        <CommunityBannerText />
       </CommunityBanner>
-      <ContentsAlignBox>
-        <PostCreateButton to='/community/create-community-post'>
-          <img src={brush} alt='create-button' />
-          게시글 작성
-        </PostCreateButton>
-        <AlignSelectMenu />
-      </ContentsAlignBox>
-      <PostWrapper>
-        <PostHeaderBox>
-          <div>
-            <p>번호</p>
-            <p>제목</p>
-          </div>
-          <div>
-            <p>날짜/조회수/좋아요 수</p>
-          </div>
-        </PostHeaderBox>
-      </PostWrapper>
-      <ul>
-        {tempData.map((item) => {
-          return <CommunityPost key={uuid()} />;
-        })}
-      </ul>
+      <TableWrapper>
+        <ContentsAlignBox>
+          <PostCreateButton to='/community/create-community-post'>
+            <img src={brush} alt='create-button' />
+            게시글 작성
+          </PostCreateButton>
+          <AlignSelectMenu />
+        </ContentsAlignBox>
+        <table>
+          <thead>
+            <TableHeader>
+              <th>
+                <p>번호</p>
+                <p>제목</p>
+              </th>
+              <th>
+                <p>닉네임/날짜/조회수/좋아요 수</p>
+              </th>
+            </TableHeader>
+          </thead>
+          <tbody>
+            {tempData.map((item) => {
+              return <CommunityPost key={uuid()} />;
+            })}
+          </tbody>
+        </table>
+      </TableWrapper>
       <PageWrapper>
         <Pagination
           pageCountData={tempData}

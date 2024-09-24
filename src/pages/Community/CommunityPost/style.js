@@ -7,79 +7,68 @@ import {
   small_500,
 } from '@/styles/commonStyle/localTextStyle';
 
-const PostContainer = styled.li`
+const TableRow = styled.tr`
   display: flex;
-  height: 110px;
-  justify-content: space-between;
+  align-items: center;
+  padding: 24px 20px;
+  text-align: left;
   border-bottom: 1px solid
     ${({ theme: { colors } }) => {
       return colors.gray['30'];
     }};
-  margin: 0 43px;
-`;
+  transition: all 0.1s;
+  cursor: pointer;
+  user-select: none;
 
-const PostContentsWrapper = styled.div`
-  display: flex;
-  width: 830px;
-`;
-const PostNumberBox = styled.p`
-  width: 110px;
-  padding: 45px 0 45px;
-  text-align: center;
-  margin-right: 15px;
-  color: ${({ theme: { colors } }) => {
-    return colors.gray['90'];
-  }};
-  ${small_500}
-`;
-const PostBodyBox = styled.div`
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-  width: 720px;
-  ${ellipsisStyle}
-  p {
-    color: ${({ theme: { colors } }) => {
-      return colors.black;
+  &:hover {
+    background-color: ${({ theme: { colors } }) => {
+      return colors.gray['10'];
     }};
   }
-  p:first-child {
-    ${xsmall_400}
-    margin-bottom: 24px;
-  }
-  p:last-child {
-    ${small_400}
-  }
 `;
 
-const PostInfoBox = styled.div`
-  display: flex;
-  width: calc(100% - 830px);
-  flex-flow: column;
-  justify-content: center;
-  margin-right: 40px;
-`;
-
-const PostIconBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-`;
-
-const PostDateBox = styled.p`
-  text-align: right;
+const PostNumberBox = styled.td`
+  flex: 0 0 8.5rem;
   color: ${({ theme: { colors } }) => {
-    return colors.gray['70'];
+    return colors.gray['80'];
   }};
   ${small_500}
+`;
+
+const PostTitleBox = styled.td`
+  flex: 0 0 48rem;
+  ${ellipsisStyle}
+  ${small_400}
+  color: ${({ theme: { colors } }) => {
+    return colors.black;
+  }};
+`;
+
+const PostNicknameBox = styled.td`
+  ${xsmall_400}
+  flex: 0 0 10rem;
+`;
+
+const PostDateBox = styled.td`
+  ${small_500}
+  flex: 0 0 14.5rem;
+  color: ${({ theme: { colors } }) => {
+    return colors.gray['60'];
+  }};
+`;
+
+const PostIconBox = styled.td`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding-right: 20px;
 `;
 
 export {
-  PostContainer,
-  PostContentsWrapper,
+  TableRow,
   PostNumberBox,
-  PostBodyBox,
-  PostInfoBox,
+  PostTitleBox,
+  PostNicknameBox,
   PostIconBox,
   PostDateBox,
 };

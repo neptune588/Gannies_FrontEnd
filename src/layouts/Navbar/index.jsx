@@ -1,18 +1,51 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+
+import uuid from 'react-uuid';
 
 import { Wrapper, Button } from '@/layouts/Navbar/style';
 
+import { setBoardType } from '@/store/navBarOptions';
+
+import { navBarMenuData } from '@/layouts/Navbar/data';
+
+import useSelectorList from '@/hooks/useSelectorList';
+
 function Navbar() {
+  const dispatch = useDispatch();
+  const loacation = useLocation();
+
+  const [navBarMenus] = useState(navBarMenuData);
+
+  const { currentActiveMenuNumber } = useSelectorList();
+
+  const handleNavBarMenuClick = (data) => {
+    dispatch(setBoardType(data));
+  };
+
   return (
     <Wrapper>
-      <Button to='/'>메인</Button>
-      <Button>이론정보</Button>
-      <Button>실습정보</Button>
-      <Button>국가고시준비</Button>
-      <Button>취업정보</Button>
-      <Button>구인구직</Button>
-      <Button>이벤트</Button>
-      <Button>공지사항</Button>
+      {navBarMenus.map((navBarMenu) => {
+        return (
+          <Button
+            key={uuid()}
+            to={navBarMenu.path}
+            $currentActiveMenuNumber={currentActiveMenuNumber}
+            $myMenuNumber={navBarMenu.number}
+            onClick={() => {
+              handleNavBarMenuClick({
+                menuNumber: navBarMenu.number,
+                boardType: navBarMenu.boardType,
+                bannerTitle: navBarMenu.bannerTitle,
+                bannerDesc: navBarMenu.bannerDesc,
+              });
+            }}
+          >
+            {navBarMenu.label}
+          </Button>
+        );
+      })}
     </Wrapper>
   );
 }

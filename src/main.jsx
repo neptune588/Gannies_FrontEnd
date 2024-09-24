@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom/client';
 import App from '@/App';
 import './index.css';
 import { Provider } from 'react-redux';
-import store from '@/store/store';
+import { store, persistor } from '@/store/store';
+import { PersistGate } from 'redux-persist/integration/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { CookiesProvider } from 'react-cookie';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,10 +19,10 @@ const queryClient = new QueryClient({
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
-    <QueryClientProvider client={queryClient}>
-      <CookiesProvider>
+    <PersistGate loading={null} persistor={persistor}>
+      <QueryClientProvider client={queryClient}>
         <App />
-      </CookiesProvider>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </PersistGate>
   </Provider>
 );

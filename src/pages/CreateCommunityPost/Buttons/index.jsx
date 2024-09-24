@@ -38,9 +38,7 @@ export default function Buttons({ onSubmit = null }) {
   return (
     <>
       <CansleButton to='/community'>취소하기</CansleButton>
-      <SubmitButton type='submit' disabled>
-        등록하기
-      </SubmitButton>
+      <SubmitButton type='submit'>등록하기</SubmitButton>
     </>
   );
 }

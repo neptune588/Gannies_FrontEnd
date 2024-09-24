@@ -101,7 +101,7 @@ export const getPresigneUrl = async (params) => {
 //받아온 URL에 IMAGE url 보내기
 export const certificatesImageUpload = async (presigneUrl, imageData) => {
   const url = presigneUrl;
-  const response = await api.get(url, imageData);
+  const response = await api.post(url, imageData);
   return response;
 };
 

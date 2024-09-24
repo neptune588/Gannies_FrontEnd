@@ -35,10 +35,10 @@ export default function MemberManagement() {
   );
 
   const {
-    clickChangeState: currentPageNumber,
-    handleClickChange: handlePageNumberClick,
+    changeValue: currentPageNumber,
+    handleChange: handlePageNumberClick,
   } = useEventHandler({
-    clickChangeDefaultValue: 0,
+    changeDefaultValue: 0,
   });
 
   const handleStatusValueChange = (status, listNumber) => {

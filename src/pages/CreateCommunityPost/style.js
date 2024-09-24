@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { defaultBorderBoxStyle } from '@/styles/commonStyle/box';
 import { createPostPageInputBoxStyle } from '@/styles/commonStyle/box';
 import { createPostPageInputStyle } from '@/styles/commonStyle/input';
-import { xsmall_500, small_400 } from '@/styles/commonStyle/localTextStyle';
+import { xsmall_500 } from '@/styles/commonStyle/localTextStyle';
 
 const CategoryBox = styled.section`
   margin: 60px 0 30px;
@@ -46,6 +46,9 @@ const DataInputWrapper = styled.div`
     }};
   > div:first-child {
     margin-bottom: 45px;
+  }
+  > div:last-child {
+    margin-bottom: 0;
   }
 `;
 

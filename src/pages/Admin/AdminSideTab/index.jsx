@@ -16,10 +16,9 @@ export default function AdminSideTab() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { clickChangeState: currentActiveTabMenu, handleClickChange } =
-    useEventHandler({
-      clickChangeDefaultValue: null,
-    });
+  const { changeValue: currentActiveTabMenu, handleChange } = useEventHandler({
+    changeDefaultValue: null,
+  });
 
   const [tabData] = useState(adminTabMenuData);
 
@@ -28,13 +27,13 @@ export default function AdminSideTab() {
     console.log(path);
 
     if (path === '/report-history') {
-      handleClickChange('신고내역');
+      handleChange('신고내역');
     } else if (path === '/member-management') {
-      handleClickChange('회원관리');
+      handleChange('회원관리');
     } else if (path === '/user-approval') {
-      handleClickChange('회원 가입승인');
+      handleChange('회원 가입승인');
     } else if (path === '/post-management') {
-      handleClickChange('게시물 관리');
+      handleChange('게시물 관리');
     }
   }, []);
 
@@ -52,7 +51,7 @@ export default function AdminSideTab() {
               $currentActiveTabMenu={currentActiveTabMenu}
               $ownMenu={tab.label}
               onClick={() => {
-                handleClickChange(tab.label);
+                handleChange(tab.label);
                 navigate(tab.path);
               }}
             >

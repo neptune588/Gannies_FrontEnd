@@ -42,16 +42,15 @@ export default function PostManagement() {
   );
 
   const {
-    clickChangeState: currentPageNumber,
-    handleClickChange: handlePageNumberClick,
+    changeValue: currentPageNumber,
+    handleChange: handlePageNumberClick,
   } = useEventHandler({
-    clickChangeDefaultValue: 0,
+    changeDefaultValue: 0,
   });
 
-  const { clickChangeState: deleteButtonActive, handleClickChange } =
-    useEventHandler({
-      clickChangeDefaultValue: false,
-    });
+  const { changeValue: deleteButtonActive, handleChange } = useEventHandler({
+    changeDefaultValue: false,
+  });
 
   const handleDeleteSelectStateChange = (listNumber) => {
     const changeFnc = (arr) => {
@@ -98,7 +97,7 @@ export default function PostManagement() {
         <div>
           <PostDeleteButton
             onClick={() => {
-              handleClickChange(true);
+              handleChange(true);
             }}
             $deleteButtonState={deleteButtonActive}
           >
@@ -111,7 +110,7 @@ export default function PostManagement() {
           {deleteButtonActive && (
             <PostDeleteButton
               onClick={() => {
-                handleClickChange(false);
+                handleChange(false);
                 handleDeleteSelectStateReset();
               }}
             >

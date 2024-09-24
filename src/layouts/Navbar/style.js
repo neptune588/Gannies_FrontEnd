@@ -13,12 +13,22 @@ export const Wrapper = styled.header`
 
 export const Button = styled(Link)`
   margin-top: 13.5px;
-  color: ${(props) => props.theme.colors.primary};
   ${large_400}
   cursor: pointer;
   margin-left: 7px;
   margin-right: 31px;
-  color: ${(props) => props.theme.colors.gray[70]};
+  color: ${({ $currentActiveMenuNumber, $myMenuNumber, theme: { colors } }) => {
+    return $currentActiveMenuNumber === $myMenuNumber
+      ? colors.primary
+      : colors.gray[70];
+  }};
+  font-weight: ${({
+    $currentActiveMenuNumber,
+    $myMenuNumber,
+    theme: { typo },
+  }) => {
+    return $currentActiveMenuNumber === $myMenuNumber && typo.weight.medium;
+  }};
   display: flex;
   justify-content: center;
 `;
