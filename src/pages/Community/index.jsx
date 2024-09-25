@@ -1,14 +1,17 @@
 import { useState, useEffect } from 'react';
 import uuid from 'react-uuid';
 
+//component
 import CommunityPost from '@/pages/Community/CommunityPost';
 import CommunityBanner from '@/components/CommunityBanner';
 import CommunityBannerText from '@/components/CommunityBannerText';
 import Pagination from '@/components/Pagination';
 import AlignSelectMenu from '@/components/AlignSelectMenu';
 
+//svg
 import brush from '@/assets/icons/etc/brush.svg';
 
+//styles
 import {
   ContentsAlignBox,
   PostCreateButton,
@@ -17,34 +20,44 @@ import {
   PageWrapper,
 } from '@/pages/Community/style';
 
+//hooks
+import { useEventHandler } from '@/hooks/useEventHandler';
 import useSelectorList from '@/hooks/useSelectorList';
 
+//api
 import { getPosts } from '@/api/postApi';
 
-export default function Community() {
-  const [tempData] = useState(
-    Array.from({ length: 10 }, (_, index) => {
-      return index;
-    })
-  );
+//utils
+import { formatDateToPost } from '@/utils/dateFormatting';
+import { communityPostMaxLimit } from '@/utils/itemLimit';
 
-  const [tempPageNumber, setTempPageNumber] = useState(0);
-  const handlePageClick = (idx) => {
-    setTempPageNumber(idx);
-  };
+export default function Community() {
+  const [currentPosts, setCurrentPosts] = useState([]);
+  const [pageTotalNumbers, setPageTotalNumbers] = useState(0);
+
+  const {
+    changeValue: currentPageNumber,
+    handleChange: handlePageNumberClick,
+  } = useEventHandler({ changeDefaultValue: 0 });
 
   const { currentBoardType } = useSelectorList();
 
   useEffect(() => {
     (async () => {
       const query = {
-        page: 0,
-        limit: 10,
+        page: currentPageNumber,
+        limit: communityPostMaxLimit,
       };
 
       try {
         const res = await getPosts(currentBoardType, query);
-        console.log(res);
+
+        const { items: posts, totalItems } = res.data;
+
+        setCurrentPosts(posts);
+        setPageTotalNumbers(totalItems);
+
+        //console.log(posts);
       } catch (err) {
         console.error(err);
       }
@@ -77,19 +90,32 @@ export default function Community() {
             </TableHeader>
           </thead>
           <tbody>
-            {tempData.map((item) => {
-              return <CommunityPost key={uuid()} />;
+            {currentPosts?.map((post, idx) => {
+              return (
+                <CommunityPost
+                  key={uuid()}
+                  number={String(
+                    currentPageNumber * communityPostMaxLimit + (idx + 1)
+                  ).padStart(2, '0')}
+                  title={post.title}
+                  nickname={post.user.nickname}
+                  createDate={formatDateToPost(post.createdAt)}
+                  postViewCount={parseInt(post.viewCounts, 10)}
+                  likeCount={parseInt(post.likeCounts, 10)}
+                  numberOfCommentsAndReplies={post.numberOfCommentsAndReplies}
+                />
+              );
             })}
           </tbody>
         </table>
       </TableWrapper>
-      <PageWrapper>
+      {/*       <PageWrapper>
         <Pagination
-          pageCountData={tempData}
-          activePageNumber={tempPageNumber}
-          handlePageNumberClick={handlePageClick}
+          pageCountData={pageTotalNumbers}
+          activePageNumber={currentPageNumber}
+          handlePageNumberClick={handlePageNumberClick}
         />
-      </PageWrapper>
+      </PageWrapper> */}
     </>
   );
 }

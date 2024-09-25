@@ -36,7 +36,7 @@ const PostNumberBox = styled.td`
 `;
 
 const PostTitleBox = styled.td`
-  flex: 0 0 48rem;
+  flex: 0 0 50rem;
   ${ellipsisStyle}
   ${small_400}
   color: ${({ theme: { colors } }) => {
@@ -60,8 +60,10 @@ const PostDateBox = styled.td`
 const PostIconBox = styled.td`
   display: flex;
   width: 100%;
-  justify-content: space-between;
   padding-right: 20px;
+  > div {
+    width: 50%;
+  }
 `;
 
 export {
