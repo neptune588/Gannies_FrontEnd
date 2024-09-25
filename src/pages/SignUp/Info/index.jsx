@@ -24,6 +24,9 @@ function Info() {
     handleSteps(1, true);
   };
 
+  useEffect(() => {
+    console.log(allow);
+  }, [allow]);
   return (
     <>
       <Title title='회원가입' />

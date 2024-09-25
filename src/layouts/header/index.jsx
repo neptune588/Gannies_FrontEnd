@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 
 import search from '@/assets/icons/search/search_default.svg';
 import logo from '@/assets/images/logo.png';
@@ -11,23 +10,23 @@ import {
   LoginButton,
   SignUpButton,
   Input,
-  // LogoutButton,
-  // MypageButton,
+  LogoutButton,
+  MypageButton,
 } from '@/layouts/Header/style';
+import { userSignOut } from '@/api/authApi';
 
 import { setBoardType } from '@/store/navBarOptions';
+import { useCookies } from 'react-cookie';
+import { useDispatch } from 'react-redux';
 
 function Header() {
   const navigate = useNavigate();
   const location = useLocation().pathname;
   const dispatch = useDispatch();
+  const [cookies, setCookie, removeCookie] = useCookies(['isLogin']);
 
   const [text, setText] = useState('');
   const [showSearchBar, setShowSearchBar] = useState(false);
-
-  const handleSearchBar = (e) => {
-    setText(e.target.value);
-  };
 
   useEffect(() => {
     if (location.startsWith('/community') || location.startsWith('/mypage')) {
@@ -36,6 +35,21 @@ function Header() {
       setShowSearchBar(false);
     }
   }, [location]);
+
+  const handleSearchBar = (e) => {
+    setText(e.target.value);
+  };
+
+  const handleLogout = async () => {
+    try {
+      const response = await userSignOut();
+      if (response.status === 200) {
+        removeCookie('isLogin', { path: '/' });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Wrapper>
@@ -64,11 +78,18 @@ function Header() {
           />
         </form>
       )}
-      <LoginButton to='/sign-in'>로그인</LoginButton>
-      <SignUpButton to='/sign-up/identity'>회원가입</SignUpButton>
-      {/* <LogoutButton>로그아웃</LogoutButton>
-      <span>|</span>
-      <MypageButton>마이페이지</MypageButton> */}
+      {cookies.isLogin ? (
+        <>
+          <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
+          <span>|</span>
+          <MypageButton to='/mypage/profile/edit'>마이페이지</MypageButton>
+        </>
+      ) : (
+        <>
+          <LoginButton to='/sign-in'>로그인</LoginButton>
+          <SignUpButton to='/sign-up/identity'>회원가입</SignUpButton>
+        </>
+      )}
     </Wrapper>
   );
 }

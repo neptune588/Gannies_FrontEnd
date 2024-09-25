@@ -1,30 +1,35 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import bottomArrow from '@/assets/icons/arrows/chevron_down.svg';
+import upArrow from '@/assets/icons/arrows/chevron_up.svg';
 import { defaultBorderBoxStyle } from '@/styles/commonStyle/box';
 import { centerAlignStyle } from '@/styles/commonStyle/etc';
-import { xsmall_400 } from '@/styles/commonStyle/localTextStyle';
+import { small_400 } from '@/styles/commonStyle/localTextStyle';
 import uuid from 'react-uuid';
-import upArrow from '@/assets/icons/arrows/chevron_up.svg';
 
 const SelectContainer = styled.div`
   ${defaultBorderBoxStyle}
-  ${centerAlignStyle}
-  ${xsmall_400}
-  width: 95px;
-  height: 35px;
+  width: 108px;
+  height: 48px;
   position: relative;
+  border: 1px solid ${({ theme }) => theme.colors.gray[30]};
+  margin-top: 10px;
+
   > button {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
     height: 100%;
-    padding: 0 10px;
+    padding: 0 16px;
     cursor: pointer;
-    color: ${(props) => props.theme.colors.gray[80]};
-    ${xsmall_400};
+    color: ${({ theme }) => theme.colors.black};
+    ${small_400};
 
+    div {
+      border-left: 1px solid ${({ theme }) => theme.colors.gray[30]};
+      height: 100%;
+    }
     img {
       width: 18px;
       height: 18px;
@@ -32,24 +37,24 @@ const SelectContainer = styled.div`
   }
 `;
 
-const Dropdown = styled.div`
+const DropdownBox = styled.div`
   position: absolute;
-  top: 37px;
+  top: 50px;
   left: -1px;
-  width: 95px;
+  width: 107px;
   background-color: white;
   z-index: 1000;
   ${defaultBorderBoxStyle}
   padding: 3px 4px;
 
   button {
-    color: ${(props) => props.theme.colors.gray[80]};
+    color: ${(props) => props.theme.colors.black};
     ${centerAlignStyle}
     cursor: pointer;
     margin: 1px 0px;
-    ${xsmall_400};
-    height: 28px;
-    width: 86px;
+    ${small_400};
+    height: 35px;
+    width: 100%;
     border-radius: 4px;
 
     &:hover {
@@ -59,10 +64,11 @@ const Dropdown = styled.div`
   }
 `;
 
-export default function AlignSelectMenu({
+export default function Dropdown({
   optionList,
   selectedOption,
   setSelectedOption,
+  disabled,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const toggleDropdown = () => setIsOpen((prev) => !prev);
@@ -74,18 +80,19 @@ export default function AlignSelectMenu({
 
   return (
     <SelectContainer>
-      <button onClick={toggleDropdown}>
+      <button onClick={toggleDropdown} disabled={disabled}>
         <p>{selectedOption}</p>
+        <div />
         <img src={isOpen ? upArrow : bottomArrow} alt='select-arrow' />
       </button>
       {isOpen && (
-        <Dropdown>
+        <DropdownBox>
           {optionList.map((option) => (
             <button key={uuid()} onClick={() => handleSelectedOption(option)}>
               {option}
             </button>
           ))}
-        </Dropdown>
+        </DropdownBox>
       )}
     </SelectContainer>
   );

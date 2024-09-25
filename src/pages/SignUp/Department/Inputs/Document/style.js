@@ -34,15 +34,12 @@ export const ActiveInputBox = styled.div`
   padding-right: 14px;
 
   > div {
-    padding-left: 9px;
-    padding-right: 9px;
+    margin-left: 9px;
+    margin-right: 9px;
     width: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    height: 40px;
-    display: flex;
-    align-items: center;
   }
 `;
 

@@ -13,19 +13,18 @@ import {
   InputBox,
 } from '@/pages/SignUp/Department/Inputs/Document/style';
 
-function Document({ allow, handleAllow }) {
-  const [fileName, setFileName] = useState('');
+function Document({ allow, handleAllow, file, setFile }) {
   const inputRef = useRef();
-  const fileTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
+  const fileTypes = ['image/jpeg', 'image/png', 'image/gif'];
   const maxSize = 1048576; // 1MB in bytes
   const [valid, setValid] = useState(undefined);
 
   const uploadFile = (event) => {
     const file = event.target.files[0];
-
+    console.log(file);
     if (file) {
       if (fileTypes.includes(file.type) && file.size <= maxSize) {
-        setFileName(file.name);
+        setFile(file);
         setValid(true);
         handleAllow(1, true);
       } else {
@@ -37,7 +36,7 @@ function Document({ allow, handleAllow }) {
 
   const deleteFile = (e) => {
     e.stopPropagation();
-    setFileName('');
+    setFile('');
     handleAllow(1, false);
   };
 
@@ -51,10 +50,10 @@ function Document({ allow, handleAllow }) {
     <>
       {allow[0] && (
         <InputSection $margin='37px' title='인증서류 업로드*'>
-          {fileName ? (
+          {file.name ? (
             <ActiveInputBox onClick={handleBoxClick}>
               <Clip />
-              <div>{fileName}</div>
+              <div>{file.name}</div>
               <Close onClick={deleteFile} />
             </ActiveInputBox>
           ) : (

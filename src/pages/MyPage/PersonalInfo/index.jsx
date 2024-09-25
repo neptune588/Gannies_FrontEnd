@@ -1,3 +1,4 @@
+import { getUserInfo } from '@/api/userApi';
 import {
   Title,
   PersonalInfoWrapper,
@@ -5,10 +6,26 @@ import {
   NicknameEditBox,
   EditSaveAndAccountDeleteBox,
 } from '@/pages/MyPage/PersonalInfo/style';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function PersonalInfo() {
   const [nickname, setNickname] = useState('');
+
+  useEffect(() => {
+    const getInfo = async () => {
+      try {
+        const response = await getUserInfo();
+        console.log(response);
+        if (response.status === 200) {
+          console.log(response);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getInfo();
+  }, []);
 
   const handleNickname = (e) => {
     const nickname = e.target.value;
