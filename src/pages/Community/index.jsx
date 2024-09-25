@@ -33,7 +33,7 @@ import { communityPostMaxLimit } from '@/utils/itemLimit';
 
 export default function Community() {
   const [currentPosts, setCurrentPosts] = useState([]);
-  const [pageTotalNumbers, setPageTotalNumbers] = useState(0);
+  const [pageTotalNumbers, setPageTotalNumbers] = useState([]);
 
   const {
     changeValue: currentPageNumber,
@@ -55,15 +55,21 @@ export default function Community() {
         const { items: posts, totalItems } = res.data;
 
         setCurrentPosts(posts);
-        setPageTotalNumbers(totalItems);
-
-        //console.log(posts);
+        setPageTotalNumbers(
+          Array.from(
+            { length: Math.ceil(totalItems / communityPostMaxLimit) },
+            (_, i) => i + 1
+          )
+        );
       } catch (err) {
         console.error(err);
       }
     })();
   }, [currentBoardType]);
 
+  useEffect(() => {
+    console.log(pageTotalNumbers);
+  }, [pageTotalNumbers]);
   return (
     <>
       <CommunityBanner>
@@ -109,13 +115,13 @@ export default function Community() {
           </tbody>
         </table>
       </TableWrapper>
-      {/*       <PageWrapper>
+      <PageWrapper>
         <Pagination
-          pageCountData={pageTotalNumbers}
-          activePageNumber={currentPageNumber}
+          pageTotalNumbers={pageTotalNumbers}
+          currentPageNumber={currentPageNumber}
           handlePageNumberClick={handlePageNumberClick}
         />
-      </PageWrapper> */}
+      </PageWrapper>
     </>
   );
 }
