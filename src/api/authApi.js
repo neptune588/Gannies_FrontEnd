@@ -24,14 +24,14 @@ export const userSignUp = async (signUpData) => {
 //회원탈퇴
 export const userDelete = async () => {
   const url = '/auth/withdrawal';
-  const response = await cookieApi.delete(url);
+  const response = await api.delete(url);
   return response;
 };
 
 //로그인
 export const userSignIn = async (signInData) => {
   const url = '/auth/sign-in';
-  const response = await cookieApi.post(url, signInData);
+  const response = await api.post(url, signInData, { withCredentials: true });
   return response;
 };
 
@@ -92,17 +92,37 @@ export const userStatusVerify = async (pwFindData) => {
 };
 
 //인증서 업로드 하기 위해 필요한 URL 받기
-export const getPresigneUrl = async (params) => {
-  const url = '/certificates/upload-info?';
-  const response = await api.get(url, params);
+export const getPresignedUrl = async (fileType) => {
+  const url = '/certificates/upload-info';
+  const response = await api.post(url, { fileType: fileType });
   return response;
 };
 
 //받아온 URL에 IMAGE url 보내기
-export const certificatesImageUpload = async (presigneUrl, imageData) => {
-  const url = presigneUrl;
-  const response = await api.post(url, imageData);
-  return response;
+export const certificatesImageUpload = async (
+  presignedUrl,
+  imageData,
+  fields
+) => {
+  const formData = new FormData();
+
+  // fields에 있는 각 필드를 FormData에 추가합니다.
+  for (const key in fields) {
+    formData.append(key, fields[key]);
+  }
+  // 이미지 데이터 추가
+  formData.append('Content-Type', imageData.type);
+  formData.append('file', imageData);
+  const response = await fetch(presignedUrl, {
+    method: 'PUT',
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to upload image');
+  }
+
+  return response; // 성공적인 응답 반환
 };
 
 //증명서image에서 이름 추출

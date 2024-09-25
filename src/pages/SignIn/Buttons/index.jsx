@@ -8,12 +8,14 @@ import {
   FindButton,
   SignUpButton,
 } from '@/pages/SignIn/Buttons/style';
-import { userSignIn, userSignOut, userSignUpEmail } from '@/api/authApi';
+import { userSignIn } from '@/api/authApi';
+import { useCookies } from 'react-cookie';
 // import axios from 'axios';
 
 function Buttons({ email, password, setLoginError }) {
   const [autoLogin, setAutoLogin] = useState(false);
   const navigate = useNavigate();
+  const [cookies, setCookie] = useCookies(['isLogin']);
 
   const handleAutoLogin = () => {
     setAutoLogin(!autoLogin);
@@ -23,6 +25,7 @@ function Buttons({ email, password, setLoginError }) {
     try {
       const response = await userSignIn({ email: email, password: password });
       if (response.status === 200) {
+        setCookie('isLogin', true, { path: '/' });
         navigate('/');
       }
     } catch (error) {

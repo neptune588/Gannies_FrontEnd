@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage/session';
 
-import num from './num-slice';
+import auth from '@/store/auth';
 import navBarOptionsReducer from '@/store/navBarOptions';
 import communityDataReducer from '@/store/communityData';
 
@@ -18,7 +18,7 @@ const persistedNavBarOptionsReducer = persistReducer(
 
 const store = configureStore({
   reducer: {
-    num: num,
+    auth: auth,
     navBarOptions: persistedNavBarOptionsReducer,
     communityData: communityDataReducer,
   },

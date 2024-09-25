@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
 function SignUp() {
@@ -18,10 +18,6 @@ function SignUp() {
     status: '',
     certificationDocumentUrl: '',
   });
-
-  useEffect(() => {
-    console.log(dataToSend);
-  }, [dataToSend]);
 
   const handleSteps = (index, value) => {
     setSteps((prev) => prev.map((step, idx) => (idx === index ? value : step)));
