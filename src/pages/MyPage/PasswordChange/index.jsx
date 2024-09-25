@@ -12,6 +12,7 @@ import {
 
 import { useEventHandler } from '@/hooks/useEventHandler';
 import { useState } from 'react';
+import { changeUserPassword } from '@/api/userApi';
 
 export default function PasswordChange() {
   const { clickChangeState: passwordView, handleClickChange } = useEventHandler(
@@ -21,7 +22,6 @@ export default function PasswordChange() {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newPasswordCheck, setNewPasswordCheck] = useState('');
-  const [isFocused, setIsFocused] = useState([undefined, false, false]);
 
   const handleCurrentPassword = (e) => {
     const currentPassword = e.target.value;
@@ -38,13 +38,14 @@ export default function PasswordChange() {
     setNewPasswordCheck(newPasswordCheck);
   };
 
-  const handleIsFocused = (index, value) => {
-    setIsFocused((prev) => {
-      const newIsFocused = [...prev];
-      newIsFocused[index] = value;
-      return newIsFocused;
+  const handleModify = async (e) => {
+    e.preventDefault();
+    console.log(currentPassword, newPassword);
+    const response = await changeUserPassword({
+      oldPassword: currentPassword,
+      newPassword: newPassword,
     });
-    console.log(isFocused);
+    console.log(response);
   };
 
   return (
@@ -54,14 +55,12 @@ export default function PasswordChange() {
         <form>
           <PasswordChangeBox>
             <p>현재 비밀번호</p>
-            <InputBox isFocused={isFocused[0]}>
+            <InputBox>
               <input
                 maxLength={15}
                 value={currentPassword}
                 onChange={handleCurrentPassword}
                 type={passwordView[0] ? 'text' : 'password'}
-                onFocus={() => handleIsFocused(0, true)}
-                onBlur={() => handleIsFocused(0, undefined)}
               />
               {passwordView[0] ? (
                 <div>
@@ -143,7 +142,7 @@ export default function PasswordChange() {
             </InputBox>
           </PasswordChangeBox>
           <EditSaveBox>
-            <button disabled>비밀번호 변경하기</button>
+            <button onClick={handleModify}>비밀번호 변경하기</button>
           </EditSaveBox>
         </form>
       </PasswordChangeWrapper>

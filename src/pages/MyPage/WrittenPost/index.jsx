@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import PostContents from '@/pages/MyPage/PostContents';
 import AlignSelectMenu from '@/components/AlignSelectMenu';
@@ -9,6 +9,7 @@ import { TitleBox, Title, PageWrapper } from '@/pages/MyPage/WrittenPost/style';
 import { posts } from '@/pages/Home/data';
 
 import { useEventHandler } from '@/hooks/useEventHandler';
+import { getUserPosts } from '@/api/userApi';
 
 export default function WrittenPost() {
   const [postData] = useState(posts);
@@ -21,6 +22,14 @@ export default function WrittenPost() {
     })
   );
 
+  useEffect(() => {
+    const fetch = async () => {
+      const response = await getUserPosts({ page: 1 });
+      console.log(response);
+    };
+
+    fetch();
+  }, []);
   const {
     changeValue: currentActivePageNumber,
     handleChange: handlePageNumberChange,

@@ -24,7 +24,7 @@ export const userSignUp = async (signUpData) => {
 //회원탈퇴
 export const userDelete = async () => {
   const url = '/auth/withdrawal';
-  const response = await api.delete(url);
+  const response = await cookieApi.delete(url);
   return response;
 };
 

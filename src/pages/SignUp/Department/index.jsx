@@ -8,11 +8,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useAuthAllow } from '@/hooks/useAuthAllow';
 import NextButton from '@/pages/SignUp/components/NextButton';
-import {
-  certificatesImageUpload,
-  getPresignedUrl,
-  userSignUp,
-} from '@/api/authApi';
+import { userSignUp } from '@/api/authApi';
 
 function Department() {
   const navigate = useNavigate();
@@ -31,7 +27,7 @@ function Department() {
       handleSteps(2, true);
       // const response = await getPresignedUrl(file.type);
       // console.log(response);
-      // const { url, fields } = response.data; // URL과 필드를 분리
+      // const { url, fields } = response.data;
       // console.log(url, fields);
       // const imageUrl = await certificatesImageUpload(url, file, fields);
       // const response = await getPresignedUrl({ fileType: fileName.type });
