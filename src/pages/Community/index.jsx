@@ -30,6 +30,7 @@ import { getPosts } from '@/api/postApi';
 //utils
 import { formatDateToPost } from '@/utils/dateFormatting';
 import { communityPostMaxLimit } from '@/utils/itemLimit';
+import { useFetcher } from 'react-router-dom';
 
 export default function Community() {
   const [currentPosts, setCurrentPosts] = useState([]);
@@ -38,9 +39,14 @@ export default function Community() {
   const {
     changeValue: currentPageNumber,
     handleChange: handlePageNumberClick,
-  } = useEventHandler({ changeDefaultValue: 0 });
+  } = useEventHandler({ changeDefaultValue: 1 });
 
   const { currentBoardType } = useSelectorList();
+
+  useEffect(() => {
+    setPageTotalNumbers([]);
+    handlePageNumberClick(1);
+  }, [currentBoardType]);
 
   useEffect(() => {
     (async () => {
@@ -61,15 +67,14 @@ export default function Community() {
             (_, i) => i + 1
           )
         );
+
+        //console.log(currentPageNumber, query);
       } catch (err) {
         console.error(err);
       }
     })();
-  }, [currentBoardType]);
+  }, [currentBoardType, currentPageNumber]);
 
-  useEffect(() => {
-    console.log(pageTotalNumbers);
-  }, [pageTotalNumbers]);
   return (
     <>
       <CommunityBanner>
@@ -101,14 +106,17 @@ export default function Community() {
                 <CommunityPost
                   key={uuid()}
                   number={String(
-                    currentPageNumber * communityPostMaxLimit + (idx + 1)
+                    (currentPageNumber - 1) * communityPostMaxLimit + (idx + 1)
                   ).padStart(2, '0')}
                   title={post.title}
                   nickname={post.user.nickname}
                   createDate={formatDateToPost(post.createdAt)}
                   postViewCount={parseInt(post.viewCounts, 10)}
                   likeCount={parseInt(post.likeCounts, 10)}
-                  numberOfCommentsAndReplies={post.numberOfCommentsAndReplies}
+                  numberOfCommentsAndReplies={parseInt(
+                    post.numberOfCommentsAndReplies,
+                    10
+                  )}
                 />
               );
             })}

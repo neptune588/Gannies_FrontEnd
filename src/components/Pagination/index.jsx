@@ -33,14 +33,14 @@ export default function Pagination({
         </ArrowButton>
       </ArrowBox>
       <PageNumberBox>
-        {pageTotalNumbers?.map((_, idx) => {
+        {pageTotalNumbers?.map((myNumber) => {
           return (
             <PageNumber
               key={uuid()}
-              myPageNumber={idx}
+              myPageNumber={myNumber}
               currentPageNumber={currentPageNumber}
               handlePageNumberClick={() => {
-                handlePageNumberClick(idx);
+                handlePageNumberClick(myNumber);
               }}
             />
           );

@@ -3,7 +3,7 @@ import { api, cookieApi } from '@/api/axiosInstance';
 //신고된 게시물 페이지 단위로 조회
 export const getReportedPosts = async (params) => {
   const url = '/reports/posts';
-  const response = await cookieApi.get(url, params);
+  const response = await cookieApi.get(url, { params });
   return response;
 };
 
@@ -38,7 +38,7 @@ export const setPostStatusToRejectReport = async (postId) => {
 //신고된 댓글 페이지 단위로 조회
 export const getReportedComments = async (params) => {
   const url = `/reports/comments`;
-  const response = await cookieApi.get(url, params);
+  const response = await cookieApi.get(url, { params });
   return response;
 };
 

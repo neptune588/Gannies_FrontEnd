@@ -38,7 +38,7 @@ export const unblockUser = async (userData) => {
 //회원 페이지 단위로 조회
 export const getUsers = async (params) => {
   const url = '/admin/users';
-  const response = await cookieApi.get(url, params);
+  const response = await cookieApi.get(url, { params });
   return response;
 };
 
@@ -52,7 +52,7 @@ export const getUser = async (userId) => {
 //회원가입 대기자 목록 조회
 export const getPendingUsers = async (params) => {
   const url = '/admin/approval';
-  const response = await cookieApi.get(url, params);
+  const response = await cookieApi.get(url, { params });
   return response;
 };
 
@@ -66,7 +66,7 @@ export const approveOrRejectRegistration = async (isApprovalData) => {
 //게시물 페이지 단위로 조회 밑 검색
 export const getPostsOrSearchPost = async (params) => {
   const url = '/admin/posts';
-  const response = await cookieApi.get(url, params);
+  const response = await cookieApi.get(url, { params });
   return response;
 };
 
@@ -80,7 +80,7 @@ export const deletePost = async (postId) => {
 //댓글 밑 답글 페이지 단위로 조회(10개)
 export const getCommentsOrReplyComments = async (params) => {
   const url = '/admin/comments';
-  const response = await cookieApi.get(url, params);
+  const response = await cookieApi.get(url, { params });
   return response;
 };
 
