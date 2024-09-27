@@ -3,12 +3,12 @@ import Instruction from '@/components/Instruction';
 import InputSection from '@/pages/SignUp/components/InputSection';
 import DefaultInput from '@/pages/SignUp/components/DefaultInput';
 import Negative from '@/components/Instruction/Negative';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { useInputBorder } from '@/hooks/useInputBorder';
 import { checkNicknameDuplicate } from '@/api/authApi';
 
-function Nickname({ handleAllow }) {
+function Nickname({ allow, handleAllow }) {
   const [nickname, setNickname] = useState('');
   const { handleDataToSend } = useOutletContext();
   const regex = /^[a-zA-Z가-힣]{2,8}$/;
@@ -27,31 +27,36 @@ function Nickname({ handleAllow }) {
     handleIsFocused,
     handleInputBlur,
   } = useInputBorder(undefined, validate);
+  const [checkDuplicate, setCheckDuplicate] = useState(false);
+  const prevNicknameRef = useRef(nickname);
 
   useEffect(() => {
     const fetchData = async () => {
-      if (isValid) {
-        try {
+      try {
+        if (isValid && !checkDuplicate) {
           const response = await checkNicknameDuplicate(nickname);
-          if (response.data.statusCode === 400) {
-            setInstructionIndex(3);
-          } else {
-            handleAllow(0, isValid ? true : false);
+          if (response.status === 201) {
+            setCheckDuplicate(true);
+            if (!response.data.available) {
+              setInstructionIndex(3);
+              handleAllow(0, false);
+            } else {
+              handleAllow(0, true);
+            }
           }
-        } catch (error) {
-          console.error('Error checking email duplicate:', error);
         }
+      } catch (error) {
+        console.error('Error checking email duplicate:', error);
       }
     };
 
-    handleInstruction();
     fetchData();
-  }, [isValid]);
+  }, [isValid, checkDuplicate]);
 
   const handleNickname = (e) => {
-    const nickname = e.target.value;
-    setNickname(nickname);
-    handleDataToSend('nickname', nickname);
+    const newNickname = e.target.value;
+    setNickname(newNickname);
+    handleDataToSend('nickname', newNickname);
   };
 
   const handleInstruction = () => {
@@ -69,24 +74,29 @@ function Nickname({ handleAllow }) {
         onChange={handleNickname}
         value={nickname}
         $isFocused={isFocused}
-        $isValid={isValid}
+        $isValid={allow[0] || isValid === undefined}
         onFocus={() => handleIsFocused(true)}
         onBlur={() => {
           handleIsFocused(false);
           handleInputBlur(nickname);
-          handleInstruction();
+          if (nickname !== prevNicknameRef.current) {
+            handleInstruction();
+            setCheckDuplicate(false);
+            prevNicknameRef.current = nickname;
+          }
           if (!nickname) {
+            handleInstruction();
             handleIsValid(false);
           }
         }}
       />
-      {isValid ? (
+      {allow[0] ? (
         <Positive text={instruction[0]} />
       ) : (
         <>
           <Instruction text='*한글 또는 영문 2-8자' />
           <Instruction text='*숫자 및 특수문자 불가' />
-          {isValid === false && (
+          {isValid !== undefined && (
             <Negative text={instruction[instructionIndex]} />
           )}
         </>

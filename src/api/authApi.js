@@ -42,6 +42,13 @@ export const userSignOut = async () => {
   return response;
 };
 
+//회원가입 -> 이메일 인증 테스트
+export const userSignUpEmailTest = async (email) => {
+  const url = '/test-email';
+  const response = await api.post(url, { email: email });
+  return response;
+};
+
 //회원가입 -> 이메일 인증
 export const userSignUpEmail = async (email) => {
   const url = '/auth/sign-up/email';
@@ -51,8 +58,8 @@ export const userSignUpEmail = async (email) => {
 
 //회원가입 -> 이메일 인증 확인
 export const userSignUpEmailVerify = async (token) => {
-  const url = '/auth/sign-up/email-verification';
-  const response = await api.post(url, token);
+  const url = `/auth/sign-up/email-verification?token=${token}`;
+  const response = await api.get(url);
   return response;
 };
 

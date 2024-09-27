@@ -25,6 +25,7 @@ import MemberManagement from '@/pages/Admin/MemberManagement';
 import UserApproval from '@/pages/Admin/UserApproval';
 import PostManagement from '@/pages/Admin/PostManagement';
 import SignUp from '@/pages/SignUp/SignUp';
+import EmailVerification from '@/pages/EmailVerification';
 
 export const router = createBrowserRouter([
   {
@@ -138,6 +139,10 @@ export const router = createBrowserRouter([
       {
         path: '/find/password/success',
         element: <FindPasswordSuccess />,
+      },
+      {
+        path: '/sign-up/email',
+        element: <EmailVerification />,
       },
       {
         path: '*',

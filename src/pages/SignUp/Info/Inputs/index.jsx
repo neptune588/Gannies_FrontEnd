@@ -6,7 +6,7 @@ import PasswordCheck from '@/pages/SignUp/Info/Inputs/PasswordCheck';
 function Inputs({ allow, handleAllow }) {
   return (
     <>
-      <Nickname handleAllow={handleAllow} />
+      <Nickname allow={allow} handleAllow={handleAllow} />
       <Email handleAllow={handleAllow} />
       <Password handleAllow={handleAllow} />
       <PasswordCheck allow={allow} handleAllow={handleAllow} />
