@@ -1,17 +1,14 @@
 import { useState, useEffect } from 'react';
 import uuid from 'react-uuid';
 
-//component
 import CommunityPost from '@/pages/Community/CommunityPost';
 import CommunityBanner from '@/components/CommunityBanner';
 import CommunityBannerText from '@/components/CommunityBannerText';
 import Pagination from '@/components/Pagination';
 import AlignSelectMenu from '@/components/AlignSelectMenu';
 
-//svg
 import brush from '@/assets/icons/etc/brush.svg';
 
-//styles
 import {
   ContentsAlignBox,
   PostCreateButton,
@@ -20,59 +17,43 @@ import {
   PageWrapper,
 } from '@/pages/Community/style';
 
-//hooks
-import { useEventHandler } from '@/hooks/useEventHandler';
+import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
 import useSelectorList from '@/hooks/useSelectorList';
 
-//api
 import { getPosts } from '@/api/postApi';
 
-//utils
 import { formatDateToPost } from '@/utils/dateFormatting';
 import { communityPostMaxLimit } from '@/utils/itemLimit';
-import { useFetcher } from 'react-router-dom';
+import { pageViewLimit } from '@/utils/itemLimit';
 
 export default function Community() {
-  const [currentPosts, setCurrentPosts] = useState([]);
-  const [pageTotalNumbers, setPageTotalNumbers] = useState([]);
-
   const {
-    changeValue: currentPageNumber,
-    handleChange: handlePageNumberClick,
-  } = useEventHandler({ changeDefaultValue: 1 });
+    items: currentPosts,
+    currentPageNumber,
+    groupedPageNumbers: pageNumbers,
+    getDataAndSetPageNumbers,
+    handlePageNumberClick,
+    handlePrevPageClick,
+    handleNextPageClick,
+    resetPageNumber,
+  } = useFetchAndPaginate({
+    defaultPageNumber: 1,
+    itemMaxLimit: communityPostMaxLimit,
+    pageViewLimit: pageViewLimit,
+  });
 
   const { currentBoardType } = useSelectorList();
 
   useEffect(() => {
-    setPageTotalNumbers([]);
-    handlePageNumberClick(1);
+    resetPageNumber();
   }, [currentBoardType]);
 
   useEffect(() => {
-    (async () => {
-      const query = {
-        page: currentPageNumber,
-        limit: communityPostMaxLimit,
-      };
-
-      try {
-        const res = await getPosts(currentBoardType, query);
-
-        const { items: posts, totalItems } = res.data;
-
-        setCurrentPosts(posts);
-        setPageTotalNumbers(
-          Array.from(
-            { length: Math.ceil(totalItems / communityPostMaxLimit) },
-            (_, i) => i + 1
-          )
-        );
-
-        //console.log(currentPageNumber, query);
-      } catch (err) {
-        console.error(err);
-      }
-    })();
+    const query = {
+      page: currentPageNumber,
+      limit: communityPostMaxLimit,
+    };
+    getDataAndSetPageNumbers(() => getPosts(currentBoardType, query));
   }, [currentBoardType, currentPageNumber]);
 
   return (
@@ -125,9 +106,11 @@ export default function Community() {
       </TableWrapper>
       <PageWrapper>
         <Pagination
-          pageTotalNumbers={pageTotalNumbers}
+          pageNumbers={pageNumbers}
           currentPageNumber={currentPageNumber}
           handlePageNumberClick={handlePageNumberClick}
+          handlePrevPageClick={handlePrevPageClick}
+          handleNextPageClick={handleNextPageClick}
         />
       </PageWrapper>
     </>

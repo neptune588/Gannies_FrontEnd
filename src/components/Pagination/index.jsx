@@ -14,26 +14,24 @@ import {
 } from '@/components/Pagination/style';
 
 export default function Pagination({
-  pageTotalNumbers,
-  currentPageNumber = 0,
-  handlePrevPageButtonClick = null,
-  handlePrev10PageButtonClick = null,
-  handleNextPageButtonClick = null,
-  handleNext10PageButtonClick = null,
-  handlePageNumberClick = null,
+  pageNumbers,
+  currentPageNumber = 1,
+  handlePageNumberClick,
+  handlePrevPageClick,
+  handleNextPageClick,
 }) {
   return (
     <>
       <ArrowBox>
-        <ArrowButton onClick={handlePrevPageButtonClick || null}>
+        <ArrowButton onClick={() => handlePrevPageClick({ stepSize: 1 })}>
           <img src={prevArrow} alt={'prev-page-button'} />
         </ArrowButton>
-        <ArrowButton onClick={handlePrev10PageButtonClick || null}>
+        <ArrowButton onClick={() => handlePrevPageClick({ stepSize: 10 })}>
           <img src={prev10PagesArrow} alt={'prev-10pages-button'} />
         </ArrowButton>
       </ArrowBox>
       <PageNumberBox>
-        {pageTotalNumbers?.map((myNumber) => {
+        {pageNumbers?.map((myNumber) => {
           return (
             <PageNumber
               key={uuid()}
@@ -47,10 +45,10 @@ export default function Pagination({
         })}
       </PageNumberBox>
       <ArrowBox>
-        <ArrowButton onClick={handleNextPageButtonClick || null}>
+        <ArrowButton onClick={() => handleNextPageClick({ stepSize: 1 })}>
           <img src={nextArrow} alt={'next-page-button'} />
         </ArrowButton>
-        <ArrowButton onClick={handleNext10PageButtonClick || null}>
+        <ArrowButton onClick={() => handleNextPageClick({ stepSize: 10 })}>
           <img src={next10PagesArrow} alt={'next-10pages-button'} />
         </ArrowButton>
       </ArrowBox>
