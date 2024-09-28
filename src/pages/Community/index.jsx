@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import uuid from 'react-uuid';
 
 import CommunityPost from '@/pages/Community/CommunityPost';
@@ -29,6 +29,10 @@ import { communityPostMaxLimit } from '@/utils/itemLimit';
 import { pageViewLimit } from '@/utils/itemLimit';
 
 export default function Community() {
+  const firstRunBlockToSetCurPageNumberEffect = useRef(true);
+  const firstRunBlockToSetBoardTypeEffect = useRef(true);
+  const firstRunBlockToSetQueryEffect = useRef(true);
+
   const {
     items: currentPosts,
     currentPageNumber,
@@ -54,6 +58,7 @@ export default function Community() {
     page: currentPageNumber,
     limit: communityPostMaxLimit,
   });
+
   const handleSelectedOption = ({ ...optionalQuery }) => {
     setQuery({
       page: currentPageNumber,
@@ -63,23 +68,45 @@ export default function Community() {
   };
 
   useEffect(() => {
-    resetPageNumber();
-    setSelectedOption(alignSelectOptions[0].label);
-  }, [currentBoardType]);
+    getDataAndSetPageNumbers(() => getPosts(currentBoardType, query));
+    console.log('초기 실행');
+  }, []);
 
   useEffect(() => {
+    if (firstRunBlockToSetCurPageNumberEffect.current) {
+      firstRunBlockToSetCurPageNumberEffect.current = false;
+      return;
+    }
     setQuery((prev) => {
       return {
         ...prev,
         page: currentPageNumber,
       };
     });
+    console.log('pageNumber change effect 실행');
   }, [currentPageNumber]);
 
   useEffect(() => {
-    //console.log(query);
+    if (firstRunBlockToSetBoardTypeEffect.current) {
+      firstRunBlockToSetBoardTypeEffect.current = false;
+      return;
+    }
+
+    resetPageNumber();
+    setQuery({ page: currentPageNumber, limit: communityPostMaxLimit });
+    setSelectedOption(alignSelectOptions[0].label);
+
+    console.log('reset effect 실행');
+  }, [currentBoardType]);
+
+  useEffect(() => {
+    if (firstRunBlockToSetQueryEffect.current) {
+      firstRunBlockToSetQueryEffect.current = false;
+      return;
+    }
     getDataAndSetPageNumbers(() => getPosts(currentBoardType, query));
-  }, [query, currentBoardType]);
+    console.log('query effect 실행');
+  }, [query]);
 
   return (
     <>
