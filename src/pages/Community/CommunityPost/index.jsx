@@ -1,6 +1,8 @@
 import Eye from '@/components/Icons/Eye';
 import HeartInactive from '@/components/Icons/HeartInactive';
 
+import CommentLength from '@/components/CommentLength';
+
 import {
   TableRow,
   PostNumberBox,
@@ -10,16 +12,27 @@ import {
   PostDateBox,
 } from '@/pages/Community/CommunityPost/style';
 
-export default function CommunityPost() {
+export default function CommunityPost({
+  number,
+  title,
+  nickname,
+  createDate,
+  likeCount,
+  postViewCount,
+  numberOfCommentsAndReplies,
+}) {
   return (
     <TableRow>
-      <PostNumberBox>01</PostNumberBox>
-      <PostTitleBox>나랏말싸미 듕귁에 달아</PostTitleBox>
-      <PostNicknameBox>둥그레차</PostNicknameBox>
-      <PostDateBox>2024-08-22</PostDateBox>
+      <PostNumberBox>{number}</PostNumberBox>
+      <PostTitleBox>
+        {title}
+        <CommentLength>{numberOfCommentsAndReplies}</CommentLength>
+      </PostTitleBox>
+      <PostNicknameBox>{nickname}</PostNicknameBox>
+      <PostDateBox>{createDate}</PostDateBox>
       <PostIconBox>
-        <Eye postViewCount={125000} />
-        <HeartInactive likeCount={125000} />
+        <Eye postViewCount={postViewCount} />
+        <HeartInactive likeCount={likeCount} />
       </PostIconBox>
     </TableRow>
   );

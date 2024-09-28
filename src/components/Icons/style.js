@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 import { xsmall_500 } from '@/styles/commonStyle/localTextStyle';
+import { ellipsisStyle } from '@/styles/commonStyle/etc';
+
 export const IconBox = styled.div`
   display: flex;
   align-items: center;
@@ -11,5 +13,6 @@ export const IconBox = styled.div`
       return colors.gray['60'];
     }};
     ${xsmall_500}
+    ${ellipsisStyle}
   }
 `;

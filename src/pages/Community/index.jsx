@@ -17,39 +17,44 @@ import {
   PageWrapper,
 } from '@/pages/Community/style';
 
+import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
 import useSelectorList from '@/hooks/useSelectorList';
 
 import { getPosts } from '@/api/postApi';
 
-export default function Community() {
-  const [tempData] = useState(
-    Array.from({ length: 10 }, (_, index) => {
-      return index;
-    })
-  );
+import { formatDateToPost } from '@/utils/dateFormatting';
+import { communityPostMaxLimit } from '@/utils/itemLimit';
+import { pageViewLimit } from '@/utils/itemLimit';
 
-  const [tempPageNumber, setTempPageNumber] = useState(0);
-  const handlePageClick = (idx) => {
-    setTempPageNumber(idx);
-  };
+export default function Community() {
+  const {
+    items: currentPosts,
+    currentPageNumber,
+    groupedPageNumbers: pageNumbers,
+    getDataAndSetPageNumbers,
+    handlePageNumberClick,
+    handlePrevPageClick,
+    handleNextPageClick,
+    resetPageNumber,
+  } = useFetchAndPaginate({
+    defaultPageNumber: 1,
+    itemMaxLimit: communityPostMaxLimit,
+    pageViewLimit: pageViewLimit,
+  });
 
   const { currentBoardType } = useSelectorList();
 
   useEffect(() => {
-    (async () => {
-      const query = {
-        page: 0,
-        limit: 10,
-      };
-
-      try {
-        const res = await getPosts(currentBoardType, query);
-        console.log(res);
-      } catch (err) {
-        console.error(err);
-      }
-    })();
+    resetPageNumber();
   }, [currentBoardType]);
+
+  useEffect(() => {
+    const query = {
+      page: currentPageNumber,
+      limit: communityPostMaxLimit,
+    };
+    getDataAndSetPageNumbers(() => getPosts(currentBoardType, query));
+  }, [currentBoardType, currentPageNumber]);
 
   return (
     <>
@@ -77,17 +82,35 @@ export default function Community() {
             </TableHeader>
           </thead>
           <tbody>
-            {tempData.map((item) => {
-              return <CommunityPost key={uuid()} />;
+            {currentPosts?.map((post, idx) => {
+              return (
+                <CommunityPost
+                  key={uuid()}
+                  number={String(
+                    (currentPageNumber - 1) * communityPostMaxLimit + (idx + 1)
+                  ).padStart(2, '0')}
+                  title={post.title}
+                  nickname={post.user.nickname}
+                  createDate={formatDateToPost(post.createdAt)}
+                  postViewCount={parseInt(post.viewCounts, 10)}
+                  likeCount={parseInt(post.likeCounts, 10)}
+                  numberOfCommentsAndReplies={parseInt(
+                    post.numberOfCommentsAndReplies,
+                    10
+                  )}
+                />
+              );
             })}
           </tbody>
         </table>
       </TableWrapper>
       <PageWrapper>
         <Pagination
-          pageCountData={tempData}
-          activePageNumber={tempPageNumber}
-          handlePageNumberClick={handlePageClick}
+          pageNumbers={pageNumbers}
+          currentPageNumber={currentPageNumber}
+          handlePageNumberClick={handlePageNumberClick}
+          handlePrevPageClick={handlePrevPageClick}
+          handleNextPageClick={handleNextPageClick}
         />
       </PageWrapper>
     </>

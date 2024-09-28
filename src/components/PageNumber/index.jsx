@@ -24,17 +24,17 @@ const NumberBox = styled.li`
 `;
 
 export default function PageNumber({
-  myPageNumber,
-  activePageNumber = 0,
+  myPageNumber = 1,
+  currentPageNumber = 1,
   handlePageNumberClick = null,
 }) {
   return (
     <NumberBox
       onClick={handlePageNumberClick || null}
       $myPageNumber={myPageNumber}
-      $nowActiveNumber={activePageNumber}
+      $nowActiveNumber={currentPageNumber}
     >
-      {myPageNumber + 1}
+      {myPageNumber}
     </NumberBox>
   );
 }
