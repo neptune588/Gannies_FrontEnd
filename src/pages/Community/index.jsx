@@ -17,6 +17,8 @@ import {
   PageWrapper,
 } from '@/pages/Community/style';
 
+import { alignSelectOptions } from '@/pages/Community/data';
+
 import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
 import useSelectorList from '@/hooks/useSelectorList';
 
@@ -44,17 +46,40 @@ export default function Community() {
 
   const { currentBoardType } = useSelectorList();
 
+  const [optionList] = useState(alignSelectOptions);
+  const [selectedOption, setSelectedOption] = useState(
+    alignSelectOptions[0].label
+  );
+  const [query, setQuery] = useState({
+    page: currentPageNumber,
+    limit: communityPostMaxLimit,
+  });
+  const handleSelectedOption = ({ ...optionalQuery }) => {
+    setQuery({
+      page: currentPageNumber,
+      limit: communityPostMaxLimit,
+      ...optionalQuery,
+    });
+  };
+
   useEffect(() => {
     resetPageNumber();
+    setSelectedOption(alignSelectOptions[0].label);
   }, [currentBoardType]);
 
   useEffect(() => {
-    const query = {
-      page: currentPageNumber,
-      limit: communityPostMaxLimit,
-    };
+    setQuery((prev) => {
+      return {
+        ...prev,
+        page: currentPageNumber,
+      };
+    });
+  }, [currentPageNumber]);
+
+  useEffect(() => {
+    //console.log(query);
     getDataAndSetPageNumbers(() => getPosts(currentBoardType, query));
-  }, [currentBoardType, currentPageNumber]);
+  }, [query, currentBoardType]);
 
   return (
     <>
@@ -67,7 +92,12 @@ export default function Community() {
             <img src={brush} alt='create-button' />
             게시글 작성
           </PostCreateButton>
-          <AlignSelectMenu />
+          <AlignSelectMenu
+            optionList={optionList}
+            handleSelectedOption={handleSelectedOption}
+            selectedOption={selectedOption}
+            setSelectedOption={setSelectedOption}
+          />
         </ContentsAlignBox>
         <table>
           <thead>
@@ -86,9 +116,7 @@ export default function Community() {
               return (
                 <CommunityPost
                   key={uuid()}
-                  number={String(
-                    (currentPageNumber - 1) * communityPostMaxLimit + (idx + 1)
-                  ).padStart(2, '0')}
+                  number={String(post.postId).padStart(2, '0')}
                   title={post.title}
                   nickname={post.user.nickname}
                   createDate={formatDateToPost(post.createdAt)}

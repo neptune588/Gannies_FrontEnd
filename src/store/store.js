@@ -4,7 +4,6 @@ import storage from 'redux-persist/lib/storage/session';
 
 import auth from '@/store/auth';
 import navBarOptionsReducer from '@/store/navBarOptions';
-import communityDataReducer from '@/store/communityData';
 
 const navBarOptionsPersistConfig = {
   key: 'navBarOptions', // 저장소에서 상태를 식별할 키
@@ -20,7 +19,6 @@ const store = configureStore({
   reducer: {
     auth: auth,
     navBarOptions: persistedNavBarOptionsReducer,
-    communityData: communityDataReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

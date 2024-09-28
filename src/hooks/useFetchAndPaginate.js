@@ -127,7 +127,7 @@ export default function useFetchAndPaginate({
       }
     } else if (stepSize === 10) {
       setCurrentPageNumber((prev) => {
-        //마지막 번호일떄 currentPageNumber 유지 시키기
+        //next 10을 눌렀을때 마지막번호보다 높은가? 안높으면 +10 높으면 마지막번호
         const condition = prev + 10;
         return condition > lastPageGroup.at(-1)
           ? lastPageGroup.at(-1)
