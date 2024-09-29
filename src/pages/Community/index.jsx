@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import uuid from 'react-uuid';
 
 import CommunityPost from '@/pages/Community/CommunityPost';
@@ -17,8 +18,11 @@ import {
   PageWrapper,
 } from '@/pages/Community/style';
 
+import { alignSelectOptions } from '@/pages/Community/data';
+
 import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
 import useSelectorList from '@/hooks/useSelectorList';
+import useLoginCheck from '@/hooks/useLoginCheck';
 
 import { getPosts } from '@/api/postApi';
 
@@ -27,6 +31,12 @@ import { communityPostMaxLimit } from '@/utils/itemLimit';
 import { pageViewLimit } from '@/utils/itemLimit';
 
 export default function Community() {
+  const navigate = useNavigate();
+
+  const firstRunBlockToSetCurPageNumberEffect = useRef(true);
+  const firstRunBlockToSetBoardTypeEffect = useRef(true);
+  const firstRunBlockToSetQueryEffect = useRef(true);
+
   const {
     items: currentPosts,
     currentPageNumber,
@@ -42,19 +52,72 @@ export default function Community() {
     pageViewLimit: pageViewLimit,
   });
 
+  const { checkIsLogin } = useLoginCheck();
   const { currentBoardType } = useSelectorList();
 
+  const [optionList] = useState(alignSelectOptions);
+  const [selectedOption, setSelectedOption] = useState(
+    alignSelectOptions[0].label
+  );
+  const [query, setQuery] = useState({
+    page: currentPageNumber,
+    limit: communityPostMaxLimit,
+  });
+
+  const handleSelectedOption = ({ ...optionalQuery }) => {
+    setQuery({
+      page: currentPageNumber,
+      limit: communityPostMaxLimit,
+      ...optionalQuery,
+    });
+  };
+
+  const handlePostCreateClick = () => {
+    if (checkIsLogin()) {
+      navigate('/community/create-community-post');
+    }
+  };
+
   useEffect(() => {
+    getDataAndSetPageNumbers(() => getPosts(currentBoardType, query));
+    //console.log('초기 실행');
+  }, []);
+
+  useEffect(() => {
+    if (firstRunBlockToSetCurPageNumberEffect.current) {
+      firstRunBlockToSetCurPageNumberEffect.current = false;
+      return;
+    }
+    setQuery((prev) => {
+      return {
+        ...prev,
+        page: currentPageNumber,
+      };
+    });
+    //console.log('pageNumber change effect 실행');
+  }, [currentPageNumber]);
+
+  useEffect(() => {
+    if (firstRunBlockToSetBoardTypeEffect.current) {
+      firstRunBlockToSetBoardTypeEffect.current = false;
+      return;
+    }
+
     resetPageNumber();
+    setQuery({ page: currentPageNumber, limit: communityPostMaxLimit });
+    setSelectedOption(alignSelectOptions[0].label);
+
+    //console.log('reset effect 실행');
   }, [currentBoardType]);
 
   useEffect(() => {
-    const query = {
-      page: currentPageNumber,
-      limit: communityPostMaxLimit,
-    };
+    if (firstRunBlockToSetQueryEffect.current) {
+      firstRunBlockToSetQueryEffect.current = false;
+      return;
+    }
     getDataAndSetPageNumbers(() => getPosts(currentBoardType, query));
-  }, [currentBoardType, currentPageNumber]);
+    //console.log('query effect 실행');
+  }, [query]);
 
   return (
     <>
@@ -63,11 +126,16 @@ export default function Community() {
       </CommunityBanner>
       <TableWrapper>
         <ContentsAlignBox>
-          <PostCreateButton to='/community/create-community-post'>
+          <PostCreateButton onClick={handlePostCreateClick}>
             <img src={brush} alt='create-button' />
             게시글 작성
           </PostCreateButton>
-          <AlignSelectMenu />
+          <AlignSelectMenu
+            optionList={optionList}
+            handleSelectedOption={handleSelectedOption}
+            selectedOption={selectedOption}
+            setSelectedOption={setSelectedOption}
+          />
         </ContentsAlignBox>
         <table>
           <thead>
@@ -86,9 +154,7 @@ export default function Community() {
               return (
                 <CommunityPost
                   key={uuid()}
-                  number={String(
-                    (currentPageNumber - 1) * communityPostMaxLimit + (idx + 1)
-                  ).padStart(2, '0')}
+                  number={String(post.postId).padStart(2, '0')}
                   title={post.title}
                   nickname={post.user.nickname}
                   createDate={formatDateToPost(post.createdAt)}

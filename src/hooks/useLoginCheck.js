@@ -1,28 +1,51 @@
-import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import axios from 'axios';
-import { handleLogin, handleLogout } from '@/store/auth';
 
-const useCheckLogin = () => {
+import { getSessionStatus } from '@/api/authApi';
+import { setLogout } from '@/store/auth';
+
+import useSelectorList from '@/hooks/useSelectorList';
+
+import { userSignOut } from '@/api/authApi';
+
+const useLoginCheck = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const checkLoginStatus = async () => {
-      try {
-        const response = await axios.get('/api/check-login');
-        if (response.status === 200) {
-          dispatch(handleLogin(true));
-        } else {
-          dispatch(handleLogout());
-        }
-      } catch (error) {
-        console.error('Login status check failed', error);
-        dispatch(handleLogout());
-      }
-    };
+  const { isLogin } = useSelectorList();
 
-    checkLoginStatus();
-  }, [dispatch]);
+  const checkLoginStatus = async () => {
+    try {
+      const response = await getSessionStatus();
+      const { expires } = response.data;
+
+      if (expires) {
+        await userSignOut();
+        dispatch(setLogout());
+
+        alert('접속이 만료되었습니다. 다시 로그인 해주세요.');
+        navigate('/sign-in');
+      } else {
+        return true;
+      }
+    } catch (error) {
+      console.error('Login status check failed', error);
+      dispatch(setLogout());
+    }
+  };
+
+  const checkIsLogin = () => {
+    if (!isLogin) {
+      alert('로그인을 하셔야 이용이 가능합니다!');
+      navigate('/sign-in');
+    } else {
+      return checkLoginStatus();
+    }
+  };
+
+  return {
+    checkIsLogin,
+  };
 };
 
-export default useCheckLogin;
+export default useLoginCheck;

@@ -5,7 +5,6 @@ import { theme } from '@/styles/theme';
 import { router } from '@/routes/router';
 
 function App() {
-  console.log(123);
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />

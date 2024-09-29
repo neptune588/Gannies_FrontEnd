@@ -23,7 +23,7 @@ import {
   CommentCreateBox,
 } from '@/pages/PostDetail/style';
 
-import { useEventHandler } from '@/hooks/useEventHandler';
+import useEventHandler from '@/hooks/useEventHandler';
 
 export default function PostDetail() {
   const [commentPageData] = useState(

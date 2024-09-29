@@ -1,16 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const auth = createSlice({
+const initialState = {
+  isLogin: false,
+  userId: null,
+};
+
+//리듀서에서 return 하는 값은 해당 리듀서의 새로운 상태
+const authSlice = createSlice({
   name: 'auth',
-  initialState: {
-    isLogin: false,
-  },
+  initialState,
   reducers: {
-    handleLogin(state, action) {
-      state.isLogin = action.payload;
+    setLogin(state, action) {
+      const { userId } = action.payload;
+
+      state.isLogin = true;
+      state.userId = userId;
+    },
+    setLogout() {
+      return initialState;
     },
   },
 });
 
-export const { handleLogin } = auth.actions;
-export default auth.reducer;
+export const { setLogin, setLogout } = authSlice.actions;
+export default authSlice.reducer;

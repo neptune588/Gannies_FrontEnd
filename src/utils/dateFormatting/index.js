@@ -3,7 +3,7 @@ export const formatDateToPost = (date) => {
 
   const year = createDate.getFullYear();
   const month = String(createDate.getMonth() + 1).padStart(2, '0');
-  const day = String(createDate.getDay()).padStart(2, '0');
+  const day = String(createDate.getDate()).padStart(2, '0');
 
   return `${year}-${month}-${day}`;
 };

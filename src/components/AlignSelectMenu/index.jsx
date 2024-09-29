@@ -63,14 +63,10 @@ export default function AlignSelectMenu({
   optionList,
   selectedOption,
   setSelectedOption,
+  handleSelectedOption,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const toggleDropdown = () => setIsOpen((prev) => !prev);
-
-  const handleSelectedOption = (option) => {
-    setSelectedOption(option);
-    setIsOpen(false);
-  };
 
   return (
     <SelectContainer>
@@ -81,8 +77,16 @@ export default function AlignSelectMenu({
       {isOpen && (
         <Dropdown>
           {optionList.map((option) => (
-            <button key={uuid()} onClick={() => handleSelectedOption(option)}>
-              {option}
+            <button
+              key={uuid()}
+              onClick={() => {
+                setSelectedOption(option.label);
+                setIsOpen(false);
+
+                handleSelectedOption(option.query);
+              }}
+            >
+              {option.label}
             </button>
           ))}
         </Dropdown>

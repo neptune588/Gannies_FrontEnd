@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 export default function useFetchAndPaginate({
   defaultPageNumber,
   itemMaxLimit,
   pageViewLimit,
 }) {
+  const firstRunBlockToSetPageTotalEffect = useRef(true);
+
   const [items, setItems] = useState([]);
   const [currentPageNumber, setCurrentPageNumber] = useState(defaultPageNumber);
   //전체 페이지 배열 [[][][][]...의 형태]
@@ -58,7 +60,6 @@ export default function useFetchAndPaginate({
         });
         return pageGroups;
       });
-      setGroupedPageNumbers(pageTotalNumbers[currentGroupOrder]);
     } catch (error) {
       console.error(error);
     }
@@ -127,7 +128,7 @@ export default function useFetchAndPaginate({
       }
     } else if (stepSize === 10) {
       setCurrentPageNumber((prev) => {
-        //마지막 번호일떄 currentPageNumber 유지 시키기
+        //next 10을 눌렀을때 마지막번호보다 높은가? 안높으면 +10 높으면 마지막번호
         const condition = prev + 10;
         return condition > lastPageGroup.at(-1)
           ? lastPageGroup.at(-1)
@@ -141,17 +142,22 @@ export default function useFetchAndPaginate({
     }
   };
 
-  useEffect(() => {
-    setGroupedPageNumbers(pageTotalNumbers[currentGroupOrder]);
-    console.log(currentGroupOrder);
-  }, [pageTotalNumbers, currentGroupOrder]);
-
   const resetPageNumber = () => {
     setPageTotalNumbers([]);
     setGroupedPageNumbers([]);
     setCurrentGroupOrder(0);
     setCurrentPageNumber(1);
   };
+
+  useEffect(() => {
+    if (firstRunBlockToSetPageTotalEffect.current) {
+      firstRunBlockToSetPageTotalEffect.current = false;
+      return;
+    }
+
+    setGroupedPageNumbers(pageTotalNumbers[currentGroupOrder]);
+    console.log('pageGroupNumber change effect 실행');
+  }, [pageTotalNumbers, currentGroupOrder]);
 
   return {
     items,

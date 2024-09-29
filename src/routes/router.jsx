@@ -25,6 +25,7 @@ import MemberManagement from '@/pages/Admin/MemberManagement';
 import UserApproval from '@/pages/Admin/UserApproval';
 import PostManagement from '@/pages/Admin/PostManagement';
 import SignUp from '@/pages/SignUp/SignUp';
+import LoadingCircle from '@/components/LoadingCircle';
 
 export const router = createBrowserRouter([
   {
@@ -144,5 +145,9 @@ export const router = createBrowserRouter([
         element: <Error404 />,
       },
     ],
+  },
+  {
+    element: <LoadingCircle />,
+    path: '/test',
   },
 ]);
