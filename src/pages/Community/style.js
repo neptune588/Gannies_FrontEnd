@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 
 import { primaryColorBoxStyle } from '@/styles/commonStyle/box';
 import { postsHeaderStyle } from '@/styles/commonStyle/etc';
@@ -13,7 +12,7 @@ const ContentsAlignBox = styled.div`
   margin-bottom: 15px;
 `;
 
-const PostCreateButton = styled(Link)`
+const PostCreateButton = styled.button`
   ${primaryColorBoxStyle}
   ${small_600}
   display: flex;

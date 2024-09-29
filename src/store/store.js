@@ -1,13 +1,19 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { persistReducer, persistStore } from 'redux-persist';
-import storage from 'redux-persist/lib/storage/session';
+import sessionStorage from 'redux-persist/lib/storage/session';
+import localStorage from 'redux-persist/lib/storage';
 
-import auth from '@/store/auth';
+import authReducer from '@/store/auth';
 import navBarOptionsReducer from '@/store/navBarOptions';
 
 const navBarOptionsPersistConfig = {
   key: 'navBarOptions', // 저장소에서 상태를 식별할 키
-  storage,
+  storage: sessionStorage,
+};
+
+const authPersistConfig = {
+  key: 'auth', // 저장소에서 상태를 식별할 키
+  storage: localStorage,
 };
 
 const persistedNavBarOptionsReducer = persistReducer(
@@ -15,9 +21,11 @@ const persistedNavBarOptionsReducer = persistReducer(
   navBarOptionsReducer
 );
 
+const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
+
 const store = configureStore({
   reducer: {
-    auth: auth,
+    auth: persistedAuthReducer,
     navBarOptions: persistedNavBarOptionsReducer,
   },
   middleware: (getDefaultMiddleware) =>

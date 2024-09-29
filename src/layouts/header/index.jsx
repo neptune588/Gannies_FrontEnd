@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import search from '@/assets/icons/search/search_default.svg';
 import logo from '@/assets/images/logo.png';
@@ -13,20 +14,23 @@ import {
   LogoutButton,
   MypageButton,
 } from '@/layouts/Header/style';
-import { userSignOut } from '@/api/authApi';
+
+import useSelectorList from '@/hooks/useSelectorList';
 
 import { setBoardType } from '@/store/navBarOptions';
-import { useCookies } from 'react-cookie';
-import { useDispatch } from 'react-redux';
+import { setLogout } from '@/store/auth';
+
+import { userSignOut } from '@/api/authApi';
 
 function Header() {
   const navigate = useNavigate();
   const location = useLocation().pathname;
   const dispatch = useDispatch();
-  const [cookies, setCookie, removeCookie] = useCookies(['isLogin']);
 
   const [text, setText] = useState('');
   const [showSearchBar, setShowSearchBar] = useState(false);
+
+  const { isLogin } = useSelectorList();
 
   useEffect(() => {
     if (location.startsWith('/community') || location.startsWith('/mypage')) {
@@ -42,10 +46,8 @@ function Header() {
 
   const handleLogout = async () => {
     try {
-      const response = await userSignOut();
-      if (response.status === 200) {
-        removeCookie('isLogin', { path: '/' });
-      }
+      await userSignOut();
+      dispatch(setLogout());
     } catch (error) {
       console.log(error);
     }
@@ -78,7 +80,7 @@ function Header() {
           />
         </form>
       )}
-      {cookies.isLogin ? (
+      {isLogin ? (
         <>
           <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
           <span>|</span>

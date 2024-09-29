@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import uuid from 'react-uuid';
 
 import CommunityPost from '@/pages/Community/CommunityPost';
@@ -21,6 +22,7 @@ import { alignSelectOptions } from '@/pages/Community/data';
 
 import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
 import useSelectorList from '@/hooks/useSelectorList';
+import useLoginCheck from '@/hooks/useLoginCheck';
 
 import { getPosts } from '@/api/postApi';
 
@@ -29,6 +31,8 @@ import { communityPostMaxLimit } from '@/utils/itemLimit';
 import { pageViewLimit } from '@/utils/itemLimit';
 
 export default function Community() {
+  const navigate = useNavigate();
+
   const firstRunBlockToSetCurPageNumberEffect = useRef(true);
   const firstRunBlockToSetBoardTypeEffect = useRef(true);
   const firstRunBlockToSetQueryEffect = useRef(true);
@@ -48,6 +52,7 @@ export default function Community() {
     pageViewLimit: pageViewLimit,
   });
 
+  const { checkIsLogin } = useLoginCheck();
   const { currentBoardType } = useSelectorList();
 
   const [optionList] = useState(alignSelectOptions);
@@ -67,9 +72,15 @@ export default function Community() {
     });
   };
 
+  const handlePostCreateClick = () => {
+    if (checkIsLogin()) {
+      navigate('/community/create-community-post');
+    }
+  };
+
   useEffect(() => {
     getDataAndSetPageNumbers(() => getPosts(currentBoardType, query));
-    console.log('초기 실행');
+    //console.log('초기 실행');
   }, []);
 
   useEffect(() => {
@@ -83,7 +94,7 @@ export default function Community() {
         page: currentPageNumber,
       };
     });
-    console.log('pageNumber change effect 실행');
+    //console.log('pageNumber change effect 실행');
   }, [currentPageNumber]);
 
   useEffect(() => {
@@ -96,7 +107,7 @@ export default function Community() {
     setQuery({ page: currentPageNumber, limit: communityPostMaxLimit });
     setSelectedOption(alignSelectOptions[0].label);
 
-    console.log('reset effect 실행');
+    //console.log('reset effect 실행');
   }, [currentBoardType]);
 
   useEffect(() => {
@@ -105,7 +116,7 @@ export default function Community() {
       return;
     }
     getDataAndSetPageNumbers(() => getPosts(currentBoardType, query));
-    console.log('query effect 실행');
+    //console.log('query effect 실행');
   }, [query]);
 
   return (
@@ -115,7 +126,7 @@ export default function Community() {
       </CommunityBanner>
       <TableWrapper>
         <ContentsAlignBox>
-          <PostCreateButton to='/community/create-community-post'>
+          <PostCreateButton onClick={handlePostCreateClick}>
             <img src={brush} alt='create-button' />
             게시글 작성
           </PostCreateButton>
