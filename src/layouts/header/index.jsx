@@ -18,6 +18,7 @@ import { userSignOut } from '@/api/authApi';
 import { setBoardType } from '@/store/navBarOptions';
 import { useCookies } from 'react-cookie';
 import { useDispatch } from 'react-redux';
+import { handleModal } from '@/store/modalState';
 
 function Header() {
   const navigate = useNavigate();
@@ -45,6 +46,7 @@ function Header() {
       const response = await userSignOut();
       if (response.status === 200) {
         removeCookie('isLogin', { path: '/' });
+        dispatch(handleModal({ field: 'isApproval', value: false }));
       }
     } catch (error) {
       console.log(error);

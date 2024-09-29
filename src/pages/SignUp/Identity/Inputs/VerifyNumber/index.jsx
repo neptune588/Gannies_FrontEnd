@@ -25,7 +25,11 @@ function VerifyNumber({ allow, handleAllow }) {
   const [buttonAllow, setButtonAllow] = useState(false);
   const timerTime = 180;
   const { time, start, stop, reset } = useTimer(timerTime);
-  const instruction = ['필수 정보입니다', '인증번호가 일치하지 않습니다'];
+  const instruction = [
+    '필수 정보입니다',
+    '인증번호가 일치하지 않습니다',
+    '최대 인증 시도 횟수(5회)에 도달했습니다. 인증을 처음부터 다시 시도해주세요.',
+  ];
   const [instructionIndex, setInstructionIndex] = useState(undefined);
   const { isFocused, handleIsFocused } = useInputBorder(undefined);
   const { dataToSend } = useOutletContext();
@@ -52,18 +56,19 @@ function VerifyNumber({ allow, handleAllow }) {
     try {
       const response = await sendPhoneNumberVerify({
         phoneNumber: dataToSend.phoneNumber,
-        code: '000000',
+        code: verifyNumber,
       });
-      console.log(verifyNumber);
-      console.log(response);
+      if (response.status === 200) {
+        handleAllow(2, true);
+      }
     } catch (error) {
-      alert('error');
-    }
-    if (verifyNumber === '000000') {
-      handleAllow(2, true);
-    } else {
-      handleAllow(2, false);
-      setInstructionIndex(1);
+      if (error.response.data.statusCode === 429) {
+        handleAllow(2, false);
+        setInstructionIndex(2);
+      } else {
+        handleAllow(2, false);
+        setInstructionIndex(1);
+      }
     }
   };
 

@@ -8,9 +8,8 @@ import {
   NicknameEditBox,
   EditSaveAndAccountDeleteBox,
 } from '@/pages/MyPage/PersonalInfo/style';
-import { handleModal } from '@/store/modalState';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 export default function PersonalInfo() {
   const [nickname, setNickname] = useState('');
@@ -21,7 +20,6 @@ export default function PersonalInfo() {
     email: '',
   });
   const [isEditable, setIsEditable] = useState(false);
-  const dispatch = useDispatch();
   const modalState = useSelector((state) => state.modalState);
 
   useEffect(() => {
@@ -100,7 +98,7 @@ export default function PersonalInfo() {
           </NicknameEditBox>
           <PersonalInfoBox>
             <p>이름</p>
-            <p>{info.username}</p>
+            <p>{info.name}</p>
           </PersonalInfoBox>
           <PersonalInfoBox>
             <p>휴대폰번호</p>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import PostContents from '@/pages/MyPage/PostContents';
 import AlignSelectMenu from '@/components/AlignSelectMenu';
@@ -9,11 +9,21 @@ import { TitleBox, Title, PageWrapper } from '@/pages/MyPage/WrittenPost/style';
 import { posts } from '@/pages/Home/data';
 
 import { useEventHandler } from '@/hooks/useEventHandler';
+import { getUserScraps } from '@/api/userApi';
 
 export default function ScrappedPost() {
   const [postData] = useState(posts);
   const [selectedOption, setSelectedOption] = useState('최신순');
   const optionList = ['최신순', '인기순'];
+
+  useEffect(() => {
+    const fetch = async () => {
+      const response = await getUserScraps({ page: 1 });
+      console.log(response);
+    };
+
+    fetch();
+  }, []);
 
   const [pageData] = useState(
     Array.from({ length: 10 }, (_, index) => {

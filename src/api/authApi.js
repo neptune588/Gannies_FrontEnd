@@ -146,3 +146,10 @@ export const checkSessionStatus = async () => {
   const response = await cookieApi.get(url);
   return response;
 };
+
+//회원 상태 확인
+export const checkMembershipStatus = async () => {
+  const url = `/auth/user-status`;
+  const response = await cookieApi.get(url);
+  return response;
+};

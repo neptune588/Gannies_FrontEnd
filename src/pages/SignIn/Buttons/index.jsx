@@ -12,6 +12,7 @@ import { userSignIn } from '@/api/authApi';
 import { useCookies } from 'react-cookie';
 import { useDispatch } from 'react-redux';
 import { handleModal } from '@/store/modalState';
+import { handleAuth } from '@/store/auth';
 // import axios from 'axios';
 
 function Buttons({ email, password, setLoginError }) {
@@ -30,6 +31,12 @@ function Buttons({ email, password, setLoginError }) {
       console.log(response);
       if (response.status === 200) {
         setIsLoginCookie('isLogin', true, { path: '/' });
+        dispatch(
+          handleAuth({
+            field: 'membershipStatus',
+            value: response.data.user.membershipStatus,
+          })
+        );
         if (response.data.user.membershipStatus === 'email_verified') {
           dispatch(handleModal({ field: 'isApproval', value: true }));
           navigate('/mypage/profile/edit');

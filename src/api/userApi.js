@@ -34,3 +34,10 @@ export const getUserComments = async (params) => {
   const response = await cookieApi.get(url, { params });
   return response;
 };
+
+//본인 스크랩 페이지 단위로 조회
+export const getUserScraps = async (params) => {
+  const url = '/me/scraps';
+  const response = await cookieApi.get(url, { params });
+  return response;
+};
