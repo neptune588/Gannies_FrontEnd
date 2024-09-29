@@ -18,7 +18,7 @@ import {
   PageWrapper,
 } from '@/pages/Community/style';
 
-import { alignSelectOptions } from '@/pages/Community/data';
+import { communityPageAlignSelectOptions } from '@/components/AlignSelectMenu/data';
 
 import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
 import useSelectorList from '@/hooks/useSelectorList';
@@ -55,9 +55,9 @@ export default function Community() {
   const { checkIsLogin } = useLoginCheck();
   const { currentBoardType } = useSelectorList();
 
-  const [optionList] = useState(alignSelectOptions);
+  const [optionList] = useState(communityPageAlignSelectOptions);
   const [selectedOption, setSelectedOption] = useState(
-    alignSelectOptions[0].label
+    communityPageAlignSelectOptions[0].label
   );
   const [query, setQuery] = useState({
     page: currentPageNumber,
@@ -105,7 +105,7 @@ export default function Community() {
 
     resetPageNumber();
     setQuery({ page: currentPageNumber, limit: communityPostMaxLimit });
-    setSelectedOption(alignSelectOptions[0].label);
+    setSelectedOption(communityPageAlignSelectOptions[0].label);
 
     //console.log('reset effect 실행');
   }, [currentBoardType]);

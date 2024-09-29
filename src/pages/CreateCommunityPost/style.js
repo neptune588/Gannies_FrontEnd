@@ -64,7 +64,6 @@ const DataInputBox = styled.div`
     margin-right: 45px;
   }
 
-  > div,
   > label {
     ${defaultBorderBoxStyle}
     display: flex;
@@ -77,22 +76,6 @@ const DataInputBox = styled.div`
       return typo.size.sm;
     }};
     cursor: pointer;
-  }
-
-  > div {
-    color: ${({ theme: { colors } }) => {
-      return colors.gray['90'];
-    }};
-    font-weight: ${({ theme: { typo } }) => {
-      return typo.weight.regular;
-    }};
-    > img {
-      width: 24px;
-      height: 24px;
-    }
-  }
-
-  > label {
     > input {
       width: 90%;
       font-size: inherit;

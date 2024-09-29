@@ -1,7 +1,7 @@
 //DESC postID 내림차순 (큰것부터 작은)
 //ASC postID 오름차순 (큰것부터 작은)
 
-export const alignSelectOptions = [
+export const communityPageAlignSelectOptions = [
   {
     label: '최신 순',
     query: {

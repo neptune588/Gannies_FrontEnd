@@ -1,7 +1,11 @@
+import { useNavigate } from 'react-router-dom';
+
 import styled from 'styled-components';
 import rightArrow from '@/assets/icons/arrows/chevron_right.svg';
 
 import { small_500 } from '@/styles/commonStyle/localTextStyle';
+
+import useSelectorList from '@/hooks/useSelectorList';
 
 const CategoryBox = styled.ul`
   display: flex;
@@ -23,11 +27,27 @@ const CategoryList = styled.li`
 `;
 
 export default function PageCategory() {
+  const navigate = useNavigate();
+
+  const { bannerTitle } = useSelectorList();
   return (
     <CategoryBox>
-      <CategoryList>메인</CategoryList>
+      <CategoryList
+        onClick={() => {
+          navigate('/');
+        }}
+      >
+        메인
+      </CategoryList>
       <img src={rightArrow} alt='right-arrow' />
-      <CategoryList $isActiveCategory={false}>실습정보</CategoryList>
+      <CategoryList
+        $isActiveCategory={false}
+        onClick={() => {
+          navigate('/community');
+        }}
+      >
+        {bannerTitle}
+      </CategoryList>
       <img src={rightArrow} alt='right-arrow' />
       <CategoryList $isActiveCategory={true}>게시글 작성</CategoryList>
     </CategoryBox>

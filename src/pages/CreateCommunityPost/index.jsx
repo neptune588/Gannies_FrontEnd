@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 
 import CommunityBanner from '@/components/CommunityBanner';
 import CommunityBannerText from '@/components/CommunityBannerText';
-import PageCategory from '@/components/PageCategory';
+import PageCategory from '@/pages/CreateCommunityPost/PageCategory';
 import CategoryTitle from '@/pages/CreateCommunityPost/CategoryTitle';
+import CategorySelectMenus from '@/pages/CreateCommunityPost/CategorySelectMenus';
 import Buttons from '@/pages/CreateCommunityPost/Buttons';
 import PostCreateEditor from '@/pages/CreateCommunityPost/PostCreateEditor';
 import HospitalSearchModal from '@/pages/CreateCommunityPost/HospitalSearchModal';
 
-import bottomArrow from '@/assets/icons/arrows/chevron_down.svg';
 import searchIcon from '@/assets/icons/search/search_default.svg';
 
 import {
@@ -23,13 +23,15 @@ import {
   ButtonBox,
 } from '@/pages/CreateCommunityPost/style';
 
-import { categoryData } from '@/pages/CreateCommunityPost/data';
+import { defaultCategorySelectOptions } from '@/pages/CreateCommunityPost/CategorySelectMenus/data';
+import { adminCategorySelectOptions } from '@/pages/CreateCommunityPost/CategorySelectMenus/data';
 
 import useLoginCheck from '@/hooks/useLoginCheck';
 import useSelectorList from '@/hooks/useSelectorList';
 import useEventHandler from '@/hooks/useEventHandler';
 
 import { createPost } from '@/api/postApi';
+import { checkAdminStatus } from '@/api/authApi';
 
 export default function CreateCommunityPost() {
   //제목 - 한글 1글자 이상은 최소로 있어야 한다. 최대는 50자 이하
@@ -37,14 +39,21 @@ export default function CreateCommunityPost() {
 
   const editorRef = useRef(null);
   const imageButtonRef = useRef(null);
+  const firstRunBlockToSetSelectOptionEffect = useRef(true);
 
-  const [selectCategory] = useState(categoryData);
+  const [selectOptions, setSelectOptions] = useState(
+    defaultCategorySelectOptions
+  );
+  const [selectedOption, setSelectedOption] = useState(
+    selectOptions[0].content
+  );
 
   const [previewImage, setPreviewImage] = useState('');
   const [totalImageType, setTotalImageType] = useState([]);
 
   const [modalState, setModalState] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { currentBoardType } = useSelectorList();
   const { changeValue: titleValue, handleChange: handleTitleValueChange } =
@@ -55,6 +64,11 @@ export default function CreateCommunityPost() {
     useEventHandler({
       changeDefaultValue: '',
     });
+  const { changeValue: currentPath, handleChange: handleSelectedOption } =
+    useEventHandler({
+      changeDefaultValue: selectOptions[0].path,
+    });
+
   const { checkIsLogin } = useLoginCheck();
 
   //form 제출 로직에서 적용할것들
@@ -133,10 +147,7 @@ export default function CreateCommunityPost() {
       };
 
       try {
-        const res = await createPost(
-          currentBoardType,
-          JSON.stringify(postData)
-        );
+        const res = await createPost(currentPath, JSON.stringify(postData));
 
         console.log(res);
       } catch (err) {
@@ -147,9 +158,28 @@ export default function CreateCommunityPost() {
   };
 
   useEffect(() => {
-    checkIsLogin();
+    (async () => {
+      if (checkIsLogin()) {
+        try {
+          const res = await checkAdminStatus();
+          const { isAdmin } = res.data;
+
+          isAdmin && setSelectOptions(adminCategorySelectOptions);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    })();
   }, []);
 
+  useEffect(() => {
+    if (firstRunBlockToSetSelectOptionEffect.current) {
+      firstRunBlockToSetSelectOptionEffect.current = false;
+      return;
+    }
+
+    setSelectedOption(selectOptions[0].content);
+  }, [selectOptions]);
   /* useEffect(() => {
     if (editorRef.current && previewImage !== '') {
       editorRef.current.insertContent(`<img src="${previewImage}" />`);
@@ -186,26 +216,25 @@ export default function CreateCommunityPost() {
             </InputBox>
             <DataInputWrapper>
               <div>
-                <DataInputBox>
-                  <p>*카테고리</p>
-                  <div>
-                    <p>{selectCategory[0].content}</p>
-                    <img src={bottomArrow} alt={'select-arrow'} />
-                  </div>
-                </DataInputBox>
+                <CategorySelectMenus
+                  optionList={selectOptions}
+                  selectedOption={selectedOption}
+                  setSelectedOption={setSelectedOption}
+                  handleSelectedOption={handleSelectedOption}
+                />
               </div>
-              {currentBoardType === 'practice' ||
-                (currentBoardType === 'job' && (
-                  <div>
-                    <DataInputBox>
-                      <p>*병원정보</p>
-                      <label>
-                        <input placeholder='병원찾기' maxLength={30} />
-                        <img src={searchIcon} alt='search-icon' />
-                      </label>
-                    </DataInputBox>
-                  </div>
-                ))}
+              {(currentBoardType === 'practice' ||
+                currentBoardType === 'job') && (
+                <div>
+                  <DataInputBox>
+                    <p>*병원정보</p>
+                    <label>
+                      <input placeholder='병원찾기' maxLength={30} />
+                      <img src={searchIcon} alt='search-icon' />
+                    </label>
+                  </DataInputBox>
+                </div>
+              )}
             </DataInputWrapper>
             <PostCreateEditor
               editorRef={editorRef}
