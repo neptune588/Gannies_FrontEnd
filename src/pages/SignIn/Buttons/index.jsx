@@ -10,12 +10,15 @@ import {
 } from '@/pages/SignIn/Buttons/style';
 import { userSignIn } from '@/api/authApi';
 import { useCookies } from 'react-cookie';
+import { useDispatch } from 'react-redux';
+import { handleModal } from '@/store/modalState';
 // import axios from 'axios';
 
 function Buttons({ email, password, setLoginError }) {
   const [autoLogin, setAutoLogin] = useState(false);
   const navigate = useNavigate();
-  const [cookies, setCookie] = useCookies(['isLogin']);
+  const [isLoginCookies, setIsLoginCookie] = useCookies(['isLogin']);
+  const dispatch = useDispatch();
 
   const handleAutoLogin = () => {
     setAutoLogin(!autoLogin);
@@ -24,9 +27,13 @@ function Buttons({ email, password, setLoginError }) {
   const login = async () => {
     try {
       const response = await userSignIn({ email: email, password: password });
+      console.log(response);
       if (response.status === 200) {
-        setCookie('isLogin', true, { path: '/' });
-        navigate('/');
+        setIsLoginCookie('isLogin', true, { path: '/' });
+        if (response.data.user.membershipStatus === 'email_verified') {
+          dispatch(handleModal({ field: 'isApproval', value: true }));
+          navigate('/mypage/profile/edit');
+        }
       }
     } catch (error) {
       setLoginError(true);

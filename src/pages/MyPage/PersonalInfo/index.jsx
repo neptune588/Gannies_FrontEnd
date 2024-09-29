@@ -1,5 +1,6 @@
 import { userDelete } from '@/api/authApi';
 import { changeUserNickname, getUserInfo } from '@/api/userApi';
+import IsApproval from '@/components/Modal/IsApproval';
 import {
   Title,
   PersonalInfoWrapper,
@@ -7,7 +8,9 @@ import {
   NicknameEditBox,
   EditSaveAndAccountDeleteBox,
 } from '@/pages/MyPage/PersonalInfo/style';
+import { handleModal } from '@/store/modalState';
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function PersonalInfo() {
   const [nickname, setNickname] = useState('');
@@ -18,6 +21,8 @@ export default function PersonalInfo() {
     email: '',
   });
   const [isEditable, setIsEditable] = useState(false);
+  const dispatch = useDispatch();
+  const modalState = useSelector((state) => state.modalState);
 
   useEffect(() => {
     const getInfo = async () => {
@@ -70,8 +75,11 @@ export default function PersonalInfo() {
     console.log(response);
   };
 
+  console.log(modalState.isApproval);
+
   return (
     <>
+      {modalState.isApproval && <IsApproval />}
       <Title>회원정보수정</Title>
       <PersonalInfoWrapper>
         <form>

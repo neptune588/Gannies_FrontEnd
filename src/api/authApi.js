@@ -10,7 +10,7 @@ export const checkEmailDuplicate = async (email) => {
 //닉네임 중복 확인
 export const checkNicknameDuplicate = async (nickname) => {
   const url = '/users/check/nickname';
-  const response = await api.post(url, { nickname: nickname });
+  const response = await api.post(url, nickname);
   return response;
 };
 
@@ -31,7 +31,7 @@ export const userDelete = async () => {
 //로그인
 export const userSignIn = async (signInData) => {
   const url = '/auth/sign-in';
-  const response = await api.post(url, signInData, { withCredentials: true });
+  const response = await cookieApi.post(url, signInData);
   return response;
 };
 
@@ -86,6 +86,7 @@ export const findEmail = async (emailFindData) => {
 
 //비밀번호 찾기
 export const findPassWord = async (pwFindData) => {
+  console.log(pwFindData);
   const url = '/auth/password';
   const response = await api.post(url, pwFindData);
   return response;
@@ -136,5 +137,12 @@ export const certificatesImageUpload = async (
 export const getOCR = async (userId) => {
   const url = `/me/${userId}/name-extraction`;
   const response = await api.post(url);
+  return response;
+};
+
+//세션 만료 여부 확인
+export const checkSessionStatus = async () => {
+  const url = `/auth/session-status`;
+  const response = await cookieApi.get(url);
   return response;
 };

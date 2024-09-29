@@ -34,7 +34,7 @@ function Nickname({ allow, handleAllow }) {
     const fetchData = async () => {
       try {
         if (isValid && !checkDuplicate) {
-          const response = await checkNicknameDuplicate(nickname);
+          const response = await checkNicknameDuplicate({ nickname: nickname });
           if (response.status === 201) {
             setCheckDuplicate(true);
             if (!response.data.available) {
@@ -49,7 +49,7 @@ function Nickname({ allow, handleAllow }) {
         console.error('Error checking email duplicate:', error);
       }
     };
-
+    if (!isValid) handleAllow(0, false);
     fetchData();
   }, [isValid, checkDuplicate]);
 

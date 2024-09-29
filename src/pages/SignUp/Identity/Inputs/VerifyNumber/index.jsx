@@ -15,6 +15,8 @@ import {
 } from '@/pages/SignUp/Identity/Inputs/VerifyNumber/style';
 import { useTimer } from '@/hooks/useTimer';
 import { useInputBorder } from '@/hooks/useInputBorder';
+import { sendPhoneNumberVerify } from '@/api/authApi';
+import { useOutletContext } from 'react-router-dom';
 // import { useSelector } from 'react-redux';
 // import axios from 'axios';
 
@@ -23,10 +25,10 @@ function VerifyNumber({ allow, handleAllow }) {
   const [buttonAllow, setButtonAllow] = useState(false);
   const timerTime = 180;
   const { time, start, stop, reset } = useTimer(timerTime);
-  // const phoneNumber = useSelector((state) => state.signUpSlice.phoneNumber);
   const instruction = ['필수 정보입니다', '인증번호가 일치하지 않습니다'];
   const [instructionIndex, setInstructionIndex] = useState(undefined);
   const { isFocused, handleIsFocused } = useInputBorder(undefined);
+  const { dataToSend } = useOutletContext();
 
   useEffect(() => {
     if (allow[2]) stop();
@@ -48,7 +50,12 @@ function VerifyNumber({ allow, handleAllow }) {
 
   const handleActiveButton = async () => {
     try {
-      // const response = await axios.post('/auth/phone-verification', { phoneNumber, code: verifyNumber});
+      const response = await sendPhoneNumberVerify({
+        phoneNumber: dataToSend.phoneNumber,
+        code: '000000',
+      });
+      console.log(verifyNumber);
+      console.log(response);
     } catch (error) {
       alert('error');
     }

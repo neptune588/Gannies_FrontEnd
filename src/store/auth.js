@@ -12,5 +12,5 @@ const auth = createSlice({
   },
 });
 
-export const { handleLogin } = auth.actions;
 export default auth.reducer;
+export const { handleLogin } = auth.actions;
