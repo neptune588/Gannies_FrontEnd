@@ -10,7 +10,7 @@ import {
 
 import { adminTabMenuData } from '@/pages/Admin/data';
 
-import { useEventHandler } from '@/hooks/useEventHandler';
+import useEventHandler from '@/hooks/useEventHandler';
 
 export default function AdminSideTab() {
   const navigate = useNavigate();

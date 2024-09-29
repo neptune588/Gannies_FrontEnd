@@ -24,7 +24,7 @@ import {
   userApprovalData,
 } from '@/pages/Admin/data';
 
-import { useEventHandler } from '@/hooks/useEventHandler';
+import useEventHandler from '@/hooks/useEventHandler';
 
 export default function UserApproval() {
   const [tableData, setTableData] = useState(userApprovalData);

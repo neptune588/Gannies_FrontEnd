@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export function useEventHandler({
+export default function useEventHandler({
   changeDefaultValue,
   clickChangeDefaultValue,
 } = {}) {

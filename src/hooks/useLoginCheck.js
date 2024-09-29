@@ -23,8 +23,8 @@ const useLoginCheck = () => {
         await userSignOut();
         dispatch(setLogout());
 
-        const notice = confirm('접속이 만료되었습니다. 다시 로그인 해주세요.');
-        notice && navigate('/sign-in');
+        alert('접속이 만료되었습니다. 다시 로그인 해주세요.');
+        navigate('/sign-in');
       } else {
         return true;
       }
@@ -36,8 +36,8 @@ const useLoginCheck = () => {
 
   const checkIsLogin = () => {
     if (!isLogin) {
-      const notice = confirm('로그인을 하셔야 이용이 가능합니다!');
-      notice && navigate('/sign-in');
+      alert('로그인을 하셔야 이용이 가능합니다!');
+      navigate('/sign-in');
     } else {
       return checkLoginStatus();
     }

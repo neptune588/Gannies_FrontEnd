@@ -20,7 +20,7 @@ import { TitleCategory } from '@/pages/Admin/ReportHistory/style';
 
 import { reportedHeaderColumns, reportedData } from '@/pages/Admin/data';
 
-import { useEventHandler } from '@/hooks/useEventHandler';
+import useEventHandler from '@/hooks/useEventHandler';
 
 export default function ReportHistory() {
   const [tableData, setTableData] = useState(reportedData);
