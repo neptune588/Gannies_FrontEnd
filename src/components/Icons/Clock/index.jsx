@@ -1,6 +1,6 @@
 import clock from '@/assets/icons/etc/clock.svg';
 import { IconBox } from '@/components/Icons/style';
-import { TimeStringConverter } from '@/utils/TimeStringConverter';
+import { TimeStringConverter } from '@/utils/dateFormatting';
 
 import styled from 'styled-components';
 

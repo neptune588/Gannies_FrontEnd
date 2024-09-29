@@ -2,6 +2,7 @@ import { css } from 'styled-components';
 
 const paginationWrapperStyle = css`
   display: flex;
+  justify-content: center;
   width: 580px;
 `;
 

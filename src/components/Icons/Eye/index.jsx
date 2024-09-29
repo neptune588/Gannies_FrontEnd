@@ -16,7 +16,9 @@ export default function Eye({
   return (
     <IconBox onClick={handlePasswordViewClick || undefined} {...props}>
       <Icon src={eye} alt='eye' />
-      {postViewCount && <p>{postViewCount.toLocaleString()}</p>}
+      {(postViewCount === 0 || postViewCount) && (
+        <p>{postViewCount.toLocaleString()}</p>
+      )}
     </IconBox>
   );
 }
