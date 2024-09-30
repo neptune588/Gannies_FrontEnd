@@ -26,11 +26,10 @@ function Password() {
 
   const findPassword = async () => {
     try {
-      const response = await findPassWord({
-        username: '',
+      await findPassWord({
+        username: name,
         email: email,
       });
-      console.log(response);
       navigate('/find/password/success');
     } catch (error) {
       openModal();

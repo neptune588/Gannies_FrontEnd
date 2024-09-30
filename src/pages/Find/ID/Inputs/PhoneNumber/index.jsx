@@ -14,6 +14,7 @@ import {
 } from '@/pages/SignUp/Identity/Inputs/PhoneNumber/style';
 import { useInputBorder } from '@/hooks/useInputBorder';
 import Dropdown from '@/pages/SignUp/components/DropDown';
+import { sendPhoneNumber } from '@/api/authApi';
 
 function PhoneNumber({ phoneNumber, setPhoneNumber, allow, handleAllow }) {
   const [prefix, setPrefix] = useState('010');
@@ -36,7 +37,8 @@ function PhoneNumber({ phoneNumber, setPhoneNumber, allow, handleAllow }) {
   const handleSendButton = async () => {
     try {
       handleAllow(1, true);
-      // const response = await axios.post('/auth/phone', { phoneNumber });
+      const response = await sendPhoneNumber({ phoneNumber: phoneNumber });
+      console.log(response);
     } catch (error) {
       alert('error');
     }

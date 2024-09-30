@@ -86,7 +86,6 @@ export const findEmail = async (emailFindData) => {
 
 //비밀번호 찾기
 export const findPassWord = async (pwFindData) => {
-  console.log(pwFindData);
   const url = '/auth/password';
   const response = await api.post(url, pwFindData);
   return response;
