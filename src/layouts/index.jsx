@@ -7,8 +7,9 @@ import MyPageSideTab from '@/pages/MyPage/MyPageSideTab';
 import AdminSideTab from '@/pages/Admin/AdminSideTab';
 
 import {
-  CenterdContainer,
-  MyPageCenterdContainer,
+  Container,
+  CenterdWrapper,
+  MyPageCenterdWrapper,
   MyPageTitle,
   MyPageFlexWrapper,
   MyPageContentsBox,
@@ -17,16 +18,20 @@ import {
   AdminContentsWrapper,
 } from '@/layouts/style';
 
+import useModalsControl from '@/hooks/useModalsControl';
+
 export function MainLayout() {
+  const { isHospitalSearchModal } = useModalsControl();
+
   return (
-    <>
+    <Container $isHospitalSearchModal={isHospitalSearchModal}>
       <Header />
       <Navbar />
-      <CenterdContainer>
+      <CenterdWrapper>
         <Outlet />
-      </CenterdContainer>
+      </CenterdWrapper>
       <Footer />
-    </>
+    </Container>
   );
 }
 
@@ -35,7 +40,7 @@ export function MypageLayout() {
     <>
       <Header />
       <Navbar />
-      <MyPageCenterdContainer>
+      <MyPageCenterdWrapper>
         <MyPageTitle>마이페이지</MyPageTitle>
         <MyPageFlexWrapper>
           <MyPageSideTab />
@@ -43,7 +48,7 @@ export function MypageLayout() {
             <Outlet />
           </MyPageContentsBox>
         </MyPageFlexWrapper>
-      </MyPageCenterdContainer>
+      </MyPageCenterdWrapper>
       <Footer />
     </>
   );
@@ -66,9 +71,9 @@ export function HeaderLayout() {
   return (
     <>
       <Header />
-      <CenterdContainer>
+      <CenterdWrapper>
         <Outlet />
-      </CenterdContainer>
+      </CenterdWrapper>
       <EmptyFooterBox />
     </>
   );

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import CommunityBanner from '@/components/CommunityBanner';
 import CommunityBannerText from '@/components/CommunityBannerText';
@@ -30,12 +31,15 @@ import useLoginCheck from '@/hooks/useLoginCheck';
 import useSelectorList from '@/hooks/useSelectorList';
 import useEventHandler from '@/hooks/useEventHandler';
 
+import { setIsHospitalModal } from '@/store/modalsControl';
+
 import { createPost } from '@/api/postApi';
 import { checkAdminStatus } from '@/api/authApi';
 
 export default function CreateCommunityPost() {
   //제목 - 한글 1글자 이상은 최소로 있어야 한다. 최대는 50자 이하
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const editorRef = useRef(null);
   const imageButtonRef = useRef(null);
@@ -51,7 +55,6 @@ export default function CreateCommunityPost() {
   const [previewImage, setPreviewImage] = useState('');
   const [totalImageType, setTotalImageType] = useState([]);
 
-  const [modalState, setModalState] = useState(false);
   const [isSubmit, setIsSubmit] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -68,6 +71,7 @@ export default function CreateCommunityPost() {
     useEventHandler({
       changeDefaultValue: selectOptions[0].path,
     });
+  const [hospitalName, SetHospitalName] = useState('');
 
   const { checkIsLogin } = useLoginCheck();
 
@@ -189,7 +193,9 @@ export default function CreateCommunityPost() {
 
   return (
     <>
-      {modalState && <HospitalSearchModal />}
+      {setIsHospitalModal && (
+        <HospitalSearchModal SetHospitalName={SetHospitalName} />
+      )}
       <CommunityBanner>
         <CommunityBannerText />
       </CommunityBanner>
@@ -228,10 +234,15 @@ export default function CreateCommunityPost() {
                 <div>
                   <DataInputBox>
                     <p>*병원정보</p>
-                    <label>
-                      <input placeholder='병원찾기' maxLength={30} />
+                    <button
+                      type='button'
+                      onClick={() => {
+                        dispatch(setIsHospitalModal(true));
+                      }}
+                    >
+                      병원찾기
                       <img src={searchIcon} alt='search-icon' />
-                    </label>
+                    </button>
                   </DataInputBox>
                 </div>
               )}

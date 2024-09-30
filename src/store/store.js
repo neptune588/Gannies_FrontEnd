@@ -5,6 +5,7 @@ import localStorage from 'redux-persist/lib/storage';
 
 import authReducer from '@/store/auth';
 import navBarOptionsReducer from '@/store/navBarOptions';
+import modalsControlReducer from '@/store/modalsControl';
 
 const navBarOptionsPersistConfig = {
   key: 'navBarOptions', // 저장소에서 상태를 식별할 키
@@ -27,6 +28,7 @@ const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
     navBarOptions: persistedNavBarOptionsReducer,
+    modalsControl: modalsControlReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

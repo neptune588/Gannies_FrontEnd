@@ -1,7 +1,10 @@
+import { useDispatch } from 'react-redux';
+
 import ModalContainer from '@/components/ModalContainer';
 import ModalCloseArea from '@/components/ModalCloseArea';
 
 import searchIcon from '@/assets/icons/search/search_black.svg';
+import cross from '@/assets/icons/etc/close.svg';
 
 import {
   ModalWrapper,
@@ -13,12 +16,25 @@ import {
   HospitalLocationInfo,
   HospitalContact,
   ModalInnerRightBox,
+  ModalCloseButton,
 } from '@/pages/CreateCommunityPost/HospitalSearchModal/style';
 
-export default function HospitalSearchModal() {
+import { setIsHospitalModal } from '@/store/modalsControl';
+
+export default function HospitalSearchModal({ SetHospitalName }) {
+  const dispatch = useDispatch();
+
   return (
     <ModalContainer>
       <ModalWrapper>
+        <ModalCloseButton
+          type='button'
+          onClick={() => {
+            dispatch(setIsHospitalModal(false));
+          }}
+        >
+          <img src={cross} alt='close-button' />
+        </ModalCloseButton>
         <ModalInnerLeftBox>
           <h2>병원찾기</h2>
           <SearchInputArea>
@@ -38,7 +54,11 @@ export default function HospitalSearchModal() {
         </ModalInnerLeftBox>
         <ModalInnerRightBox></ModalInnerRightBox>
       </ModalWrapper>
-      <ModalCloseArea />
+      <ModalCloseArea
+        handleModalClose={() => {
+          dispatch(setIsHospitalModal(false));
+        }}
+      />
     </ModalContainer>
   );
 }
