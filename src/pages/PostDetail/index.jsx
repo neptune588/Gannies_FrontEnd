@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import CommunityBanner from '@/components/CommunityBanner';
 import CommunityBannerText from '@/components/CommunityBannerText';
-import PageCategory from '@/components/PageCategory';
+import PageCategory from '@/pages/CreateCommunityPost/PageCategory';
 import PostTitleSection from '@/pages/PostDetail/PostHeader/PostTitleSection';
 import PostInfo from '@/pages/PostDetail/PostHeader/PostInfo';
 import CommentCreate from '@/pages/PostDetail/CommentCreate';

@@ -2,8 +2,9 @@ import axios from 'axios';
 import qs from 'qs';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-const HOSPITAL_BASE_URL = import.meta.env.VITE_HOSITAL_API_BASE_URL;
-const HOSPITAL_SERVICE_KEY = import.meta.env.VITE_HOSPITAL_FIND_API_KEY;
+const VITE_KAKAO_PLACE_SEARCH_API_BASE_URL = import.meta.env
+  .VITE_KAKAO_API_BASE_URL;
+const VITE_KAKAO_PlACE_SEARCH_API_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY;
 
 export const api = axios.create({
   baseURL: BASE_URL,
@@ -25,10 +26,10 @@ export const cookieApi = axios.create({
 });
 
 export const hospitalApi = axios.create({
-  baseURL: `${HOSPITAL_BASE_URL}?serviceKey=${HOSPITAL_SERVICE_KEY}`,
+  baseURL: `${VITE_KAKAO_PLACE_SEARCH_API_BASE_URL}`,
   timeout: 5000,
   headers: {
-    'Content-Type': 'application/json',
+    Authorization: `KakaoAK ${VITE_KAKAO_PlACE_SEARCH_API_KEY}`,
   },
   paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' }),
 });

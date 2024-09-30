@@ -138,3 +138,9 @@ export const getSessionStatus = async () => {
   const response = await cookieApi.get(url);
   return response;
 };
+
+export const checkAdminStatus = async () => {
+  const url = `/auth/is-admin`;
+  const response = await cookieApi.get(url);
+  return response;
+};
