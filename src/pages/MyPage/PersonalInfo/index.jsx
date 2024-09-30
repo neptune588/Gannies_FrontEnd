@@ -69,11 +69,8 @@ export default function PersonalInfo() {
 
   const handleWithdrawal = async (e) => {
     e.preventDefault();
-    const response = await userDelete();
-    console.log(response);
+    await userDelete();
   };
-
-  console.log(modalState.isApproval);
 
   return (
     <>

@@ -14,6 +14,7 @@ import { userSignIn } from '@/api/authApi';
 // import axios from 'axios';
 
 import { setLogin } from '@/store/auth';
+import { handleModal } from '@/store/modalState';
 
 function Buttons({ email, password, setLoginError, setIsLoading }) {
   const navigate = useNavigate();
@@ -28,8 +29,6 @@ function Buttons({ email, password, setLoginError, setIsLoading }) {
     try {
       setIsLoading(true);
       const response = await userSignIn({ email: email, password: password });
-
-      const { userId } = response.data;
       // handleAuth({
       //   field: 'membershipStatus',
       //   value: response.data.user.membershipStatus,
@@ -38,7 +37,10 @@ function Buttons({ email, password, setLoginError, setIsLoading }) {
       //   dispatch(handleModal({ field: 'isApproval', value: true }));
       //   navigate('/mypage/profile/edit');
       // }
+      const { userId } = response.data;
       dispatch(setLogin({ userId }));
+      const isTempPassword = response.data.user.isTempPasswordSignIn;
+      dispatch(handleModal({ field: 'isTempPassword', value: isTempPassword }));
       navigate('/');
     } catch (error) {
       setIsLoading(false);

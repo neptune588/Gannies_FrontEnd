@@ -52,7 +52,7 @@ export const userSignUpEmailTest = async (email) => {
 //회원가입 -> 이메일 인증
 export const userSignUpEmail = async (email) => {
   const url = '/auth/sign-up/email';
-  const response = await api.post(url, { email: email });
+  const response = await api.post(url, email);
   return response;
 };
 

@@ -11,6 +11,7 @@ import { posts } from '@/pages/Home/data';
 
 import { setBoardType } from '@/store/navBarOptions';
 import IsApproval from '@/components/Modal/IsApproval';
+import IsTempPassword from '@/components/Modal/IsTempPassword';
 
 function Home() {
   const location = useLocation();
@@ -21,7 +22,6 @@ function Home() {
 
   useEffect(() => {
     const url = location.pathname;
-    console.log(url === '/');
     if (url === '/') {
       dispatch(
         setBoardType({
@@ -37,6 +37,7 @@ function Home() {
   return (
     <>
       {modalState.isApproval && <IsApproval />}
+      {modalState.isTempPassword && <IsTempPassword />}
       <Banner />
       <SearchBar />
       <Post title={'인기 게시글'} posts={data} />

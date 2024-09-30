@@ -58,7 +58,7 @@ export default function PasswordChange() {
             <p>현재 비밀번호</p>
             <InputBox>
               <input
-                maxLength={15}
+                maxLength={16}
                 value={currentPassword}
                 onChange={handleCurrentPassword}
                 type={passwordView[0] ? 'text' : 'password'}
@@ -111,9 +111,9 @@ export default function PasswordChange() {
             </InputBox>
           </PasswordChangeBox>
           <NoticeMent>
-            *중복되지 않는 한글 또는 영문 2~8자를 입력 해주세요
+            *영문 대문자, 소문자, 숫자, 특수문자 하나씩을 포함한 8-16자
           </NoticeMent>
-          <NoticeMent>*숫자 및 특수문자 불가</NoticeMent>
+          <NoticeMent>*특수문자는 '!@#$%^&*?_'만 가능</NoticeMent>
           <PasswordChangeBox>
             <p>새 비밀번호 확인</p>
             <InputBox>

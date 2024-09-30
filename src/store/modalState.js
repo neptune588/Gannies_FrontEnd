@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const modalState = createSlice({
-  name: 'name',
+  name: 'modalState',
   initialState: {
     isApproval: false,
-    abc: false,
+    isTempPassword: false,
   },
   reducers: {
     handleModal(state, action) {

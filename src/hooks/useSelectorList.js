@@ -6,7 +6,7 @@ export default function useSelectorList() {
 
   const { currentActiveMenuNumber, currentBoardType, bannerTitle, bannerDesc } =
     navBarOptions;
-  const { isLogin, userId } = auth;
+  const { isLogin, userId, isTempPassword } = auth;
 
   return {
     currentActiveMenuNumber,
@@ -15,5 +15,6 @@ export default function useSelectorList() {
     bannerDesc,
     isLogin,
     userId,
+    isTempPassword,
   };
 }

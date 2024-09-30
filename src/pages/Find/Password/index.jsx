@@ -26,12 +26,15 @@ function Password() {
 
   const findPassword = async () => {
     try {
-      await findPassWord({
+      const response = await findPassWord({
         username: name,
         email: email,
       });
-      navigate('/find/password/success');
+      navigate('/find/password/success', {
+        state: { email: response.data.maskedEmail },
+      });
     } catch (error) {
+      console.log(error.response);
       openModal();
     }
   };
@@ -52,7 +55,7 @@ function Password() {
       <NextButton
         $margin='80px'
         text='다음'
-        // active={allow[0] && allow[1]}
+        active={allow[0] && allow[1]}
         onClick={findPassword}
       />
       {isModalOpen && <Modal openModal={openModal} />}
