@@ -5,6 +5,8 @@ import loading from '@/assets/images/loading_circle.gif';
 
 import { centerAlignStyle } from '@/styles/commonStyle/etc';
 
+import useDatCountCalc from '@/hooks/useDatCountCalc';
+
 const Container = styled.div`
   position: fixed;
   ${centerAlignStyle}
@@ -33,26 +35,8 @@ const ContentsBox = styled.div`
   }
 `;
 
-export default function LoadingCircle() {
-  const [dat, setDat] = useState('');
-  const [datCount, setDatCount] = useState(1);
-
-  useEffect(() => {
-    const datRepeat = setInterval(() => {
-      //console.log('인터벌');
-      if (datCount > 3) {
-        setDat('');
-        setDatCount(1);
-      }
-
-      setDat((prev) => prev + '·');
-      setDatCount((prev) => prev + 1);
-    }, 500);
-
-    return () => {
-      clearInterval(datRepeat);
-    };
-  }, [datCount]);
+export default function CommonLoadingCircle() {
+  const { dat } = useDatCountCalc();
 
   return (
     <Container>

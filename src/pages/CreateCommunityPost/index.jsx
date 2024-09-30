@@ -81,7 +81,7 @@ export default function CreateCommunityPost() {
     changeDefaultValue: '',
   });
 
-  const [hospitalName, SetHospitalName] = useState('');
+  const [hospitalName, SetHospitalName] = useState('병원찾기');
 
   const { checkIsLogin } = useLoginCheck();
 
@@ -255,7 +255,7 @@ export default function CreateCommunityPost() {
                         handleModalOpen({ modalDispatch: setIsHospitalModal });
                       }}
                     >
-                      병원찾기
+                      {hospitalName}
                       <img src={searchIcon} alt='search-icon' />
                     </button>
                   </DataInputBox>

@@ -7,6 +7,7 @@ import {
   small_400,
 } from '@/styles/commonStyle/localTextStyle';
 import { modalCloseButtonStyle } from '@/styles/commonStyle/etc';
+import { primaryColorBoxStyle } from '@/styles/commonStyle/box';
 
 const ModalWrapper = styled.div`
   display: flex;
@@ -65,10 +66,15 @@ const SearchListBox = styled.ul`
 `;
 
 const SearchList = styled.li`
+  position: relative;
   width: 100%;
   height: 140px;
   padding: 25px 35px;
   margin-bottom: 15px;
+  border: 1px solid
+    ${({ $isListClick, theme: { colors } }) => {
+      return $isListClick ? colors.primary : colors.white;
+    }};
   background-color: ${({ theme: { colors } }) => {
     return colors.white;
   }};
@@ -79,6 +85,32 @@ const SearchList = styled.li`
     color: ${({ theme: { colors } }) => {
       return colors.gray['100'];
     }};
+  }
+`;
+
+const ClickArea = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  z-index: 1;
+`;
+
+const SelectConfirmButton = styled.button`
+  ${primaryColorBoxStyle}
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  padding: 0.5rem 3rem;
+  font-size: ${({ theme: { typo } }) => {
+    return typo.size.sm;
+  }};
+  z-index: 10;
+
+  &:hover {
+    background-color: rgb(78, 112, 186);
   }
 `;
 
@@ -136,6 +168,8 @@ export {
   SearchInputArea,
   SearchListBox,
   SearchList,
+  ClickArea,
+  SelectConfirmButton,
   HospitalName,
   HospitalLocationInfo,
   HospitalContact,

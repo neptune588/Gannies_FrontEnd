@@ -156,7 +156,7 @@ export default function useFetchAndPaginate({
     }
 
     setGroupedPageNumbers(pageTotalNumbers[currentGroupOrder]);
-    console.log('pageGroupNumber change effect 실행');
+    //console.log('pageGroupNumber change effect 실행');
   }, [pageTotalNumbers, currentGroupOrder]);
 
   return {
