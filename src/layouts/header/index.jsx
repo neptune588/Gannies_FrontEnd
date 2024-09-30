@@ -18,6 +18,7 @@ import {
 import useSelectorList from '@/hooks/useSelectorList';
 
 import { setBoardType } from '@/store/navBarOptions';
+import { handleModal } from '@/store/modalState';
 import { setLogout } from '@/store/auth';
 
 import { userSignOut } from '@/api/authApi';
@@ -46,8 +47,12 @@ function Header() {
 
   const handleLogout = async () => {
     try {
-      await userSignOut();
-      dispatch(setLogout());
+      const response = await userSignOut();
+      if (response.status === 200) {
+        dispatch(handleModal({ field: 'isApproval', value: false }));
+        await userSignOut();
+        dispatch(setLogout());
+      }
     } catch (error) {
       console.log(error);
     }

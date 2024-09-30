@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import VerifyNumber from '@/pages/Find/ID/Inputs/VerifyNumber';
 import Modal from '@/pages/Find/Modal';
+import { findEmail } from '@/api/authApi';
 
 function ID() {
   const { allow, handleAllow } = useAuthAllow([false, false, false]);
@@ -24,13 +25,13 @@ function ID() {
 
   const findID = async () => {
     try {
-      // const response = await axios.post('/auth/email', { username: name, phoneNumber });
-      if (name == '랄라') {
-        openModal();
-      }
-      navigator('/find/id/success');
+      const response = await findEmail({
+        username: name,
+        phoneNumber: phoneNumber,
+      });
+      navigator('/find/id/success', { state: { email: response.data.email } });
     } catch (error) {
-      alert('error');
+      openModal();
     }
   };
 

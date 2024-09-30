@@ -14,11 +14,11 @@ function Info() {
   const { steps, stepsIcon, handleSteps } = useOutletContext();
   const { allow, handleAllow } = useAuthAllow([false, false, false, false]);
 
-  useEffect(() => {
-    steps[0] && !steps[1]
-      ? navigate('/sign-up/info')
-      : navigate('/sign-up/identity');
-  }, [steps, navigate]);
+  // useEffect(() => {
+  //   steps[0] && !steps[1]
+  //     ? navigate('/sign-up/info')
+  //     : navigate('/sign-up/identity');
+  // }, [steps, navigate]);
 
   const handleNextButton = () => {
     handleSteps(1, true);

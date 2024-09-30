@@ -15,6 +15,7 @@ import { useOutletContext } from 'react-router-dom';
 import { useInputBorder } from '@/hooks/useInputBorder';
 import Negative from '@/components/Instruction/Negative';
 import Dropdown from '@/pages/SignUp/components/DropDown';
+import { sendPhoneNumber } from '@/api/authApi';
 // import axios from 'axios';
 
 function PhoneNumber({ allow, handleAllow }) {
@@ -53,7 +54,8 @@ function PhoneNumber({ allow, handleAllow }) {
   const handleSendButton = async () => {
     try {
       handleAllow(1, true);
-      // const response = await axios.post('/auth/phone', { phoneNumber });
+      const response = await sendPhoneNumber({ phoneNumber: phoneNumber });
+      console.log(response);
     } catch (error) {
       alert('error');
     }

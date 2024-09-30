@@ -60,6 +60,11 @@ const NicknameEditBox = styled(PersonalInfoBox)`
         ${({ theme: { colors } }) => {
         return colors.gray['40'];
       }};
+      &:disabled {
+        background-color: ${({ theme: { colors } }) => {
+          return colors.white;
+        }};
+      }
     }
     > button {
       ${primaryBorderBoxStyle}

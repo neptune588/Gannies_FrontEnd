@@ -8,11 +8,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useAuthAllow } from '@/hooks/useAuthAllow';
 import NextButton from '@/pages/SignUp/components/NextButton';
-import {
-  certificatesImageUpload,
-  getPresignedUrl,
-  userSignUp,
-} from '@/api/authApi';
+import { userSignUp, userSignUpEmail } from '@/api/authApi';
 
 function Department() {
   const navigate = useNavigate();
@@ -30,19 +26,19 @@ function Department() {
     try {
       handleSteps(2, true);
       // const response = await getPresignedUrl(file.type);
-      // console.log(response);
-      // const { url, fields } = response.data; // URL과 필드를 분리
+      // const { url, fields } = response.data;
       // console.log(url, fields);
       // const imageUrl = await certificatesImageUpload(url, file, fields);
       // const response = await getPresignedUrl({ fileType: fileName.type });
-      console.log(dataToSend);
-      const responseSignUp = await userSignUp(dataToSend);
-      console.log(responseSignUp);
-      // const responseEmail = await axios.post('/auth/sign-up/email', {
-      //   email: dataToSend.email,
-      // });
+      await userSignUp(dataToSend);
+      await userSignUpEmail({
+        email: dataToSend.email,
+      });
+      navigate('/sign-up/success', {
+        state: { email: dataToSend.email },
+      });
     } catch (error) {
-      alert('error');
+      console.log(error.response);
     }
   };
 

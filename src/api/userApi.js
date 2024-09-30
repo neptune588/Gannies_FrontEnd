@@ -24,13 +24,20 @@ export const changeUserPassword = async (password) => {
 //본인 게시글 페이지 단위로 조회
 export const getUserPosts = async (params) => {
   const url = '/me/posts';
-  const response = await cookieApi.get(url, { params });
+  const response = await cookieApi.get(url, params);
   return response;
 };
 
 //본인 댓글 페이지 단위로 조회
 export const getUserComments = async (params) => {
   const url = '/me/comments';
+  const response = await cookieApi.get(url, { params });
+  return response;
+};
+
+//본인 스크랩 페이지 단위로 조회
+export const getUserScraps = async (params) => {
+  const url = '/me/scraps';
   const response = await cookieApi.get(url, { params });
   return response;
 };
