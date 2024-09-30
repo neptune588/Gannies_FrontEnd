@@ -14,7 +14,6 @@ import Identity from '@/pages/SignUp/Identity';
 import Info from '@/pages/SignUp/Info';
 import Department from '@/pages/SignUp/Department';
 import Error404 from '@/pages/Error/Error404';
-// import Error500 from '@/pages/Error/Error500';
 import SignUpSuccess from '@/pages/SignUp/Success';
 import ID from '@/pages/Find/ID';
 import FindIDSuccess from '@/pages/Find/ID/Success';
@@ -25,6 +24,8 @@ import MemberManagement from '@/pages/Admin/MemberManagement';
 import UserApproval from '@/pages/Admin/UserApproval';
 import PostManagement from '@/pages/Admin/PostManagement';
 import SignUp from '@/pages/SignUp/SignUp';
+import EmailVerification from '@/pages/EmailVerification';
+import PrivateRoute from './PrivateRoute';
 import LoadingCircle from '@/components/LoadingCircle';
 
 export const router = createBrowserRouter([
@@ -36,16 +37,21 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: '/community',
-        element: <Community />,
-      },
-      {
-        path: '/community/create-community-post',
-        element: <CreateCommunityPost />,
-      },
-      {
-        path: '/community/detail',
-        element: <PostDetail />,
+        element: <PrivateRoute />,
+        children: [
+          {
+            path: '/community',
+            element: <Community />,
+          },
+          {
+            path: '/community/create-community-post',
+            element: <CreateCommunityPost />,
+          },
+          {
+            path: '/community/detail',
+            element: <PostDetail />,
+          },
+        ],
       },
     ],
   },
@@ -54,19 +60,19 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/admin/report-history',
-        element: <ReportHistory />,
+        element: <PrivateRoute element={<ReportHistory />} />, // PrivateRoute 적용
       },
       {
         path: '/admin/member-management',
-        element: <MemberManagement />,
+        element: <PrivateRoute element={<MemberManagement />} />, // PrivateRoute 적용
       },
       {
         path: '/admin/user-approval',
-        element: <UserApproval />,
+        element: <PrivateRoute element={<UserApproval />} />, // PrivateRoute 적용
       },
       {
         path: '/admin/post-management',
-        element: <PostManagement />,
+        element: <PrivateRoute element={<PostManagement />} />, // PrivateRoute 적용
       },
     ],
   },
@@ -139,6 +145,10 @@ export const router = createBrowserRouter([
       {
         path: '/find/password/success',
         element: <FindPasswordSuccess />,
+      },
+      {
+        path: '/sign-up/email',
+        element: <EmailVerification />,
       },
       {
         path: '*',

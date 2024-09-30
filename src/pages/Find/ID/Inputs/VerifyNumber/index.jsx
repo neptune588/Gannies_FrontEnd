@@ -15,6 +15,7 @@ import {
 } from '@/pages/SignUp/Identity/Inputs/VerifyNumber/style';
 import { useTimer } from '@/hooks/useTimer';
 import { useInputBorder } from '@/hooks/useInputBorder';
+import { sendPhoneNumberVerify } from '@/api/authApi';
 // import { useSelector } from 'react-redux';
 // import axios from 'axios';
 
@@ -40,17 +41,18 @@ function VerifyNumber({ phoneNumber, allow, handleAllow }) {
 
   const handleActiveButton = async () => {
     try {
-      // const response = await axios.post('/auth/phone-verification', { phoneNumber, code: verifyNumber});
-      if (verifyNumber === '000000') {
+      const response = await sendPhoneNumberVerify({
+        phoneNumber: phoneNumber,
+        code: verifyNumber,
+      });
+      if (response.status === 200) {
         handleAllow(2, true);
         setInstructionState(true);
-        console.log(phoneNumber, verifyNumber);
-      } else {
-        handleAllow(2, false);
-        setInstructionState(false);
       }
+      console.log(response);
     } catch (error) {
-      alert('error');
+      handleAllow(2, false);
+      setInstructionState(false);
     }
   };
 

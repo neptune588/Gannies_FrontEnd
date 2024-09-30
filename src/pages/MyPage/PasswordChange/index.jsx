@@ -12,6 +12,7 @@ import {
   EditSaveBox,
 } from '@/pages/MyPage/PasswordChange/style';
 
+import { changeUserPassword } from '@/api/userApi';
 import useEventHandler from '@/hooks/useEventHandler';
 
 export default function PasswordChange() {
@@ -22,7 +23,6 @@ export default function PasswordChange() {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newPasswordCheck, setNewPasswordCheck] = useState('');
-  const [isFocused, setIsFocused] = useState([undefined, false, false]);
 
   const handleCurrentPassword = (e) => {
     const currentPassword = e.target.value;
@@ -39,13 +39,14 @@ export default function PasswordChange() {
     setNewPasswordCheck(newPasswordCheck);
   };
 
-  const handleIsFocused = (index, value) => {
-    setIsFocused((prev) => {
-      const newIsFocused = [...prev];
-      newIsFocused[index] = value;
-      return newIsFocused;
+  const handleModify = async (e) => {
+    e.preventDefault();
+    console.log(currentPassword, newPassword);
+    const response = await changeUserPassword({
+      oldPassword: currentPassword,
+      newPassword: newPassword,
     });
-    console.log(isFocused);
+    console.log(response);
   };
 
   return (
@@ -55,14 +56,12 @@ export default function PasswordChange() {
         <form>
           <PasswordChangeBox>
             <p>현재 비밀번호</p>
-            <InputBox isFocused={isFocused[0]}>
+            <InputBox>
               <input
-                maxLength={15}
+                maxLength={16}
                 value={currentPassword}
                 onChange={handleCurrentPassword}
                 type={passwordView[0] ? 'text' : 'password'}
-                onFocus={() => handleIsFocused(0, true)}
-                onBlur={() => handleIsFocused(0, undefined)}
               />
               {passwordView[0] ? (
                 <div>
@@ -112,9 +111,9 @@ export default function PasswordChange() {
             </InputBox>
           </PasswordChangeBox>
           <NoticeMent>
-            *중복되지 않는 한글 또는 영문 2~8자를 입력 해주세요
+            *영문 대문자, 소문자, 숫자, 특수문자 하나씩을 포함한 8-16자
           </NoticeMent>
-          <NoticeMent>*숫자 및 특수문자 불가</NoticeMent>
+          <NoticeMent>*특수문자는 '!@#$%^&*?_'만 가능</NoticeMent>
           <PasswordChangeBox>
             <p>새 비밀번호 확인</p>
             <InputBox>
@@ -144,7 +143,7 @@ export default function PasswordChange() {
             </InputBox>
           </PasswordChangeBox>
           <EditSaveBox>
-            <button disabled>비밀번호 변경하기</button>
+            <button onClick={handleModify}>비밀번호 변경하기</button>
           </EditSaveBox>
         </form>
       </PasswordChangeWrapper>

@@ -5,15 +5,22 @@ import localStorage from 'redux-persist/lib/storage';
 
 import authReducer from '@/store/auth';
 import navBarOptionsReducer from '@/store/navBarOptions';
+
+import modalState from '@/store/modalState';
+const modalStatePersistConfig = {
+  key: 'modalState',
+  storage: localStorage,
+};
+
 import modalsControlReducer from '@/store/modalsControl';
 
 const navBarOptionsPersistConfig = {
-  key: 'navBarOptions', // 저장소에서 상태를 식별할 키
+  key: 'navBarOptions',
   storage: sessionStorage,
 };
 
 const authPersistConfig = {
-  key: 'auth', // 저장소에서 상태를 식별할 키
+  key: 'auth',
   storage: localStorage,
 };
 
@@ -22,17 +29,22 @@ const persistedNavBarOptionsReducer = persistReducer(
   navBarOptionsReducer
 );
 
+const persistedModalStateReducer = persistReducer(
+  modalStatePersistConfig,
+  modalState
+);
 const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
 
 const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
     navBarOptions: persistedNavBarOptionsReducer,
+    modalState: persistedModalStateReducer,
     modalsControl: modalsControlReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false, // 직렬화 체크 비활성화
+      serializableCheck: false,
     }),
 });
 

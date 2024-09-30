@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import uuid from 'react-uuid';
@@ -15,6 +15,7 @@ import useSelectorList from '@/hooks/useSelectorList';
 function Navbar() {
   const dispatch = useDispatch();
   const loacation = useLocation();
+  const navigate = useNavigate();
 
   const [navBarMenus] = useState(navBarMenuData);
 
@@ -33,13 +34,14 @@ function Navbar() {
             to={navBarMenu.path}
             $currentActiveMenuNumber={currentActiveMenuNumber}
             $myMenuNumber={navBarMenu.number}
-            onClick={() => {
+            onClick={async () => {
               handleNavBarMenuClick({
                 menuNumber: navBarMenu.number,
                 boardType: navBarMenu.boardType,
                 bannerTitle: navBarMenu.bannerTitle,
                 bannerDesc: navBarMenu.bannerDesc,
               });
+              navigate(navBarMenu.path);
             }}
           >
             {navBarMenu.label}

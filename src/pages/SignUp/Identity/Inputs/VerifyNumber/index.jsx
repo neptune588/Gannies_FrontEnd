@@ -15,6 +15,8 @@ import {
 } from '@/pages/SignUp/Identity/Inputs/VerifyNumber/style';
 import { useTimer } from '@/hooks/useTimer';
 import { useInputBorder } from '@/hooks/useInputBorder';
+import { sendPhoneNumberVerify } from '@/api/authApi';
+import { useOutletContext } from 'react-router-dom';
 // import { useSelector } from 'react-redux';
 // import axios from 'axios';
 
@@ -23,10 +25,14 @@ function VerifyNumber({ allow, handleAllow }) {
   const [buttonAllow, setButtonAllow] = useState(false);
   const timerTime = 180;
   const { time, start, stop, reset } = useTimer(timerTime);
-  // const phoneNumber = useSelector((state) => state.signUpSlice.phoneNumber);
-  const instruction = ['필수 정보입니다', '인증번호가 일치하지 않습니다'];
+  const instruction = [
+    '필수 정보입니다',
+    '인증번호가 일치하지 않습니다',
+    '최대 인증 시도 횟수(5회)에 도달했습니다. 인증을 처음부터 다시 시도해주세요.',
+  ];
   const [instructionIndex, setInstructionIndex] = useState(undefined);
   const { isFocused, handleIsFocused } = useInputBorder(undefined);
+  const { dataToSend } = useOutletContext();
 
   useEffect(() => {
     if (allow[2]) stop();
@@ -48,15 +54,21 @@ function VerifyNumber({ allow, handleAllow }) {
 
   const handleActiveButton = async () => {
     try {
-      // const response = await axios.post('/auth/phone-verification', { phoneNumber, code: verifyNumber});
+      const response = await sendPhoneNumberVerify({
+        phoneNumber: dataToSend.phoneNumber,
+        code: verifyNumber,
+      });
+      if (response.status === 200) {
+        handleAllow(2, true);
+      }
     } catch (error) {
-      alert('error');
-    }
-    if (verifyNumber === '000000') {
-      handleAllow(2, true);
-    } else {
-      handleAllow(2, false);
-      setInstructionIndex(1);
+      if (error.response.data.statusCode === 429) {
+        handleAllow(2, false);
+        setInstructionIndex(2);
+      } else {
+        handleAllow(2, false);
+        setInstructionIndex(1);
+      }
     }
   };
 

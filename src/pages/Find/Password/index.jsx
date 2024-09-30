@@ -10,6 +10,7 @@ import Wrapper from '@/pages/Find/components/Wrapper';
 import Modal from '@/pages/Find/Modal';
 import Email from '@/pages/Find/Password/Inputs/Email';
 import Name from '@/pages/Find/ID/Inputs/Name';
+import { findPassWord } from '@/api/authApi';
 
 function Password() {
   const navigate = useNavigate();
@@ -25,9 +26,15 @@ function Password() {
 
   const findPassword = async () => {
     try {
-      // const response = await axios.post('/auth/password', { username: name, email });
-      // navigate('/find/password/success');
+      const response = await findPassWord({
+        username: name,
+        email: email,
+      });
+      navigate('/find/password/success', {
+        state: { email: response.data.maskedEmail },
+      });
     } catch (error) {
+      console.log(error.response);
       openModal();
     }
   };

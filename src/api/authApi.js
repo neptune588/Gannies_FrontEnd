@@ -10,7 +10,7 @@ export const checkEmailDuplicate = async (email) => {
 //닉네임 중복 확인
 export const checkNicknameDuplicate = async (nickname) => {
   const url = '/users/check/nickname';
-  const response = await api.post(url, { nickname: nickname });
+  const response = await api.post(url, nickname);
   return response;
 };
 
@@ -24,14 +24,14 @@ export const userSignUp = async (signUpData) => {
 //회원탈퇴
 export const userDelete = async () => {
   const url = '/auth/withdrawal';
-  const response = await api.delete(url);
+  const response = await cookieApi.delete(url);
   return response;
 };
 
 //로그인
 export const userSignIn = async (signInData) => {
   const url = '/auth/sign-in';
-  const response = await api.post(url, signInData, { withCredentials: true });
+  const response = await cookieApi.post(url, signInData);
   return response;
 };
 
@@ -42,17 +42,24 @@ export const userSignOut = async () => {
   return response;
 };
 
+//회원가입 -> 이메일 인증 테스트
+export const userSignUpEmailTest = async (email) => {
+  const url = '/test-email';
+  const response = await api.post(url, { email: email });
+  return response;
+};
+
 //회원가입 -> 이메일 인증
 export const userSignUpEmail = async (email) => {
   const url = '/auth/sign-up/email';
-  const response = await api.post(url, { email: email });
+  const response = await api.post(url, email);
   return response;
 };
 
 //회원가입 -> 이메일 인증 확인
 export const userSignUpEmailVerify = async (token) => {
-  const url = '/auth/sign-up/email-verification';
-  const response = await api.post(url, token);
+  const url = `/auth/sign-up/email-verification?token=${token}`;
+  const response = await api.get(url);
   return response;
 };
 
@@ -135,6 +142,13 @@ export const getOCR = async (userId) => {
 //세션 만료 체크(로그인 기한 다됐는지)
 export const getSessionStatus = async () => {
   const url = `/auth/session-status`;
+  const response = await cookieApi.get(url);
+  return response;
+};
+
+//회원 상태 확인
+export const checkMembershipStatus = async () => {
+  const url = `/auth/user-status`;
   const response = await cookieApi.get(url);
   return response;
 };

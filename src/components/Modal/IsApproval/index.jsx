@@ -1,9 +1,20 @@
-import { CloseIcon, Image, ModalBox } from '@/pages/SignUp/Success/Modal/style';
+import {
+  CloseIcon,
+  Image,
+  ModalBox,
+} from '@/components/Modal/IsApproval/style';
 
 import ModalContainer from '@/components/ModalContainer';
 import warn from '@/assets/images/warn.png';
+import { useDispatch } from 'react-redux';
+import { handleModal } from '@/store/modalState';
 
-function Modal({ closeModal }) {
+function IsApproval() {
+  const dispatch = useDispatch();
+
+  const closeModal = () => {
+    dispatch(handleModal({ field: 'isApproval', value: false }));
+  };
   return (
     <ModalContainer>
       <ModalBox>
@@ -15,10 +26,10 @@ function Modal({ closeModal }) {
         <p>
           *승인이 완료될 때까지 다음과 같은 제한이 있음을 양해 부탁드립니다.
         </p>
-        <span>게시글 작성 불가, 게시글 상세 내용 열람 불가</span>
+        <span>메인 페이지와 마이페이지만 이용 가능합니다.</span>
       </ModalBox>
     </ModalContainer>
   );
 }
 
-export default Modal;
+export default IsApproval;

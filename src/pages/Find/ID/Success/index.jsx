@@ -9,33 +9,11 @@ import {
   LeftButton,
   RightButton,
 } from '@/pages/Find/ID/Success/style';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-
-const fetchEmail = async () => {
-  try {
-    const response = await axios.get('/auth');
-    return response.data.email;
-  } catch (error) {
-    alert('error');
-  }
-};
+import { useLocation } from 'react-router-dom';
 
 function Success() {
-  const [email, setEmail] = useState('hihi@gmail.com');
-
-  // useEffect(() => {
-  //   const fetchEmail = async () => {
-  //     try {
-  //       const response = await axios.get('/auth');
-  //       setEmail(response.data.email);
-  //     } catch (error) {
-  //       alert('error');
-  //     }
-  //   };
-
-  //   fetchEmail();
-  // }, []);
+  const location = useLocation();
+  const email = location.state?.email;
 
   return (
     <Wrapper>

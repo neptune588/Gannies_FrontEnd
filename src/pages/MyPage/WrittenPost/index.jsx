@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import PostContents from '@/pages/MyPage/PostContents';
 import AlignSelectMenu from '@/components/AlignSelectMenu';
@@ -6,20 +6,30 @@ import Pagination from '@/components/Pagination';
 
 import { TitleBox, Title, PageWrapper } from '@/pages/MyPage/WrittenPost/style';
 
-import { posts } from '@/pages/Home/data';
+// import { posts } from '@/pages/Home/data';
 
 import useEventHandler from '@/hooks/useEventHandler';
+import { getUserPosts } from '@/api/userApi';
 
 export default function WrittenPost() {
-  const [postData] = useState(posts);
+  const [postData, setPostData] = useState([]);
   const [selectedOption, setSelectedOption] = useState('최신순');
   const optionList = ['최신순', '인기순'];
 
-  const [pageData] = useState(
+  const [pageData, setPageData] = useState(
     Array.from({ length: 10 }, (_, index) => {
       return index;
     })
   );
+
+  useEffect(() => {
+    const fetch = async () => {
+      const response = await getUserPosts({ page: 1 });
+      setPostData(response.data.items);
+    };
+
+    fetch();
+  }, []);
 
   const {
     changeValue: currentActivePageNumber,
@@ -42,13 +52,13 @@ export default function WrittenPost() {
         />
       </TitleBox>
       <PostContents postData={postData} pageName={'my-page'} />
-      <PageWrapper>
+      {/* <PageWrapper>
         <Pagination
           pageCountData={pageData}
           activePageNumber={currentActivePageNumber}
           handlePageNumberClick={handlePageNumberChange}
         />
-      </PageWrapper>
+      </PageWrapper> */}
     </>
   );
 }
