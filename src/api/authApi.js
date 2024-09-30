@@ -140,8 +140,8 @@ export const getOCR = async (userId) => {
   return response;
 };
 
-//세션 만료 여부 확인
-export const checkSessionStatus = async () => {
+//세션 만료 체크(로그인 기한 다됐는지)
+export const getSessionStatus = async () => {
   const url = `/auth/session-status`;
   const response = await cookieApi.get(url);
   return response;

@@ -11,7 +11,7 @@ import {
 
 import { myPageTabMenuData } from '@/pages/MyPage/MyPageSideTab/data';
 
-import { useEventHandler } from '@/hooks/useEventHandler';
+import useEventHandler from '@/hooks/useEventHandler';
 
 export default function MyPageSideTab() {
   const navigate = useNavigate();

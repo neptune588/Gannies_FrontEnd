@@ -23,7 +23,7 @@ import {
   memberManagementData,
 } from '@/pages/Admin/data';
 
-import { useEventHandler } from '@/hooks/useEventHandler';
+import useEventHandler from '@/hooks/useEventHandler';
 
 export default function MemberManagement() {
   const [tableData, setTableData] = useState(memberManagementData);

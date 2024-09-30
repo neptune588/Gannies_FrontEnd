@@ -22,16 +22,10 @@ const CategoryList = styled.li`
   cursor: pointer;
 `;
 
-export default function PageCategory({
-  topCategory = null,
-  middleCategory = null,
-  bottomCategory = null,
-  activeCategory = null,
-}) {
-  //전역변수 써야할것같음. 지금은 대충해놓자. 화이팅~
+export default function PageCategory() {
   return (
     <CategoryBox>
-      <CategoryList>게시글</CategoryList>
+      <CategoryList>메인</CategoryList>
       <img src={rightArrow} alt='right-arrow' />
       <CategoryList $isActiveCategory={false}>실습정보</CategoryList>
       <img src={rightArrow} alt='right-arrow' />

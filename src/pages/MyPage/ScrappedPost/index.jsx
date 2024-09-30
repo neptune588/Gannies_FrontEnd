@@ -8,8 +8,8 @@ import { TitleBox, Title, PageWrapper } from '@/pages/MyPage/WrittenPost/style';
 
 import { posts } from '@/pages/Home/data';
 
-import { useEventHandler } from '@/hooks/useEventHandler';
 import { getUserScraps } from '@/api/userApi';
+import useEventHandler from '@/hooks/useEventHandler';
 
 export default function ScrappedPost() {
   const [postData] = useState(posts);

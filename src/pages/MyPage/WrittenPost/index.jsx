@@ -8,7 +8,7 @@ import { TitleBox, Title, PageWrapper } from '@/pages/MyPage/WrittenPost/style';
 
 import { posts } from '@/pages/Home/data';
 
-import { useEventHandler } from '@/hooks/useEventHandler';
+import useEventHandler from '@/hooks/useEventHandler';
 import { getUserPosts } from '@/api/userApi';
 
 export default function WrittenPost() {

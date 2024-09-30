@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import { AdminLayout, HeaderLayout, MainLayout, MypageLayout } from '@/layouts';
 import Home from '@/pages/Home';
 import SignIn from '@/pages/SignIn';
@@ -25,7 +25,8 @@ import UserApproval from '@/pages/Admin/UserApproval';
 import PostManagement from '@/pages/Admin/PostManagement';
 import SignUp from '@/pages/SignUp/SignUp';
 import EmailVerification from '@/pages/EmailVerification';
-import PrivateRoute from './PrivateRoute'; // PrivateRoute 임포트
+import PrivateRoute from './PrivateRoute';
+import LoadingCircle from '@/components/LoadingCircle';
 
 export const router = createBrowserRouter([
   {
@@ -156,7 +157,7 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '*',
-    element: <Navigate to='/' replace />, // 기본 페이지로 리다이렉트
+    element: <LoadingCircle />,
+    path: '/test',
   },
 ]);

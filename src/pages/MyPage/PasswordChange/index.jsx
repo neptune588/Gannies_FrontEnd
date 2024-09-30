@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import Eye from '@/components/Icons/Eye';
 import EyeSlash from '@/components/Icons/EyeSlash';
 
@@ -10,9 +12,8 @@ import {
   EditSaveBox,
 } from '@/pages/MyPage/PasswordChange/style';
 
-import { useEventHandler } from '@/hooks/useEventHandler';
-import { useState } from 'react';
 import { changeUserPassword } from '@/api/userApi';
+import useEventHandler from '@/hooks/useEventHandler';
 
 export default function PasswordChange() {
   const { clickChangeState: passwordView, handleClickChange } = useEventHandler(

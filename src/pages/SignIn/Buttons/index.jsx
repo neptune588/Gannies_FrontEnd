@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import NextButton from '@/pages/SignUp/components/NextButton';
@@ -9,59 +10,61 @@ import {
   SignUpButton,
 } from '@/pages/SignIn/Buttons/style';
 import { userSignIn } from '@/api/authApi';
-import { useCookies } from 'react-cookie';
-import { useDispatch } from 'react-redux';
 import { handleModal } from '@/store/modalState';
-import { handleAuth } from '@/store/auth';
 // import axios from 'axios';
 
-function Buttons({ email, password, setLoginError }) {
-  const [autoLogin, setAutoLogin] = useState(false);
+import { setLogin } from '@/store/auth';
+
+function Buttons({ email, password, setLoginError, setIsLoading }) {
   const navigate = useNavigate();
-  const [isLoginCookies, setIsLoginCookie] = useCookies(['isLogin']);
   const dispatch = useDispatch();
+  const [autoLogin, setAutoLogin] = useState(false);
 
   const handleAutoLogin = () => {
     setAutoLogin(!autoLogin);
   };
 
-  const login = async () => {
+  const handleLogin = async () => {
     try {
+      setIsLoading(true);
       const response = await userSignIn({ email: email, password: password });
-      console.log(response);
       if (response.status === 200) {
-        setIsLoginCookie('isLogin', true, { path: '/' });
-        dispatch(
-          handleAuth({
-            field: 'membershipStatus',
-            value: response.data.user.membershipStatus,
-          })
-        );
+        // handleAuth({
+        //   field: 'membershipStatus',
+        //   value: response.data.user.membershipStatus,
+        // })
         if (response.data.user.membershipStatus === 'email_verified') {
           dispatch(handleModal({ field: 'isApproval', value: true }));
           navigate('/mypage/profile/edit');
         }
       }
+
+      const { userId } = response.data;
+
+      dispatch(setLogin({ userId }));
+      navigate('/');
     } catch (error) {
       setLoginError(true);
     }
   };
 
   return (
-    <Wrapper>
-      <div>
-        <button onClick={handleAutoLogin}>
-          <input type='checkbox' checked={autoLogin} readOnly />
-          <span>자동로그인</span>
-        </button>
-        <FindButton to='/find/id'>아이디 / 비밀번호 찾기</FindButton>
-      </div>
-      <NextButton $margin='47px' text='로그인' onClick={login} />
-      <span>
-        아직 회원이 아니신가요?&nbsp;&nbsp;
-        <SignUpButton to='/sign-up/identity'>회원가입</SignUpButton>
-      </span>
-    </Wrapper>
+    <>
+      <Wrapper>
+        <div>
+          <button onClick={handleAutoLogin}>
+            <input type='checkbox' checked={autoLogin} readOnly />
+            <span>자동로그인</span>
+          </button>
+          <FindButton to='/find/id'>아이디 / 비밀번호 찾기</FindButton>
+        </div>
+        <NextButton $margin='47px' text='로그인' onClick={handleLogin} />
+        <span>
+          아직 회원이 아니신가요?&nbsp;&nbsp;
+          <SignUpButton to='/sign-up/identity'>회원가입</SignUpButton>
+        </span>
+      </Wrapper>
+    </>
   );
 }
 

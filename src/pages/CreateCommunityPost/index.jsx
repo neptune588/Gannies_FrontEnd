@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import CommunityBanner from '@/components/CommunityBanner';
 import CommunityBannerText from '@/components/CommunityBannerText';
@@ -24,13 +25,15 @@ import {
 
 import { categoryData } from '@/pages/CreateCommunityPost/data';
 
+import useLoginCheck from '@/hooks/useLoginCheck';
 import useSelectorList from '@/hooks/useSelectorList';
-import { useEventHandler } from '@/hooks/useEventHandler';
+import useEventHandler from '@/hooks/useEventHandler';
 
 import { createPost } from '@/api/postApi';
 
 export default function CreateCommunityPost() {
   //제목 - 한글 1글자 이상은 최소로 있어야 한다. 최대는 50자 이하
+  const navigate = useNavigate();
 
   const editorRef = useRef(null);
   const imageButtonRef = useRef(null);
@@ -41,7 +44,7 @@ export default function CreateCommunityPost() {
   const [totalImageType, setTotalImageType] = useState([]);
 
   const [modalState, setModalState] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmit, setIsSubmit] = useState(false);
 
   const { currentBoardType } = useSelectorList();
   const { changeValue: titleValue, handleChange: handleTitleValueChange } =
@@ -52,6 +55,7 @@ export default function CreateCommunityPost() {
     useEventHandler({
       changeDefaultValue: '',
     });
+  const { checkIsLogin } = useLoginCheck();
 
   //form 제출 로직에서 적용할것들
   /*     const parser = new DOMParser();
@@ -106,11 +110,11 @@ export default function CreateCommunityPost() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (isLoading) {
+    if (isSubmit) {
       return;
     }
 
-    setIsLoading(true);
+    setIsSubmit(true);
 
     const condition01 =
       titleValue === '' || titleValue === undefined || titleValue === null;
@@ -139,15 +143,19 @@ export default function CreateCommunityPost() {
         console.error(err);
       }
     }
-    setIsLoading(false);
+    setIsSubmit(false);
   };
 
   useEffect(() => {
+    checkIsLogin();
+  }, []);
+
+  /* useEffect(() => {
     if (editorRef.current && previewImage !== '') {
       editorRef.current.insertContent(`<img src="${previewImage}" />`);
       setPreviewImage('');
     }
-  }, [previewImage]);
+  }, [previewImage]); */
 
   return (
     <>
