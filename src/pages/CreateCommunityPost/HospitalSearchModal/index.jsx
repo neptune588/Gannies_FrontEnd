@@ -21,6 +21,8 @@ import { setIsHospitalModal } from '@/store/modalsControl';
 
 export default function HospitalSearchModal({
   handleModalClose,
+  hospitalSearchValue,
+  handlehospitalSearchValueChange,
   SetHospitalName,
 }) {
   return (
@@ -29,7 +31,7 @@ export default function HospitalSearchModal({
         <ModalCloseButton
           type='button'
           onClick={() => {
-            handleModalClose(setIsHospitalModal, false);
+            handleModalClose({ modalDispatch: setIsHospitalModal });
           }}
         >
           <img src={cross} alt='close-button' />
@@ -37,7 +39,14 @@ export default function HospitalSearchModal({
         <ModalInnerLeftBox>
           <h2>병원찾기</h2>
           <SearchInputArea>
-            <input placeholder='병원을 입력하세요.' maxLength={35} />
+            <input
+              type='text'
+              placeholder='병원을 입력하세요.'
+              onChange={(e) => {
+                handlehospitalSearchValueChange(e.target.value);
+              }}
+              maxLength={35}
+            />
             <img src={searchIcon} alt='search-icon' />
           </SearchInputArea>
           <SearchListBox>
@@ -55,7 +64,7 @@ export default function HospitalSearchModal({
       </ModalWrapper>
       <ModalCloseArea
         handleModalClose={() => {
-          handleModalClose(setIsHospitalModal, false);
+          handleModalClose({ modalDispatch: setIsHospitalModal });
         }}
       />
     </ModalContainer>

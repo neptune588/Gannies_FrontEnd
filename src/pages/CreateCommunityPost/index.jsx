@@ -74,6 +74,13 @@ export default function CreateCommunityPost() {
     useEventHandler({
       changeDefaultValue: selectOptions[0].path,
     });
+  const {
+    changeValue: hospitalSearchValue,
+    handleChange: handlehospitalSearchValueChange,
+  } = useEventHandler({
+    changeDefaultValue: selectOptions[0].path,
+  });
+
   const [hospitalName, SetHospitalName] = useState('');
 
   const { checkIsLogin } = useLoginCheck();
@@ -199,6 +206,8 @@ export default function CreateCommunityPost() {
       {isHospitalSearchModal && (
         <HospitalSearchModal
           handleModalClose={handleModalClose}
+          hospitalSearchValue={hospitalSearchValue}
+          handlehospitalSearchValueChange={handlehospitalSearchValueChange}
           SetHospitalName={SetHospitalName}
         />
       )}
@@ -243,7 +252,7 @@ export default function CreateCommunityPost() {
                     <button
                       type='button'
                       onClick={() => {
-                        handleModalOpen(setIsHospitalModal, true);
+                        handleModalOpen({ modalDispatch: setIsHospitalModal });
                       }}
                     >
                       병원찾기

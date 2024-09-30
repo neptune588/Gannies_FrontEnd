@@ -19,6 +19,7 @@ const ModalWrapper = styled.div`
   background-color: ${({ theme: { colors } }) => {
     return colors.white;
   }};
+  border-radius: 16px;
 `;
 
 const ModalInnerLeftBox = styled.div`

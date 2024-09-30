@@ -18,14 +18,14 @@ export default function useModalsControl() {
   const { isHospitalSearchModal, isDeleteModal, isUserBanModal } =
     useSelectorList();
 
-  const handleModalOpen = (modalDispatch, boolean) => {
+  const handleModalOpen = ({ modalDispatch }) => {
     setCurrentScrollLoaction(window.scrollY);
-    dispatch(modalDispatch(boolean));
+    dispatch(modalDispatch(true));
     //console.log(currentScrollLoaction);
   };
 
-  const handleModalClose = (modalDispatch, boolean) => {
-    dispatch(modalDispatch(boolean));
+  const handleModalClose = ({ modalDispatch }) => {
+    dispatch(modalDispatch(false));
     setTimeout(() => {
       window.scroll({ top: currentScrollLoaction, left: 0 });
     }, 10);
