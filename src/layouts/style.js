@@ -2,12 +2,21 @@ import styled from 'styled-components';
 
 import { h4_600 } from '@/styles/commonStyle/localTextStyle';
 
-const CenterdContainer = styled.div`
+const Container = styled.div`
+  overflow: ${({ $isHospitalSearchModal }) => {
+    return $isHospitalSearchModal ? 'hidden' : null;
+  }};
+  height: ${({ $isHospitalSearchModal }) => {
+    return $isHospitalSearchModal ? '100vh' : null;
+  }};
+`;
+
+const CenterdWrapper = styled.div`
   width: 1128px;
   margin: 0 auto;
 `;
 
-const MyPageCenterdContainer = styled.div`
+const MyPageCenterdWrapper = styled.div`
   width: 975px;
   margin: 0 auto;
 `;
@@ -46,8 +55,9 @@ const AdminContentsWrapper = styled.div`
 `;
 
 export {
-  CenterdContainer,
-  MyPageCenterdContainer,
+  Container,
+  CenterdWrapper,
+  MyPageCenterdWrapper,
   MyPageTitle,
   MyPageFlexWrapper,
   MyPageContentsBox,

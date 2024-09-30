@@ -64,8 +64,7 @@ const DataInputBox = styled.div`
     margin-right: 45px;
   }
 
-  > div,
-  > label {
+  > button {
     ${defaultBorderBoxStyle}
     display: flex;
     align-items: center;
@@ -73,34 +72,17 @@ const DataInputBox = styled.div`
     width: 340px;
     height: 45px;
     padding: 10px 20px 10px 30px;
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.sm;
-    }};
-    cursor: pointer;
-  }
-
-  > div {
     color: ${({ theme: { colors } }) => {
       return colors.gray['90'];
+    }};
+    font-size: ${({ theme: { typo } }) => {
+      return typo.size.sm;
     }};
     font-weight: ${({ theme: { typo } }) => {
       return typo.weight.regular;
     }};
-    > img {
-      width: 24px;
-      height: 24px;
-    }
-  }
-
-  > label {
-    > input {
-      width: 90%;
-      font-size: inherit;
-      font-weight: ${({ theme: { typo } }) => {
-        return typo.weight.regular;
-      }};
-      cursor: pointer;
-    }
+    user-select: none;
+    cursor: pointer;
     > img {
       width: 18px;
       height: 18px;

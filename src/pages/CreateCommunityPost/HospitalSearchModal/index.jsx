@@ -2,6 +2,7 @@ import ModalContainer from '@/components/ModalContainer';
 import ModalCloseArea from '@/components/ModalCloseArea';
 
 import searchIcon from '@/assets/icons/search/search_black.svg';
+import cross from '@/assets/icons/etc/close.svg';
 
 import {
   ModalWrapper,
@@ -13,16 +14,39 @@ import {
   HospitalLocationInfo,
   HospitalContact,
   ModalInnerRightBox,
+  ModalCloseButton,
 } from '@/pages/CreateCommunityPost/HospitalSearchModal/style';
 
-export default function HospitalSearchModal() {
+import { setIsHospitalModal } from '@/store/modalsControl';
+
+export default function HospitalSearchModal({
+  handleModalClose,
+  hospitalSearchValue,
+  handlehospitalSearchValueChange,
+  SetHospitalName,
+}) {
   return (
     <ModalContainer>
       <ModalWrapper>
+        <ModalCloseButton
+          type='button'
+          onClick={() => {
+            handleModalClose({ modalDispatch: setIsHospitalModal });
+          }}
+        >
+          <img src={cross} alt='close-button' />
+        </ModalCloseButton>
         <ModalInnerLeftBox>
           <h2>병원찾기</h2>
           <SearchInputArea>
-            <input placeholder='병원을 입력하세요.' maxLength={35} />
+            <input
+              type='text'
+              placeholder='병원을 입력하세요.'
+              onChange={(e) => {
+                handlehospitalSearchValueChange(e.target.value);
+              }}
+              maxLength={35}
+            />
             <img src={searchIcon} alt='search-icon' />
           </SearchInputArea>
           <SearchListBox>
@@ -38,7 +62,11 @@ export default function HospitalSearchModal() {
         </ModalInnerLeftBox>
         <ModalInnerRightBox></ModalInnerRightBox>
       </ModalWrapper>
-      <ModalCloseArea />
+      <ModalCloseArea
+        handleModalClose={() => {
+          handleModalClose({ modalDispatch: setIsHospitalModal });
+        }}
+      />
     </ModalContainer>
   );
 }

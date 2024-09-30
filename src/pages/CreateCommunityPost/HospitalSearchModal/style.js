@@ -6,6 +6,7 @@ import {
   medium_600,
   small_400,
 } from '@/styles/commonStyle/localTextStyle';
+import { modalCloseButtonStyle } from '@/styles/commonStyle/etc';
 
 const ModalWrapper = styled.div`
   display: flex;
@@ -18,6 +19,7 @@ const ModalWrapper = styled.div`
   background-color: ${({ theme: { colors } }) => {
     return colors.white;
   }};
+  border-radius: 16px;
 `;
 
 const ModalInnerLeftBox = styled.div`
@@ -118,6 +120,14 @@ const ModalInnerRightBox = styled.div`
   height: 670px;
 `;
 
+const ModalCloseButton = styled.button`
+  ${modalCloseButtonStyle}
+  width: 18px;
+  height: 18px;
+  top: 25px;
+  right: 35px;
+`;
+
 export {
   ModalWrapper,
   ModalInnerLeftBox,
@@ -128,4 +138,5 @@ export {
   HospitalLocationInfo,
   HospitalContact,
   ModalInnerRightBox,
+  ModalCloseButton,
 };
