@@ -4,6 +4,7 @@ import uuid from 'react-uuid';
 import ModalContainer from '@/components/ModalContainer';
 import ModalCloseArea from '@/components/ModalCloseArea';
 import HospitalSearchLoadingCircle from '@/components/LoadingCircle/HospitalSearchLoadingCircle';
+import KakaoMap from '@/pages/CreateCommunityPost/HospitalSearchModal/KakaoMap';
 
 import searchIcon from '@/assets/icons/search/search_black.svg';
 import cross from '@/assets/icons/etc/close.svg';
@@ -35,8 +36,13 @@ export default function HospitalSearchModal({
 }) {
   const searchInput = useRef(null);
 
+  //검색어 입력 -> 리스트 선택 -> keyword 갱신 -> 리스트 선택됐는지 검사 -> 선택 됐을시 -> 맵 불러오기전까지 loading
+
   const [isSearch, setIsSearch] = useState(false);
+  const [isMapSearch, setIsMapSearch] = useState(false);
   const [hospitalLists, setHospitalLists] = useState([]);
+  const [keyword, setKeyword] = useState('');
+  const [isListSelected, setIsListSelected] = useState(false);
 
   const hospitalSearch = async () => {
     if (
@@ -85,11 +91,14 @@ export default function HospitalSearchModal({
         };
       });
     });
+
+    setKeyword(hospitalLists[idx].place_name);
   };
 
   const dataReset = () => {
     handlehospitalSearchValueChange('');
     setHospitalLists([]);
+    setKeyword('');
   };
 
   useEffect(() => {
@@ -97,6 +106,13 @@ export default function HospitalSearchModal({
       searchInput.current.focus();
     }
   }, []);
+
+  useEffect(() => {
+    setIsListSelected(() => {
+      return hospitalLists.some((list) => list.isListClick);
+    });
+  }, [hospitalLists]);
+
   return (
     <ModalContainer>
       <ModalWrapper>
@@ -162,7 +178,21 @@ export default function HospitalSearchModal({
             })}
           </SearchListBox>
         </ModalInnerLeftBox>
-        <ModalInnerRightBox></ModalInnerRightBox>
+        <ModalInnerRightBox>
+          {isListSelected && (
+            <>
+              {isMapSearch ? (
+                <HospitalSearchLoadingCircle />
+              ) : (
+                <KakaoMap
+                  isListSelected={isListSelected}
+                  keyword={keyword}
+                  setIsMapSearch={setIsMapSearch}
+                />
+              )}
+            </>
+          )}
+        </ModalInnerRightBox>
       </ModalWrapper>
       <ModalCloseArea
         handleModalClose={() => {

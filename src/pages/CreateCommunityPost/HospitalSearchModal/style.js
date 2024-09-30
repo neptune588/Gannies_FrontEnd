@@ -24,7 +24,8 @@ const ModalWrapper = styled.div`
 `;
 
 const ModalInnerLeftBox = styled.div`
-  width: 620px;
+  width: 48%;
+  margin-right: 2%;
   > h2 {
     ${h3_600}
     margin-bottom: 35px;
@@ -151,6 +152,7 @@ const HospitalContact = styled.p`
 `;
 
 const ModalInnerRightBox = styled.div`
+  width: 50%;
   height: 670px;
 `;
 
@@ -158,8 +160,8 @@ const ModalCloseButton = styled.button`
   ${modalCloseButtonStyle}
   width: 18px;
   height: 18px;
-  top: 25px;
-  right: 35px;
+  top: 15px;
+  right: 25px;
 `;
 
 export {
