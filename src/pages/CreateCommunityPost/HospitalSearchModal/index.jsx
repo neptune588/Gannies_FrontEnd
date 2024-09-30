@@ -1,5 +1,3 @@
-import { useDispatch } from 'react-redux';
-
 import ModalContainer from '@/components/ModalContainer';
 import ModalCloseArea from '@/components/ModalCloseArea';
 
@@ -21,16 +19,17 @@ import {
 
 import { setIsHospitalModal } from '@/store/modalsControl';
 
-export default function HospitalSearchModal({ SetHospitalName }) {
-  const dispatch = useDispatch();
-
+export default function HospitalSearchModal({
+  handleModalClose,
+  SetHospitalName,
+}) {
   return (
     <ModalContainer>
       <ModalWrapper>
         <ModalCloseButton
           type='button'
           onClick={() => {
-            dispatch(setIsHospitalModal(false));
+            handleModalClose(setIsHospitalModal, false);
           }}
         >
           <img src={cross} alt='close-button' />
@@ -56,7 +55,7 @@ export default function HospitalSearchModal({ SetHospitalName }) {
       </ModalWrapper>
       <ModalCloseArea
         handleModalClose={() => {
-          dispatch(setIsHospitalModal(false));
+          handleModalClose(setIsHospitalModal, false);
         }}
       />
     </ModalContainer>

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { h4_600 } from '@/styles/commonStyle/localTextStyle';
 
 const Container = styled.div`
-  over-flow: ${({ $isHospitalSearchModal }) => {
+  overflow: ${({ $isHospitalSearchModal }) => {
     return $isHospitalSearchModal ? 'hidden' : null;
   }};
   height: ${({ $isHospitalSearchModal }) => {

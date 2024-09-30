@@ -30,6 +30,7 @@ import { adminCategorySelectOptions } from '@/pages/CreateCommunityPost/Category
 import useLoginCheck from '@/hooks/useLoginCheck';
 import useSelectorList from '@/hooks/useSelectorList';
 import useEventHandler from '@/hooks/useEventHandler';
+import useModalsControl from '@/hooks/useModalsControl';
 
 import { setIsHospitalModal } from '@/store/modalsControl';
 
@@ -59,6 +60,8 @@ export default function CreateCommunityPost() {
   const [isLoading, setIsLoading] = useState(false);
 
   const { currentBoardType } = useSelectorList();
+  const { isHospitalSearchModal, handleModalOpen, handleModalClose } =
+    useModalsControl();
   const { changeValue: titleValue, handleChange: handleTitleValueChange } =
     useEventHandler({
       changeDefaultValue: '',
@@ -193,8 +196,11 @@ export default function CreateCommunityPost() {
 
   return (
     <>
-      {setIsHospitalModal && (
-        <HospitalSearchModal SetHospitalName={SetHospitalName} />
+      {isHospitalSearchModal && (
+        <HospitalSearchModal
+          handleModalClose={handleModalClose}
+          SetHospitalName={SetHospitalName}
+        />
       )}
       <CommunityBanner>
         <CommunityBannerText />
@@ -237,7 +243,7 @@ export default function CreateCommunityPost() {
                     <button
                       type='button'
                       onClick={() => {
-                        dispatch(setIsHospitalModal(true));
+                        handleModalOpen(setIsHospitalModal, true);
                       }}
                     >
                       병원찾기
