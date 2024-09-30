@@ -10,7 +10,7 @@ import {
   SignUpButton,
 } from '@/pages/SignIn/Buttons/style';
 import { userSignIn } from '@/api/authApi';
-import { handleModal } from '@/store/modalState';
+// import { handleModal } from '@/store/modalState';
 // import axios from 'axios';
 
 import { setLogin } from '@/store/auth';
@@ -28,26 +28,23 @@ function Buttons({ email, password, setLoginError, setIsLoading }) {
     try {
       setIsLoading(true);
       const response = await userSignIn({ email: email, password: password });
-      if (response.status === 200) {
-        // handleAuth({
-        //   field: 'membershipStatus',
-        //   value: response.data.user.membershipStatus,
-        // })
-        if (response.data.user.membershipStatus === 'email_verified') {
-          dispatch(handleModal({ field: 'isApproval', value: true }));
-          navigate('/mypage/profile/edit');
-        }
-      }
 
       const { userId } = response.data;
-
+      // handleAuth({
+      //   field: 'membershipStatus',
+      //   value: response.data.user.membershipStatus,
+      // })
+      // if (response.data.user.membershipStatus === 'email_verified') {
+      //   dispatch(handleModal({ field: 'isApproval', value: true }));
+      //   navigate('/mypage/profile/edit');
+      // }
       dispatch(setLogin({ userId }));
       navigate('/');
     } catch (error) {
+      setIsLoading(false);
       setLoginError(true);
     }
   };
-
   return (
     <>
       <Wrapper>
