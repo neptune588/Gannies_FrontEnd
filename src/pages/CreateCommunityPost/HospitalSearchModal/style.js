@@ -47,9 +47,11 @@ const SearchInputArea = styled.label`
     }};
     ${h4_400}
   }
-  > img {
-    width: 36px;
-    height: 36px;
+  > button {
+    > img {
+      width: 36px;
+      height: 36px;
+    }
   }
 `;
 

@@ -78,7 +78,7 @@ export default function CreateCommunityPost() {
     changeValue: hospitalSearchValue,
     handleChange: handlehospitalSearchValueChange,
   } = useEventHandler({
-    changeDefaultValue: selectOptions[0].path,
+    changeDefaultValue: '',
   });
 
   const [hospitalName, SetHospitalName] = useState('');

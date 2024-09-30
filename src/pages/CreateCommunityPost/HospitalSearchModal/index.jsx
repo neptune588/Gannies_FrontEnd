@@ -1,5 +1,8 @@
+import { useState } from 'react';
+
 import ModalContainer from '@/components/ModalContainer';
 import ModalCloseArea from '@/components/ModalCloseArea';
+import LoadingCircle from '@/components/LoadingCircle';
 
 import searchIcon from '@/assets/icons/search/search_black.svg';
 import cross from '@/assets/icons/etc/close.svg';
@@ -19,12 +22,48 @@ import {
 
 import { setIsHospitalModal } from '@/store/modalsControl';
 
+import { getHospitals } from '@/api/hospitalSearchApi';
+
 export default function HospitalSearchModal({
   handleModalClose,
   hospitalSearchValue,
   handlehospitalSearchValueChange,
   SetHospitalName,
 }) {
+  const [isSearch, setIsSearch] = useState(false);
+
+  const hospitalSearch = async () => {
+    if (
+      hospitalSearchValue === '' ||
+      hospitalSearchValue === null ||
+      hospitalSearchValue === undefined
+    ) {
+      alert('검색어를 입력 해주세요');
+      return;
+    }
+
+    setIsSearch(true);
+    try {
+      const res = await getHospitals({
+        query: hospitalSearchValue,
+        category_group_code: 'HP8',
+      });
+
+      console.log(res);
+    } catch (error) {
+      console.error(error);
+    }
+    setIsSearch(false);
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    if (e.key === 'Enter') {
+      hospitalSearch();
+    }
+  };
+
   return (
     <ModalContainer>
       <ModalWrapper>
@@ -41,15 +80,22 @@ export default function HospitalSearchModal({
           <SearchInputArea>
             <input
               type='text'
+              value={hospitalSearchValue}
               placeholder='병원을 입력하세요.'
+              onKeyUp={(e) => {
+                handleSearch(e);
+              }}
               onChange={(e) => {
                 handlehospitalSearchValueChange(e.target.value);
               }}
               maxLength={35}
             />
-            <img src={searchIcon} alt='search-icon' />
+            <button type='button' onClick={hospitalSearch}>
+              <img src={searchIcon} alt='search-icon' />
+            </button>
           </SearchInputArea>
-          <SearchListBox>
+          {isSearch && <LoadingCircle></LoadingCircle>}
+          {/*           <SearchListBox>
             <SearchList>
               <HospitalName>강남세브란스 병원</HospitalName>
               <HospitalLocationInfo>
@@ -58,7 +104,7 @@ export default function HospitalSearchModal({
               </HospitalLocationInfo>
               <HospitalContact>1599-6114</HospitalContact>
             </SearchList>
-          </SearchListBox>
+          </SearchListBox> */}
         </ModalInnerLeftBox>
         <ModalInnerRightBox></ModalInnerRightBox>
       </ModalWrapper>
