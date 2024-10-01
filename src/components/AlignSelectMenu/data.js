@@ -27,3 +27,18 @@ export const communityPageAlignSelectOptions = [
     },
   },
 ];
+
+export const myPageAlignSelectOptions = [
+  {
+    label: '최신순',
+    query: {
+      sort: 'latest',
+    },
+  },
+  {
+    label: '조회순',
+    query: {
+      sort: 'popular',
+    },
+  },
+];

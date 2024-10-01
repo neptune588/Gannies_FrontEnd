@@ -29,8 +29,12 @@ const PostsHeaderLeftBox = styled.div`
 
 const PostsHeaderRightBox = styled(PostsHeaderLeftBox)`
   > p {
-    width: 75px;
+    width: 82px;
     text-align: left;
+
+    &:last-of-type {
+      width: 109px;
+    }
   }
 `;
 
