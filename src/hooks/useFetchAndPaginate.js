@@ -8,6 +8,7 @@ export default function useFetchAndPaginate({
   const firstRunBlockToSetPageTotalEffect = useRef(true);
 
   const [items, setItems] = useState([]);
+  const [totalItems, setTotalItems] = useState(0);
   const [currentPageNumber, setCurrentPageNumber] = useState(defaultPageNumber);
   //전체 페이지 배열 [[][][][]...의 형태]
   const [pageTotalNumbers, setPageTotalNumbers] = useState([]);
@@ -22,7 +23,7 @@ export default function useFetchAndPaginate({
       const { items, totalItems } = res.data;
 
       setItems(items);
-
+      setTotalItems(totalItems);
       // totalItems -> ex: 473
       // Math.ceil(473 / 10) -> 48page
       // Math.ceil(48 / 10) -> 이중배열 5개
@@ -161,6 +162,7 @@ export default function useFetchAndPaginate({
 
   return {
     items,
+    totalItems,
     currentPageNumber,
     groupedPageNumbers,
     getDataAndSetPageNumbers,

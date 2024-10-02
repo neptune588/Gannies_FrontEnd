@@ -10,7 +10,7 @@ import { TitleBox, Title, PageWrapper } from '@/pages/MyPage/WrittenPost/style';
 import { getUserPosts } from '@/api/userApi';
 import { communityPostMaxLimit } from '@/utils/itemLimit';
 import { pageViewLimit } from '@/utils/itemLimit';
-import useFetchAndPaginateMyPage from '@/hooks/useFetchAndPaginateMyPage';
+import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
 
 export default function WrittenPost() {
   const optionList = myPageAlignSelectOptions;
@@ -29,7 +29,7 @@ export default function WrittenPost() {
     handlePageNumberClick,
     handlePrevPageClick,
     handleNextPageClick,
-  } = useFetchAndPaginateMyPage({
+  } = useFetchAndPaginate({
     defaultPageNumber: 1,
     itemMaxLimit: communityPostMaxLimit,
     pageViewLimit: pageViewLimit,

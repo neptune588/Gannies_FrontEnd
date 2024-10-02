@@ -29,8 +29,8 @@ const ImageUploadInput = styled.input`
 
 export default function PostCreateEditor({
   editorRef,
-  imageButtonRef,
   editorValue,
+  imageButtonRef,
   handleEditorValueChange,
   handleImageUploadClick,
   handleImageUpload,
@@ -42,8 +42,7 @@ export default function PostCreateEditor({
         initialValue=''
         value={editorValue}
         onEditorChange={(value) => {
-          const str = value.substring(0, 1500);
-          handleEditorValueChange(str);
+          handleEditorValueChange(value);
         }}
         onInit={(_, editor) => {
           editorRef.current = editor;

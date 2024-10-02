@@ -34,6 +34,7 @@ import useModalsControl from '@/hooks/useModalsControl';
 
 import { setIsHospitalModal } from '@/store/modalsControl';
 
+import { getPresignedUrl } from '@/api/authApi';
 import { createPost } from '@/api/postApi';
 import { checkAdminStatus } from '@/api/authApi';
 
@@ -41,6 +42,10 @@ export default function CreateCommunityPost() {
   //제목 - 한글 1글자 이상은 최소로 있어야 한다. 최대는 50자 이하
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const editorRef = useRef(null);
+  const imageButtonRef = useRef(null);
+  const firstRunBlockToSetSelectOptionEffect = useRef(true);
 
   const { isHospitalSearchModal, handleModalOpen, handleModalClose } =
     useModalsControl();
@@ -59,10 +64,6 @@ export default function CreateCommunityPost() {
   } = useEventHandler({
     changeDefaultValue: '',
   });
-
-  const editorRef = useRef(null);
-  const imageButtonRef = useRef(null);
-  const firstRunBlockToSetSelectOptionEffect = useRef(true);
 
   const [selectOptions, setSelectOptions] = useState(
     defaultCategorySelectOptions
@@ -85,35 +86,6 @@ export default function CreateCommunityPost() {
 
   const { checkIsLogin } = useLoginCheck();
 
-  //form 제출 로직에서 적용할것들
-  /*     const parser = new DOMParser();
-    const doc = parser.parseFromString(value, 'text/html');
-    const htmlTags = doc.body.querySelectorAll('img');
-    const imageExtensions = [
-      'jpg',
-      'jpeg',
-      'png',
-      'gif',
-      'bmp',
-      'tiff',
-      'webp',
-      'heif',
-      'svg',
-    ];
-
-    htmlTags.forEach((tag) => {
-      imageExtensions.forEach((imageExtension) => {
-        const a = tag.src.includes(`.${imageExtension}`);
-        const b = tag.src.includes(`/${imageExtension}`);
-
-        if (a || b) {
-          setTotalImageType([...totalImageType, `image/${imageExtension}`]);
-        }
-      });
-    });
-
-    console.log(totalImageType); */
-
   const handleImageUploadClick = () => {
     imageButtonRef.current.value = '';
     imageButtonRef.current && imageButtonRef.current.click();
@@ -125,19 +97,25 @@ export default function CreateCommunityPost() {
 
     if (!uploadFile.type.startsWith('image/')) {
       alert('이미지 파일만 업로드 가능합니다!');
-    } else {
-      //console.log('이미지 변환')
-      const reader = new FileReader();
-      reader.readAsDataURL(uploadFile);
-      reader.onload = () => {
-        setPreviewImage(reader.result);
-      };
+      return;
     }
+
+    const reader = new FileReader();
+    reader.readAsDataURL(uploadFile);
+    reader.onload = () => {
+      setPreviewImage(reader.result);
+    };
+  };
+
+  const urlRequest = async (fileType) => {
+    const res = await getPresignedUrl({ fileType });
+    console.log(res, '호출');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    console.log(isSubmit);
     if (isSubmit) {
       return;
     }
@@ -151,23 +129,51 @@ export default function CreateCommunityPost() {
 
     if (condition01 || condition02) {
       alert('제목 혹은 내용을 입력 해주세요!');
-    } else {
-      const splitByWhitespace = titleValue.trim().split(' ');
-      const title = splitByWhitespace.filter((str) => str !== '').join(' ');
-
-      const postData = {
-        title,
-        content: editorValue,
-      };
-
-      try {
-        const res = await createPost(currentPath, JSON.stringify(postData));
-
-        console.log(res);
-      } catch (err) {
-        console.error(err);
-      }
+      setIsSubmit(false);
+      return;
     }
+    //form 제출 로직에서 적용할것들
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(editorValue, 'text/html');
+    const htmlEl = doc.body.querySelectorAll('img');
+    const imageExtensions = [
+      'jpg',
+      'jpeg',
+      'png',
+      'gif',
+      'bmp',
+      'tiff',
+      'webp',
+      'heif',
+      'svg',
+    ];
+
+    htmlEl.forEach((el) => {
+      imageExtensions.forEach((imageExtension) => {
+        const a = el.src.includes(`.${imageExtension}`);
+        const b = el.src.includes(`/${imageExtension}`);
+
+        if (a || b) {
+          urlRequest(`image/${imageExtension}`);
+        }
+      });
+    });
+
+    const splitByWhitespace = titleValue.trim().split(' ');
+    const title = splitByWhitespace.filter((str) => str !== '').join(' ');
+
+    const postData = {
+      title,
+      content: editorValue,
+    };
+
+    /*     try {
+      const res = await createPost(currentPath, JSON.stringify(postData));
+
+      console.log(res);
+    } catch (err) {
+      console.error(err);
+    } */
     setIsSubmit(false);
   };
 
@@ -194,12 +200,13 @@ export default function CreateCommunityPost() {
 
     setSelectedOption(selectOptions[0].content);
   }, [selectOptions]);
-  /* useEffect(() => {
+
+  useEffect(() => {
     if (editorRef.current && previewImage !== '') {
       editorRef.current.insertContent(`<img src="${previewImage}" />`);
       setPreviewImage('');
     }
-  }, [previewImage]); */
+  }, [previewImage]);
 
   return (
     <>

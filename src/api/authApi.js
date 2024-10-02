@@ -99,9 +99,9 @@ export const userStatusVerify = async (pwFindData) => {
 };
 
 //인증서 업로드 하기 위해 필요한 URL 받기
-export const getPresignedUrl = async (fileType) => {
-  const url = '/certificates/upload-info';
-  const response = await api.post(url, { fileType: fileType });
+export const getPresignedUrl = async (fileTypeData) => {
+  const url = '/files/presigned-url';
+  const response = await api.post(url, fileTypeData);
   return response;
 };
 
