@@ -1,6 +1,7 @@
 import { userDelete } from '@/api/authApi';
 import { changeUserNickname, getUserInfo } from '@/api/userApi';
 import IsApproval from '@/components/Modal/IsApproval';
+import IsWithdrawal from '@/components/Modal/IsWithdrawal';
 import {
   Title,
   PersonalInfoWrapper,
@@ -21,6 +22,7 @@ export default function PersonalInfo() {
   });
   const [isEditable, setIsEditable] = useState(false);
   const modalState = useSelector((state) => state.modalState);
+  const [openWithdrawalModal, setOpenWithdrawalModal] = useState(false);
 
   useEffect(() => {
     const getInfo = async () => {
@@ -69,11 +71,14 @@ export default function PersonalInfo() {
 
   const handleWithdrawal = async (e) => {
     e.preventDefault();
-    await userDelete();
+    setOpenWithdrawalModal(true);
   };
 
   return (
     <>
+      {openWithdrawalModal && (
+        <IsWithdrawal setOpenModal={setOpenWithdrawalModal} />
+      )}
       {modalState.isApproval && <IsApproval />}
       <Title>회원정보수정</Title>
       <PersonalInfoWrapper>
