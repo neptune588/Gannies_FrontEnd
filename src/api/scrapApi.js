@@ -15,8 +15,8 @@ export const getMyScrapPosts = async () => {
 };
 
 //스크랩 취소
-export const cancelPostScrap = async (scrapId) => {
-  const url = `/scraps/${scrapId}`;
+export const cancelPostScrap = async (postId) => {
+  const url = `/scraps/${postId}`;
   const response = await cookieApi.delete(url);
   return response;
 };

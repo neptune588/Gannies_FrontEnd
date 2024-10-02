@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 
 import CommunityBanner from '@/components/CommunityBanner';
 import CommunityBannerText from '@/components/CommunityBannerText';
-import PageCategory from '@/pages/CreateCommunityPost/PageCategory';
+import PageCategory from '@/components/PageCategory';
 import CategoryTitle from '@/pages/CreateCommunityPost/CategoryTitle';
 import CategorySelectMenus from '@/pages/CreateCommunityPost/CategorySelectMenus';
 import Buttons from '@/pages/CreateCommunityPost/Buttons';

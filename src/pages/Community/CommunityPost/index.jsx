@@ -20,9 +20,10 @@ export default function CommunityPost({
   likeCount,
   postViewCount,
   numberOfCommentsAndReplies,
+  handlePostClick,
 }) {
   return (
-    <TableRow>
+    <TableRow onClick={handlePostClick}>
       <PostNumberBox>{number}</PostNumberBox>
       <PostTitleBox>
         {title}

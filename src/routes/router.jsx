@@ -47,7 +47,7 @@ export const router = createBrowserRouter([
             element: <CreateCommunityPost />,
           },
           {
-            path: '/community/detail',
+            path: '/community/post/:postId',
             element: <PostDetail />,
           },
         ],

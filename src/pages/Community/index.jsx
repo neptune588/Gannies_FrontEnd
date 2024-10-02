@@ -154,6 +154,9 @@ export default function Community() {
               return (
                 <CommunityPost
                   key={uuid()}
+                  handlePostClick={() => {
+                    navigate(`/community/post/${post.postId}`);
+                  }}
                   number={String(post.postId).padStart(2, '0')}
                   title={post.title}
                   nickname={post.user.nickname}

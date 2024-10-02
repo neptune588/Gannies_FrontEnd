@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import styled from 'styled-components';
 import rightArrow from '@/assets/icons/arrows/chevron_right.svg';
@@ -28,6 +28,7 @@ const CategoryList = styled.li`
 
 export default function PageCategory() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { bannerTitle } = useSelectorList();
   return (
