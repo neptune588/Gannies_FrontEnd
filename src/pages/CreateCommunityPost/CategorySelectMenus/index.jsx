@@ -14,6 +14,7 @@ export default function CategorySelectMenus({
   optionList,
   selectedOption,
   setSelectedOption,
+  setHospitalName,
   handleSelectedOption,
 }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -43,6 +44,7 @@ export default function CategorySelectMenus({
                   setIsOpen(false);
 
                   handleSelectedOption(option.path);
+                  setHospitalName('병원찾기');
                 }}
               >
                 {option.content}

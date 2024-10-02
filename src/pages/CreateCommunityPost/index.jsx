@@ -42,24 +42,6 @@ export default function CreateCommunityPost() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const editorRef = useRef(null);
-  const imageButtonRef = useRef(null);
-  const firstRunBlockToSetSelectOptionEffect = useRef(true);
-
-  const [selectOptions, setSelectOptions] = useState(
-    defaultCategorySelectOptions
-  );
-  const [selectedOption, setSelectedOption] = useState(
-    selectOptions[0].content
-  );
-
-  const [previewImage, setPreviewImage] = useState('');
-  const [totalImageType, setTotalImageType] = useState([]);
-
-  const [isSubmit, setIsSubmit] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const { currentBoardType } = useSelectorList();
   const { isHospitalSearchModal, handleModalOpen, handleModalClose } =
     useModalsControl();
   const { changeValue: titleValue, handleChange: handleTitleValueChange } =
@@ -70,10 +52,7 @@ export default function CreateCommunityPost() {
     useEventHandler({
       changeDefaultValue: '',
     });
-  const { changeValue: currentPath, handleChange: handleSelectedOption } =
-    useEventHandler({
-      changeDefaultValue: selectOptions[0].path,
-    });
+
   const {
     changeValue: hospitalSearchValue,
     handleChange: handlehospitalSearchValueChange,
@@ -81,7 +60,28 @@ export default function CreateCommunityPost() {
     changeDefaultValue: '',
   });
 
-  const [hospitalName, SetHospitalName] = useState('병원찾기');
+  const editorRef = useRef(null);
+  const imageButtonRef = useRef(null);
+  const firstRunBlockToSetSelectOptionEffect = useRef(true);
+
+  const [selectOptions, setSelectOptions] = useState(
+    defaultCategorySelectOptions
+  );
+
+  const { bannerTitle } = useSelectorList();
+  const [selectedOption, setSelectedOption] = useState(bannerTitle);
+  const { changeValue: currentPath, handleChange: handleSelectedOption } =
+    useEventHandler({
+      changeDefaultValue: selectOptions[0].path,
+    });
+
+  const [previewImage, setPreviewImage] = useState('');
+  const [totalImageType, setTotalImageType] = useState([]);
+
+  const [isSubmit, setIsSubmit] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [hospitalName, setHospitalName] = useState('병원찾기');
 
   const { checkIsLogin } = useLoginCheck();
 
@@ -208,7 +208,7 @@ export default function CreateCommunityPost() {
           handleModalClose={handleModalClose}
           hospitalSearchValue={hospitalSearchValue}
           handlehospitalSearchValueChange={handlehospitalSearchValueChange}
-          SetHospitalName={SetHospitalName}
+          setHospitalName={setHospitalName}
         />
       )}
       <CommunityBanner>
@@ -241,18 +241,21 @@ export default function CreateCommunityPost() {
                   optionList={selectOptions}
                   selectedOption={selectedOption}
                   setSelectedOption={setSelectedOption}
+                  setHospitalName={setHospitalName}
                   handleSelectedOption={handleSelectedOption}
                 />
               </div>
-              {(currentBoardType === 'practice' ||
-                currentBoardType === 'job') && (
+              {(selectedOption === '취업정보' ||
+                selectedOption === '실습정보') && (
                 <div>
                   <DataInputBox>
                     <p>*병원정보</p>
                     <button
                       type='button'
                       onClick={() => {
-                        handleModalOpen({ modalDispatch: setIsHospitalModal });
+                        handleModalOpen({
+                          modalDispatch: setIsHospitalModal,
+                        });
                       }}
                     >
                       {hospitalName}

@@ -6,7 +6,10 @@ import {
   medium_600,
   small_400,
 } from '@/styles/commonStyle/localTextStyle';
-import { modalCloseButtonStyle } from '@/styles/commonStyle/etc';
+import {
+  centerAlignStyle,
+  modalCloseButtonStyle,
+} from '@/styles/commonStyle/etc';
 import { primaryColorBoxStyle } from '@/styles/commonStyle/box';
 
 const ModalWrapper = styled.div`
@@ -87,6 +90,17 @@ const SearchList = styled.li`
       return colors.gray['100'];
     }};
   }
+`;
+
+const SearchListEmpty = styled.p`
+  ${centerAlignStyle}
+  height: 100%;
+  font-size: ${({ theme: { typo } }) => {
+    return typo.size.md;
+  }};
+  color: ${({ theme: { colors } }) => {
+    return colors.gray['100'];
+  }};
 `;
 
 const ClickArea = styled.div`
@@ -170,6 +184,7 @@ export {
   SearchInputArea,
   SearchListBox,
   SearchList,
+  SearchListEmpty,
   ClickArea,
   SelectConfirmButton,
   HospitalName,

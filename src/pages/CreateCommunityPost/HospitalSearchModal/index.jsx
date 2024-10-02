@@ -15,6 +15,7 @@ import {
   SearchInputArea,
   SearchListBox,
   SearchList,
+  SearchListEmpty,
   ClickArea,
   SelectConfirmButton,
   HospitalName,
@@ -32,7 +33,7 @@ export default function HospitalSearchModal({
   handleModalClose,
   hospitalSearchValue,
   handlehospitalSearchValueChange,
-  SetHospitalName,
+  setHospitalName,
 }) {
   const searchInput = useRef(null);
 
@@ -62,11 +63,14 @@ export default function HospitalSearchModal({
       });
 
       const { documents } = res.data;
-      setHospitalLists(() => {
-        return documents.map((list) => {
-          return { ...list, isListClick: false };
-        });
-      });
+      documents.length === 0
+        ? setHospitalLists(null)
+        : setHospitalLists(() => {
+            return documents.map((list) => {
+              return { ...list, isListClick: false };
+            });
+          });
+
       //console.log(documents);
     } catch (error) {
       console.error(error);
@@ -108,9 +112,10 @@ export default function HospitalSearchModal({
   }, []);
 
   useEffect(() => {
-    setIsListSelected(() => {
-      return hospitalLists.some((list) => list.isListClick);
-    });
+    hospitalLists &&
+      setIsListSelected(() => {
+        return hospitalLists.some((list) => list.isListClick);
+      });
   }, [hospitalLists]);
 
   return (
@@ -147,35 +152,43 @@ export default function HospitalSearchModal({
           </SearchInputArea>
           <SearchListBox>
             {isSearch && <HospitalSearchLoadingCircle />}
-            {hospitalLists.map((hospital, idx) => {
-              return (
-                <SearchList key={uuid()} $isListClick={hospital.isListClick}>
-                  {hospital.isListClick && (
-                    <SelectConfirmButton
-                      type='button'
+            {hospitalLists ? (
+              hospitalLists.map((hospital, idx) => {
+                return (
+                  <SearchList key={uuid()} $isListClick={hospital.isListClick}>
+                    {hospital.isListClick && (
+                      <SelectConfirmButton
+                        type='button'
+                        onClick={() => {
+                          setHospitalName(hospital.place_name);
+                          handleModalClose({
+                            modalDispatch: setIsHospitalModal,
+                          });
+                          dataReset();
+                        }}
+                      >
+                        선택
+                      </SelectConfirmButton>
+                    )}
+                    <ClickArea
                       onClick={() => {
-                        SetHospitalName(hospital.place_name);
-                        handleModalClose({ modalDispatch: setIsHospitalModal });
-                        dataReset();
+                        handleListClick(idx);
                       }}
-                    >
-                      선택
-                    </SelectConfirmButton>
-                  )}
-                  <ClickArea
-                    onClick={() => {
-                      handleListClick(idx);
-                    }}
-                  />
-                  <HospitalName>{hospital.place_name}</HospitalName>
-                  <HospitalLocationInfo>
-                    <p>{hospital.address_name}</p>
-                    <p>{hospital.road_address_name}</p>
-                  </HospitalLocationInfo>
-                  <HospitalContact>{hospital.phone}</HospitalContact>
-                </SearchList>
-              );
-            })}
+                    />
+                    <HospitalName>{hospital.place_name}</HospitalName>
+                    <HospitalLocationInfo>
+                      <p>{hospital.address_name}</p>
+                      <p>{hospital.road_address_name}</p>
+                    </HospitalLocationInfo>
+                    <HospitalContact>{hospital.phone}</HospitalContact>
+                  </SearchList>
+                );
+              })
+            ) : (
+              <SearchListEmpty>
+                입력한 검색어와 일치하는 병원을 찾지 못했습니다.
+              </SearchListEmpty>
+            )}
           </SearchListBox>
         </ModalInnerLeftBox>
         <ModalInnerRightBox>
