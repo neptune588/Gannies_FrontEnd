@@ -7,8 +7,6 @@ import { myPageAlignSelectOptions } from '@/components/AlignSelectMenu/data';
 
 import { TitleBox, Title, PageWrapper } from '@/pages/MyPage/WrittenPost/style';
 
-// import { posts } from '@/pages/Home/data';
-
 import { getUserPosts } from '@/api/userApi';
 import { communityPostMaxLimit } from '@/utils/itemLimit';
 import { pageViewLimit } from '@/utils/itemLimit';
@@ -19,7 +17,7 @@ export default function WrittenPost() {
   const [selectedOption, setSelectedOption] = useState(optionList[0].label);
 
   const firstRunBlockToSetCurPageNumberEffect = useRef(true);
-  const firstRunBlockToSetBoardTypeEffect = useRef(true);
+  const firstRunBlockToSetSelectOptionEffect = useRef(true);
   const firstRunBlockToSetQueryEffect = useRef(true);
 
   const {
@@ -31,7 +29,6 @@ export default function WrittenPost() {
     handlePageNumberClick,
     handlePrevPageClick,
     handleNextPageClick,
-    resetPageNumber,
   } = useFetchAndPaginateMyPage({
     defaultPageNumber: 1,
     itemMaxLimit: communityPostMaxLimit,
@@ -65,12 +62,10 @@ export default function WrittenPost() {
   }, [query]);
 
   useEffect(() => {
-    if (firstRunBlockToSetBoardTypeEffect.current) {
-      firstRunBlockToSetBoardTypeEffect.current = false;
+    if (firstRunBlockToSetSelectOptionEffect.current) {
+      firstRunBlockToSetSelectOptionEffect.current = false;
       return;
     }
-
-    resetPageNumber();
     getDataAndSetPageNumbers(() => getUserPosts(query));
   }, [selectedOption]);
 
