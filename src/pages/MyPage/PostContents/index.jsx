@@ -26,7 +26,7 @@ export default function PostContents({
             <p>카테고리</p>
             <p>제목</p>
           </PostsHeaderLeftBox>
-          <PostsHeaderRightBox>
+          <PostsHeaderRightBox $pageName={pageName}>
             {scrapViewState ? (
               <>
                 <p>작성일</p>
@@ -55,6 +55,7 @@ export default function PostContents({
                   likes={list.likeCounts}
                   date={formatDateToPost(list.createdAt)}
                   pageName={pageName}
+                  scrapViewState={scrapViewState}
                 />
               );
             })}

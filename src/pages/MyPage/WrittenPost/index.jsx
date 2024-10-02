@@ -107,7 +107,7 @@ export default function WrittenPost() {
           setSelectedOption={setSelectedOption}
         />
       </TitleBox>
-      <PostContents postData={currentPosts} pageName={'my-page'} />
+      <PostContents postData={currentPosts} pageName={'myPosts'} />
       <PageWrapper>
         <Pagination
           pageNumbers={pageNumbers}

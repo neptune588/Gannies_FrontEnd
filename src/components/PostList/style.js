@@ -65,7 +65,11 @@ export const PostTitle = styled.p`
     return $pageName === 'home' && '18px';
   }};
   width: ${({ $pageName }) => {
-    return $pageName === 'home' ? '732px' : '331px';
+    return $pageName === 'home'
+      ? '732px'
+      : $pageName === 'myPosts'
+        ? '331px'
+        : '415px';
   }};
   white-space: nowrap;
   overflow: hidden;
@@ -83,6 +87,7 @@ export const Date = styled.p`
 export const DescriptionBox = styled.div`
   display: flex;
   align-items: center;
+  width: 85px;
   margin-right: '15px';
   margin-left: ${({ $pageName }) => {
     return $pageName === 'home' ? '15px' : '17px';
@@ -97,7 +102,5 @@ export const IconBox = styled.div`
 `;
 
 export const ScrapBox = styled.div`
-  margin: ${({ $scrapClickState }) => {
-    return $scrapClickState && '0 45px 0 15px';
-  }};
+  margin-left: 34px;
 `;

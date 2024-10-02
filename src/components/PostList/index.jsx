@@ -27,7 +27,6 @@ function PostList({
   date = null,
   pageName = 'home',
   scrapViewState = false,
-  scrapClickState = false,
 }) {
   return (
     <PostWrapper $pageName={pageName}>
@@ -55,8 +54,8 @@ function PostList({
           <Date>{date}</Date>
         </DescriptionBox>
         {scrapViewState && (
-          <ScrapBox $scrapClickState={scrapClickState}>
-            <Scrap scrapClickState={scrapClickState} pageName={pageName} />
+          <ScrapBox $scrapClickState={true}>
+            <Scrap scrapClickState={true} pageName={pageName} />
           </ScrapBox>
         )}
       </PostRightBox>
