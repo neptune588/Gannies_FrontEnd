@@ -11,6 +11,7 @@ import PostCommentArea from '@/pages/PostDetail/PostCommentArea';
 import OtherPosts from '@/pages/PostDetail/OtherPosts';
 
 import heartActive from '@/assets/icons/hearts/heart_active.svg';
+import heartInActive from '@/assets/icons/hearts/heart_inactive.svg';
 
 import {
   PageCategorySection,
@@ -30,6 +31,9 @@ import useSelectorList from '@/hooks/useSelectorList';
 import { getPost } from '@/api/postApi';
 import { postScrap } from '@/api/scrapApi';
 import { cancelPostScrap } from '@/api/scrapApi';
+import { postLikeToggle } from '@/api/likeApi';
+
+import { formatDateToPost } from '@/utils/dateFormatting';
 
 export default function PostDetail() {
   const { postId } = useParams();
@@ -50,8 +54,8 @@ export default function PostDetail() {
       postId: data.postId,
       posterId: data.user.userId,
       nickname: data.user.nickname,
-      createDate: data.createdAt,
-      updateDate: data.updatedAt,
+      createDate: formatDateToPost(data.createdAt),
+      updateDate: formatDateToPost(data.updatedAt),
       likeCounts: data.likeCounts,
       viewCounts: data.viewCounts,
       isLiked: data.isLiked,
@@ -65,6 +69,15 @@ export default function PostDetail() {
         ? await cancelPostScrap(post.postId)
         : await postScrap(post.postId);
 
+      getItems();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleLikeClick = async () => {
+    try {
+      postLikeToggle(post.postId);
       getItems();
     } catch (error) {
       console.error(error);
@@ -97,13 +110,22 @@ export default function PostDetail() {
             handleScrapClick={handleScrapClick}
           />
           <Nickname>{post.nickname}</Nickname>
-          <PostInfo />
+          <PostInfo
+            postViewCount={post.viewCounts}
+            likeCount={post.likeCounts}
+            commentCount={post.numberOfComments}
+            postCreateDate={post.createDate}
+            postUpdateDate={post.updateDate}
+          />
         </PostHeaderBox>
         <PostContentBox>
           <p>{post.content}</p>
         </PostContentBox>
-        <IconBox>
-          <img src={heartActive} alt='like-button' />
+        <IconBox onClick={handleLikeClick}>
+          <img
+            src={post.isLiked ? heartActive : heartInActive}
+            alt='like-button'
+          />
           <p>공감해요</p>
         </IconBox>
         <CommentArea>
