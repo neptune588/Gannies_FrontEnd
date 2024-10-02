@@ -58,7 +58,7 @@ function PostList({
     <PostWrapper $pageName={pageName}>
       <PostLeftBox>
         {postNumber && <PostNumber>{postNumber}</PostNumber>}
-        <Category $pageName={pageName}>{category}</Category>
+        {category && <Category $pageName={pageName}>{category}</Category>}
         <PostTitle $pageName={pageName}>
           {title}
           {comment > 0 && <CommentLength>{comment}</CommentLength>}
@@ -76,9 +76,11 @@ function PostList({
           </>
         )}
 
-        <DescriptionBox $pageName={pageName}>
-          <Date>{date}</Date>
-        </DescriptionBox>
+        {date && (
+          <DescriptionBox $pageName={pageName}>
+            <Date>{date}</Date>
+          </DescriptionBox>
+        )}
         {scrapViewState && (
           <ScrapBox $scrapClickState={scrapClickState} onClick={handleScrap}>
             <Scrap scrapClickState={scrapClickState} pageName={pageName} />

@@ -5,11 +5,14 @@ import { centerAlignStyle } from '@/styles/commonStyle/etc';
 
 export const PostWrapper = styled.li`
   display: flex;
+  width: ${({ $pageName }) => {
+    return $pageName === 'home' && '565px';
+  }};
   height: ${({ $pageName }) => {
     return $pageName === 'home' ? '57px' : '75px';
   }};
   padding-left: ${({ $pageName }) => {
-    return $pageName === 'home' && '8px';
+    return $pageName === 'home' && '7px';
   }};
   padding-right: ${({ $pageName }) => {
     return $pageName === 'home' && '8px';
@@ -63,12 +66,9 @@ export const PostTitle = styled.p`
   font-weight: ${({ $pageName, theme: { typo } }) => {
     return $pageName === 'home' ? typo.weight.regular : typo.weight.medium;
   }};
-  margin-left: ${({ $pageName }) => {
-    return $pageName === 'home' && '18px';
-  }};
   width: ${({ $pageName }) => {
     return $pageName === 'home'
-      ? '732px'
+      ? '423px'
       : $pageName === 'myPosts'
         ? '331px'
         : '415px';
@@ -99,7 +99,7 @@ export const DescriptionBox = styled.div`
 export const IconBox = styled.div`
   width: 65px;
   margin-left: ${({ $pageName }) => {
-    return $pageName === 'home' ? '20px' : '18px';
+    return $pageName === 'home' ? '0px' : '18px';
   }};
 `;
 

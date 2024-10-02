@@ -1,4 +1,3 @@
-import { userDelete } from '@/api/authApi';
 import { changeUserNickname, getUserInfo } from '@/api/userApi';
 import IsApproval from '@/components/Modal/IsApproval';
 import IsWithdrawal from '@/components/Modal/IsWithdrawal';
