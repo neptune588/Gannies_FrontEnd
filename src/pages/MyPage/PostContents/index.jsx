@@ -43,12 +43,11 @@ export default function PostContents({
         </PostsHeader>
         <PostListBox>
           {postData?.length > 0 &&
-            postData.map((list, idx) => {
+            postData.map((list) => {
               return (
                 <PostList
                   key={uuid()}
                   postNumber={String(list.postId).padStart(2, '0')}
-                  // postNumber={String(idx + 1).padStart(2, '0')}
                   category={getCategoryLabel(list.boardType)}
                   title={list.title}
                   comment={list.numberOfCommentsAndReplies}
