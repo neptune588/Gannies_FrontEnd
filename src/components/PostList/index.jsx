@@ -61,7 +61,7 @@ function PostList({
         <Category $pageName={pageName}>{category}</Category>
         <PostTitle $pageName={pageName}>
           {title}
-          <CommentLength>{comment}</CommentLength>
+          {comment > 0 && <CommentLength>{comment}</CommentLength>}
         </PostTitle>
       </PostLeftBox>
       <PostRightBox>

@@ -33,7 +33,9 @@ export const PostNumber = styled.p`
 
 export const Category = styled.div`
   ${centerAlignStyle};
-  width: 67.5px;
+  width: ${({ $pageName }) => {
+    return $pageName === 'home' ? '78px' : '67.5px';
+  }};
   font-size: ${({ $pageName, theme: { typo } }) => {
     return $pageName === 'home' ? typo.size.xs : typo.size.tiny;
   }};
