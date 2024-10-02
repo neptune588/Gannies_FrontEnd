@@ -1,4 +1,4 @@
-export const timeStringConverter = (seconds) => {
+export const timeToString = (seconds) => {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import bottomArrow from '@/assets/icons/arrows/chevron_down.svg';
 import { defaultBorderBoxStyle } from '@/styles/commonStyle/box';
@@ -66,10 +66,30 @@ export default function AlignSelectMenu({
   handleSelectedOption,
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const selectRef = useRef(null);
+
   const toggleDropdown = () => setIsOpen((prev) => !prev);
 
+  const handleClickOutside = (e) => {
+    if (selectRef.current && !selectRef.current.contains(e.target)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      window.addEventListener('mousedown', handleClickOutside);
+    } else {
+      window.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      window.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
+
   return (
-    <SelectContainer>
+    <SelectContainer ref={selectRef}>
       <button onClick={toggleDropdown}>
         <p>{selectedOption}</p>
         <img src={isOpen ? upArrow : bottomArrow} alt='select-arrow' />

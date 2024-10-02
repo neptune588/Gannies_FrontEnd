@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
 import { xsmall_500, xsmall_600 } from '@/styles/commonStyle/localTextStyle';
+import { centerAlignStyle } from '@/styles/commonStyle/etc';
 
 export const PostWrapper = styled.li`
   display: flex;
-  justify-content: space-between;
   height: ${({ $pageName }) => {
     return $pageName === 'home' ? '57px' : '75px';
   }};
@@ -32,8 +32,10 @@ export const PostNumber = styled.p`
 `;
 
 export const Category = styled.div`
-  display: flex;
-  align-items: center;
+  ${centerAlignStyle};
+  width: ${({ $pageName }) => {
+    return $pageName === 'home' ? '78px' : '67.5px';
+  }};
   font-size: ${({ $pageName, theme: { typo } }) => {
     return $pageName === 'home' ? typo.size.xs : typo.size.tiny;
   }};
@@ -48,7 +50,7 @@ export const Category = styled.div`
   background-color: ${({ theme: { colors } }) => {
     return colors.secondary;
   }};
-  margin: 0px 20px 0px 2px;
+  margin: 0px 23px 0px 2px;
 `;
 
 export const PostTitle = styled.p`
@@ -65,7 +67,11 @@ export const PostTitle = styled.p`
     return $pageName === 'home' && '18px';
   }};
   width: ${({ $pageName }) => {
-    return $pageName === 'home' ? '732px' : '373px';
+    return $pageName === 'home'
+      ? '732px'
+      : $pageName === 'myPosts'
+        ? '331px'
+        : '415px';
   }};
   white-space: nowrap;
   overflow: hidden;
@@ -83,19 +89,20 @@ export const Date = styled.p`
 export const DescriptionBox = styled.div`
   display: flex;
   align-items: center;
-  margin-right: ${({ $pageName }) => {
-    return $pageName === 'home' ? '15px' : '15px';
+  width: 85px;
+  margin-right: '15px';
+  margin-left: ${({ $pageName }) => {
+    return $pageName === 'home' ? '15px' : '17px';
   }};
 `;
 
 export const IconBox = styled.div`
-  margin-right: ${({ $pageName }) => {
-    return $pageName === 'home' ? '20px' : '20px';
+  width: 65px;
+  margin-left: ${({ $pageName }) => {
+    return $pageName === 'home' ? '20px' : '18px';
   }};
 `;
 
 export const ScrapBox = styled.div`
-  margin: ${({ $scrapClickState }) => {
-    return $scrapClickState && '0 45px 0 15px';
-  }};
+  margin-left: 34px;
 `;

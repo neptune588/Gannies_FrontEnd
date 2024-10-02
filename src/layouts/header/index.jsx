@@ -50,7 +50,6 @@ function Header() {
       const response = await userSignOut();
       if (response.status === 200) {
         dispatch(handleModal({ field: 'isApproval', value: false }));
-        await userSignOut();
         dispatch(setLogout());
       }
     } catch (error) {

@@ -24,7 +24,7 @@ export const changeUserPassword = async (password) => {
 //본인 게시글 페이지 단위로 조회
 export const getUserPosts = async (params) => {
   const url = '/me/posts';
-  const response = await cookieApi.get(url, params);
+  const response = await cookieApi.get(url, { params });
   return response;
 };
 

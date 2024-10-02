@@ -29,8 +29,20 @@ const PostsHeaderLeftBox = styled.div`
 
 const PostsHeaderRightBox = styled(PostsHeaderLeftBox)`
   > p {
-    width: 75px;
+    width: 82px;
     text-align: left;
+
+    &:first-of-type {
+      width: ${({ $pageName }) => {
+        return $pageName === 'myScraps' && '109px';
+      }};
+    }
+
+    &:last-of-type {
+      width: ${({ $pageName }) => {
+        return $pageName === 'myPosts' && '109px';
+      }};
+    }
   }
 `;
 
