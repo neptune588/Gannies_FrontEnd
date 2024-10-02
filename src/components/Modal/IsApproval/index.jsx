@@ -1,8 +1,4 @@
-import {
-  CloseIcon,
-  Image,
-  ModalBox,
-} from '@/components/Modal/IsApproval/style';
+import { CloseIcon, Image, ModalBox } from '@/components/Modal/style';
 
 import ModalContainer from '@/components/ModalContainer';
 import warn from '@/assets/images/warn.png';

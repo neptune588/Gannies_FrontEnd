@@ -22,11 +22,11 @@ export default function PostContents({
       <PostsWrapper>
         <PostsHeader>
           <PostsHeaderLeftBox>
-            <p>순서</p>
+            <p>번호</p>
             <p>카테고리</p>
             <p>제목</p>
           </PostsHeaderLeftBox>
-          <PostsHeaderRightBox>
+          <PostsHeaderRightBox $pageName={pageName}>
             {scrapViewState ? (
               <>
                 <p>작성일</p>
@@ -43,18 +43,19 @@ export default function PostContents({
         </PostsHeader>
         <PostListBox>
           {postData?.length > 0 &&
-            postData.map((list, idx) => {
+            postData.map((list) => {
               return (
                 <PostList
                   key={uuid()}
-                  postNumber={String(idx + 1).padStart(2, '0')}
+                  postNumber={String(list.postId).padStart(2, '0')}
                   category={getCategoryLabel(list.boardType)}
                   title={list.title}
-                  comment={list.comment}
+                  comment={list.numberOfCommentsAndReplies}
                   views={list.viewCounts}
                   likes={list.likeCounts}
                   date={formatDateToPost(list.createdAt)}
                   pageName={pageName}
+                  scrapViewState={scrapViewState}
                 />
               );
             })}

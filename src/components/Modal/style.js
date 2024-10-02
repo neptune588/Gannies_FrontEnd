@@ -1,18 +1,26 @@
-import Close from '@/components/Icons/Close';
 import styled from 'styled-components';
 
-import { modalBoxStyle } from '@/styles/commonStyle/box';
+import Close from '@/components/Icons/Close';
+
+import {
+  modalBoxStyle,
+  primaryBorderBoxStyle,
+  primaryColorBoxStyle,
+} from '@/styles/commonStyle/box';
 import {
   xsmall_500,
   xsmall_600,
   small_400,
   h4_600,
+  medium_400,
 } from '@/styles/commonStyle/localTextStyle';
+import { Link } from 'react-router-dom';
+import { centerAlignStyle } from '@/styles/commonStyle/etc';
 
 export const ModalBox = styled.div`
   ${modalBoxStyle};
   width: 524px;
-  height: 406px;
+  height: 388px;
   padding: 26px 36px;
 
   > h4 {
@@ -51,4 +59,35 @@ export const CloseIcon = styled(Close)`
 export const Image = styled.img`
   width: 80px;
   height: 80px;
+`;
+
+export const ModifyPasswordButton = styled(Link)`
+  ${primaryBorderBoxStyle};
+  ${centerAlignStyle};
+  width: 205px;
+  height: 48px;
+  margin-top: 39px;
+  ${medium_400}
+`;
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  margin-top: 37px;
+`;
+
+export const CancelButton = styled.button`
+  ${primaryBorderBoxStyle};
+  ${centerAlignStyle};
+  width: 150px;
+  height: 48px;
+  ${medium_400}
+`;
+
+export const WithdrawButton = styled(CancelButton)`
+  ${primaryColorBoxStyle};
+  margin-left: 32px;
+`;
+
+export const WithdrawModalBox = styled(ModalBox)`
+  height: 342px;
 `;

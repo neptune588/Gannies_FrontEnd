@@ -18,7 +18,6 @@ const useLoginCheck = () => {
     try {
       const response = await getSessionStatus();
       const { expires } = response.data;
-
       if (expires) {
         await userSignOut();
         dispatch(setLogout());

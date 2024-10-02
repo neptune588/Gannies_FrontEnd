@@ -5,7 +5,7 @@ export const getCategoryLabel = (boardType) => {
     case 'event':
       return '이벤트';
     case 'exam':
-      return '국가고시준비';
+      return '국가고시';
     case 'job':
       return '구인구직';
     case 'notice':

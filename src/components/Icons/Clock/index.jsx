@@ -1,6 +1,6 @@
 import clock from '@/assets/icons/etc/clock.svg';
 import { IconBox } from '@/components/Icons/style';
-import { timeStringConverter } from '@/utils/TimeToString';
+import { timeToString } from '@/utils/timeToString';
 
 import styled from 'styled-components';
 
@@ -17,7 +17,7 @@ export default function Clock({ time = 0, isVerify = true }) {
   return (
     <IconBox>
       <Icon src={clock} alt='clock' />
-      {isVerify && <Time>{timeStringConverter(time)}</Time>}
+      {isVerify && <Time>{timeToString(time)}</Time>}
     </IconBox>
   );
 }
