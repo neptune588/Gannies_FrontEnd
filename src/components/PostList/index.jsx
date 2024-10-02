@@ -16,6 +16,8 @@ import {
 
 import Eye from '@/components/Icons/Eye';
 import HeartInactive from '@/components/Icons/HeartInactive';
+import { useState } from 'react';
+import { cancelPostScrap, postScrap } from '@/api/scrapApi';
 
 function PostList({
   postNumber = null,
@@ -28,6 +30,30 @@ function PostList({
   pageName = 'home',
   scrapViewState = false,
 }) {
+  const [scrapClickState, setScrapClickState] = useState(true);
+
+  const handleScrap = async () => {
+    try {
+      if (scrapClickState) {
+        const res = await cancelPostScrap(postNumber);
+        if (res.status === 200) {
+          setScrapClickState(false);
+        } else {
+          alert('error');
+        }
+      } else {
+        const res = await postScrap(postNumber);
+        if (res.status === 201) {
+          setScrapClickState(true);
+        } else {
+          alert('error');
+        }
+      }
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
   return (
     <PostWrapper $pageName={pageName}>
       <PostLeftBox>
@@ -54,8 +80,8 @@ function PostList({
           <Date>{date}</Date>
         </DescriptionBox>
         {scrapViewState && (
-          <ScrapBox $scrapClickState={true}>
-            <Scrap scrapClickState={true} pageName={pageName} />
+          <ScrapBox $scrapClickState={scrapClickState} onClick={handleScrap}>
+            <Scrap scrapClickState={scrapClickState} pageName={pageName} />
           </ScrapBox>
         )}
       </PostRightBox>
