@@ -6,7 +6,7 @@ import {
   xsmall_500,
 } from '@/styles/commonStyle/localTextStyle';
 
-const CommentListWrapper = styled.li`
+const Container = styled.li`
   display: flex;
   margin: 0 20px;
   padding: 0 30px;
@@ -17,6 +17,10 @@ const CommentListWrapper = styled.li`
   background-color: ${({ $isReplyComment, theme: { colors } }) => {
     return $isReplyComment && colors.secondary;
   }};
+`;
+
+const CommentListWrapper = styled.div`
+  width: 100%;
 `;
 
 const CommenterBox = styled.div`
@@ -79,6 +83,7 @@ const ReplyIcon = styled.div`
 `;
 
 export {
+  Container,
   CommentListWrapper,
   CommenterBox,
   CommentContent,

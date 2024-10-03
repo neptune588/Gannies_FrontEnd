@@ -5,6 +5,7 @@ import Clock from '@/components/Icons/Clock';
 import commentReplyIcon from '@/assets/icons/etc/comment_reply.svg';
 
 import {
+  Container,
   CommentListWrapper,
   CommenterBox,
   CommentContent,
@@ -15,45 +16,57 @@ import {
   ReplyIcon,
 } from '@/pages/PostDetail/PostCommentArea/PostCommentList/style';
 
+import useSelectorList from '@/hooks/useSelectorList';
+
 export default function PostCommentList({
-  isReplyComment = true,
-  commenter = '나는야 작성자',
-  comment = '',
-  commentCreateDate,
-  isReplyCreateOpen = true,
-  handleReplyCreateButtonClick = null,
+  isReplyComment,
+  commenter,
+  content,
+  createDate,
+  updateDate,
+  postId,
+  commentId,
+  userId,
+  isMoreButtonState,
+  isReplyCreateOpen,
+  isReplyCommentMoreButtonState,
+  handleReplyCreateButtonClick,
 }) {
+  const { userId: currentUserId } = useSelectorList();
+
   return (
     <>
-      <CommentListWrapper $isReplyComment={isReplyComment}>
+      <Container $isReplyComment={isReplyComment}>
         {isReplyComment && (
           <ReplyIcon>
             <img src={commentReplyIcon} alt='comment-reply-icon' />
           </ReplyIcon>
         )}
-        <div>
+        <CommentListWrapper>
           <CommenterBox>
             <p>{commenter}</p>
             <More />
           </CommenterBox>
-          <CommentContent>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis
-            possimus aliquam, ipsum earum sed nihil distinctio illo officia iste
-            perferendis, culpa expedita incidunt omnis. Natus architecto iste et
-            numquam ratione.
-          </CommentContent>
+          <CommentContent>{content}</CommentContent>
           <CommentMetricBox>
             <Clock isVerify={false} />
-            <CommentCreateDateView>2024-05-31</CommentCreateDateView>
-            <ReplyCommentCreateButton
-              $isReplyCreateOpen={isReplyCreateOpen}
-              onClick={handleReplyCreateButtonClick || undefined}
-            >
-              답글쓰기
-            </ReplyCommentCreateButton>
+            <CommentCreateDateView>
+              {createDate === updateDate
+                ? createDate
+                : `${createDate}(${updateDate}에 수정 됨)`}
+            </CommentCreateDateView>
+
+            {!isReplyComment && (
+              <ReplyCommentCreateButton
+                $isReplyCreateOpen={isReplyCreateOpen}
+                onClick={handleReplyCreateButtonClick || undefined}
+              >
+                답글쓰기
+              </ReplyCommentCreateButton>
+            )}
           </CommentMetricBox>
-        </div>
-      </CommentListWrapper>
+        </CommentListWrapper>
+      </Container>
       {isReplyCreateOpen && (
         <ReplyCommentBox $isReplyComment={isReplyComment}>
           <CommentCreate isCommentReply={true} />

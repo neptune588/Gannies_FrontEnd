@@ -1,15 +1,15 @@
 import { api, cookieApi } from '@/api/axiosInstance';
 
 //특정 게시물 댓글 페이지 단위로 조회 (10개) (후에 수정)
-export const getComments = async (boardType, postId) => {
-  const url = `/posts/${boardType}/${postId}`;
-  const response = await api.get(url);
+export const getComments = async (boardType, postId, query) => {
+  const url = `/posts/${boardType}/${postId}/comments`;
+  const response = await cookieApi.get(url, { params: query });
   return response;
 };
 
 //특정 게시물 댓글 작성
 export const createComment = async (boardType, postId) => {
-  const url = `/posts/${boardType}/${postId}`;
+  const url = `/posts/${boardType}/${postId}/comments`;
   const response = await cookieApi.post(url);
   return response;
 };

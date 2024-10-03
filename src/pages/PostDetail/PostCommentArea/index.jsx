@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import uuid from 'react-uuid';
 
 import PostCommentList from '@/pages/PostDetail/PostCommentArea/PostCommentList';
 import Pagination from '@/components/Pagination';
@@ -10,34 +11,67 @@ const PageWraaper = styled.div`
   margin: 50px auto 120px;
 `;
 
+import { formatDateToPost } from '@/utils/dateFormatting';
+
 export default function PostCommentArea({
-  pageCountData,
+  comments,
   currentPageNumber,
-  handlePageNumberChange,
-  commenter,
-  comment,
-  commentCreateDate,
-  isReplyComment,
-  isReplyCreateOpen,
   handleReplyCreateButtonClick,
+  pageNumbres,
+  handlePageNumberClick,
+  handlePrevPageClick,
+  handleNextPageClick,
 }) {
   return (
     <>
       <ul>
-        <PostCommentList
-          commenter={commenter}
-          comment={comment}
-          commentCreateDate={commentCreateDate}
-          isReplyComment={isReplyComment}
-          isReplyCreateOpen={isReplyCreateOpen}
-          handleReplyCreateButtonClick={handleReplyCreateButtonClick}
-        />
+        {comments?.length > 0
+          ? comments.map((comment, idx) => {
+              return (
+                <>
+                  <PostCommentList
+                    key={uuid()}
+                    isReplyComment={false}
+                    commenter={comment.nickname}
+                    content={comment.content}
+                    createDate={formatDateToPost(comment.createdAt)}
+                    updateDate={formatDateToPost(comment.updatedAt)}
+                    postId={comment.postId}
+                    commentId={comment.commentId}
+                    userId={comment.userId}
+                    isReplyCreateOpen={comment.isReplyCreateOpen}
+                    handleReplyCreateButtonClick={() => {
+                      handleReplyCreateButtonClick(idx);
+                    }}
+                  />
+                  {comment.replies.length > 0 &&
+                    comment.replies.map((replyComment) => {
+                      return (
+                        <PostCommentList
+                          key={uuid()}
+                          isReplyComment={true}
+                          commenter={replyComment.nickname}
+                          content={replyComment.content}
+                          createDate={formatDateToPost(replyComment.createdAt)}
+                          updateDate={formatDateToPost(replyComment.updatedAt)}
+                          postId={comment.postId}
+                          commentId={comment.commentId}
+                          userId={comment.userId}
+                        />
+                      );
+                    })}
+                </>
+              );
+            })
+          : '댓글이 존재하지 않습니다.'}
       </ul>
       <PageWraaper>
         <Pagination
-          pageCountData={pageCountData}
+          pageNumbres={pageNumbres}
           activePageNumber={currentPageNumber}
-          handlePageNumberClick={handlePageNumberChange}
+          handlePrevPageClick={handlePrevPageClick}
+          handleNextPageClick={handleNextPageClick}
+          handlePageNumberClick={handlePageNumberClick}
         />
       </PageWraaper>
     </>

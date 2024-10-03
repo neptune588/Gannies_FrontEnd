@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 import CommunityBanner from '@/components/CommunityBanner';
 import CommunityBannerText from '@/components/CommunityBannerText';
@@ -27,13 +28,17 @@ import {
 
 import useEventHandler from '@/hooks/useEventHandler';
 import useSelectorList from '@/hooks/useSelectorList';
+import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
 
 import { getPost } from '@/api/postApi';
+import { getComments } from '@/api/commentApi';
 import { postScrap } from '@/api/scrapApi';
 import { cancelPostScrap } from '@/api/scrapApi';
 import { postLikeToggle } from '@/api/likeApi';
 
 import { formatDateToPost } from '@/utils/dateFormatting';
+import { commentMaxLimit } from '@/utils/itemLimit';
+import { pageViewLimit } from '@/utils/itemLimit';
 
 export default function PostDetail() {
   const { postId } = useParams();
@@ -41,10 +46,36 @@ export default function PostDetail() {
   const { currentBoardType } = useSelectorList();
 
   const [post, setPost] = useState({});
+  const {
+    items: comments,
+    setItems: setComments,
+    currentPageNumber: currentCommentPageNumber,
+    groupedPageNumbers: commentPageNumbers,
+    getDataAndSetPageNumbers,
+    handlePageNumberClick,
+    handlePrevPageClick,
+    handleNextPageClick,
+  } = useFetchAndPaginate({
+    defaultPageNumber: 1,
+    itemMaxLimit: commentMaxLimit,
+    pageViewLimit: pageViewLimit,
+  });
+  const [commentReplies, setCommentReplies] = useState([]);
 
   const getItems = async () => {
-    const res = await getPost(currentBoardType, postId);
-    const { data } = res;
+    const res = await axios.all([
+      getPost(currentBoardType, postId),
+      getDataAndSetPageNumbers(() => {
+        return getComments(currentBoardType, postId, {
+          page: currentCommentPageNumber,
+          limit: pageViewLimit,
+          withReplies: true,
+        });
+      }),
+    ]);
+
+    const { data } = res[0];
+
     setPost({
       title: data.title,
       content: data.content,
@@ -60,6 +91,25 @@ export default function PostDetail() {
       viewCounts: data.viewCounts,
       isLiked: data.isLiked,
       isScraped: data.isScraped,
+    });
+
+    setComments((prev) => {
+      return prev.map((comment) => {
+        return {
+          ...comment,
+          isMoreButtonState: false,
+          isReplyCreateOpen: false,
+          replies:
+            comment.replies.length > 0
+              ? comment.replies.map((replyComment) => {
+                  return {
+                    ...replyComment,
+                    isReplyCommentMoreButtonState: false,
+                  };
+                })
+              : [],
+        };
+      });
     });
   };
 
@@ -82,6 +132,20 @@ export default function PostDetail() {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleReplyCreateButtonClick = (clickCommentIdx) => {
+    setComments(() => {
+      return comments.map((comment, idx) => {
+        return {
+          ...comment,
+          isReplyCreateOpen:
+            clickCommentIdx === idx
+              ? !comment.isReplyCreateOpen
+              : comment.isReplyCreateOpen,
+        };
+      });
+    });
   };
 
   useEffect(() => {
@@ -134,12 +198,16 @@ export default function PostDetail() {
             <CommentCreate />
           </CommentCreateBox>
         </CommentArea>
-        {/*         <PostCommentArea
-          pageCountData={commentPageData}
+        <PostCommentArea
+          comments={comments}
           currentPageNumber={currentCommentPageNumber}
-          handlePageNumberChange={handleCommentPageNumberChange}
+          handleReplyCreateButtonClick={handleReplyCreateButtonClick}
+          pageNumbres={commentPageNumbers}
+          handlePageNumberClick={handlePageNumberClick}
+          handlePrevPageClick={handlePrevPageClick}
+          handleNextPageClick={handleNextPageClick}
         />
-        <OtherPosts
+        {/*         <OtherPosts
           pageCountData={otherPostPageData}
           currentPageNumber={currentOtherPostPageNumber}
           handlePageNumberChange={handleOtherPostPageNumberChange}

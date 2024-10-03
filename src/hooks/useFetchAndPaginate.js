@@ -20,6 +20,7 @@ export default function useFetchAndPaginate({
   const getDataAndSetPageNumbers = async (getData) => {
     try {
       const res = await getData();
+      console.log(res);
       const { items, totalItems } = res.data;
 
       setItems(items);
@@ -53,6 +54,7 @@ export default function useFetchAndPaginate({
         );
         const pageGroups = Array.from({ length: pageGroupLength }, () => []);
 
+        //페이지 분배
         pageNumbers.forEach((pageNumber) => {
           pageGroups[arrNumber].push(pageNumber);
           if (pageNumber === (arrNumber + 1) * pageViewLimit) {
@@ -162,6 +164,7 @@ export default function useFetchAndPaginate({
 
   return {
     items,
+    setItems,
     totalItems,
     currentPageNumber,
     groupedPageNumbers,
