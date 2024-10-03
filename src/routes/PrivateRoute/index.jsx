@@ -10,7 +10,6 @@ const PrivateRoute = () => {
   useEffect(() => {
     membershipStatus === 'email_verified' &&
       dispatch(handleModal({ field: 'isApproval', value: true }));
-    console.log(123, membershipStatus);
   }, [membershipStatus]);
 
   return membershipStatus === 'email_verified' ? (

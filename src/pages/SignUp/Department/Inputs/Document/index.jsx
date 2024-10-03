@@ -21,7 +21,6 @@ function Document({ allow, handleAllow, file, setFile }) {
 
   const uploadFile = (event) => {
     const file = event.target.files[0];
-    console.log(file);
     if (file) {
       if (fileTypes.includes(file.type) && file.size <= maxSize) {
         setFile(file);

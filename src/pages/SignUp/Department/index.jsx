@@ -8,7 +8,12 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useAuthAllow } from '@/hooks/useAuthAllow';
 import NextButton from '@/pages/SignUp/components/NextButton';
-import { userSignUp, userSignUpEmail } from '@/api/authApi';
+import {
+  certificatesImageUpload,
+  getPresignedUrl,
+  userSignUp,
+  userSignUpEmail,
+} from '@/api/authApi';
 
 function Department() {
   const navigate = useNavigate();
@@ -22,14 +27,23 @@ function Department() {
       : navigate('/sign-up/identity');
   }, [steps, navigate]);
 
+  const setFormData = ({ fields }) => {
+    const formData = new FormData();
+    formData.append('Content-Type', file.type);
+    Object.entries(fields).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    formData.append('file', file);
+    return formData;
+  };
+
   const signUp = async () => {
     try {
       handleSteps(2, true);
-      // const response = await getPresignedUrl(file.type);
-      // const { url, fields } = response.data;
-      // console.log(url, fields);
-      // const imageUrl = await certificatesImageUpload(url, file, fields);
-      // const response = await getPresignedUrl({ fileType: fileName.type });
+      const presignedUrl = await getPresignedUrl({ fileType: file.type });
+      const { url, fields, key } = presignedUrl.data;
+      const formData = setFormData({ fields });
+      await certificatesImageUpload(url, key, formData);
       await userSignUp(dataToSend);
       await userSignUpEmail({
         email: dataToSend.email,

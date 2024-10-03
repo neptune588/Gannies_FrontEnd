@@ -29,17 +29,13 @@ function Buttons({ email, password, setLoginError, setIsLoading }) {
     try {
       setIsLoading(true);
       const response = await userSignIn({ email: email, password: password });
-      // handleAuth({
-      //   field: 'membershipStatus',
-      //   value: response.data.user.membershipStatus,
-      // })
       // if (response.data.user.membershipStatus === 'email_verified') {
       //   dispatch(handleModal({ field: 'isApproval', value: true }));
       //   navigate('/mypage/profile/edit');
       // }
-      const { userId } = response.data;
-      dispatch(setLogin({ userId }));
+      const { userId, membershipStatus } = response.data.user;
       const isTempPassword = response.data.user.isTempPasswordSignIn;
+      dispatch(setLogin({ userId, membershipStatus }));
       dispatch(handleModal({ field: 'isTempPassword', value: isTempPassword }));
       navigate('/');
     } catch (error) {

@@ -33,7 +33,8 @@ function Email({ handleAllow }) {
     const fetchData = async () => {
       if (isValid) {
         try {
-          const response = await checkEmailDuplicate(email);
+          const response = await checkEmailDuplicate({ email });
+          console.log(response);
           if (response.data.statusCode === 400) {
             setInstructionIndex(3);
           } else {
