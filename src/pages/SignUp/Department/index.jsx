@@ -10,6 +10,7 @@ import { useAuthAllow } from '@/hooks/useAuthAllow';
 import NextButton from '@/pages/SignUp/components/NextButton';
 import {
   certificatesImageUpload,
+  getOCR,
   getPresignedUrl,
   userSignUp,
   userSignUpEmail,
@@ -17,15 +18,16 @@ import {
 
 function Department() {
   const navigate = useNavigate();
-  const { steps, handleSteps, stepsIcon, dataToSend } = useOutletContext();
+  const { steps, handleSteps, stepsIcon, dataToSend, handleDataToSend } =
+    useOutletContext();
   const { allow, handleAllow } = useAuthAllow([false, false]);
   const [file, setFile] = useState('');
 
-  useEffect(() => {
-    steps[0] && steps[1]
-      ? navigate('/sign-up/department')
-      : navigate('/sign-up/identity');
-  }, [steps, navigate]);
+  // useEffect(() => {
+  //   steps[0] && steps[1]
+  //     ? navigate('/sign-up/department')
+  //     : navigate('/sign-up/identity');
+  // }, [steps, navigate]);
 
   const setFormData = ({ fields }) => {
     const formData = new FormData();
@@ -37,22 +39,29 @@ function Department() {
     return formData;
   };
 
+  const setCertificationUrl = async (s3Url) => {
+    await handleDataToSend('certificationDocumentUrl', s3Url);
+  };
+
   const signUp = async () => {
     try {
       handleSteps(2, true);
-      const presignedUrl = await getPresignedUrl({ fileType: file.type });
-      const { url, fields, key } = presignedUrl.data;
+      const resPresignedUrl = await getPresignedUrl({ fileType: file.type });
+      const { url, fields } = resPresignedUrl.data;
       const formData = setFormData({ fields });
-      await certificatesImageUpload(url, key, formData);
-      await userSignUp(dataToSend);
-      await userSignUpEmail({
-        email: dataToSend.email,
-      });
+      const resS3Url = await certificatesImageUpload(url, formData);
+      const s3Url = resS3Url.config.url;
+      await setCertificationUrl(s3Url);
+      // getOCR
+      // await userSignUp(dataToSend);
+      // await userSignUpEmail({
+      //   email: dataToSend.email,
+      // });
       navigate('/sign-up/success', {
         state: { email: dataToSend.email },
       });
     } catch (error) {
-      console.log(error.response);
+      // console.log(error.response);
     }
   };
 

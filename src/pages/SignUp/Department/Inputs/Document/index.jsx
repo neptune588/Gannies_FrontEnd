@@ -11,6 +11,7 @@ import {
   ActiveInputBox,
   InactiveInputBox,
   InputBox,
+  PreviewBox,
 } from '@/pages/SignUp/Department/Inputs/Document/style';
 
 function Document({ allow, handleAllow, file, setFile }) {
@@ -73,6 +74,11 @@ function Document({ allow, handleAllow, file, setFile }) {
           <Instruction text='*JPG / JPEG / PNG / GIF (이미지만)' />
           {valid === false && (
             <Negative text='파일 형식 또는 크기를 확인해주세요' />
+          )}
+          {file && (
+            <PreviewBox>
+              <img alt='img' src={URL.createObjectURL(file)} />
+            </PreviewBox>
           )}
         </InputSection>
       )}
