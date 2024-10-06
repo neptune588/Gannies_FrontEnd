@@ -12,6 +12,7 @@ const authSlice = createSlice({
   reducers: {
     setLogin(state, action) {
       const { userId } = action.payload;
+      console.log(userId);
 
       state.isLogin = true;
       state.userId = userId;

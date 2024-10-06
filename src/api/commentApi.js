@@ -15,15 +15,15 @@ export const createComment = async (boardType, postId, commentData) => {
 };
 
 //댓글 수정
-export const editComment = async (commentId, editCommentData) => {
-  const url = `/${commentId}`;
-  const response = await cookieApi.patch(url, editCommentData);
+export const editComment = async (commentId, commentData) => {
+  const url = `/comments/${commentId}`;
+  const response = await cookieApi.put(url, commentData);
   return response;
 };
 
 //댓글 삭제
 export const deleteComment = async (commentId) => {
-  const url = `/${commentId}`;
+  const url = `/comments/${commentId}`;
   const response = await cookieApi.delete(url);
   return response;
 };
@@ -52,7 +52,7 @@ export const createReplyComment = async (commentId, commentData) => {
 //대댓글 수정
 export const editReplyComment = async (replyId, commentData) => {
   const url = `/replies/${replyId}`;
-  const response = await cookieApi.patch(url, commentData);
+  const response = await cookieApi.put(url, commentData);
   return response;
 };
 

@@ -260,7 +260,7 @@ export default function PostDetail() {
           <CommentLengthView>댓글 {post.numberOfComments}개</CommentLengthView>
           <CommentCreateBox>
             <CommentCreate
-              isReplyComment={false}
+              requestType={'create'}
               postId={post.postId}
               value={changeValue}
               dataReset={dataReset}

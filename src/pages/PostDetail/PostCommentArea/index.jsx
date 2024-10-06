@@ -75,6 +75,7 @@ export default memo(function PostCommentArea({
                         updateDate={formatDateToPost(replyComment.updatedAt)}
                         replyId={replyComment.replyId}
                         commenterId={replyComment.userId}
+                        dataReset={dataReset}
                       />
                     );
                   })}

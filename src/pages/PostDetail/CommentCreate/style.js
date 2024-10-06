@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
-import { xsmall_500, body } from '@/styles/commonStyle/localTextStyle';
+import {
+  xsmall_500,
+  medium_500,
+  body,
+} from '@/styles/commonStyle/localTextStyle';
 import {
   primaryBorderBoxStyle,
   primaryColorBoxStyle,
@@ -43,6 +47,14 @@ const DisabledInputBox = styled.div`
   }};
 `;
 
+const CommentTypeInfo = styled.p`
+  ${medium_500}
+  color: ${({ theme: { colors } }) => {
+    return colors.primary;
+  }};
+  margin-bottom: 1rem;
+`;
+
 const ButtonDefaultStyle = styled.button`
   ${xsmall_500}
   display: block;
@@ -78,6 +90,7 @@ const ConfirmButton = styled(ButtonDefaultStyle)`
 export {
   CommentInputBox,
   DisabledInputBox,
+  CommentTypeInfo,
   ButtonBox,
   CancelButton,
   ConfirmButton,

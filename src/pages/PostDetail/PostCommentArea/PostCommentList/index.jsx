@@ -22,6 +22,8 @@ import {
 import useEventHandler from '@/hooks/useEventHandler';
 import useSelectorList from '@/hooks/useSelectorList';
 
+import { deleteComment, deleteReplyComment } from '@/api/commentApi';
+
 export default function PostCommentList({
   isReplyComment,
   commenter,
@@ -29,6 +31,7 @@ export default function PostCommentList({
   createDate,
   updateDate,
   postId,
+  replyId,
   commentId,
   commenterId,
   dataReset,
@@ -37,9 +40,42 @@ export default function PostCommentList({
 
   const [isMoreButtonOpen, setIsMoreButtonOpen] = useState(false);
   const [isReplyCreateOpen, setIsReplyCreateOpen] = useState(false);
-  const { changeValue, handleChange } = useEventHandler({
-    changeDefaultValue: '',
-  });
+  const [isEditCommentOpen, setIsEditCommentOpen] = useState(false);
+
+  const { changeValue: commentValue, handleChange: handleCommentChange } =
+    useEventHandler({
+      changeDefaultValue: '',
+    });
+  const { changeValue: editValue, handleChange: handleEditCommentChange } =
+    useEventHandler({
+      changeDefaultValue: '',
+    });
+
+  const handleEditButtonOpen = () => {
+    setIsReplyCreateOpen(false);
+    handleEditCommentChange('');
+    handleCommentChange('');
+    setIsEditCommentOpen(true);
+    setIsMoreButtonOpen(false);
+  };
+
+  const handleReplyCommentCreateClick = () => {
+    setIsReplyCreateOpen((prev) => !prev);
+    setIsEditCommentOpen(false);
+    handleCommentChange('');
+  };
+
+  const handleCommentDelete = async () => {
+    try {
+      isReplyComment
+        ? await deleteReplyComment(replyId)
+        : await deleteComment(commentId);
+
+      dataReset();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -56,6 +92,8 @@ export default function PostCommentList({
               {isMoreButtonOpen && (
                 <MorePopup
                   ownComment={currentUserId === commenterId ? true : false}
+                  handleEditButtonOpen={handleEditButtonOpen}
+                  handleCommentDelete={handleCommentDelete}
                 />
               )}
             </More>
@@ -71,9 +109,7 @@ export default function PostCommentList({
             {!isReplyComment && (
               <ReplyCommentCreateButton
                 $isReplyCreateOpen={isReplyCreateOpen}
-                onClick={() => {
-                  setIsReplyCreateOpen((prev) => !prev);
-                }}
+                onClick={handleReplyCommentCreateClick}
               >
                 답글쓰기
               </ReplyCommentCreateButton>
@@ -84,13 +120,30 @@ export default function PostCommentList({
       {isReplyCreateOpen && (
         <ReplyCommentBox $isReplyComment={isReplyComment}>
           <CommentCreate
+            requestType={'create'}
+            listType={'common'}
             isReplyCreateOpen={isReplyCreateOpen}
-            value={changeValue}
+            value={commentValue}
             postId={postId}
             commentId={commentId}
             dataReset={dataReset}
-            handleChange={handleChange}
-            handleReplyCreateButtonClick={() => setIsReplyCreateOpen(false)}
+            handleChange={handleCommentChange}
+            handleCreateCancel={() => setIsReplyCreateOpen(false)}
+          />
+        </ReplyCommentBox>
+      )}
+      {isEditCommentOpen && (
+        <ReplyCommentBox $isReplyComment={isReplyComment}>
+          <CommentCreate
+            requestType={'edit'}
+            listType={isReplyComment ? 'reply' : 'common'}
+            value={editValue}
+            postId={postId}
+            replyId={replyId}
+            commentId={commentId}
+            dataReset={dataReset}
+            handleChange={handleEditCommentChange}
+            handleCreateCancel={() => setIsEditCommentOpen(false)}
           />
         </ReplyCommentBox>
       )}

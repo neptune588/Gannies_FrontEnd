@@ -37,7 +37,9 @@ function Buttons({ email, password, setLoginError, setIsLoading }) {
       //   dispatch(handleModal({ field: 'isApproval', value: true }));
       //   navigate('/mypage/profile/edit');
       // }
-      const { userId } = response.data;
+      const {
+        user: { userId },
+      } = response.data;
       dispatch(setLogin({ userId }));
       const isTempPassword = response.data.user.isTempPasswordSignIn;
       dispatch(handleModal({ field: 'isTempPassword', value: isTempPassword }));
