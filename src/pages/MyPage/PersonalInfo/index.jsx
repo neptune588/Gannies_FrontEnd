@@ -27,6 +27,7 @@ export default function PersonalInfo() {
     const getInfo = async () => {
       try {
         const response = await getUserInfo();
+        console.log(response);
         if (response.status === 200) {
           setInfo({
             nickname: response.data.nickname,

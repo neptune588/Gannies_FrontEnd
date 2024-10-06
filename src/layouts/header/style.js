@@ -85,7 +85,7 @@ export const LogoutButton = styled(Link)`
   color: ${(props) => props.theme.colors.primary};
 `;
 
-export const MypageButton = styled(Link)`
+export const MypageButton = styled.button`
   ${medium_400}
   cursor: pointer;
   padding: 12px 5px;

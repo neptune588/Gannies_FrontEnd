@@ -13,7 +13,6 @@ function Posts() {
   };
 
   const groupedCategories = groupByRows(categoryOptions, 2);
-
   return (
     <>
       {groupedCategories.map((group) => (

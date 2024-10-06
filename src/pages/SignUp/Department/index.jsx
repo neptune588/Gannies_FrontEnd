@@ -23,12 +23,13 @@ function Department() {
   const { allow, handleAllow } = useAuthAllow([false, false]);
   const [file, setFile] = useState('');
 
-  // useEffect(() => {
-  //   steps[0] && steps[1]
-  //     ? navigate('/sign-up/department')
-  //     : navigate('/sign-up/identity');
-  // }, [steps, navigate]);
+  useEffect(() => {
+    steps[0] && steps[1]
+      ? navigate('/sign-up/department')
+      : navigate('/sign-up/identity');
+  }, [steps, navigate]);
 
+  // formData에 데이터 삽입
   const setFormData = ({ fields }) => {
     const formData = new FormData();
     formData.append('Content-Type', file.type);

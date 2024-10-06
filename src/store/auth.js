@@ -20,6 +20,9 @@ const authSlice = createSlice({
     setLogout() {
       return initialState;
     },
+    setStatus(state, action) {
+      state.status = action.payload;
+    },
   },
 });
 
