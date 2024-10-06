@@ -31,8 +31,9 @@ export default function PostTitleSection({
           onClick={() => {
             setIsMorePopup((prev) => !prev);
           }}
-        />
-        {isMorePopup && <MorePopup />}
+        >
+          {isMorePopup && <MorePopup />}
+        </More>
       </IconBox>
     </TitleSection>
   );

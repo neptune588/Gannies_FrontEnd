@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
@@ -31,6 +31,8 @@ import useSelectorList from '@/hooks/useSelectorList';
 import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
 
 import { getPost } from '@/api/postApi';
+import { getPosts } from '@/api/postApi';
+import { createComment } from '@/api/commentApi';
 import { getComments } from '@/api/commentApi';
 import { postScrap } from '@/api/scrapApi';
 import { cancelPostScrap } from '@/api/scrapApi';
@@ -38,44 +40,92 @@ import { postLikeToggle } from '@/api/likeApi';
 
 import { formatDateToPost } from '@/utils/dateFormatting';
 import { commentMaxLimit } from '@/utils/itemLimit';
+import { communityPostMaxLimit } from '@/utils/itemLimit';
 import { pageViewLimit } from '@/utils/itemLimit';
 
 export default function PostDetail() {
   const { postId } = useParams();
 
-  const { currentBoardType } = useSelectorList();
+  const firstRunBlockToSetPageEffect = useRef(true);
+  const firstRunBlockToSetOtherPostsPageEffect = useRef(true);
 
+  const { currentBoardType } = useSelectorList();
   const [post, setPost] = useState({});
   const {
     items: comments,
     setItems: setComments,
+    pageTotalNumbers: totalCommentPageNumbers,
     currentPageNumber: currentCommentPageNumber,
     groupedPageNumbers: commentPageNumbers,
     getDataAndSetPageNumbers,
     handlePageNumberClick,
     handlePrevPageClick,
     handleNextPageClick,
+    setCurrentPageNumber: resetCommentCurrentPage,
   } = useFetchAndPaginate({
     defaultPageNumber: 1,
     itemMaxLimit: commentMaxLimit,
     pageViewLimit: pageViewLimit,
   });
-  const [commentReplies, setCommentReplies] = useState([]);
+  const {
+    items: otherPosts,
+    currentPageNumber: otherPostsCurrentPageNumber,
+    groupedPageNumbers: otherPostsPageNumbers,
+    getDataAndSetPageNumbers: getOtherPostsAndSetPageNumbers,
+    handlePageNumberClick: handleOtherPostsPageNumberClick,
+    handlePrevPageClick: handleOtherPostsPrevPageClick,
+    handleNextPageClick: handleOtherPostsNextPageClick,
+    setCurrentPageNumber: resetOtherPostsCurrentPage,
+  } = useFetchAndPaginate({
+    defaultPageNumber: 1,
+    itemMaxLimit: communityPostMaxLimit,
+    pageViewLimit,
+  });
+  const { changeValue, handleChange } = useEventHandler({
+    changeDefaultValue: '',
+  });
 
-  const getItems = async () => {
-    const res = await axios.all([
-      getPost(currentBoardType, postId),
-      getDataAndSetPageNumbers(() => {
+  const [currentMoveLocation, setCurrentMoveLocation] = useState(null);
+
+  //포스트 갱신
+  const postReqeust = () => {
+    try {
+      return getPost(currentBoardType, postId);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  //댓글 갱신 (모달 상태 초기화)
+  const commentReqeust = () => {
+    try {
+      return getDataAndSetPageNumbers(() => {
         return getComments(currentBoardType, postId, {
           page: currentCommentPageNumber,
           limit: pageViewLimit,
           withReplies: true,
         });
-      }),
-    ]);
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    const { data } = res[0];
+  //다른 게시물 + 페이지 갱신
+  const otherPostsRequest = () => {
+    try {
+      return getOtherPostsAndSetPageNumbers(() =>
+        getPosts(currentBoardType, {
+          page: otherPostsCurrentPageNumber,
+          limit: communityPostMaxLimit,
+        })
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
+  const itemChangeToPost = (data) => {
     setPost({
       title: data.title,
       content: data.content,
@@ -92,71 +142,79 @@ export default function PostDetail() {
       isLiked: data.isLiked,
       isScraped: data.isScraped,
     });
-
-    setComments((prev) => {
-      return prev.map((comment) => {
-        return {
-          ...comment,
-          isMoreButtonState: false,
-          isReplyCreateOpen: false,
-          replies:
-            comment.replies.length > 0
-              ? comment.replies.map((replyComment) => {
-                  return {
-                    ...replyComment,
-                    isReplyCommentMoreButtonState: false,
-                  };
-                })
-              : [],
-        };
-      });
-    });
   };
 
-  const handleScrapClick = async () => {
+  const handleScrapOrLikeClick = async (buttonType) => {
     try {
-      post.isScraped
-        ? await cancelPostScrap(post.postId)
-        : await postScrap(post.postId);
+      if (buttonType === 'scrap') {
+        post.isScraped
+          ? await cancelPostScrap(post.postId)
+          : await postScrap(post.postId);
 
-      getItems();
+        const { data } = await postReqeust();
+        itemChangeToPost(data);
+      } else if (buttonType === 'like') {
+        await postLikeToggle(post.postId);
+        const { data } = await postReqeust();
+        itemChangeToPost(data);
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleLikeClick = async () => {
-    try {
-      postLikeToggle(post.postId);
-      getItems();
-    } catch (error) {
-      console.error(error);
-    }
+  const requestAll = async () => {
+    const res = await axios.all([
+      postReqeust(),
+      commentReqeust(),
+      otherPostsRequest(),
+    ]);
+
+    itemChangeToPost(res[0].data);
   };
 
-  const handleReplyCreateButtonClick = (clickCommentIdx) => {
-    setComments(() => {
-      return comments.map((comment, idx) => {
-        return {
-          ...comment,
-          isReplyCreateOpen:
-            clickCommentIdx === idx
-              ? !comment.isReplyCreateOpen
-              : comment.isReplyCreateOpen,
-        };
-      });
-    });
-  };
+  const dataReset = useCallback(() => {
+    resetCommentCurrentPage(1);
+    resetOtherPostsCurrentPage(1);
+    requestAll();
+    handleChange('');
+  }, [postId]);
 
   useEffect(() => {
-    (() => {
-      try {
-        getItems();
-      } catch (error) {
-        console.error(error);
-      }
-    })();
+    requestAll();
   }, []);
+
+  useEffect(() => {
+    if (firstRunBlockToSetPageEffect.current) {
+      firstRunBlockToSetPageEffect.current = false;
+      return;
+    }
+
+    commentReqeust();
+    window.scroll({
+      top: currentMoveLocation,
+      left: 0,
+    });
+  }, [currentCommentPageNumber]);
+
+  useEffect(() => {
+    if (firstRunBlockToSetOtherPostsPageEffect.current) {
+      firstRunBlockToSetOtherPostsPageEffect.current = false;
+      return;
+    }
+
+    otherPostsRequest();
+  }, [otherPostsCurrentPageNumber]);
+
+  useEffect(() => {
+    dataReset();
+    setTimeout(() => {
+      window.scroll({
+        top: 0,
+        left: 0,
+      });
+    }, 20);
+  }, [postId]);
 
   return (
     <>
@@ -171,7 +229,9 @@ export default function PostDetail() {
           <PostTitleSection
             postTitle={post.title}
             isScraped={post.isScraped}
-            handleScrapClick={handleScrapClick}
+            handleScrapClick={() => {
+              handleScrapOrLikeClick('scrap');
+            }}
           />
           <Nickname>{post.nickname}</Nickname>
           <PostInfo
@@ -185,7 +245,11 @@ export default function PostDetail() {
         <PostContentBox>
           <p>{post.content}</p>
         </PostContentBox>
-        <IconBox onClick={handleLikeClick}>
+        <IconBox
+          onClick={() => {
+            handleScrapOrLikeClick('like');
+          }}
+        >
           <img
             src={post.isLiked ? heartActive : heartInActive}
             alt='like-button'
@@ -193,28 +257,38 @@ export default function PostDetail() {
           <p>공감해요</p>
         </IconBox>
         <CommentArea>
-          <CommentLengthView>{post.numberOfComments}</CommentLengthView>
+          <CommentLengthView>댓글 {post.numberOfComments}개</CommentLengthView>
           <CommentCreateBox>
-            <CommentCreate />
+            <CommentCreate
+              isReplyComment={false}
+              postId={post.postId}
+              value={changeValue}
+              dataReset={dataReset}
+              handleChange={handleChange}
+            />
           </CommentCreateBox>
         </CommentArea>
         <PostCommentArea
           comments={comments}
           currentPageNumber={currentCommentPageNumber}
-          handleReplyCreateButtonClick={handleReplyCreateButtonClick}
-          pageNumbres={commentPageNumbers}
+          pageNumbers={commentPageNumbers}
+          totalCommentPageNumbers={totalCommentPageNumbers}
+          dataReset={dataReset}
+          setCurrentMoveLocation={setCurrentMoveLocation}
           handlePageNumberClick={handlePageNumberClick}
           handlePrevPageClick={handlePrevPageClick}
           handleNextPageClick={handleNextPageClick}
         />
-        {/*         <OtherPosts
-          pageCountData={otherPostPageData}
-          currentPageNumber={currentOtherPostPageNumber}
-          handlePageNumberChange={handleOtherPostPageNumberChange}
-        /> */}
+        <OtherPosts
+          currentPostId={postId}
+          posts={otherPosts}
+          pageNumbers={otherPostsPageNumbers}
+          currentPageNumber={otherPostsCurrentPageNumber}
+          handlePrevPageClick={handleOtherPostsPrevPageClick}
+          handleNextPageClick={handleOtherPostsNextPageClick}
+          handlePageNumberClick={handleOtherPostsPageNumberClick}
+        />
       </ContentsWrapper>
     </>
   );
 }
-
-//isMoreListOpen

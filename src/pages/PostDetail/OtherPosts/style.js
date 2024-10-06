@@ -4,6 +4,7 @@ import { paginationWrapperStyle } from '@/styles/commonStyle/wrapper';
 import { medium_600 } from '@/styles/commonStyle/localTextStyle';
 
 const PostsWrapper = styled.div`
+  margin-top: 120px;
   padding: 0 19px;
   border-top: 2px solid transparent;
   border-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%23${({

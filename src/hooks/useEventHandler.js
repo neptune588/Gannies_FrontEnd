@@ -17,6 +17,7 @@ export default function useEventHandler({
 
   const handleClickChange = (indexOrValue, value) => {
     if (Array.isArray(clickChangeState)) {
+      console.log('배열');
       setClickChangeState((prevState) => {
         const newState = [...prevState];
         newState[indexOrValue] = value;

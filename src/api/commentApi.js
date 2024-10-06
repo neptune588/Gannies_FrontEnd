@@ -8,9 +8,9 @@ export const getComments = async (boardType, postId, query) => {
 };
 
 //특정 게시물 댓글 작성
-export const createComment = async (boardType, postId) => {
+export const createComment = async (boardType, postId, commentData) => {
   const url = `/posts/${boardType}/${postId}/comments`;
-  const response = await cookieApi.post(url);
+  const response = await cookieApi.post(url, commentData);
   return response;
 };
 
@@ -44,7 +44,7 @@ export const getReplyComments = async (commentId) => {
 
 //대댓글 작성
 export const createReplyComment = async (commentId, commentData) => {
-  const url = `/${commentId}/replies`;
+  const url = `/comments/${commentId}/replies`;
   const response = await cookieApi.post(url, commentData);
   return response;
 };

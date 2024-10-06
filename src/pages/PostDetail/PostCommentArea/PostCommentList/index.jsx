@@ -1,5 +1,8 @@
+import { useState } from 'react';
+
 import CommentCreate from '@/pages/PostDetail/CommentCreate';
 import More from '@/components/Icons/More';
+import MorePopup from '@/pages/PostDetail/MorePopup';
 import Clock from '@/components/Icons/Clock';
 
 import commentReplyIcon from '@/assets/icons/etc/comment_reply.svg';
@@ -16,6 +19,7 @@ import {
   ReplyIcon,
 } from '@/pages/PostDetail/PostCommentArea/PostCommentList/style';
 
+import useEventHandler from '@/hooks/useEventHandler';
 import useSelectorList from '@/hooks/useSelectorList';
 
 export default function PostCommentList({
@@ -26,13 +30,16 @@ export default function PostCommentList({
   updateDate,
   postId,
   commentId,
-  userId,
-  isMoreButtonState,
-  isReplyCreateOpen,
-  isReplyCommentMoreButtonState,
-  handleReplyCreateButtonClick,
+  commenterId,
+  dataReset,
 }) {
   const { userId: currentUserId } = useSelectorList();
+
+  const [isMoreButtonOpen, setIsMoreButtonOpen] = useState(false);
+  const [isReplyCreateOpen, setIsReplyCreateOpen] = useState(false);
+  const { changeValue, handleChange } = useEventHandler({
+    changeDefaultValue: '',
+  });
 
   return (
     <>
@@ -45,7 +52,13 @@ export default function PostCommentList({
         <CommentListWrapper>
           <CommenterBox>
             <p>{commenter}</p>
-            <More />
+            <More onClick={() => setIsMoreButtonOpen((prev) => !prev)}>
+              {isMoreButtonOpen && (
+                <MorePopup
+                  ownComment={currentUserId === commenterId ? true : false}
+                />
+              )}
+            </More>
           </CommenterBox>
           <CommentContent>{content}</CommentContent>
           <CommentMetricBox>
@@ -53,13 +66,14 @@ export default function PostCommentList({
             <CommentCreateDateView>
               {createDate === updateDate
                 ? createDate
-                : `${createDate}(${updateDate}에 수정 됨)`}
+                : `${createDate}(${updateDate} 수정 됨)`}
             </CommentCreateDateView>
-
             {!isReplyComment && (
               <ReplyCommentCreateButton
                 $isReplyCreateOpen={isReplyCreateOpen}
-                onClick={handleReplyCreateButtonClick || undefined}
+                onClick={() => {
+                  setIsReplyCreateOpen((prev) => !prev);
+                }}
               >
                 답글쓰기
               </ReplyCommentCreateButton>
@@ -69,7 +83,15 @@ export default function PostCommentList({
       </Container>
       {isReplyCreateOpen && (
         <ReplyCommentBox $isReplyComment={isReplyComment}>
-          <CommentCreate isCommentReply={true} />
+          <CommentCreate
+            isReplyCreateOpen={isReplyCreateOpen}
+            value={changeValue}
+            postId={postId}
+            commentId={commentId}
+            dataReset={dataReset}
+            handleChange={handleChange}
+            handleReplyCreateButtonClick={() => setIsReplyCreateOpen(false)}
+          />
         </ReplyCommentBox>
       )}
     </>

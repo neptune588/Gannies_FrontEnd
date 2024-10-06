@@ -1,14 +1,14 @@
 import { PopupBox, PopupList } from '@/pages/PostDetail/MorePopup/style';
 
 export default function MorePopup({
-  isLogin = true,
+  ownComment,
   handlePutClick = null,
   handleDeleteClick = null,
   handleReportClick = null,
 }) {
   return (
     <PopupBox>
-      {isLogin ? (
+      {ownComment ? (
         <>
           <PopupList>수정</PopupList>
           <PopupList>삭제</PopupList>

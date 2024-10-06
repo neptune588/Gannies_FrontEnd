@@ -2,6 +2,9 @@ import styled from 'styled-components';
 
 import eclipse from '@/assets/icons/etc/eclipse.svg';
 
+const MoreBox = styled.div`
+  position: relative;
+`;
 const MoreButton = styled.button`
   cursor: pointer;
   > img {
@@ -14,10 +17,18 @@ const MoreButton = styled.button`
   }
 `;
 
-export default function More({ width = '24px', height = '24px', ...props }) {
+export default function More({
+  width = '24px',
+  height = '24px',
+  children,
+  ...props
+}) {
   return (
-    <MoreButton $width={width} $height={height} {...props}>
-      <img src={eclipse} alt='more-button' />
-    </MoreButton>
+    <MoreBox>
+      <MoreButton $width={width} $height={height} {...props}>
+        <img src={eclipse} alt='more-button' />
+      </MoreButton>
+      {children}
+    </MoreBox>
   );
 }

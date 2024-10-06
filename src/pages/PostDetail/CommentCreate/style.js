@@ -54,6 +54,7 @@ const ButtonBox = styled.div`
   display: flex;
   justify-content: flex-end;
 `;
+
 const CancelButton = styled(ButtonDefaultStyle)`
   ${primaryBorderBoxStyle}
   background-color: ${({ theme: { colors } }) => {
@@ -64,6 +65,14 @@ const CancelButton = styled(ButtonDefaultStyle)`
 
 const ConfirmButton = styled(ButtonDefaultStyle)`
   ${primaryColorBoxStyle}
+  background-color: ${({ $isDisabled, theme: { colors } }) => {
+    return $isDisabled ? colors.gray['20'] : colors.primary;
+  }};
+  &:hover {
+    background-color: ${({ $isDisabled }) => {
+      return $isDisabled ? null : '#2d6ab7';
+    }};
+  }
 `;
 
 export {
