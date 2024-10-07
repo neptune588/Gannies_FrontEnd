@@ -36,7 +36,7 @@ export const deletePost = async (boardType, postId) => {
 };
 
 //게시물 신고
-export const postReport = async (boardType, postId, reportData) => {
+export const reportPost = async (boardType, postId, reportData) => {
   const url = `/posts/${boardType}/${postId}/reports`;
   const response = await cookieApi.post(url, reportData);
   return response;

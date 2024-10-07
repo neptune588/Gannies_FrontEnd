@@ -1,12 +1,24 @@
 import { PopupBox, PopupList } from '@/pages/PostDetail/MorePopup/style';
 
-import { setIsPostDeleteModal } from '@/store/modalsControl';
+import {
+  setIsPostDeleteModal,
+  setIsPostOrCommentReportModal,
+} from '@/store/modalsControl';
 
 import useModalsControl from '@/hooks/useModalsControl';
 
 export default function MorePopup({
   ownComment,
   ownPost,
+  contentType,
+  postId,
+  commentId,
+  replyId,
+  reportedContent,
+  setContentType,
+  setReportedContent,
+  setCurrentReportData,
+  setIsMorePopup,
   handleEditButtonOpen,
   handleCommentDelete,
 }) {
@@ -23,6 +35,7 @@ export default function MorePopup({
                 ? handleCommentDelete
                 : () => {
                     handleModalOpen({ modalDispatch: setIsPostDeleteModal });
+                    setIsMorePopup && setIsMorePopup(false);
                   }
             }
           >
@@ -30,7 +43,23 @@ export default function MorePopup({
           </PopupList>
         </>
       ) : (
-        <PopupList>신고하기</PopupList>
+        <PopupList
+          onClick={() => {
+            setContentType(contentType);
+            setReportedContent(reportedContent);
+            setCurrentReportData(() => {
+              return {
+                postId: postId,
+                commentId: commentId,
+                replyCommentId: replyId,
+              };
+            });
+            setIsMorePopup && setIsMorePopup(false);
+            handleModalOpen({ modalDispatch: setIsPostOrCommentReportModal });
+          }}
+        >
+          신고하기
+        </PopupList>
       )}
     </PopupBox>
   );

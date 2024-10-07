@@ -5,6 +5,7 @@ const initialState = {
   isUserBanModal: false,
   isPostDeleteModal: false,
   isPostOrCommentReportModal: false,
+  scrollLocation: 0,
 };
 
 //리듀서에서 return 하는 값은 해당 리듀서의 새로운 상태
@@ -20,11 +21,13 @@ const modalsControlSlice = createSlice({
       state.isUserBanModal = action.payload;
     },
     setIsPostDeleteModal(state, action) {
-      console.log(action);
       state.isPostDeleteModal = action.payload;
     },
     setIsPostOrCommentReportModal(state, action) {
-      state.isPostDeleteModal = action.payload;
+      state.isPostOrCommentReportModal = action.payload;
+    },
+    setSaveScrollLocation(state, action) {
+      state.scrollLocation = action.payload;
     },
   },
 });
@@ -34,5 +37,6 @@ export const {
   setIsUserBanModal,
   setIsPostDeleteModal,
   setIsPostOrCommentReportModal,
+  setSaveScrollLocation,
 } = modalsControlSlice.actions;
 export default modalsControlSlice.reducer;

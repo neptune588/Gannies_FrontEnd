@@ -3,11 +3,27 @@ import styled from 'styled-components';
 import { h4_600 } from '@/styles/commonStyle/localTextStyle';
 
 const Container = styled.div`
-  overflow: ${({ $isHospitalSearchModal, $isPostDeleteModal }) => {
-    return $isHospitalSearchModal || $isPostDeleteModal ? 'hidden' : null;
+  overflow: ${({
+    $isHospitalSearchModal,
+    $isPostDeleteModal,
+    $isPostOrCommentReportModal,
+  }) => {
+    return $isHospitalSearchModal ||
+      $isPostDeleteModal ||
+      $isPostOrCommentReportModal
+      ? 'hidden'
+      : null;
   }};
-  height: ${({ $isHospitalSearchModal, $isPostDeleteModal }) => {
-    return $isHospitalSearchModal || $isPostDeleteModal ? '100vh' : null;
+  height: ${({
+    $isHospitalSearchModal,
+    $isPostDeleteModal,
+    $isPostOrCommentReportModal,
+  }) => {
+    return $isHospitalSearchModal ||
+      $isPostDeleteModal ||
+      $isPostOrCommentReportModal
+      ? '100vh'
+      : null;
   }};
 `;
 

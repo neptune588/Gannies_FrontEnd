@@ -13,6 +13,7 @@ export default function useSelectorList() {
     isUserBanModal,
     isPostDeleteModal,
     isPostOrCommentReportModal,
+    scrollLocation,
   } = modalsControl;
 
   return {
@@ -27,5 +28,6 @@ export default function useSelectorList() {
     isUserBanModal,
     isPostDeleteModal,
     isPostOrCommentReportModal,
+    scrollLocation,
   };
 }

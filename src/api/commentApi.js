@@ -30,7 +30,7 @@ export const deleteComment = async (commentId) => {
 
 //댓글 신고
 export const reportComment = async (commentId, reportData) => {
-  const url = `/${commentId}/reports`;
+  const url = `/comments/${commentId}/reports`;
   const response = await cookieApi.post(url, reportData);
   return response;
 };
@@ -60,5 +60,12 @@ export const editReplyComment = async (replyId, commentData) => {
 export const deleteReplyComment = async (replyId) => {
   const url = `/replies/${replyId}`;
   const response = await cookieApi.delete(url);
+  return response;
+};
+
+//대댓글 신고
+export const reportReplyComment = async (replyId, reportData) => {
+  const url = `/replies/${replyId}/reports`;
+  const response = await cookieApi.post(url, reportData);
   return response;
 };

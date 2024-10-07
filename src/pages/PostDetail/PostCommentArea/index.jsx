@@ -29,8 +29,11 @@ export default memo(function PostCommentArea({
   currentPageNumber,
   totalCommentPageNumbers,
   pageNumbers,
-  dataReset,
+  setContentType,
   setCurrentMoveLocation,
+  setReportedContent,
+  setCurrentReportData,
+  dataReset,
   handlePageNumberClick,
   handlePrevPageClick,
   handleNextPageClick,
@@ -61,6 +64,9 @@ export default memo(function PostCommentArea({
                   postId={comment.postId}
                   commentId={comment.commentId}
                   commenterId={comment.userId}
+                  setCurrentReportData={setCurrentReportData}
+                  setReportedContent={setReportedContent}
+                  setContentType={setContentType}
                   dataReset={dataReset}
                 />
                 {comment.replies.length > 0 &&
@@ -75,6 +81,9 @@ export default memo(function PostCommentArea({
                         updateDate={formatDateToPost(replyComment.updatedAt)}
                         replyId={replyComment.replyId}
                         commenterId={replyComment.userId}
+                        setCurrentReportData={setCurrentReportData}
+                        setReportedContent={setReportedContent}
+                        setContentType={setContentType}
                         dataReset={dataReset}
                       />
                     );

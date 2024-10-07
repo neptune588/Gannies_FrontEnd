@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import MorePopup from '@/pages/PostDetail/MorePopup';
 
@@ -14,13 +14,18 @@ import {
 import useSelectorList from '@/hooks/useSelectorList';
 
 export default function PostTitleSection({
+  postId,
   postTitle,
   currentPosterId,
   isScraped,
+  isMorePopup,
+  setContentType,
+  setReportedContent,
+  setCurrentReportData,
+  setIsMorePopup,
   handleScrapClick,
 }) {
   const { userId } = useSelectorList();
-  const [isMorePopup, setIsMorePopup] = useState(false);
 
   return (
     <TitleSection>
@@ -37,7 +42,16 @@ export default function PostTitleSection({
           }}
         >
           {isMorePopup && (
-            <MorePopup ownPost={currentPosterId === userId ? true : false} />
+            <MorePopup
+              ownPost={currentPosterId === userId ? true : false}
+              contentType={'post'}
+              reportedContent={postTitle}
+              postId={postId}
+              setContentType={setContentType}
+              setReportedContent={setReportedContent}
+              setCurrentReportData={setCurrentReportData}
+              setIsMorePopup={setIsMorePopup}
+            />
           )}
         </More>
       </IconBox>

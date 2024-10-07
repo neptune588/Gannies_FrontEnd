@@ -34,6 +34,9 @@ export default function PostCommentList({
   replyId,
   commentId,
   commenterId,
+  setCurrentReportData,
+  setContentType,
+  setReportedContent,
   dataReset,
 }) {
   const { userId: currentUserId } = useSelectorList();
@@ -96,6 +99,14 @@ export default function PostCommentList({
               {isMoreButtonOpen && (
                 <MorePopup
                   ownComment={currentUserId === commenterId ? true : false}
+                  contentType={isReplyComment ? 'replyComment' : 'comment'}
+                  reportedContent={content}
+                  replyId={replyId}
+                  commentId={commentId}
+                  setContentType={setContentType}
+                  setReportedContent={setReportedContent}
+                  setCurrentReportData={setCurrentReportData}
+                  setIsMorePopup={setIsMoreButtonOpen}
                   handleEditButtonOpen={handleEditButtonOpen}
                   handleCommentDelete={handleCommentDelete}
                 />

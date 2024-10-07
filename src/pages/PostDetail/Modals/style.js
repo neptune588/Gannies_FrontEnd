@@ -9,7 +9,10 @@ import {
   xsmall_500,
   medium_400,
 } from '@/styles/commonStyle/localTextStyle';
-import { modalCloseButtonStyle } from '@/styles/commonStyle/etc';
+import {
+  modalCloseButtonStyle,
+  centerAlignStyle,
+} from '@/styles/commonStyle/etc';
 
 const Modal = styled.div`
   position: relative;
@@ -26,6 +29,10 @@ const Modal = styled.div`
   }
 
   > p {
+    ${small_400}
+  }
+
+  > div {
     ${small_400}
   }
 
@@ -84,7 +91,9 @@ const ModalCloseButton = styled.button`
 const ReportDetailModalBox = styled(Modal)`
   position: relative;
   width: 525px;
-  height: 675px;
+  height: ${({ $isContentType }) => {
+    return $isContentType === 'post' ? '685px' : '755px';
+  }};
   background-color: ${({ theme: { colors } }) => {
     return colors.white;
   }};
@@ -96,7 +105,7 @@ const ReportDetailModalBox = styled(Modal)`
   }
 
   > p {
-    margin-bottom: 34px;
+    margin-bottom: 30px;
   }
 `;
 
@@ -105,7 +114,7 @@ const StyledText = styled.p`
   color: ${({ theme: { colors } }) => {
     return colors.gray['60'];
   }};
-  margin-bottom: 10px;
+  margin-bottom: 20px !important;
 `;
 
 const ReportPostTitle = styled.p`
@@ -126,9 +135,11 @@ const RadioBox = styled.div`
   align-items: center;
 
   > input {
-    width: 20px;
-    height: 20px;
     cursor: pointer;
+    &[type='radio'] {
+      transform: scale(0.9);
+      margin: 0;
+    }
   }
 
   > label {
@@ -137,24 +148,35 @@ const RadioBox = styled.div`
       return colors.gray['100'];
     }};
     user-select: none;
-    margin-left: 13px;
+    margin-left: 8px;
     cursor: pointer;
   }
 `;
 
-const GrayBox = styled.div`
+const ReportCommentBox = styled.div`
+  padding: 15px;
+  margin-bottom: 30px;
+  border-radius: 8px;
+  height: 90px;
+  overflow-y: auto;
   border-radius: 8px;
   color: ${({ theme: { colors } }) => {
-    return colors.gray['70'];
+    return colors.gray['80'];
+  }};
+  background-color: ${({ theme: { colors } }) => {
+    return colors.gray['10'];
   }};
 `;
 
-const ReportCommentBox = styled(GrayBox)`
-  height: 70px;
-`;
-
-const ReportReasonBox = styled(GrayBox)`
+const ReportReasonBox = styled.textarea`
+  ${small_400}
+  padding: 15px;
+  background-color: ${({ $isDisabled, theme: { colors } }) => {
+    return $isDisabled ? colors.gray['10'] : colors.gray['20'];
+  }};
+  width: 100%;
   height: 150px;
+  border-radius: 8px;
   margin-bottom: 35px;
 `;
 
@@ -163,14 +185,21 @@ const Notice = styled.p`
   color: ${({ theme: { colors } }) => {
     return colors.highlight;
   }};
-  line-height: 15px;
+  line-height: 25px;
   margin-bottom: 30px;
+  text-align: center;
 `;
 
 const ReportConfirmButton = styled.button`
   ${medium_400}
   ${primaryColorBoxStyle}
-  padding: 15px 70px;
+  ${centerAlignStyle}
+  width: 205px;
+  height: 50px;
+  margin: 0 auto;
+  &:hover {
+    background-color: #2d6ab7;
+  }
 `;
 
 export {

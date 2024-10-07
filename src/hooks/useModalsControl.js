@@ -6,6 +6,8 @@ import {
   setIsHospitalModal,
   setIsPostDeleteModal,
   setIsUserBanModal,
+  setIsPostOrCommentReportModal,
+  setSaveScrollLocation,
 } from '@/store/modalsControl';
 
 import useSelectorList from '@/hooks/useSelectorList';
@@ -15,19 +17,23 @@ export default function useModalsControl() {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const [currentScrollLoaction, setCurrentScrollLoaction] = useState(null);
-  const { isHospitalSearchModal, isPostDeleteModal, isUserBanModal } =
-    useSelectorList();
+  const {
+    isHospitalSearchModal,
+    isPostDeleteModal,
+    isUserBanModal,
+    isPostOrCommentReportModal,
+    scrollLocation,
+  } = useSelectorList();
 
   const handleModalOpen = ({ modalDispatch }) => {
-    setCurrentScrollLoaction(window.scrollY);
+    dispatch(setSaveScrollLocation(window.scrollY));
     dispatch(modalDispatch(true));
   };
 
   const handleModalClose = ({ modalDispatch }) => {
     dispatch(modalDispatch(false));
     setTimeout(() => {
-      window.scroll({ top: currentScrollLoaction, left: 0 });
+      window.scroll({ top: scrollLocation, left: 0 });
     }, 10);
   };
 
@@ -38,12 +44,16 @@ export default function useModalsControl() {
     }
 
     const modalState =
-      isHospitalSearchModal || isPostDeleteModal || isUserBanModal;
+      isHospitalSearchModal ||
+      isPostDeleteModal ||
+      isUserBanModal ||
+      isPostOrCommentReportModal;
 
     if (modalState) {
       dispatch(setIsHospitalModal(false));
       dispatch(setIsPostDeleteModal(false));
       dispatch(setIsUserBanModal(false));
+      dispatch(setIsPostOrCommentReportModal(false));
     }
   }, [location]);
 
@@ -51,6 +61,7 @@ export default function useModalsControl() {
     isHospitalSearchModal,
     isPostDeleteModal,
     isUserBanModal,
+    isPostOrCommentReportModal,
     handleModalOpen,
     handleModalClose,
   };

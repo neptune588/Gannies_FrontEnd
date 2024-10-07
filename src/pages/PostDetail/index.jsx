@@ -11,6 +11,7 @@ import CommentCreate from '@/pages/PostDetail/CommentCreate';
 import PostCommentArea from '@/pages/PostDetail/PostCommentArea';
 import OtherPosts from '@/pages/PostDetail/OtherPosts';
 import { PostDeleteModal } from '@/pages/PostDetail/Modals';
+import { ReportModal } from '@/pages/PostDetail/Modals';
 
 import heartActive from '@/assets/icons/hearts/heart_active.svg';
 import heartInActive from '@/assets/icons/hearts/heart_inactive.svg';
@@ -36,8 +37,6 @@ import { getComments } from '@/api/commentApi';
 import { postScrap, cancelPostScrap } from '@/api/scrapApi';
 import { postLikeToggle } from '@/api/likeApi';
 
-import { setIsPostDeleteModal } from '@/store/modalsControl';
-
 import { formatDateToPost } from '@/utils/dateFormatting';
 import { commentMaxLimit } from '@/utils/itemLimit';
 import { communityPostMaxLimit } from '@/utils/itemLimit';
@@ -51,9 +50,8 @@ export default function PostDetail() {
   const firstRunBlockToSetOtherPostsPageEffect = useRef(true);
   const firstRunBlockToResetEffect = useRef(true);
 
-  const { currentBoardType, isPostDeleteModal } = useSelectorList();
-
-  const [post, setPost] = useState({});
+  const { currentBoardType, isPostDeleteModal, isPostOrCommentReportModal } =
+    useSelectorList();
 
   const {
     items: comments,
@@ -89,7 +87,16 @@ export default function PostDetail() {
     changeDefaultValue: '',
   });
 
+  const [post, setPost] = useState({});
+  const [contentType, setContentType] = useState('');
+  const [reportedContent, setReportedContent] = useState('');
   const [currentMoveLocation, setCurrentMoveLocation] = useState(null);
+  const [curruentReportData, setCurrentReportData] = useState({
+    postId: postId,
+    commentId: null,
+    replyCommentId: null,
+  });
+  const [isMorePopup, setIsMorePopup] = useState(false);
 
   //포스트 갱신
   const postReqeust = () => {
@@ -179,6 +186,12 @@ export default function PostDetail() {
     resetOtherPostsCurrentPage(1);
     requestAll();
     handleChange('');
+    setCurrentReportData({
+      postId: postId,
+      commentId: null,
+      replyCommentId: null,
+    });
+    setIsMorePopup(false);
   }, [postId]);
 
   const handlePostDelete = async () => {
@@ -235,7 +248,18 @@ export default function PostDetail() {
   return (
     <>
       {isPostDeleteModal && (
-        <PostDeleteModal handlePostDelete={handlePostDelete} />
+        <PostDeleteModal
+          handlePostDelete={handlePostDelete}
+          setIsMorePopup={setIsMorePopup}
+        />
+      )}
+      {isPostOrCommentReportModal && (
+        <ReportModal
+          contentType={contentType}
+          reportedContent={reportedContent}
+          curruentReportData={curruentReportData}
+          setIsMorePopup={setIsMorePopup}
+        />
       )}
       <CommunityBanner>
         <CommunityBannerText />
@@ -246,9 +270,15 @@ export default function PostDetail() {
       <ContentsWrapper>
         <PostHeaderBox>
           <PostTitleSection
+            postId={post.postId}
             postTitle={post.title}
             currentPosterId={post.posterId}
             isScraped={post.isScraped}
+            isMorePopup={isMorePopup}
+            setIsMorePopup={setIsMorePopup}
+            setReportedContent={setReportedContent}
+            setContentType={setContentType}
+            setCurrentReportData={setCurrentReportData}
             handleScrapClick={() => {
               handleScrapOrLikeClick('scrap');
             }}
@@ -293,8 +323,11 @@ export default function PostDetail() {
           currentPageNumber={currentCommentPageNumber}
           pageNumbers={commentPageNumbers}
           totalCommentPageNumbers={totalCommentPageNumbers}
-          dataReset={dataReset}
+          setContentType={setContentType}
+          setReportedContent={setReportedContent}
           setCurrentMoveLocation={setCurrentMoveLocation}
+          setCurrentReportData={setCurrentReportData}
+          dataReset={dataReset}
           handlePageNumberClick={handlePageNumberClick}
           handlePrevPageClick={handlePrevPageClick}
           handleNextPageClick={handleNextPageClick}
