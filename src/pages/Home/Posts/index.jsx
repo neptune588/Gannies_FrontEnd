@@ -1,7 +1,6 @@
 import { categoryOptions } from '@/pages/Home/Posts/data';
 import Post from '@/pages/Home/Posts/Post';
 import { PostsWrapper } from '@/pages/Home/Posts/style';
-import uuid from 'react-uuid';
 
 function Posts() {
   const groupByRows = (categories, size) => {
@@ -15,11 +14,11 @@ function Posts() {
   const groupedCategories = groupByRows(categoryOptions, 2);
   return (
     <>
-      {groupedCategories.map((group) => (
-        <PostsWrapper key={uuid()}>
-          {group.map((category) => (
+      {groupedCategories.map((group, groupIdx) => (
+        <PostsWrapper key={groupIdx}>
+          {group.map((category, idx) => (
             <Post
-              key={uuid()}
+              key={idx}
               title={category.label}
               boardType={category.boardType}
             />

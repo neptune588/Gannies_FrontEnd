@@ -29,10 +29,6 @@ function Buttons({ email, password, setLoginError, setIsLoading }) {
     try {
       setIsLoading(true);
       const response = await userSignIn({ email: email, password: password });
-      // if (response.data.user.membershipStatus === 'email_verified') {
-      //   dispatch(handleModal({ field: 'isApproval', value: true }));
-      //   navigate('/mypage/profile/edit');
-      // }
       const { userId, membershipStatus } = response.data.user;
       const isTempPassword = response.data.user.isTempPasswordSignIn;
       dispatch(setLogin({ userId, membershipStatus }));

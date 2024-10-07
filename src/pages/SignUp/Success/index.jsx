@@ -1,3 +1,4 @@
+import { checkMembershipStatus, userSignUpEmail } from '@/api/authApi';
 import success from '@/assets/images/sign_up_success.png';
 
 import {
@@ -7,11 +8,31 @@ import {
   RightButton,
   Wrapper,
 } from '@/pages/SignUp/Success/style';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 function Success() {
   const location = useLocation();
-  const email = location.state?.email;
+  const [email, setEmail] = useState(location.state?.email);
+
+  useEffect(() => {
+    const fetch = async () => {
+      if (!email) {
+        const response = await checkMembershipStatus();
+        setEmail(response.data.nickname);
+      }
+    };
+    fetch();
+  }, []);
+
+  const sendEmail = async () => {
+    try {
+      await userSignUpEmail(email);
+      alert('이메일을 전송하였습니다.');
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
 
   return (
     <>
@@ -26,7 +47,7 @@ function Success() {
         </span>
         <ButtonWrapper>
           <LeftButton to='/'>메인으로 가기</LeftButton>
-          <RightButton>메일 다시 보내기</RightButton>
+          <RightButton onClick={sendEmail}>메일 다시 보내기</RightButton>
         </ButtonWrapper>
       </Wrapper>
     </>
