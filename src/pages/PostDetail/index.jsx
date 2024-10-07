@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import CommunityBanner from '@/components/CommunityBanner';
@@ -10,6 +10,7 @@ import PostInfo from '@/pages/PostDetail/PostHeader/PostInfo';
 import CommentCreate from '@/pages/PostDetail/CommentCreate';
 import PostCommentArea from '@/pages/PostDetail/PostCommentArea';
 import OtherPosts from '@/pages/PostDetail/OtherPosts';
+import { PostDeleteModal } from '@/pages/PostDetail/Modals';
 
 import heartActive from '@/assets/icons/hearts/heart_active.svg';
 import heartInActive from '@/assets/icons/hearts/heart_inactive.svg';
@@ -30,13 +31,12 @@ import useEventHandler from '@/hooks/useEventHandler';
 import useSelectorList from '@/hooks/useSelectorList';
 import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
 
-import { getPost } from '@/api/postApi';
-import { getPosts } from '@/api/postApi';
-import { createComment } from '@/api/commentApi';
+import { getPost, getPosts, deletePost } from '@/api/postApi';
 import { getComments } from '@/api/commentApi';
-import { postScrap } from '@/api/scrapApi';
-import { cancelPostScrap } from '@/api/scrapApi';
+import { postScrap, cancelPostScrap } from '@/api/scrapApi';
 import { postLikeToggle } from '@/api/likeApi';
+
+import { setIsPostDeleteModal } from '@/store/modalsControl';
 
 import { formatDateToPost } from '@/utils/dateFormatting';
 import { commentMaxLimit } from '@/utils/itemLimit';
@@ -45,12 +45,16 @@ import { pageViewLimit } from '@/utils/itemLimit';
 
 export default function PostDetail() {
   const { postId } = useParams();
+  const navigate = useNavigate();
 
   const firstRunBlockToSetPageEffect = useRef(true);
   const firstRunBlockToSetOtherPostsPageEffect = useRef(true);
+  const firstRunBlockToResetEffect = useRef(true);
 
-  const { currentBoardType } = useSelectorList();
+  const { currentBoardType, isPostDeleteModal } = useSelectorList();
+
   const [post, setPost] = useState({});
+
   const {
     items: comments,
     setItems: setComments,
@@ -89,43 +93,32 @@ export default function PostDetail() {
 
   //포스트 갱신
   const postReqeust = () => {
-    try {
-      return getPost(currentBoardType, postId);
-    } catch (error) {
-      console.error(error);
-    }
+    return getPost(currentBoardType, postId);
   };
 
   //댓글 갱신 (모달 상태 초기화)
   const commentReqeust = () => {
-    try {
-      return getDataAndSetPageNumbers(() => {
-        return getComments(currentBoardType, postId, {
-          page: currentCommentPageNumber,
-          limit: pageViewLimit,
-          withReplies: true,
-        });
+    return getDataAndSetPageNumbers(() => {
+      return getComments(currentBoardType, postId, {
+        page: currentCommentPageNumber,
+        limit: pageViewLimit,
+        withReplies: true,
       });
-    } catch (error) {
-      console.error(error);
-    }
+    });
   };
 
   //다른 게시물 + 페이지 갱신
   const otherPostsRequest = () => {
-    try {
-      return getOtherPostsAndSetPageNumbers(() =>
-        getPosts(currentBoardType, {
-          page: otherPostsCurrentPageNumber,
-          limit: communityPostMaxLimit,
-        })
-      );
-    } catch (error) {
-      console.error(error);
-    }
+    return getOtherPostsAndSetPageNumbers(() =>
+      getPosts(currentBoardType, {
+        page: otherPostsCurrentPageNumber,
+        limit: communityPostMaxLimit,
+      })
+    );
   };
 
   const itemChangeToPost = (data) => {
+    console.log(data);
     setPost({
       title: data.title,
       content: data.content,
@@ -146,31 +139,39 @@ export default function PostDetail() {
 
   const handleScrapOrLikeClick = async (buttonType) => {
     try {
-      if (buttonType === 'scrap') {
-        post.isScraped
-          ? await cancelPostScrap(post.postId)
-          : await postScrap(post.postId);
+      switch (buttonType) {
+        case 'scrap':
+          if (post.isScraped) {
+            await cancelPostScrap(post.postId);
+          } else {
+            await postScrap(post.postId);
+          }
+          break;
 
-        const { data } = await postReqeust();
-        itemChangeToPost(data);
-      } else if (buttonType === 'like') {
-        await postLikeToggle(post.postId);
-        const { data } = await postReqeust();
-        itemChangeToPost(data);
+        case 'like':
+          await postLikeToggle(post.postId);
+          break;
       }
+
+      const { data } = await postReqeust();
+      itemChangeToPost(data);
     } catch (error) {
       console.error(error);
     }
   };
 
   const requestAll = async () => {
-    const res = await axios.all([
-      postReqeust(),
-      commentReqeust(),
-      otherPostsRequest(),
-    ]);
+    try {
+      const res = await axios.all([
+        postReqeust(),
+        commentReqeust(),
+        otherPostsRequest(),
+      ]);
 
-    itemChangeToPost(res[0].data);
+      itemChangeToPost(res[0].data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const dataReset = useCallback(() => {
@@ -179,6 +180,16 @@ export default function PostDetail() {
     requestAll();
     handleChange('');
   }, [postId]);
+
+  const handlePostDelete = async () => {
+    try {
+      await deletePost(currentBoardType, postId);
+      alert('해당 글이 삭제되었습니다.');
+      navigate('/community');
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     requestAll();
@@ -207,6 +218,11 @@ export default function PostDetail() {
   }, [otherPostsCurrentPageNumber]);
 
   useEffect(() => {
+    if (firstRunBlockToResetEffect.current) {
+      firstRunBlockToResetEffect.current = false;
+      return;
+    }
+
     dataReset();
     setTimeout(() => {
       window.scroll({
@@ -218,6 +234,9 @@ export default function PostDetail() {
 
   return (
     <>
+      {isPostDeleteModal && (
+        <PostDeleteModal handlePostDelete={handlePostDelete} />
+      )}
       <CommunityBanner>
         <CommunityBannerText />
       </CommunityBanner>
@@ -228,6 +247,7 @@ export default function PostDetail() {
         <PostHeaderBox>
           <PostTitleSection
             postTitle={post.title}
+            currentPosterId={post.posterId}
             isScraped={post.isScraped}
             handleScrapClick={() => {
               handleScrapOrLikeClick('scrap');

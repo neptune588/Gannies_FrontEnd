@@ -21,10 +21,13 @@ import {
 import useModalsControl from '@/hooks/useModalsControl';
 
 export function MainLayout() {
-  const { isHospitalSearchModal } = useModalsControl();
+  const { isHospitalSearchModal, isPostDeleteModal } = useModalsControl();
 
   return (
-    <Container $isHospitalSearchModal={isHospitalSearchModal}>
+    <Container
+      $isHospitalSearchModal={isHospitalSearchModal}
+      $isPostDeleteModal={isPostDeleteModal}
+    >
       <Header />
       <Navbar />
       <CenterdWrapper>

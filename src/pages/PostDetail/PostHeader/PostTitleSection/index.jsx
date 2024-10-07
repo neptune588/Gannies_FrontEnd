@@ -11,11 +11,15 @@ import {
   IconBox,
 } from '@/pages/PostDetail/PostHeader/PostTitleSection/style';
 
+import useSelectorList from '@/hooks/useSelectorList';
+
 export default function PostTitleSection({
-  handleScrapClick,
   postTitle,
+  currentPosterId,
   isScraped,
+  handleScrapClick,
 }) {
+  const { userId } = useSelectorList();
   const [isMorePopup, setIsMorePopup] = useState(false);
 
   return (
@@ -32,7 +36,9 @@ export default function PostTitleSection({
             setIsMorePopup((prev) => !prev);
           }}
         >
-          {isMorePopup && <MorePopup />}
+          {isMorePopup && (
+            <MorePopup ownPost={currentPosterId === userId ? true : false} />
+          )}
         </More>
       </IconBox>
     </TitleSection>

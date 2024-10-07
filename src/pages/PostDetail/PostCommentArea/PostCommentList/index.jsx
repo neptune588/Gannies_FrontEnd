@@ -66,6 +66,10 @@ export default function PostCommentList({
   };
 
   const handleCommentDelete = async () => {
+    if (!confirm('댓글을 삭제 하시겠습니까?')) {
+      return;
+    }
+
     try {
       isReplyComment
         ? await deleteReplyComment(replyId)

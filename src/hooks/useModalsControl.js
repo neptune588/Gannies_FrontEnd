@@ -1,27 +1,27 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import {
   setIsHospitalModal,
-  setIsDeleteModal,
+  setIsPostDeleteModal,
   setIsUserBanModal,
 } from '@/store/modalsControl';
 
 import useSelectorList from '@/hooks/useSelectorList';
 
 export default function useModalsControl() {
+  const firstRunBlockToModalEffect = useRef(true);
   const location = useLocation();
   const dispatch = useDispatch();
 
   const [currentScrollLoaction, setCurrentScrollLoaction] = useState(null);
-  const { isHospitalSearchModal, isDeleteModal, isUserBanModal } =
+  const { isHospitalSearchModal, isPostDeleteModal, isUserBanModal } =
     useSelectorList();
 
   const handleModalOpen = ({ modalDispatch }) => {
     setCurrentScrollLoaction(window.scrollY);
     dispatch(modalDispatch(true));
-    //console.log(currentScrollLoaction);
   };
 
   const handleModalClose = ({ modalDispatch }) => {
@@ -32,18 +32,24 @@ export default function useModalsControl() {
   };
 
   useEffect(() => {
-    const modalState = isHospitalSearchModal || isDeleteModal || isUserBanModal;
+    if (firstRunBlockToModalEffect.current) {
+      firstRunBlockToModalEffect.current = false;
+      return;
+    }
+
+    const modalState =
+      isHospitalSearchModal || isPostDeleteModal || isUserBanModal;
 
     if (modalState) {
       dispatch(setIsHospitalModal(false));
-      dispatch(setIsDeleteModal(false));
+      dispatch(setIsPostDeleteModal(false));
       dispatch(setIsUserBanModal(false));
     }
   }, [location]);
 
   return {
     isHospitalSearchModal,
-    isDeleteModal,
+    isPostDeleteModal,
     isUserBanModal,
     handleModalOpen,
     handleModalClose,
