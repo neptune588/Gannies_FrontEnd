@@ -29,10 +29,28 @@ function Buttons({ email, password, setLoginError, setIsLoading }) {
     try {
       setIsLoading(true);
       const response = await userSignIn({ email: email, password: password });
-      const { userId, membershipStatus } = response.data.user;
-      const isTempPassword = response.data.user.isTempPasswordSignIn;
-      dispatch(setLogin({ userId, membershipStatus }));
-      dispatch(handleModal({ field: 'isTempPassword', value: isTempPassword }));
+      console.log(response);
+      const {
+        isSuspended,
+        isTempPasswordSignIn,
+        userId,
+        rejected,
+        rejectedReason,
+        membershipStatus,
+      } = response.data.user;
+      dispatch(
+        setLogin({
+          isSuspended,
+          userId,
+          rejected,
+          membershipStatus,
+          rejectedReason,
+        })
+      );
+      dispatch(
+        handleModal({ field: 'isTempPassword', value: isTempPasswordSignIn })
+      );
+      dispatch(handleModal({ field: 'rejected', value: rejected }));
       navigate('/');
     } catch (error) {
       setIsLoading(false);

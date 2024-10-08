@@ -1,4 +1,4 @@
-import { checkMembershipStatus, userSignUpEmail } from '@/api/authApi';
+import { checkMemberState, userSignUpEmail } from '@/api/authApi';
 import success from '@/assets/images/sign_up_success.png';
 
 import {
@@ -18,7 +18,7 @@ function Success() {
   useEffect(() => {
     const fetch = async () => {
       if (!email) {
-        const response = await checkMembershipStatus();
+        const response = await checkMemberState();
         setEmail(response.data.nickname);
       }
     };

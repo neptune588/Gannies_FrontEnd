@@ -5,6 +5,7 @@ const modalState = createSlice({
   initialState: {
     isApproval: false,
     isTempPassword: false,
+    rejected: false,
   },
   reducers: {
     handleModal(state, action) {

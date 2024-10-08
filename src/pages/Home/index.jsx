@@ -9,6 +9,7 @@ import { setBoardType } from '@/store/navBarOptions';
 import IsApproval from '@/components/Modal/IsApproval';
 import IsTempPassword from '@/components/Modal/IsTempPassword';
 import Posts from '@/pages/Home/Posts';
+import Rejected from '@/components/Modal/Rejected';
 
 function Home() {
   const location = useLocation();
@@ -31,6 +32,7 @@ function Home() {
 
   return (
     <>
+      {modalState.rejected && <Rejected />}
       {modalState.isApproval && <IsApproval />}
       {modalState.isTempPassword && <IsTempPassword />}
       <Banner />

@@ -22,7 +22,7 @@ import { handleModal } from '@/store/modalState';
 import { setLogout } from '@/store/auth';
 
 import { userSignOut } from '@/api/authApi';
-import useUserStatus from '@/hooks/useUserStatus';
+import useUserState from '@/hooks/useUserState';
 
 function Header() {
   const navigate = useNavigate();
@@ -58,10 +58,10 @@ function Header() {
     }
   };
 
-  const { navigateBasedOnStatus } = useUserStatus();
+  const { navigateBasedOnState } = useUserState();
 
   const handleMyPage = () => {
-    navigateBasedOnStatus('/mypage/profile/edit', 'email_verified');
+    navigateBasedOnState('/mypage/profile/edit', 'email_verified');
   };
 
   return (

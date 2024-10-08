@@ -7,7 +7,14 @@ export default function useSelectorList() {
 
   const { currentActiveMenuNumber, currentBoardType, bannerTitle, bannerDesc } =
     navBarOptions;
-  const { isLogin, userId, status } = auth;
+  const {
+    isLogin,
+    userId,
+    membershipStatus,
+    isSuspended,
+    rejected,
+    rejectedReason,
+  } = auth;
   const { isHospitalSearchModal, isUserBanModal, isDeleteModal } =
     modalsControl;
 
@@ -18,7 +25,10 @@ export default function useSelectorList() {
     bannerDesc,
     isLogin,
     userId,
-    status,
+    membershipStatus,
+    isSuspended,
+    rejected,
+    rejectedReason,
     isHospitalSearchModal,
     isUserBanModal,
     isDeleteModal,
