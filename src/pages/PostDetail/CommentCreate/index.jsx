@@ -25,9 +25,13 @@ export default function CommentCreate({
   commentId,
   replyId,
   value,
+  lastNumberCalc,
+  commentLengthCalc,
+  currentPageNumber,
   dataReset,
   handleChange,
   handleCreateCancel,
+  nextCommentPageGroupCalc,
 }) {
   const { currentBoardType } = useSelectorList();
 
@@ -77,7 +81,28 @@ export default function CommentCreate({
       }
       //console.log(value);
 
-      dataReset();
+      //lastNumberCalc o
+      //댓글을 달았다는말 -> 고로 제일 마지막 페이지의 마지막 댓글 위치로
+      //lastNumberCalc x
+      //답글을 달았다는말 -> 고로 현재 페이지의 현재 댓글 위치로
+
+      //lastNumberCalc -> 현재 위치와 상관없이 전체 페이지 마지막 그룹의 마지막 요소
+      if (lastNumberCalc) {
+        //댓글 10개면 (나눠서 나머지 0이면) 마지막 페이지 넘버 + 1해서 요청
+
+        commentLengthCalc() === 0 /// 댓글이 10개인가?
+          ? dataReset({
+              commentRequestPage: lastNumberCalc() + 1,
+              commentPageGroup: nextCommentPageGroupCalc(),
+            })
+          : dataReset({
+              //lastNumber 12라고 가정하면 group넘버는 0이면 안되니까 업데이트 시켜주기
+              commentRequestPage: lastNumberCalc(),
+              commentPageGroup: nextCommentPageGroupCalc(),
+            });
+      } else {
+        dataReset({ commentRequestPage: currentPageNumber });
+      }
     } catch (error) {
       console.error(error);
     }

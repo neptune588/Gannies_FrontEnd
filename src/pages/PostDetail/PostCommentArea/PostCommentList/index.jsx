@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import CommentCreate from '@/pages/PostDetail/CommentCreate';
 import More from '@/components/Icons/More';
@@ -34,6 +34,7 @@ export default function PostCommentList({
   replyId,
   commentId,
   commenterId,
+  currentPageNumber,
   setCurrentReportData,
   setContentType,
   setReportedContent,
@@ -141,6 +142,7 @@ export default function PostCommentList({
             value={commentValue}
             postId={postId}
             commentId={commentId}
+            currentPageNumber={currentPageNumber}
             dataReset={dataReset}
             handleChange={handleCommentChange}
             handleCreateCancel={() => setIsReplyCreateOpen(false)}
@@ -156,6 +158,7 @@ export default function PostCommentList({
             postId={postId}
             replyId={replyId}
             commentId={commentId}
+            currentPageNumber={currentPageNumber}
             dataReset={dataReset}
             handleChange={handleEditCommentChange}
             handleCreateCancel={() => setIsEditCommentOpen(false)}

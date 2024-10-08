@@ -1,6 +1,7 @@
-import { useNavigate, useLocation, useEffect } from 'react-router-dom';
-
+import { useEffect, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+
 import rightArrow from '@/assets/icons/arrows/chevron_right.svg';
 
 import { small_500 } from '@/styles/commonStyle/localTextStyle';
@@ -32,8 +33,14 @@ export default function PageCategory() {
 
   const { bannerTitle } = useSelectorList();
 
+  const [currentCategory, setCurrentCategory] = useState('');
+
   useEffect(() => {
-    console.log(location);
+    const url = location.pathname.split('/');
+
+    url[2] && url[2].startsWith('post')
+      ? setCurrentCategory(`게시글 #${url[3]}`)
+      : setCurrentCategory(`게시글 작성`);
   }, []);
 
   return (
@@ -55,7 +62,7 @@ export default function PageCategory() {
         {bannerTitle}
       </CategoryList>
       <img src={rightArrow} alt='right-arrow' />
-      <CategoryList $isActiveCategory={true}>게시글 작성</CategoryList>
+      <CategoryList $isActiveCategory={true}>{currentCategory}</CategoryList>
     </CategoryBox>
   );
 }

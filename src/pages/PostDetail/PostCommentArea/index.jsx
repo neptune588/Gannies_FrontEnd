@@ -27,12 +27,12 @@ import { formatDateToPost } from '@/utils/dateFormatting';
 export default memo(function PostCommentArea({
   comments,
   currentPageNumber,
-  totalCommentPageNumbers,
   pageNumbers,
+  setActionType,
   setContentType,
-  setCurrentMoveLocation,
   setReportedContent,
   setCurrentReportData,
+  setCommentBoxLocation,
   dataReset,
   handlePageNumberClick,
   handlePrevPageClick,
@@ -42,9 +42,11 @@ export default memo(function PostCommentArea({
 
   useEffect(() => {
     if (commentAreaYLocation.current) {
-      setCurrentMoveLocation(
-        commentAreaYLocation.current.getBoundingClientRect().top
-      );
+      setCommentBoxLocation(() => {
+        return {
+          top: commentAreaYLocation.current.getBoundingClientRect().top,
+        };
+      });
     }
   }, []);
 
@@ -64,6 +66,7 @@ export default memo(function PostCommentArea({
                   postId={comment.postId}
                   commentId={comment.commentId}
                   commenterId={comment.userId}
+                  currentPageNumber={currentPageNumber}
                   setCurrentReportData={setCurrentReportData}
                   setReportedContent={setReportedContent}
                   setContentType={setContentType}
@@ -81,6 +84,7 @@ export default memo(function PostCommentArea({
                         updateDate={formatDateToPost(replyComment.updatedAt)}
                         replyId={replyComment.replyId}
                         commenterId={replyComment.userId}
+                        currentPageNumber={currentPageNumber}
                         setCurrentReportData={setCurrentReportData}
                         setReportedContent={setReportedContent}
                         setContentType={setContentType}
@@ -95,10 +99,11 @@ export default memo(function PostCommentArea({
           <EmptyComments>댓글이 존재하지 않습니다.</EmptyComments>
         )}
       </ul>
-      {totalCommentPageNumbers.length > 0 && (
+      {pageNumbers?.length > 0 && (
         <PageWraaper>
           <Pagination
             pageNumbers={pageNumbers}
+            setActionType={setActionType}
             currentPageNumber={currentPageNumber}
             handlePrevPageClick={handlePrevPageClick}
             handleNextPageClick={handleNextPageClick}

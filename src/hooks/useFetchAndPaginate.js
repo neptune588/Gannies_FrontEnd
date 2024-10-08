@@ -142,17 +142,24 @@ export default function useFetchAndPaginate({
       return;
     }
 
+    /*     console.log(
+      `그룹 넘버: ${currentGroupOrder}, 렌더링 될 페이지 그룹: ${pageTotalNumbers[currentGroupOrder]}`
+    ); */
     setGroupedPageNumbers(pageTotalNumbers[currentGroupOrder]);
     //console.log('pageGroupNumber change effect 실행');
   }, [pageTotalNumbers, currentGroupOrder]);
 
   return {
     items,
+    totalItems,
+    itemMaxLimit,
     pageTotalNumbers,
     currentPageNumber,
+    currentGroupOrder,
     groupedPageNumbers,
     setItems,
     setCurrentPageNumber,
+    setCurrentGroupOrder,
     getDataAndSetPageNumbers,
     handlePageNumberClick,
     handlePrevPageClick,
