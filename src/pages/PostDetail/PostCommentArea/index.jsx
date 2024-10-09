@@ -22,8 +22,6 @@ const EmptyComments = styled.p`
   text-align: center;
 `;
 
-import { formatDateToPost } from '@/utils/dateFormatting';
-
 export default memo(function PostCommentArea({
   comments,
   currentPageNumber,
@@ -34,6 +32,7 @@ export default memo(function PostCommentArea({
   setCurrentReportData,
   setCommentBoxLocation,
   dataReset,
+  commentPageGroupReCalc,
   handlePageNumberClick,
   handlePrevPageClick,
   handleNextPageClick,
@@ -61,8 +60,9 @@ export default memo(function PostCommentArea({
                   isReplyComment={false}
                   commenter={comment.nickname}
                   content={comment.content}
-                  createDate={formatDateToPost(comment.createdAt)}
-                  updateDate={formatDateToPost(comment.updatedAt)}
+                  createDate={comment.createdAt}
+                  updateDate={comment.updatedAt}
+                  deleteDate={comment.deletedAt}
                   postId={comment.postId}
                   commentId={comment.commentId}
                   commenterId={comment.userId}
@@ -70,6 +70,7 @@ export default memo(function PostCommentArea({
                   setCurrentReportData={setCurrentReportData}
                   setReportedContent={setReportedContent}
                   setContentType={setContentType}
+                  commentPageGroupReCalc={commentPageGroupReCalc}
                   dataReset={dataReset}
                 />
                 {comment.replies.length > 0 &&
@@ -80,14 +81,15 @@ export default memo(function PostCommentArea({
                         isReplyComment={true}
                         commenter={replyComment.nickname}
                         content={replyComment.content}
-                        createDate={formatDateToPost(replyComment.createdAt)}
-                        updateDate={formatDateToPost(replyComment.updatedAt)}
+                        createDate={replyComment.createdAt}
+                        updateDate={replyComment.updatedAt}
                         replyId={replyComment.replyId}
                         commenterId={replyComment.userId}
                         currentPageNumber={currentPageNumber}
                         setCurrentReportData={setCurrentReportData}
                         setReportedContent={setReportedContent}
                         setContentType={setContentType}
+                        commentPageGroupReCalc={commentPageGroupReCalc}
                         dataReset={dataReset}
                       />
                     );

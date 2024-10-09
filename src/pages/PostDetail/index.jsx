@@ -222,42 +222,27 @@ export default function PostDetail() {
     }
   };
 
-  const nextCommentPageGroupCalc = () => {
-    //마지막페이지가 10페이지이상이나 20페이지이상이...면서
-    //댓글을 작성했을때 마지막페이지의 comment갯수가 10개이면 그 다음 페이지 그룹으로 넘어가게
-    //lastpage = > commentPageTotalNumbers.at(-1).at(-1);
-    //lastpage가 속해있는 그룹의 인덱스에서 + 1를 구해봐야한다.
-    //foreach문과 includes 쓰면 될것같기도?
+  const commentPageGroupReCalc = useCallback(
+    (number) => {
+      let changeGroupOrder = null;
 
-    const lastPageNumber = commentPageTotalNumbers.at(-1).at(-1);
-    let changeGroupOrder = null;
+      commentPageTotalNumbers.forEach((arr, arrIdx) => {
+        if (arr.includes(number)) {
+          changeGroupOrder = arrIdx;
+        }
+      });
 
-    commentPageTotalNumbers.forEach((arr, arrIdx) => {
-      if (arr.includes(lastPageNumber)) {
-        changeGroupOrder = arrIdx;
+      const condition = number % pageViewLimit;
+      if (condition === 0) {
+        return changeGroupOrder + 1;
+      } else if (condition > 0) {
+        return changeGroupOrder;
+      } else {
+        return undefined;
       }
-    });
-
-    console.log(`마지막 번호는: ${lastPageNumber}`);
-    console.log(`마지막 번호가 속한 그룹은: ${changeGroupOrder}`);
-    //고려해야 될것
-    //1. lastPage가 10일 경우는 changeGroupOrder + 1 해서 다음 그룹을 꺼내주는게 맞다
-    //2. lastPage가 11~19 일 경우는 changeGroupOrder 그대로 꺼내주는게 맞다.
-    //이러한점을 고려하여 조건식을 세워보면?
-
-    // 나머지가 0이다 lastnumber가 10 20 30이라는거니까 그룹오더 +1해서
-    // 11, 21, 31 등이있는 그룹으로 이동
-    // 나머지가 0상이다 lastnumber가 11, 21, 31이라는거니까 그룹오더 그대로
-    // 그외엔 undfined해서 기본값
-    const condition = lastPageNumber % pageViewLimit;
-    if (condition === 0) {
-      return changeGroupOrder + 1;
-    } else if (condition > 0) {
-      return changeGroupOrder;
-    } else {
-      undefined;
-    }
-  };
+    },
+    [commentPageTotalNumbers]
+  );
 
   useEffect(() => {
     requestAll();
@@ -382,7 +367,6 @@ export default function PostDetail() {
                 return commentPageTotalNumbers.at(-1).at(-1);
               }}
               commentLengthCalc={() => {
-                console.log('댓글 총 ', totalCommentsLength, '개');
                 //items length로 하지않는 이유는
                 //items는 현재 활성화 페이지 기준으로 들어오는것인데
                 //내가 댓글을 작성했을시 항상 마지막 페이지 기준으로 들어가므로
@@ -391,7 +375,7 @@ export default function PostDetail() {
                 //나머지로 계산
                 return totalCommentsLength % commentViewMaxLimit;
               }}
-              nextCommentPageGroupCalc={nextCommentPageGroupCalc}
+              commentPageGroupReCalc={commentPageGroupReCalc}
               dataReset={dataReset}
               handleChange={handleChange}
             />
@@ -406,6 +390,7 @@ export default function PostDetail() {
           setCommentBoxLocation={setCommentBoxLocation}
           setCurrentReportData={setCurrentReportData}
           setActionType={setActionType}
+          commentPageGroupReCalc={commentPageGroupReCalc}
           dataReset={dataReset}
           handlePageNumberClick={handlePageNumberClick}
           handlePrevPageClick={handlePrevPageClick}

@@ -23,6 +23,7 @@ import useEventHandler from '@/hooks/useEventHandler';
 import useSelectorList from '@/hooks/useSelectorList';
 
 import { deleteComment, deleteReplyComment } from '@/api/commentApi';
+import { formatDateToPost } from '@/utils/dateFormatting';
 
 export default function PostCommentList({
   isReplyComment,
@@ -30,6 +31,7 @@ export default function PostCommentList({
   content,
   createDate,
   updateDate,
+  deleteDate,
   postId,
   replyId,
   commentId,
@@ -38,6 +40,7 @@ export default function PostCommentList({
   setCurrentReportData,
   setContentType,
   setReportedContent,
+  commentPageGroupReCalc,
   dataReset,
 }) {
   const { userId: currentUserId } = useSelectorList();
@@ -79,7 +82,10 @@ export default function PostCommentList({
         ? await deleteReplyComment(replyId)
         : await deleteComment(commentId);
 
-      dataReset();
+      dataReset({
+        commentRequestPage: currentPageNumber,
+        commentPageGroup: commentPageGroupReCalc(currentPageNumber),
+      });
     } catch (error) {
       console.error(error);
     }
@@ -96,33 +102,40 @@ export default function PostCommentList({
         <CommentListWrapper>
           <CommenterBox>
             <p>{commenter}</p>
-            <More onClick={() => setIsMoreButtonOpen((prev) => !prev)}>
-              {isMoreButtonOpen && (
-                <MorePopup
-                  ownComment={currentUserId === commenterId ? true : false}
-                  contentType={isReplyComment ? 'replyComment' : 'comment'}
-                  reportedContent={content}
-                  replyId={replyId}
-                  commentId={commentId}
-                  setContentType={setContentType}
-                  setReportedContent={setReportedContent}
-                  setCurrentReportData={setCurrentReportData}
-                  setIsMorePopup={setIsMoreButtonOpen}
-                  handleEditButtonOpen={handleEditButtonOpen}
-                  handleCommentDelete={handleCommentDelete}
-                />
-              )}
-            </More>
+            {!deleteDate && (
+              <More onClick={() => setIsMoreButtonOpen((prev) => !prev)}>
+                {isMoreButtonOpen && (
+                  <MorePopup
+                    ownComment={currentUserId === commenterId ? true : false}
+                    contentType={isReplyComment ? 'replyComment' : 'comment'}
+                    reportedContent={content}
+                    replyId={replyId}
+                    commentId={commentId}
+                    setContentType={setContentType}
+                    setReportedContent={setReportedContent}
+                    setCurrentReportData={setCurrentReportData}
+                    setIsMorePopup={setIsMoreButtonOpen}
+                    handleEditButtonOpen={handleEditButtonOpen}
+                    handleCommentDelete={handleCommentDelete}
+                  />
+                )}
+              </More>
+            )}
           </CommenterBox>
           <CommentContent>{content}</CommentContent>
           <CommentMetricBox>
             <Clock isVerify={false} />
             <CommentCreateDateView>
-              {createDate === updateDate
-                ? createDate
-                : `${createDate}(${updateDate} 수정 됨)`}
+              {(() => {
+                if (!deleteDate) {
+                  return createDate === updateDate
+                    ? createDate
+                    : `${formatDateToPost(createDate)}(${formatDateToPost(updateDate)} 수정 됨)`;
+                }
+                return `${formatDateToPost(deleteDate)} 삭제 됨`;
+              })()}
             </CommentCreateDateView>
-            {!isReplyComment && (
+            {!isReplyComment && !deleteDate && (
               <ReplyCommentCreateButton
                 $isReplyCreateOpen={isReplyCreateOpen}
                 onClick={handleReplyCommentCreateClick}
@@ -144,6 +157,7 @@ export default function PostCommentList({
             commentId={commentId}
             currentPageNumber={currentPageNumber}
             dataReset={dataReset}
+            commentPageGroupReCalc={commentPageGroupReCalc}
             handleChange={handleCommentChange}
             handleCreateCancel={() => setIsReplyCreateOpen(false)}
           />
@@ -160,6 +174,7 @@ export default function PostCommentList({
             commentId={commentId}
             currentPageNumber={currentPageNumber}
             dataReset={dataReset}
+            commentPageGroupReCalc={commentPageGroupReCalc}
             handleChange={handleEditCommentChange}
             handleCreateCancel={() => setIsEditCommentOpen(false)}
           />
