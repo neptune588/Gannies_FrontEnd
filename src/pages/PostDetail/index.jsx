@@ -343,7 +343,7 @@ export default function PostDetail() {
           />
         </PostHeaderBox>
         <PostContentBox>
-          <p>{post.content}</p>
+          <div dangerouslySetInnerHTML={{ __html: post.content }} />
         </PostContentBox>
         <IconBox
           onClick={() => {

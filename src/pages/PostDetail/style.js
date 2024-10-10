@@ -39,7 +39,7 @@ const Nickname = styled.p`
 const PostContentBox = styled.div`
   padding: 35px 43px 0;
   margin-bottom: 100px;
-  > p {
+  > div {
     ${body}
     color: ${({ theme: { colors } }) => {
       return colors.gray['100'];
