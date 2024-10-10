@@ -5,6 +5,7 @@ import { statusToNumber } from '@/utils/statusToNumber';
 import { useDispatch } from 'react-redux';
 import { handleModal } from '@/store/modalState';
 import { useEffect, useState } from 'react';
+import { setLogout } from '@/store/auth';
 
 const PrivateRoute = ({ minStatus }) => {
   const dispatch = useDispatch();
@@ -25,15 +26,14 @@ const PrivateRoute = ({ minStatus }) => {
         dispatch(handleModal({ field: 'rejected', value: isSuspended }));
         setNavigatePath('/');
         return;
-      }
-
-      if (numStatus < numMinStatus) {
+      } else if (numStatus < numMinStatus) {
         if (numStatus === 1) {
           setNavigatePath('/sign-up/success');
         } else if (numStatus === 2) {
           dispatch(handleModal({ field: 'isApproval', value: true }));
           setNavigatePath('/');
         } else {
+          dispatch(setLogout());
           setNavigatePath('/sign-in');
         }
         return;
@@ -61,6 +61,7 @@ const PrivateRoute = ({ minStatus }) => {
           dispatch(handleModal({ field: 'isApproval', value: true }));
           setNavigatePath('/');
         } else {
+          dispatch(setLogout());
           setNavigatePath('/sign-in');
         }
       }

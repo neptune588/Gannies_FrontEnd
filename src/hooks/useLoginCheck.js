@@ -41,8 +41,15 @@ const useLoginCheck = () => {
     }
   };
 
+  const boolIsLogin = () => {
+    if (!isLogin) {
+      return false;
+    }
+    return true;
+  };
   return {
     checkIsLogin,
+    boolIsLogin,
   };
 };
 

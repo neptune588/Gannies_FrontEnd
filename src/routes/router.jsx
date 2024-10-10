@@ -25,7 +25,8 @@ import UserApproval from '@/pages/Admin/UserApproval';
 import PostManagement from '@/pages/Admin/PostManagement';
 import SignUp from '@/pages/SignUp/SignUp';
 import EmailVerification from '@/pages/EmailVerification';
-import PrivateRoute from './PrivateRoute';
+import PrivateRoute from '@/routes/PrivateRoute';
+import SignOutRoute from '@/routes/SignOutRoute';
 import LoadingCircle from '@/components/LoadingCircle';
 
 export const router = createBrowserRouter([
@@ -75,27 +76,26 @@ export const router = createBrowserRouter([
     element: <PrivateRoute minStatus='email_verified' />,
     children: [
       {
-        path: '/mypage',
         element: <MypageLayout />,
         children: [
           {
-            path: 'profile/edit',
+            path: '/mypage/profile/edit',
             element: <PersonalInfo />,
           },
           {
-            path: 'profile/change-password',
+            path: '/mypage/profile/change-password',
             element: <PasswordChange />,
           },
           {
-            path: 'written-posts',
+            path: '/mypage/written-posts',
             element: <WrittenPost />,
           },
           {
-            path: 'scrap-posts',
+            path: '/mypage/scrap-posts',
             element: <ScrappedPost />,
           },
           {
-            path: 'written-comment',
+            path: '/mypage/written-comment',
             element: <WrittenComment />,
           },
         ],
@@ -103,57 +103,62 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    element: <HeaderLayout />,
+    element: <SignOutRoute />,
     children: [
       {
-        path: '/sign-in',
-        element: <SignIn />,
-      },
-      {
-        path: '/sign-up',
-        element: <SignUp />,
+        element: <HeaderLayout />,
         children: [
           {
-            path: 'identity',
-            element: <Identity />,
+            path: '/sign-in',
+            element: <SignIn />,
           },
           {
-            path: 'info',
-            element: <Info />,
+            path: '/sign-up',
+            element: <SignUp />,
+            children: [
+              {
+                path: 'identity',
+                element: <Identity />,
+              },
+              {
+                path: 'info',
+                element: <Info />,
+              },
+              {
+                path: 'department',
+                element: <Department />,
+              },
+              {
+                path: 'success',
+                element: <SignUpSuccess />,
+              },
+            ],
           },
           {
-            path: 'department',
-            element: <Department />,
+            path: '/find/id',
+            element: <ID />,
           },
           {
-            path: 'success',
-            element: <SignUpSuccess />,
+            path: '/find/id/success',
+            element: <FindIDSuccess />,
+          },
+          {
+            path: '/find/password',
+            element: <Password />,
+          },
+          {
+            path: '/find/password/success',
+            element: <FindPasswordSuccess />,
+          },
+          {
+            path: '/sign-up/email',
+            element: <EmailVerification />,
+          },
+          {
+            path: '*',
+            element: <Error404 />,
           },
         ],
-      },
-      {
-        path: '/find/id',
-        element: <ID />,
-      },
-      {
-        path: '/find/id/success',
-        element: <FindIDSuccess />,
-      },
-      {
-        path: '/find/password',
-        element: <Password />,
-      },
-      {
-        path: '/find/password/success',
-        element: <FindPasswordSuccess />,
-      },
-      {
-        path: '/sign-up/email',
-        element: <EmailVerification />,
-      },
-      {
-        path: '*',
-        element: <Error404 />,
       },
     ],
   },
