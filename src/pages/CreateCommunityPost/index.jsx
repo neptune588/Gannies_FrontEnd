@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import axios from 'axios';
 
 import CommunityBanner from '@/components/CommunityBanner';
 import CommunityBannerText from '@/components/CommunityBannerText';
@@ -31,10 +32,10 @@ import useLoginCheck from '@/hooks/useLoginCheck';
 import useSelectorList from '@/hooks/useSelectorList';
 import useEventHandler from '@/hooks/useEventHandler';
 import useModalsControl from '@/hooks/useModalsControl';
+import useTinyMceImageUpload from '@/hooks/useTinyMceImageUpload';
 
 import { setIsHospitalModal } from '@/store/modalsControl';
 
-import { getPresignedUrl } from '@/api/authApi';
 import { createPost } from '@/api/postApi';
 import { checkAdminStatus } from '@/api/authApi';
 
@@ -43,20 +44,19 @@ export default function CreateCommunityPost() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const editorRef = useRef(null);
-  const imageButtonRef = useRef(null);
   const firstRunBlockToSetSelectOptionEffect = useRef(true);
+
+  const [isSubmit, setIsSubmit] = useState(false);
+  const [hospitalName, setHospitalName] = useState('병원찾기');
+  const [selectOptions, setSelectOptions] = useState(
+    defaultCategorySelectOptions
+  );
+
+  const { bannerTitle, currentBoardType } = useSelectorList();
+  const [selectedOption, setSelectedOption] = useState(bannerTitle);
 
   const { isHospitalSearchModal, handleModalOpen, handleModalClose } =
     useModalsControl();
-  const { changeValue: titleValue, handleChange: handleTitleValueChange } =
-    useEventHandler({
-      changeDefaultValue: '',
-    });
-  const { changeValue: editorValue, handleChange: handleEditorValueChange } =
-    useEventHandler({
-      changeDefaultValue: '',
-    });
 
   const {
     changeValue: hospitalSearchValue,
@@ -65,116 +65,75 @@ export default function CreateCommunityPost() {
     changeDefaultValue: '',
   });
 
-  const [selectOptions, setSelectOptions] = useState(
-    defaultCategorySelectOptions
-  );
+  const {
+    titleValue,
+    editorValue,
+    editorRef,
+    imageButtonRef,
+    imageExtensionCheck,
+    handleImageUploadClick,
+    handleImageUploadRequest,
+    handleImagePaste,
+    handleTitleValueChange,
+    handleEditorValueChange,
+  } = useTinyMceImageUpload();
 
-  const { bannerTitle } = useSelectorList();
-  const [selectedOption, setSelectedOption] = useState(bannerTitle);
   const { changeValue: currentPath, handleChange: handleSelectedOption } =
     useEventHandler({
       changeDefaultValue: selectOptions[0].path,
     });
 
-  const [previewImage, setPreviewImage] = useState('');
-  const [totalImageType, setTotalImageType] = useState([]);
-
-  const [isSubmit, setIsSubmit] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [hospitalName, setHospitalName] = useState('병원찾기');
-
   const { checkIsLogin } = useLoginCheck();
-
-  const handleImageUploadClick = () => {
-    imageButtonRef.current.value = '';
-    imageButtonRef.current && imageButtonRef.current.click();
-  };
-
-  const handleImageUpload = (e) => {
-    //console.log('업로드 발동');
-    const uploadFile = e.target.files[0];
-
-    if (!uploadFile.type.startsWith('image/')) {
-      alert('이미지 파일만 업로드 가능합니다!');
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.readAsDataURL(uploadFile);
-    reader.onload = () => {
-      setPreviewImage(reader.result);
-    };
-  };
-
-  const urlRequest = async (fileType) => {
-    const res = await getPresignedUrl({ fileType });
-    console.log(res, '호출');
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(isSubmit);
     if (isSubmit) {
       return;
     }
 
-    setIsSubmit(true);
+    try {
+      const condition01 =
+        titleValue.trim() === '' ||
+        titleValue.trim() === undefined ||
+        titleValue.trim() === null;
+      const condition02 =
+        editorValue.trim() === '' ||
+        editorValue.trim() === undefined ||
+        editorValue.trim() === null;
 
-    const condition01 =
-      titleValue === '' || titleValue === undefined || titleValue === null;
-    const condition02 =
-      editorValue === '' || editorValue === undefined || editorValue === null;
+      if (condition01 || condition02) {
+        alert('제목 혹은 내용을 입력 해주세요!');
+        return;
+      }
 
-    if (condition01 || condition02) {
-      alert('제목 혹은 내용을 입력 해주세요!');
+      setIsSubmit(true);
+
+      const splitByWhitespace = titleValue.trim().split(' ');
+      const title = splitByWhitespace.filter((str) => str !== '').join(' ');
+
+      const postData = {
+        title,
+        content: editorValue,
+        hospitalNames: hospitalName === '병원찾기' ? null : hospitalName,
+      };
+
+      const imageExtension = imageExtensionCheck();
+      if (imageExtension.length > 0) {
+        postData.imageTypes = imageExtension;
+      }
+
+      const res = await createPost(currentBoardType, postData);
+      const { postId } = res.data;
+      window.scroll({ top: 0, left: 0 });
+      navigate(`/community/post/${postId}`);
+
       setIsSubmit(false);
-      return;
+    } catch (error) {
+      console.error('작성 실패', error);
     }
-    //form 제출 로직에서 적용할것들
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(editorValue, 'text/html');
-    const htmlEl = doc.body.querySelectorAll('img');
-    const imageExtensions = [
-      'jpg',
-      'jpeg',
-      'png',
-      'gif',
-      'bmp',
-      'tiff',
-      'webp',
-      'heif',
-      'svg',
-    ];
-
-    htmlEl.forEach((el) => {
-      imageExtensions.forEach((imageExtension) => {
-        const a = el.src.includes(`.${imageExtension}`);
-        const b = el.src.includes(`/${imageExtension}`);
-
-        if (a || b) {
-          urlRequest(`image/${imageExtension}`);
-        }
-      });
-    });
-
-    const splitByWhitespace = titleValue.trim().split(' ');
-    const title = splitByWhitespace.filter((str) => str !== '').join(' ');
-
-    const postData = {
-      title,
-      content: editorValue,
-    };
-
-    /*     try {
-      const res = await createPost(currentPath, JSON.stringify(postData));
-
-      console.log(res);
-    } catch (err) {
-      console.error(err);
-    } */
-    setIsSubmit(false);
   };
 
   useEffect(() => {
@@ -200,13 +159,6 @@ export default function CreateCommunityPost() {
 
     setSelectedOption(selectOptions[0].content);
   }, [selectOptions]);
-
-  useEffect(() => {
-    if (editorRef.current && previewImage !== '') {
-      editorRef.current.insertContent(`<img src="${previewImage}" />`);
-      setPreviewImage('');
-    }
-  }, [previewImage]);
 
   return (
     <>
@@ -278,7 +230,8 @@ export default function CreateCommunityPost() {
               editorValue={editorValue}
               handleImageUploadClick={handleImageUploadClick}
               handleEditorValueChange={handleEditorValueChange}
-              handleImageUpload={handleImageUpload}
+              handleImageUploadRequest={handleImageUploadRequest}
+              handleImagePaste={handleImagePaste}
             />
           </ContentsWrapper>
           <ButtonBox>

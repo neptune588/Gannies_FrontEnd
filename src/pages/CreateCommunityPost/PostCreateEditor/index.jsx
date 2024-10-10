@@ -33,7 +33,8 @@ export default function PostCreateEditor({
   imageButtonRef,
   handleEditorValueChange,
   handleImageUploadClick,
-  handleImageUpload,
+  handleImageUploadRequest,
+  handleImagePaste,
 }) {
   return (
     <EditorStylingBox>
@@ -76,8 +77,9 @@ export default function PostCreateEditor({
             });
           },
           //붙여넣기 했을 시 동작 지정
-          paste_preprocess: (editor, args) => {},
-
+          paste_preprocess: (plugin, args) => {
+            handleImagePaste(plugin, args);
+          },
           //외부iframe이라 내부 css로 컨트롤불가능
           content_style: `
           html {
@@ -89,6 +91,8 @@ export default function PostCreateEditor({
             min-height: 415px;
           }
           `,
+          valid_elements:
+            'img[src|alt|title|width|height],p,strong,em,b,i,u,a[href|target=_blank],table[border|cellpadding|cellspacing|width|height],thead,tbody,tr,td[colspan|rowspan],th',
           statusbar: false,
         }}
       />
@@ -96,7 +100,7 @@ export default function PostCreateEditor({
         ref={imageButtonRef}
         type='file'
         accept='image/*'
-        onChange={handleImageUpload}
+        onChange={handleImageUploadRequest}
       />
     </EditorStylingBox>
   );

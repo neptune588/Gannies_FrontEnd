@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { api, cookieApi } from '@/api/axiosInstance';
 
 //이메일 중복 확인
@@ -106,30 +107,9 @@ export const getPresignedUrl = async (fileTypeData) => {
 };
 
 //받아온 URL에 IMAGE url 보내기
-export const certificatesImageUpload = async (
-  presignedUrl,
-  imageData,
-  fields
-) => {
-  const formData = new FormData();
-
-  // fields에 있는 각 필드를 FormData에 추가합니다.
-  for (const key in fields) {
-    formData.append(key, fields[key]);
-  }
-  // 이미지 데이터 추가
-  formData.append('Content-Type', imageData.type);
-  formData.append('file', imageData);
-  const response = await fetch(presignedUrl, {
-    method: 'PUT',
-    body: formData,
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to upload image');
-  }
-
-  return response; // 성공적인 응답 반환
+export const s3ImageUpload = async (url, formData) => {
+  const response = await axios.post(url, formData);
+  return response;
 };
 
 //증명서image에서 이름 추출
