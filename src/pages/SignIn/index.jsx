@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import CommonLoadingCircle from '@/components/LoadingCircle/CommonLoadingCircle';
+import CommonLoadingCircle from '@/components/Loading/CommonLoadingCircle';
 import Buttons from '@/pages/SignIn/Buttons';
 import Inputs from '@/pages/SignIn/Inputs';
 import Title from '@/pages/SignIn/Title';

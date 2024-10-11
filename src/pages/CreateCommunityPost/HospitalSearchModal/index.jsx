@@ -3,7 +3,7 @@ import uuid from 'react-uuid';
 
 import ModalContainer from '@/components/ModalContainer';
 import ModalCloseArea from '@/components/ModalCloseArea';
-import HospitalSearchLoadingCircle from '@/components/LoadingCircle/HospitalSearchLoadingCircle';
+import HospitalSearchLoadingCircle from '@/components/Loading/HospitalSearchLoadingCircle';
 import KakaoMap from '@/pages/CreateCommunityPost/HospitalSearchModal/KakaoMap';
 
 import searchIcon from '@/assets/icons/search/search_black.svg';

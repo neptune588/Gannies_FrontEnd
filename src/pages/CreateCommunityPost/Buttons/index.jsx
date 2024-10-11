@@ -42,10 +42,11 @@ export default function Buttons({ handleEditCancel }) {
       <CansleButton
         type='button'
         onClick={() => {
-          handleEditCancel() ||
-            (() => {
-              navigate('/community');
-            })();
+          if (handleEditCancel) {
+            handleEditCancel();
+          } else {
+            navigate('/community');
+          }
         }}
       >
         취소하기

@@ -301,7 +301,7 @@ export default function PostDetail() {
   }, [postId]);
 
   useEffect(() => {
-    console.log(commentBoxLocation);
+    //console.log(commentBoxLocation);
     //actiyp Change => data reqeust => comment data change => commentLocation calc => commentLocation change => useEffect
     if (actionType === 'createComment') {
       window.scroll({
@@ -326,7 +326,8 @@ export default function PostDetail() {
         <CreateCommunityPost
           title={post.title}
           content={post.content}
-          pageCategory={bannerTitle}
+          propsBoardTitle={bannerTitle}
+          propsBoardType={post.category}
           hospitalNames={post.hospitalNames}
           postId={post.postId}
           handleEditCancel={handleEditCancel}

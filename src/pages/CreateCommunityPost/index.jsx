@@ -34,6 +34,9 @@ import useModalsControl from '@/hooks/useModalsControl';
 import useTinyMceImageUpload from '@/hooks/useTinyMceImageUpload';
 
 import { setIsHospitalModal } from '@/store/modalsControl';
+import { setBoardType } from '@/store/navBarOptions';
+
+import { navBarMenuData } from '@/layouts/Navbar/data';
 
 import { createPost } from '@/api/postApi';
 import { checkAdminStatus } from '@/api/authApi';
@@ -41,7 +44,8 @@ import { checkAdminStatus } from '@/api/authApi';
 export default function CreateCommunityPost({
   title,
   content,
-  pageCategory,
+  propsBoardType,
+  propsBoardTypeTitle,
   postId,
   hospitalNames,
   editRequest,
@@ -55,12 +59,22 @@ export default function CreateCommunityPost({
 
   const [isSubmit, setIsSubmit] = useState(false);
   const [hospitalName, setHospitalName] = useState(hospitalNames || '병원찾기');
-  const [selectOptions, setSelectOptions] = useState(
+  const [categorySelectOptions, setCategorySelectOptions] = useState(
     defaultCategorySelectOptions
   );
 
-  const { bannerTitle } = useSelectorList();
-  const [selectedOption, setSelectedOption] = useState(bannerTitle);
+  const { bannerTitle, currentBoardType } = useSelectorList();
+  //select box에 띄워주는 용도로만 사용
+  const [selectedBoardTitle, setSelectedBoardTitle] = useState(
+    propsBoardTypeTitle || bannerTitle
+  );
+
+  const {
+    changeValue: selectedBoardType,
+    handleChange: handleBoardTypeChange,
+  } = useEventHandler({
+    changeDefaultValue: propsBoardType || currentBoardType,
+  });
 
   const { isHospitalSearchModal, handleModalOpen, handleModalClose } =
     useModalsControl();
@@ -88,12 +102,7 @@ export default function CreateCommunityPost({
     initialContent: content || '',
   });
 
-  const { changeValue: currentPath, handleChange: handleSelectedOption } =
-    useEventHandler({
-      changeDefaultValue: pageCategory || selectOptions[0].path,
-    });
-
-  const [isLoading, setIsLoading] = useState(false);
+  const [isEditorLoading, setIsEditorLoading] = useState(true);
 
   const { checkIsLogin } = useLoginCheck();
 
@@ -135,12 +144,23 @@ export default function CreateCommunityPost({
         postData.imageTypes = imageExtension;
       } */
 
-      //console.log(currentPath, postData);
       const res = editRequest
-        ? await editRequest(currentPath, postId, postData)
-        : await createPost(currentPath, postData);
+        ? await editRequest(selectedBoardType, postId, postData)
+        : await createPost(selectedBoardType, postData);
 
       const { postId: newPostId } = res.data;
+
+      navBarMenuData.forEach((nav, idx) => {
+        nav.boardType === selectedBoardType &&
+          dispatch(
+            setBoardType({
+              menuNumber: idx,
+              boardType: selectedBoardType,
+              bannerTitle: nav.bannerTitle,
+              bannerDesc: nav.bannerDesc,
+            })
+          );
+      });
 
       window.scroll({ top: 0, left: 0 });
       navigate(`/community/post/${newPostId}`);
@@ -158,7 +178,7 @@ export default function CreateCommunityPost({
           const res = await checkAdminStatus();
           const { isAdmin } = res.data;
 
-          isAdmin && setSelectOptions(adminCategorySelectOptions);
+          isAdmin && setCategorySelectOptions(adminCategorySelectOptions);
         } catch (error) {
           console.error(error);
         }
@@ -166,14 +186,14 @@ export default function CreateCommunityPost({
     })();
   }, []);
 
-  useEffect(() => {
+  /*   useEffect(() => {
     if (firstRunBlockToSetSelectOptionEffect.current) {
       firstRunBlockToSetSelectOptionEffect.current = false;
       return;
     }
 
-    setSelectedOption(selectOptions[0].content);
-  }, [selectOptions]);
+    setSelectedOption(setCategorySelectOptions[0].content);
+  }, [categorySelectOptions]); */
 
   return (
     <>
@@ -212,15 +232,15 @@ export default function CreateCommunityPost({
             <DataInputWrapper>
               <div>
                 <CategorySelectMenus
-                  optionList={selectOptions}
-                  selectedOption={selectedOption}
-                  setSelectedOption={setSelectedOption}
+                  optionList={categorySelectOptions}
+                  selectedBoardTitle={selectedBoardTitle}
+                  setSelectedBoardTitle={setSelectedBoardTitle}
                   setHospitalName={setHospitalName}
-                  handleSelectedOption={handleSelectedOption}
+                  handleBoardTypeChange={handleBoardTypeChange}
                 />
               </div>
-              {(selectedOption === '취업정보' ||
-                selectedOption === '실습정보') && (
+              {(selectedBoardTitle === '취업정보' ||
+                selectedBoardTitle === '실습정보') && (
                 <div>
                   <DataInputBox>
                     <p>*병원정보</p>
@@ -244,15 +264,19 @@ export default function CreateCommunityPost({
               initialContent={content}
               imageButtonRef={imageButtonRef}
               editorValue={editorValue}
+              isEditorLoading={isEditorLoading}
+              setIsEditorLoading={setIsEditorLoading}
               handleImageUploadClick={handleImageUploadClick}
               handleEditorValueChange={handleEditorValueChange}
               handleImageUploadRequest={handleImageUploadRequest}
               handleImagePaste={handleImagePaste}
             />
           </ContentsWrapper>
-          <ButtonBox>
-            <Buttons handleEditCancel={handleEditCancel} />
-          </ButtonBox>
+          {!isEditorLoading && (
+            <ButtonBox>
+              <Buttons handleEditCancel={handleEditCancel} />
+            </ButtonBox>
+          )}
         </form>
       </CenterdContainer>
     </>

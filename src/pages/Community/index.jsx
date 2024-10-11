@@ -25,6 +25,7 @@ import useSelectorList from '@/hooks/useSelectorList';
 import useLoginCheck from '@/hooks/useLoginCheck';
 
 import { getPosts } from '@/api/postApi';
+import { checkAdminStatus } from '@/api/authApi';
 
 import { formatDateToPost } from '@/utils/dateFormatting';
 import { communityPostMaxLimit } from '@/utils/itemLimit';
@@ -53,7 +54,7 @@ export default function Community() {
   });
 
   const { checkIsLogin } = useLoginCheck();
-  const { currentBoardType } = useSelectorList();
+  const { currentBoardType, bannerTitle } = useSelectorList();
 
   const [optionList] = useState(communityPageAlignSelectOptions);
   const [selectedOption, setSelectedOption] = useState(
@@ -72,9 +73,32 @@ export default function Community() {
     });
   };
 
-  const handlePostCreateClick = () => {
+  const handlePostCreateClick = async () => {
     if (checkIsLogin()) {
-      navigate('/community/create-community-post');
+      if (bannerTitle === '공지사항' || bannerTitle === '이벤트') {
+        try {
+          const res = await checkAdminStatus();
+
+          res.isAdmin
+            ? navigate('/community/create-community-post')
+            : alert('해당 게시판의 글은 관리자만 작성 가능합니다!');
+        } catch (error) {
+          //후에 axios interceptor로 http 코드별로 핸들링
+          console.error('관리자 요청 실패', error);
+        }
+      } else {
+        navigate('/community/create-community-post');
+      }
+    }
+  };
+
+  const handlePostClick = async (postId) => {
+    if (checkIsLogin()) {
+      window.scroll({ top: 0, left: 0 });
+      navigate(`/community/post/${postId}`);
+    } else {
+      alert('로그인을 하셔야 이용 가능합니다!');
+      navigate('/sign-in');
     }
   };
 
@@ -155,7 +179,7 @@ export default function Community() {
                 <CommunityPost
                   key={uuid()}
                   handlePostClick={() => {
-                    navigate(`/community/post/${post.postId}`);
+                    handlePostClick(post.postId);
                   }}
                   number={String(post.postId).padStart(2, '0')}
                   title={post.title}

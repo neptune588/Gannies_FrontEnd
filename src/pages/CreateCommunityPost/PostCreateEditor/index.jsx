@@ -1,6 +1,8 @@
 import { Editor } from '@tinymce/tinymce-react';
 import styled from 'styled-components';
 
+import EditorLoadingCircle from '@/components/Loading/EditorLoadingCircle';
+
 const EditorStylingBox = styled.div`
   .tox {
     margin: 30px 0 95px;
@@ -29,9 +31,11 @@ const ImageUploadInput = styled.input`
 
 export default function PostCreateEditor({
   editorRef,
-  editorValue,
-  imageButtonRef,
   initialContent,
+  imageButtonRef,
+  editorValue,
+  isEditorLoading,
+  setIsEditorLoading,
   handleEditorValueChange,
   handleImageUploadClick,
   handleImageUploadRequest,
@@ -47,6 +51,7 @@ export default function PostCreateEditor({
           handleEditorValueChange(value);
         }}
         onInit={(_, editor) => {
+          setIsEditorLoading(false);
           editorRef.current = editor;
         }}
         init={{
@@ -83,20 +88,21 @@ export default function PostCreateEditor({
           },
           //외부iframe이라 내부 css로 컨트롤불가능
           content_style: `
-          html {
-            font-size: 10px; 
-          }
-          body {
-            font-family: Pretendard, Arial, sans-serif;
-            font-size: 1.4rem;
-            min-height: 415px;
-          }
-          `,
+        html {
+          font-size: 10px; 
+        }
+        body {
+          font-family: Pretendard, Arial, sans-serif;
+          font-size: 1.4rem;
+          min-height: 415px;
+        }
+        `,
           valid_elements:
             'img[src|alt|title|width|height],p,strong,em,b,i,u,a[href|target=_blank],table[border|cellpadding|cellspacing|width|height],thead,tbody,tr,td[colspan|rowspan],th',
           statusbar: false,
         }}
       />
+      {isEditorLoading && <EditorLoadingCircle />}
       <ImageUploadInput
         ref={imageButtonRef}
         type='file'
