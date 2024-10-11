@@ -24,7 +24,7 @@ export const createPost = async (boardType, postData) => {
 //게시물 수정
 export const editPost = async (boardType, postId, postData) => {
   const url = `/posts/${boardType}/${postId}`;
-  const response = await cookieApi.patch(url, postData);
+  const response = await cookieApi.put(url, postData);
   return response;
 };
 

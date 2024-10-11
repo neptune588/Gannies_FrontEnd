@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import {
   primaryColorBoxStyle,
@@ -8,7 +8,7 @@ import {
 import { centerAlignStyle } from '@/styles/commonStyle/etc';
 import { medium_400 } from '@/styles/commonStyle/localTextStyle';
 
-const CansleButton = styled(Link)`
+const CansleButton = styled.button`
   ${primaryBorderBoxStyle}
   ${centerAlignStyle}
   width: 240px;
@@ -25,7 +25,7 @@ const SubmitButton = styled.button`
   ${primaryColorBoxStyle}
   ${centerAlignStyle}
   width: 240px;
-  height: 50px
+  height: 50px;
   color: ${({ theme: { colors } }) => {
     return colors.white;
   }};
@@ -34,10 +34,22 @@ const SubmitButton = styled.button`
   user-select: none;
 `;
 
-export default function Buttons({ onSubmit = null }) {
+export default function Buttons({ handleEditCancel }) {
+  const navigate = useNavigate();
+
   return (
     <>
-      <CansleButton to='/community'>취소하기</CansleButton>
+      <CansleButton
+        type='button'
+        onClick={() => {
+          handleEditCancel() ||
+            (() => {
+              navigate('/community');
+            })();
+        }}
+      >
+        취소하기
+      </CansleButton>
       <SubmitButton type='submit'>등록하기</SubmitButton>
     </>
   );

@@ -38,7 +38,15 @@ import { setIsHospitalModal } from '@/store/modalsControl';
 import { createPost } from '@/api/postApi';
 import { checkAdminStatus } from '@/api/authApi';
 
-export default function CreateCommunityPost() {
+export default function CreateCommunityPost({
+  title,
+  content,
+  pageCategory,
+  postId,
+  hospitalNames,
+  editRequest,
+  handleEditCancel,
+}) {
   //제목 - 한글 1글자 이상은 최소로 있어야 한다. 최대는 50자 이하
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -46,12 +54,12 @@ export default function CreateCommunityPost() {
   const firstRunBlockToSetSelectOptionEffect = useRef(true);
 
   const [isSubmit, setIsSubmit] = useState(false);
-  const [hospitalName, setHospitalName] = useState('병원찾기');
+  const [hospitalName, setHospitalName] = useState(hospitalNames || '병원찾기');
   const [selectOptions, setSelectOptions] = useState(
     defaultCategorySelectOptions
   );
 
-  const { bannerTitle, currentBoardType } = useSelectorList();
+  const { bannerTitle } = useSelectorList();
   const [selectedOption, setSelectedOption] = useState(bannerTitle);
 
   const { isHospitalSearchModal, handleModalOpen, handleModalClose } =
@@ -75,11 +83,14 @@ export default function CreateCommunityPost() {
     handleImagePaste,
     handleTitleValueChange,
     handleEditorValueChange,
-  } = useTinyMceImageUpload();
+  } = useTinyMceImageUpload({
+    initialTitle: title || '',
+    initialContent: content || '',
+  });
 
   const { changeValue: currentPath, handleChange: handleSelectedOption } =
     useEventHandler({
-      changeDefaultValue: selectOptions[0].path,
+      changeDefaultValue: pageCategory || selectOptions[0].path,
     });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -119,15 +130,20 @@ export default function CreateCommunityPost() {
         hospitalNames: hospitalName === '병원찾기' ? null : hospitalName,
       };
 
-      const imageExtension = imageExtensionCheck();
+      /*       const imageExtension = imageExtensionCheck();
       if (imageExtension.length > 0) {
         postData.imageTypes = imageExtension;
-      }
+      } */
 
-      const res = await createPost(currentBoardType, postData);
-      const { postId } = res.data;
+      //console.log(currentPath, postData);
+      const res = editRequest
+        ? await editRequest(currentPath, postId, postData)
+        : await createPost(currentPath, postData);
+
+      const { postId: newPostId } = res.data;
+
       window.scroll({ top: 0, left: 0 });
-      navigate(`/community/post/${postId}`);
+      navigate(`/community/post/${newPostId}`);
 
       setIsSubmit(false);
     } catch (error) {
@@ -225,6 +241,7 @@ export default function CreateCommunityPost() {
             </DataInputWrapper>
             <PostCreateEditor
               editorRef={editorRef}
+              initialContent={content}
               imageButtonRef={imageButtonRef}
               editorValue={editorValue}
               handleImageUploadClick={handleImageUploadClick}
@@ -234,7 +251,7 @@ export default function CreateCommunityPost() {
             />
           </ContentsWrapper>
           <ButtonBox>
-            <Buttons />
+            <Buttons handleEditCancel={handleEditCancel} />
           </ButtonBox>
         </form>
       </CenterdContainer>

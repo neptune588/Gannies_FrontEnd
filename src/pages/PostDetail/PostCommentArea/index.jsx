@@ -26,6 +26,7 @@ export default memo(function PostCommentArea({
   comments,
   currentPageNumber,
   pageNumbers,
+  listHeight,
   setActionType,
   setContentType,
   setReportedContent,
@@ -39,6 +40,20 @@ export default memo(function PostCommentArea({
 }) {
   const commentAreaYLocation = useRef(null);
 
+  const replyCommentLengthCalc = () => {
+    let length = 0;
+    comments.forEach((comment) => {
+      for (let key in comment) {
+        console.log(key);
+        if (key === 'replies') {
+          length += comment[key].length;
+        }
+      }
+    });
+
+    return length;
+  };
+
   useEffect(() => {
     if (commentAreaYLocation.current) {
       setCommentBoxLocation(() => {
@@ -48,6 +63,19 @@ export default memo(function PostCommentArea({
       });
     }
   }, []);
+
+  useEffect(() => {
+    setCommentBoxLocation((prev) => {
+      return {
+        ...prev,
+        bottom:
+          parseInt(listHeight, 10) *
+          (comments?.length > 0
+            ? comments.length
+            : 0 + replyCommentLengthCalc()),
+      };
+    });
+  }, [comments]);
 
   return (
     <>
@@ -67,6 +95,7 @@ export default memo(function PostCommentArea({
                   commentId={comment.commentId}
                   commenterId={comment.userId}
                   currentPageNumber={currentPageNumber}
+                  listHeight={listHeight}
                   setCurrentReportData={setCurrentReportData}
                   setReportedContent={setReportedContent}
                   setContentType={setContentType}
@@ -86,6 +115,7 @@ export default memo(function PostCommentArea({
                         replyId={replyComment.replyId}
                         commenterId={replyComment.userId}
                         currentPageNumber={currentPageNumber}
+                        listHeight={listHeight}
                         setCurrentReportData={setCurrentReportData}
                         setReportedContent={setReportedContent}
                         setContentType={setContentType}

@@ -37,6 +37,7 @@ export default function PostCommentList({
   commentId,
   commenterId,
   currentPageNumber,
+  listHeight,
   setCurrentReportData,
   setContentType,
   setReportedContent,
@@ -58,7 +59,7 @@ export default function PostCommentList({
       changeDefaultValue: '',
     });
 
-  const handleEditButtonOpen = () => {
+  const handleEditOpen = () => {
     setIsReplyCreateOpen(false);
     handleEditCommentChange('');
     handleCommentChange('');
@@ -91,9 +92,10 @@ export default function PostCommentList({
     }
   };
 
+  useEffect(() => {}, []);
   return (
     <>
-      <Container $isReplyComment={isReplyComment}>
+      <Container $isReplyComment={isReplyComment} $listHeight={listHeight}>
         {isReplyComment && (
           <ReplyIcon>
             <img src={commentReplyIcon} alt='comment-reply-icon' />
@@ -115,7 +117,7 @@ export default function PostCommentList({
                     setReportedContent={setReportedContent}
                     setCurrentReportData={setCurrentReportData}
                     setIsMorePopup={setIsMoreButtonOpen}
-                    handleEditButtonOpen={handleEditButtonOpen}
+                    handleEditOpen={handleEditOpen}
                     handleCommentDelete={handleCommentDelete}
                   />
                 )}

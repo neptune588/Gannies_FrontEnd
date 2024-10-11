@@ -10,6 +10,9 @@ const Container = styled.li`
   display: flex;
   margin: 0 20px;
   padding: 0 30px;
+  height: ${({ $listHeight }) => {
+    return $listHeight ? $listHeight : '170px';
+  }};
   border-top: 1px solid
     ${({ theme: { colors } }) => {
       return colors.gray['40'];

@@ -24,6 +24,7 @@ export default function PostTitleSection({
   setCurrentReportData,
   setIsMorePopup,
   handleScrapClick,
+  handleEditOpen,
 }) {
   const { userId } = useSelectorList();
 
@@ -51,6 +52,7 @@ export default function PostTitleSection({
               setReportedContent={setReportedContent}
               setCurrentReportData={setCurrentReportData}
               setIsMorePopup={setIsMorePopup}
+              handleEditOpen={handleEditOpen}
             />
           )}
         </More>

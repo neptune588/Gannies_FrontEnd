@@ -19,7 +19,7 @@ export default function MorePopup({
   setReportedContent,
   setCurrentReportData,
   setIsMorePopup,
-  handleEditButtonOpen,
+  handleEditOpen,
   handleCommentDelete,
 }) {
   const { handleModalOpen } = useModalsControl();
@@ -28,7 +28,7 @@ export default function MorePopup({
     <PopupBox>
       {ownComment || ownPost ? (
         <>
-          <PopupList onClick={handleEditButtonOpen}>수정</PopupList>
+          <PopupList onClick={handleEditOpen}>수정</PopupList>
           <PopupList
             onClick={
               ownComment

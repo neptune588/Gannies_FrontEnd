@@ -31,6 +31,7 @@ export default function PostCreateEditor({
   editorRef,
   editorValue,
   imageButtonRef,
+  initialContent,
   handleEditorValueChange,
   handleImageUploadClick,
   handleImageUploadRequest,
@@ -40,7 +41,7 @@ export default function PostCreateEditor({
     <EditorStylingBox>
       <Editor
         apiKey='jhptdx4ycuiptf3whpa2htycwg916lsei466lbf6p2jos9jh'
-        initialValue=''
+        initialValue={initialContent}
         value={editorValue}
         onEditorChange={(value) => {
           handleEditorValueChange(value);

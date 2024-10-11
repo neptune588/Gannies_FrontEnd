@@ -4,18 +4,21 @@ import useEventHandler from '@/hooks/useEventHandler';
 
 import { getPresignedUrl, s3ImageUpload } from '@/api/authApi';
 
-export default function useTinyMceImageUpload() {
+export default function useTinyMceImageUpload({
+  initialTitle,
+  initialContent,
+}) {
   const editorRef = useRef(null);
   const imageButtonRef = useRef(null);
 
   const { changeValue: titleValue, handleChange: handleTitleValueChange } =
     useEventHandler({
-      changeDefaultValue: '',
+      changeDefaultValue: initialTitle,
     });
 
   const { changeValue: editorValue, handleChange: handleEditorValueChange } =
     useEventHandler({
-      changeDefaultValue: '',
+      changeDefaultValue: initialContent,
     });
 
   const [previewImage, setPreviewImage] = useState('');
@@ -114,11 +117,12 @@ export default function useTinyMceImageUpload() {
 
           const s3Url = await pastImageS3Upload(blob);
 
-          if (s3Url) {
-            image.src = s3Url;
-            setPreviewImage(image.src);
-          }
+          s3Url &&
+            (() => {
+              image.src = s3Url;
+            })();
         }
+        setPreviewImage(image.src);
       }
     }
   };

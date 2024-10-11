@@ -25,13 +25,14 @@ export default function CommentCreate({
   commentId,
   replyId,
   value,
+  currentPageNumber,
   lastNumberCalc,
   commentLengthCalc,
-  currentPageNumber,
-  dataReset,
+  commentPageGroupReCalc,
   handleChange,
   handleCreateCancel,
-  commentPageGroupReCalc,
+  setActionType,
+  dataReset,
 }) {
   const { currentBoardType } = useSelectorList();
 
@@ -66,6 +67,7 @@ export default function CommentCreate({
             : await createComment(currentBoardType, postId, {
                 content: value,
               });
+          setActionType && setActionType('createComment');
           break;
 
         case 'edit':
@@ -77,6 +79,7 @@ export default function CommentCreate({
             : await editComment(commentId, {
                 content: value,
               });
+          setActionType && setActionType('');
           break;
       }
 
