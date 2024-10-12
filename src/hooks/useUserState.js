@@ -23,18 +23,20 @@ const useUserState = () => {
     return data;
   };
 
-  const navigateBasedOnState = async (path, minStatus) => {
+  const navigateBasedOnState = async (
+    path,
+    minStatus,
+    blockSuspended = false
+  ) => {
     const numMinStatus = statusToNumber(minStatus);
     const numStatus = statusToNumber(membershipStatus);
     if (rejected) {
       dispatch(handleModal({ field: 'rejected', value: rejected }));
       return;
-    } else if (isSuspended) {
-      alert('정지');
+    } else if (blockSuspended && isSuspended) {
+      dispatch(handleModal({ field: 'isSuspended', value: isSuspended }));
       return;
-    }
-
-    if (numStatus < numMinStatus) {
+    } else if (numStatus < numMinStatus) {
       if (numStatus === 1) {
         navigate('/sign-up/success');
       } else if (numStatus === 2) {
@@ -45,7 +47,6 @@ const useUserState = () => {
       }
       return null;
     }
-
     const {
       isSuspended: resSuspended,
       rejected: resRejected,
@@ -55,12 +56,10 @@ const useUserState = () => {
     if (resRejected) {
       dispatch(handleModal({ field: 'rejected', value: resRejected }));
       return;
-    } else if (resSuspended) {
-      alert('정지');
+    } else if (blockSuspended && resSuspended) {
+      dispatch(handleModal({ field: 'isSuspended', value: isSuspended }));
       return;
-    }
-
-    if (resNumStatus < numMinStatus) {
+    } else if (resNumStatus < numMinStatus) {
       if (resNumStatus === 1) {
         navigate('/sign-up/success');
       } else if (resNumStatus === 2) {

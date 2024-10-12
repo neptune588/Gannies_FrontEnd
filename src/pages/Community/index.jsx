@@ -29,6 +29,8 @@ import { getPosts } from '@/api/postApi';
 import { formatDateToPost } from '@/utils/dateFormatting';
 import { communityPostMaxLimit } from '@/utils/itemLimit';
 import { pageViewLimit } from '@/utils/itemLimit';
+import Modal from '@/components/Modal';
+import useUserState from '@/hooks/useUserState';
 
 export default function Community() {
   const navigate = useNavigate();
@@ -51,6 +53,7 @@ export default function Community() {
     itemMaxLimit: communityPostMaxLimit,
     pageViewLimit: pageViewLimit,
   });
+  const { navigateBasedOnState } = useUserState();
 
   const { checkIsLogin } = useLoginCheck();
   const { currentBoardType } = useSelectorList();
@@ -73,9 +76,14 @@ export default function Community() {
   };
 
   const handlePostCreateClick = () => {
-    if (checkIsLogin()) {
-      navigate('/community/create-community-post');
-    }
+    // if (checkIsLogin()) {
+    //   navigate('/community/create-community-post');
+    // }
+    navigateBasedOnState(
+      '/community/create-community-post',
+      'approve_member',
+      true
+    );
   };
 
   useEffect(() => {
@@ -121,6 +129,7 @@ export default function Community() {
 
   return (
     <>
+      <Modal />
       <CommunityBanner>
         <CommunityBannerText />
       </CommunityBanner>

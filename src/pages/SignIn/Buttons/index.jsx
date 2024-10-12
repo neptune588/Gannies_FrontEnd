@@ -29,28 +29,37 @@ function Buttons({ email, password, setLoginError, setIsLoading }) {
     try {
       setIsLoading(true);
       const response = await userSignIn({ email: email, password: password });
-      console.log(response);
       const {
         isSuspended,
         isTempPasswordSignIn,
         userId,
+        nickname,
         rejected,
-        rejectedReason,
         membershipStatus,
+        rejectedReason,
+        suspensionDuration,
+        suspensionEndDate,
+        suspensionReason,
       } = response.data.user;
       dispatch(
         setLogin({
           isSuspended,
+          nickname,
           userId,
           rejected,
           membershipStatus,
           rejectedReason,
+          ...(rejectedReason && { rejectedReason }),
+          ...(suspensionDuration && { suspensionDuration }),
+          ...(suspensionEndDate && { suspensionEndDate }),
+          ...(suspensionReason && { suspensionReason }),
         })
       );
       dispatch(
         handleModal({ field: 'isTempPassword', value: isTempPasswordSignIn })
       );
       dispatch(handleModal({ field: 'rejected', value: rejected }));
+      dispatch(handleModal({ field: 'isSuspended', value: isSuspended }));
       navigate('/');
     } catch (error) {
       setIsLoading(false);

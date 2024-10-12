@@ -5,7 +5,6 @@ const initialState = {
   isSuspended: null,
   membershipStatus: null,
   rejected: null,
-  rejectedReason: null,
   userId: null,
   nickname: null,
 };

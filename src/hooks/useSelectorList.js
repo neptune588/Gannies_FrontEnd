@@ -14,6 +14,9 @@ export default function useSelectorList() {
     isSuspended,
     rejected,
     rejectedReason,
+    suspensionDuration,
+    suspensionEndDate,
+    suspensionReason,
   } = auth;
   const { isHospitalSearchModal, isUserBanModal, isDeleteModal } =
     modalsControl;
@@ -29,6 +32,9 @@ export default function useSelectorList() {
     isSuspended,
     rejected,
     rejectedReason,
+    suspensionDuration,
+    suspensionEndDate,
+    suspensionReason,
     isHospitalSearchModal,
     isUserBanModal,
     isDeleteModal,

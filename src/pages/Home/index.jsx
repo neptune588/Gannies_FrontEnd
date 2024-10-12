@@ -1,20 +1,17 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import Banner from '@/pages/Home/Banner';
 import SearchBar from '@/pages/Home/SearchBar';
 import Link from '@/pages/Home/Link';
 import { setBoardType } from '@/store/navBarOptions';
-import IsApproval from '@/components/Modal/IsApproval';
-import IsTempPassword from '@/components/Modal/IsTempPassword';
 import Posts from '@/pages/Home/Posts';
-import Rejected from '@/components/Modal/Rejected';
+import Modal from '@/components/Modal';
 
 function Home() {
   const location = useLocation();
   const dispatch = useDispatch();
-  const modalState = useSelector((state) => state.modalState);
 
   useEffect(() => {
     const url = location.pathname;
@@ -32,9 +29,7 @@ function Home() {
 
   return (
     <>
-      {modalState.rejected && <Rejected />}
-      {modalState.isApproval && <IsApproval />}
-      {modalState.isTempPassword && <IsTempPassword />}
+      <Modal />
       <Banner />
       <SearchBar />
       <Posts />

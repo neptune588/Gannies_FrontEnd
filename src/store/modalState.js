@@ -4,6 +4,7 @@ const modalState = createSlice({
   name: 'modalState',
   initialState: {
     isApproval: false,
+    isSuspended: false,
     isTempPassword: false,
     rejected: false,
   },

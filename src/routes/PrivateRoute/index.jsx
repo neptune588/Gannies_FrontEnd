@@ -7,7 +7,7 @@ import { handleModal } from '@/store/modalState';
 import { useEffect, useState } from 'react';
 import { setLogout } from '@/store/auth';
 
-const PrivateRoute = ({ minStatus }) => {
+const PrivateRoute = ({ minStatus, blockSuspended = false }) => {
   const dispatch = useDispatch();
   const { isSuspended, rejected, membershipStatus } = useSelectorList();
   const numMinStatus = statusToNumber(minStatus);
@@ -22,8 +22,8 @@ const PrivateRoute = ({ minStatus }) => {
         dispatch(handleModal({ field: 'rejected', value: rejected }));
         setNavigatePath('/');
         return;
-      } else if (isSuspended) {
-        dispatch(handleModal({ field: 'rejected', value: isSuspended }));
+      } else if (blockSuspended && isSuspended) {
+        dispatch(handleModal({ field: 'isSuspended', value: isSuspended }));
         setNavigatePath('/');
         return;
       } else if (numStatus < numMinStatus) {
@@ -48,7 +48,7 @@ const PrivateRoute = ({ minStatus }) => {
       if (resRejected) {
         dispatch(handleModal({ field: 'rejected', value: resRejected }));
         setNavigatePath('/');
-      } else if (resSuspended) {
+      } else if (blockSuspended && resSuspended) {
         alert('정지');
         setNavigatePath('/');
       } else {
@@ -73,7 +73,6 @@ const PrivateRoute = ({ minStatus }) => {
   if (navigatePath) {
     return <Navigate to={navigatePath} replace />;
   }
-
   return <Outlet />;
 };
 

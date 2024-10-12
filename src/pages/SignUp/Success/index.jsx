@@ -19,7 +19,7 @@ function Success() {
     const fetch = async () => {
       if (!email) {
         const response = await checkMemberState();
-        setEmail(response.data.nickname);
+        setEmail(response.data.email);
       }
     };
     fetch();

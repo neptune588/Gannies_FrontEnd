@@ -42,8 +42,16 @@ export const router = createBrowserRouter([
         element: <Community />,
       },
       {
-        path: '/community/create-community-post',
-        element: <CreateCommunityPost />,
+        path: '/community',
+        element: (
+          <PrivateRoute minStatus='email_verified' blockSuspended={true} />
+        ),
+        children: [
+          {
+            path: 'create-community-post',
+            element: <CreateCommunityPost />,
+          },
+        ],
       },
       {
         path: '/community/detail',
@@ -103,10 +111,10 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    element: <SignOutRoute />,
+    element: <HeaderLayout />,
     children: [
       {
-        element: <HeaderLayout />,
+        element: <SignOutRoute />,
         children: [
           {
             path: '/sign-in',
@@ -127,10 +135,6 @@ export const router = createBrowserRouter([
               {
                 path: 'department',
                 element: <Department />,
-              },
-              {
-                path: 'success',
-                element: <SignUpSuccess />,
               },
             ],
           },
@@ -159,6 +163,10 @@ export const router = createBrowserRouter([
             element: <Error404 />,
           },
         ],
+      },
+      {
+        path: '/sign-up/success',
+        element: <SignUpSuccess />,
       },
     ],
   },
