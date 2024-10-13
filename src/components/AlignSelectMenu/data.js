@@ -42,3 +42,54 @@ export const myPageAlignSelectOptions = [
     },
   },
 ];
+
+export const SearchPageSelectOptions = [
+  {
+    label: '전체',
+    query: {
+      boardType: 'all',
+    },
+  },
+  {
+    label: '이론정보',
+    query: {
+      boardType: 'theory',
+    },
+  },
+  {
+    label: '실습정보',
+    query: {
+      boardType: 'practice',
+    },
+  },
+  {
+    label: '국가고시준비',
+    query: {
+      boardType: 'exam',
+    },
+  },
+  {
+    label: '취업정보',
+    query: {
+      boardType: 'exam',
+    },
+  },
+  {
+    label: '구인구직',
+    query: {
+      boardType: 'employment',
+    },
+  },
+  {
+    label: '이벤트',
+    query: {
+      boardType: 'event',
+    },
+  },
+  {
+    label: '공지사항',
+    query: {
+      boardType: 'notice',
+    },
+  },
+];

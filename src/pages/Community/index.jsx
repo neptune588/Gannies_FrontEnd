@@ -18,7 +18,10 @@ import {
   PageWrapper,
 } from '@/pages/Community/style';
 
-import { communityPageAlignSelectOptions } from '@/components/AlignSelectMenu/data';
+import {
+  communityPageAlignSelectOptions,
+  SearchPageSelectOptions,
+} from '@/components/AlignSelectMenu/data';
 
 import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
 import useLoginCheck from '@/hooks/useLoginCheck';
@@ -30,7 +33,7 @@ import { formatDateToPost } from '@/utils/dateFormatting';
 import { communityPostMaxLimit } from '@/utils/itemLimit';
 import { pageViewLimit } from '@/utils/itemLimit';
 
-export default function Community() {
+export default function Community({ isSearch }) {
   const navigate = useNavigate();
   const { boardType } = useParams();
 
@@ -55,14 +58,26 @@ export default function Community() {
 
   const { checkIsLogin } = useLoginCheck();
 
-  const [optionList] = useState(communityPageAlignSelectOptions);
-  const [selectedOption, setSelectedOption] = useState(
+  const [alignOptionList] = useState(communityPageAlignSelectOptions);
+  const [boardTypeOptionList] = useState(SearchPageSelectOptions);
+  const [selectedAlignOption, setSelectedAlignOption] = useState(
     communityPageAlignSelectOptions[0].label
   );
-  const [query, setQuery] = useState({
-    page: currentPageNumber,
-    limit: communityPostMaxLimit,
-  });
+  const [selectedBoardOption, setSelectedBoardOption] = useState(
+    SearchPageSelectOptions[0].label
+  );
+  const [query, setQuery] = useState(
+    isSearch
+      ? {
+          page: currentPageNumber,
+          limit: communityPostMaxLimit,
+          boardType: 'all',
+        }
+      : {
+          page: currentPageNumber,
+          limit: communityPostMaxLimit,
+        }
+  );
 
   const handleSelectedOption = ({ ...optionalQuery }) => {
     setQuery({
@@ -128,7 +143,7 @@ export default function Community() {
 
     resetPageNumber();
     setQuery({ page: currentPageNumber, limit: communityPostMaxLimit });
-    setSelectedOption(communityPageAlignSelectOptions[0].label);
+    setSelectedAlignOption(communityPageAlignSelectOptions[0].label);
 
     //console.log('reset effect 실행');
   }, [boardType]);
@@ -144,21 +159,36 @@ export default function Community() {
 
   return (
     <>
-      <CommunityBanner>
-        <CommunityBannerText />
-      </CommunityBanner>
+      {!isSearch && (
+        <CommunityBanner>
+          <CommunityBannerText />
+        </CommunityBanner>
+      )}
+
       <TableWrapper>
         <ContentsAlignBox>
-          <PostCreateButton onClick={handlePostCreateClick}>
-            <img src={brush} alt='create-button' />
-            게시글 작성
-          </PostCreateButton>
-          <AlignSelectMenu
-            optionList={optionList}
-            handleSelectedOption={handleSelectedOption}
-            selectedOption={selectedOption}
-            setSelectedOption={setSelectedOption}
-          />
+          {isSearch ? (
+            <AlignSelectMenu
+              isSearch={isSearch}
+              optionList={boardTypeOptionList}
+              handleSelectedOption={handleSelectedOption}
+              selectedOption={selectedBoardOption}
+              setSelectedOption={setSelectedBoardOption}
+            />
+          ) : (
+            <>
+              <PostCreateButton onClick={handlePostCreateClick}>
+                <img src={brush} alt='create-button' />
+                게시글 작성
+              </PostCreateButton>
+              <AlignSelectMenu
+                optionList={alignOptionList}
+                handleSelectedOption={handleSelectedOption}
+                selectedOption={selectedAlignOption}
+                setSelectedOption={setSelectedAlignOption}
+              />
+            </>
+          )}
         </ContentsAlignBox>
         <table>
           <thead>
@@ -196,15 +226,17 @@ export default function Community() {
           </tbody>
         </table>
       </TableWrapper>
-      <PageWrapper>
-        <Pagination
-          pageNumbers={pageNumbers}
-          currentPageNumber={currentPageNumber}
-          handlePageNumberClick={handlePageNumberClick}
-          handlePrevPageClick={handlePrevPageClick}
-          handleNextPageClick={handleNextPageClick}
-        />
-      </PageWrapper>
+      {pageNumbers?.length > 0 && (
+        <PageWrapper>
+          <Pagination
+            pageNumbers={pageNumbers}
+            currentPageNumber={currentPageNumber}
+            handlePageNumberClick={handlePageNumberClick}
+            handlePrevPageClick={handlePrevPageClick}
+            handleNextPageClick={handleNextPageClick}
+          />
+        </PageWrapper>
+      )}
     </>
   );
 }

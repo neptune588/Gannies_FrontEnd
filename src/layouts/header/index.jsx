@@ -16,6 +16,7 @@ import {
 } from '@/layouts/Header/style';
 
 import useSelectorList from '@/hooks/useSelectorList';
+import useEventHandler from '@/hooks/useEventHandler';
 
 import { setBoardType } from '@/store/navBarOptions';
 import { handleModal } from '@/store/modalState';
@@ -28,22 +29,14 @@ function Header() {
   const location = useLocation().pathname;
   const dispatch = useDispatch();
 
-  const [text, setText] = useState('');
   const [showSearchBar, setShowSearchBar] = useState(false);
 
   const { isLogin } = useSelectorList();
 
-  useEffect(() => {
-    if (location.startsWith('/community') || location.startsWith('/mypage')) {
-      setShowSearchBar(true);
-    } else {
-      setShowSearchBar(false);
-    }
-  }, [location]);
-
-  const handleSearchBar = (e) => {
-    setText(e.target.value);
-  };
+  const { changeValue: searchValue, handleChange: handleSearchValueChange } =
+    useEventHandler({
+      changeDefaultValue: '',
+    });
 
   const handleLogout = async () => {
     try {
@@ -56,6 +49,24 @@ function Header() {
       console.log(error);
     }
   };
+
+  const handleSearch = (e) => {
+    if (e.key === 'Enter') {
+      navigate(`/post/serach/${searchValue}`);
+    }
+  };
+
+  useEffect(() => {
+    if (
+      location.startsWith('/community') ||
+      location.startsWith('/mypage') ||
+      location.startsWith('/post')
+    ) {
+      setShowSearchBar(true);
+    } else {
+      setShowSearchBar(false);
+    }
+  }, [location]);
 
   return (
     <Wrapper>
@@ -75,14 +86,15 @@ function Header() {
         <img src={logo} alt='logo' />
       </Logo>
       {showSearchBar && (
-        <form>
+        <>
           <img src={search} alt='searchIcon' />
           <Input
             placeholder='관심있는 이야기를 검색해보세요'
-            value={text}
-            onChange={handleSearchBar}
+            value={searchValue}
+            onChange={handleSearchValueChange}
+            onKeyUp={handleSearch}
           />
-        </form>
+        </>
       )}
       {isLogin ? (
         <>

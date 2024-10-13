@@ -14,10 +14,14 @@ const navBarOptionsSlice = createSlice({
     setBoardType(state, action) {
       const { menuNumber, boardType, bannerTitle, bannerDesc } = action.payload;
 
-      state.currentActiveMenuNumber = menuNumber;
-      state.currentBoardType = boardType;
-      state.bannerTitle = bannerTitle;
-      state.bannerDesc = bannerDesc;
+      state.currentActiveMenuNumber =
+        menuNumber === undefined ? null : menuNumber;
+      state.currentBoardType =
+        boardType === undefined || boardType === null ? '' : boardType;
+      state.bannerTitle =
+        bannerTitle === undefined || bannerTitle === null ? '' : bannerTitle;
+      state.bannerDesc =
+        bannerDesc === undefined || bannerDesc === null ? '' : bannerDesc;
     },
   },
 });
