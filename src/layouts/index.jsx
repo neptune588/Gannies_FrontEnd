@@ -1,4 +1,6 @@
-import { Outlet } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { Outlet, useLocation, useParams } from 'react-router-dom';
 
 import Header from '@/layouts/Header';
 import Footer from '@/layouts/Footer';
@@ -20,11 +22,48 @@ import {
 
 import useModalsControl from '@/hooks/useModalsControl';
 
+import { setBoardType } from '@/store/navBarOptions';
+
+import { navBarMenuData } from '@/layouts/Navbar/data';
+
 export function MainLayout() {
-  const { isHospitalSearchModal } = useModalsControl();
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const { boardType } = useParams();
+
+  useEffect(() => {
+    const url = location.pathname;
+
+    console.log(boardType);
+    if (url.startsWith('/community')) {
+      const nav = navBarMenuData.find(
+        (navMenu) => boardType === navMenu.boardType
+      );
+
+      nav &&
+        dispatch(
+          setBoardType({
+            menuNumber: nav.number,
+            boardType: nav.boardType,
+            bannerTitle: nav.bannerTitle,
+            bannerDesc: nav.bannerDesc,
+          })
+        );
+    }
+  }, [boardType]);
+
+  const {
+    isHospitalSearchModal,
+    isPostDeleteModal,
+    isPostOrCommentReportModal,
+  } = useModalsControl();
 
   return (
-    <Container $isHospitalSearchModal={isHospitalSearchModal}>
+    <Container
+      $isHospitalSearchModal={isHospitalSearchModal}
+      $isPostDeleteModal={isPostDeleteModal}
+      $isPostOrCommentReportModal={isPostOrCommentReportModal}
+    >
       <Header />
       <Navbar />
       <CenterdWrapper>

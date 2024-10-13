@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import LoadingCircle from '@/components/LoadingCircle';
+import CommonLoadingCircle from '@/components/Loading/CommonLoadingCircle';
 import Buttons from '@/pages/SignIn/Buttons';
 import Inputs from '@/pages/SignIn/Inputs';
 import Title from '@/pages/SignIn/Title';
@@ -13,7 +13,7 @@ function Login() {
 
   return (
     <>
-      {isLoading && <LoadingCircle />}
+      {isLoading && <CommonLoadingCircle />}
       <Title />
       <Inputs
         email={email}

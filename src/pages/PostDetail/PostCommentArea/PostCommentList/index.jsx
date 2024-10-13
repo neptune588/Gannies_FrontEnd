@@ -1,10 +1,14 @@
+import { forwardRef, useState, useEffect } from 'react';
+
 import CommentCreate from '@/pages/PostDetail/CommentCreate';
 import More from '@/components/Icons/More';
+import MorePopup from '@/pages/PostDetail/MorePopup';
 import Clock from '@/components/Icons/Clock';
 
 import commentReplyIcon from '@/assets/icons/etc/comment_reply.svg';
 
 import {
+  Container,
   CommentListWrapper,
   CommenterBox,
   CommentContent,
@@ -15,50 +19,170 @@ import {
   ReplyIcon,
 } from '@/pages/PostDetail/PostCommentArea/PostCommentList/style';
 
-export default function PostCommentList({
-  isReplyComment = true,
-  commenter = '나는야 작성자',
-  comment = '',
-  commentCreateDate,
-  isReplyCreateOpen = true,
-  handleReplyCreateButtonClick = null,
-}) {
+import useEventHandler from '@/hooks/useEventHandler';
+import useSelectorList from '@/hooks/useSelectorList';
+
+import { deleteComment, deleteReplyComment } from '@/api/commentApi';
+import { formatDateToPost } from '@/utils/dateFormatting';
+
+export default forwardRef(function PostCommentList(
+  {
+    isReplyComment,
+    commenter,
+    content,
+    createDate,
+    updateDate,
+    deleteDate,
+    postId,
+    replyId,
+    commentId,
+    commenterId,
+    currentPageNumber,
+    setCurrentReportData,
+    setContentType,
+    setReportedContent,
+    commentPageGroupReCalc,
+    dataReset,
+  },
+  ref
+) {
+  const { userId: currentUserId } = useSelectorList();
+
+  const [isMoreButtonOpen, setIsMoreButtonOpen] = useState(false);
+  const [isReplyCreateOpen, setIsReplyCreateOpen] = useState(false);
+  const [isEditCommentOpen, setIsEditCommentOpen] = useState(false);
+
+  const { changeValue: commentValue, handleChange: handleCommentChange } =
+    useEventHandler({
+      changeDefaultValue: '',
+    });
+  const { changeValue: editValue, handleChange: handleEditCommentChange } =
+    useEventHandler({
+      changeDefaultValue: '',
+    });
+
+  const handleEditOpen = () => {
+    setIsReplyCreateOpen(false);
+    handleEditCommentChange('');
+    handleCommentChange('');
+    setIsEditCommentOpen(true);
+    setIsMoreButtonOpen(false);
+  };
+
+  const handleReplyCommentCreateClick = () => {
+    setIsReplyCreateOpen((prev) => !prev);
+    setIsEditCommentOpen(false);
+    handleCommentChange('');
+  };
+
+  const handleCommentDelete = async () => {
+    if (!confirm('댓글을 삭제 하시겠습니까?')) {
+      return;
+    }
+
+    try {
+      isReplyComment
+        ? await deleteReplyComment(replyId)
+        : await deleteComment(commentId);
+
+      dataReset({
+        commentRequestPage: currentPageNumber,
+        commentPageGroup: commentPageGroupReCalc(currentPageNumber),
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
-      <CommentListWrapper $isReplyComment={isReplyComment}>
+      <Container ref={ref} $isReplyComment={isReplyComment}>
         {isReplyComment && (
           <ReplyIcon>
             <img src={commentReplyIcon} alt='comment-reply-icon' />
           </ReplyIcon>
         )}
-        <div>
+        <CommentListWrapper>
           <CommenterBox>
             <p>{commenter}</p>
-            <More />
+            {!deleteDate && (
+              <More onClick={() => setIsMoreButtonOpen((prev) => !prev)}>
+                {isMoreButtonOpen && (
+                  <MorePopup
+                    ownComment={currentUserId === commenterId ? true : false}
+                    contentType={isReplyComment ? 'replyComment' : 'comment'}
+                    reportedContent={content}
+                    replyId={replyId}
+                    commentId={commentId}
+                    setContentType={setContentType}
+                    setReportedContent={setReportedContent}
+                    setCurrentReportData={setCurrentReportData}
+                    setIsMorePopup={setIsMoreButtonOpen}
+                    handleEditOpen={handleEditOpen}
+                    handleCommentDelete={handleCommentDelete}
+                  />
+                )}
+              </More>
+            )}
           </CommenterBox>
-          <CommentContent>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis
-            possimus aliquam, ipsum earum sed nihil distinctio illo officia iste
-            perferendis, culpa expedita incidunt omnis. Natus architecto iste et
-            numquam ratione.
-          </CommentContent>
+          <CommentContent>{content}</CommentContent>
           <CommentMetricBox>
             <Clock isVerify={false} />
-            <CommentCreateDateView>2024-05-31</CommentCreateDateView>
-            <ReplyCommentCreateButton
-              $isReplyCreateOpen={isReplyCreateOpen}
-              onClick={handleReplyCreateButtonClick || undefined}
-            >
-              답글쓰기
-            </ReplyCommentCreateButton>
+            <CommentCreateDateView>
+              {(() => {
+                if (!deleteDate) {
+                  return createDate === updateDate
+                    ? createDate
+                    : `${formatDateToPost(createDate)}(${formatDateToPost(updateDate)} 수정 됨)`;
+                }
+                return `${formatDateToPost(deleteDate)} 삭제 됨`;
+              })()}
+            </CommentCreateDateView>
+            {!isReplyComment && !deleteDate && (
+              <ReplyCommentCreateButton
+                $isReplyCreateOpen={isReplyCreateOpen}
+                onClick={handleReplyCommentCreateClick}
+              >
+                답글쓰기
+              </ReplyCommentCreateButton>
+            )}
           </CommentMetricBox>
-        </div>
-      </CommentListWrapper>
+        </CommentListWrapper>
+      </Container>
       {isReplyCreateOpen && (
         <ReplyCommentBox $isReplyComment={isReplyComment}>
-          <CommentCreate isCommentReply={true} />
+          <CommentCreate
+            requestType={'create'}
+            listType={'common'}
+            isReplyCreateOpen={isReplyCreateOpen}
+            value={commentValue}
+            postId={postId}
+            commentId={commentId}
+            currentPageNumber={currentPageNumber}
+            dataReset={dataReset}
+            commentPageGroupReCalc={commentPageGroupReCalc}
+            handleChange={handleCommentChange}
+            handleCreateCancel={() => setIsReplyCreateOpen(false)}
+          />
+        </ReplyCommentBox>
+      )}
+      {isEditCommentOpen && (
+        <ReplyCommentBox $isReplyComment={isReplyComment}>
+          <CommentCreate
+            requestType={'edit'}
+            listType={isReplyComment ? 'reply' : 'common'}
+            value={editValue}
+            postId={postId}
+            replyId={replyId}
+            commentId={commentId}
+            currentPageNumber={currentPageNumber}
+            dataReset={dataReset}
+            commentPageGroupReCalc={commentPageGroupReCalc}
+            handleChange={handleEditCommentChange}
+            handleCreateCancel={() => setIsEditCommentOpen(false)}
+          />
         </ReplyCommentBox>
       )}
     </>
   );
-}
+});

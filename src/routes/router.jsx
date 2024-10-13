@@ -26,7 +26,6 @@ import PostManagement from '@/pages/Admin/PostManagement';
 import SignUp from '@/pages/SignUp/SignUp';
 import EmailVerification from '@/pages/EmailVerification';
 import PrivateRoute from './PrivateRoute';
-import LoadingCircle from '@/components/LoadingCircle';
 
 export const router = createBrowserRouter([
   {
@@ -40,15 +39,15 @@ export const router = createBrowserRouter([
         element: <PrivateRoute />,
         children: [
           {
-            path: '/community',
+            path: '/community/:boardType',
             element: <Community />,
           },
           {
-            path: '/community/create-community-post',
+            path: '/community/:boardType/create-community-post',
             element: <CreateCommunityPost />,
           },
           {
-            path: '/community/detail',
+            path: '/community/:boardType/post/:postId',
             element: <PostDetail />,
           },
         ],
@@ -155,9 +154,5 @@ export const router = createBrowserRouter([
         element: <Error404 />,
       },
     ],
-  },
-  {
-    element: <LoadingCircle />,
-    path: '/test',
   },
 ]);

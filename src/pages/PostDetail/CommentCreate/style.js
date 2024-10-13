@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
-import { xsmall_500, body } from '@/styles/commonStyle/localTextStyle';
+import {
+  xsmall_500,
+  medium_500,
+  body,
+} from '@/styles/commonStyle/localTextStyle';
 import {
   primaryBorderBoxStyle,
   primaryColorBoxStyle,
@@ -43,6 +47,14 @@ const DisabledInputBox = styled.div`
   }};
 `;
 
+const CommentTypeInfo = styled.p`
+  ${medium_500}
+  color: ${({ theme: { colors } }) => {
+    return colors.primary;
+  }};
+  margin-bottom: 1rem;
+`;
+
 const ButtonDefaultStyle = styled.button`
   ${xsmall_500}
   display: block;
@@ -54,6 +66,7 @@ const ButtonBox = styled.div`
   display: flex;
   justify-content: flex-end;
 `;
+
 const CancelButton = styled(ButtonDefaultStyle)`
   ${primaryBorderBoxStyle}
   background-color: ${({ theme: { colors } }) => {
@@ -64,11 +77,20 @@ const CancelButton = styled(ButtonDefaultStyle)`
 
 const ConfirmButton = styled(ButtonDefaultStyle)`
   ${primaryColorBoxStyle}
+  background-color: ${({ $isDisabled, theme: { colors } }) => {
+    return $isDisabled ? colors.gray['20'] : colors.primary;
+  }};
+  &:hover {
+    background-color: ${({ $isDisabled }) => {
+      return $isDisabled ? null : '#2d6ab7';
+    }};
+  }
 `;
 
 export {
   CommentInputBox,
   DisabledInputBox,
+  CommentTypeInfo,
   ButtonBox,
   CancelButton,
   ConfirmButton,

@@ -13,7 +13,7 @@ export const navBarMenuData = [
     boardType: 'theory',
     bannerTitle: '이론정보',
     bannerDesc: '간호학 이론과 학습 자료를 제공하는 공간',
-    path: '/community',
+    path: '/community/theory',
   },
   {
     number: 2,
@@ -21,7 +21,7 @@ export const navBarMenuData = [
     boardType: 'practice',
     bannerTitle: '실습정보',
     bannerDesc: '실습 관련 정보와 경험을 공유하는 곳',
-    path: '/community',
+    path: '/community/practice',
   },
   {
     number: 3,
@@ -29,7 +29,7 @@ export const navBarMenuData = [
     boardType: 'exam',
     bannerTitle: '국가고시준비',
     bannerDesc: '간호사 국가고시 대비를 위한 정보 제공',
-    path: '/community',
+    path: '/community/exam',
   },
   {
     number: 4,
@@ -37,7 +37,7 @@ export const navBarMenuData = [
     boardType: 'job',
     bannerTitle: '취업정보',
     bannerDesc: '간호사 취업 관련 정보 및 팁 제공',
-    path: '/community',
+    path: '/community/job',
   },
   {
     number: 5,
@@ -45,7 +45,7 @@ export const navBarMenuData = [
     boardType: 'employment',
     bannerTitle: '구인구직',
     bannerDesc: '간호사 구인구직 정보를 한눈에 확인',
-    path: '/community',
+    path: '/community/employment',
   },
   {
     number: 6,
@@ -53,7 +53,7 @@ export const navBarMenuData = [
     boardType: 'event',
     bannerTitle: '이벤트',
     bannerDesc: '커뮤니티 내 다양한 이벤트 소식 제공',
-    path: '/community',
+    path: '/community/event',
   },
   {
     number: 7,
@@ -61,6 +61,6 @@ export const navBarMenuData = [
     boardType: 'notice',
     bannerTitle: '공지사항',
     bannerDesc: '커뮤니티의 주요 공지와 소식을 안내',
-    path: '/community',
+    path: '/community/notice',
   },
 ];

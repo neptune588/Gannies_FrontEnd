@@ -16,6 +16,7 @@ import {
 export default function Pagination({
   pageNumbers,
   currentPageNumber = 1,
+  setActionType,
   handlePageNumberClick,
   handlePrevPageClick,
   handleNextPageClick,
@@ -23,10 +24,24 @@ export default function Pagination({
   return (
     <>
       <ArrowBox>
-        <ArrowButton onClick={() => handlePrevPageClick({ stepSize: 1 })}>
+        <ArrowButton
+          onClick={() => {
+            if (setActionType) {
+              setActionType('pageMove');
+            }
+            handlePrevPageClick({ stepSize: 1 });
+          }}
+        >
           <img src={prevArrow} alt={'prev-page-button'} />
         </ArrowButton>
-        <ArrowButton onClick={() => handlePrevPageClick({ stepSize: 10 })}>
+        <ArrowButton
+          onClick={() => {
+            if (setActionType) {
+              setActionType('pageMove');
+            }
+            handlePrevPageClick({ stepSize: 10 });
+          }}
+        >
           <img src={prev10PagesArrow} alt={'prev-10pages-button'} />
         </ArrowButton>
       </ArrowBox>
@@ -38,6 +53,9 @@ export default function Pagination({
               myPageNumber={myNumber}
               currentPageNumber={currentPageNumber}
               handlePageNumberClick={() => {
+                if (setActionType) {
+                  setActionType('pageMove');
+                }
                 handlePageNumberClick(myNumber);
               }}
             />
@@ -45,10 +63,24 @@ export default function Pagination({
         })}
       </PageNumberBox>
       <ArrowBox>
-        <ArrowButton onClick={() => handleNextPageClick({ stepSize: 1 })}>
+        <ArrowButton
+          onClick={() => {
+            if (setActionType) {
+              setActionType('pageMove');
+            }
+            handleNextPageClick({ stepSize: 1 });
+          }}
+        >
           <img src={nextArrow} alt={'next-page-button'} />
         </ArrowButton>
-        <ArrowButton onClick={() => handleNextPageClick({ stepSize: 10 })}>
+        <ArrowButton
+          onClick={() => {
+            if (setActionType) {
+              setActionType('pageMove');
+            }
+            handleNextPageClick({ stepSize: 10 });
+          }}
+        >
           <img src={next10PagesArrow} alt={'next-10pages-button'} />
         </ArrowButton>
       </ArrowBox>

@@ -5,14 +5,14 @@ import localStorage from 'redux-persist/lib/storage';
 
 import authReducer from '@/store/auth';
 import navBarOptionsReducer from '@/store/navBarOptions';
-
+import locationsReducer from '@/store/locations';
 import modalState from '@/store/modalState';
+import modalsControlReducer from '@/store/modalsControl';
+
 const modalStatePersistConfig = {
   key: 'modalState',
   storage: localStorage,
 };
-
-import modalsControlReducer from '@/store/modalsControl';
 
 const navBarOptionsPersistConfig = {
   key: 'navBarOptions',
@@ -41,6 +41,7 @@ const store = configureStore({
     navBarOptions: persistedNavBarOptionsReducer,
     modalState: persistedModalStateReducer,
     modalsControl: modalsControlReducer,
+    locations: locationsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -6,6 +6,7 @@ import inacitveScrap from '@/assets/icons/scraps/scrap_inactive.svg';
 const Icons = styled.img`
   cursor: pointer;
   user-select: none;
+  transition: all 0.2s;
   width: ${({ $pageName }) => {
     return $pageName === 'post-detail-view' ? '36px' : '18px';
   }};
@@ -15,9 +16,9 @@ const Icons = styled.img`
 `;
 
 export default function Scrap({
-  handleScrapClick,
-  pageName = 'post-detail-view',
+  pageName,
   scrapClickState = false,
+  handleScrapClick,
 }) {
   return (
     <Icons
