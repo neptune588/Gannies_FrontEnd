@@ -45,7 +45,7 @@ import { communityPostMaxLimit } from '@/utils/itemLimit';
 import { pageViewLimit } from '@/utils/itemLimit';
 
 export default function PostDetail() {
-  const { postId } = useParams();
+  const { boardType, postId } = useParams();
 
   const navigate = useNavigate();
 
@@ -54,10 +54,10 @@ export default function PostDetail() {
   const firstRunBlockToResetEffect = useRef(true);
 
   const {
-    currentBoardType,
     isPostDeleteModal,
     isPostOrCommentReportModal,
     bannerTitle,
+    comentWrapperLocation,
   } = useSelectorList();
 
   const {
@@ -101,7 +101,6 @@ export default function PostDetail() {
   const [post, setPost] = useState({});
   const [contentType, setContentType] = useState('');
   const [reportedContent, setReportedContent] = useState('');
-  const [commentBoxLocation, setCommentBoxLocation] = useState({});
   const [curruentReportData, setCurrentReportData] = useState({
     postId: postId,
     commentId: null,
@@ -113,13 +112,13 @@ export default function PostDetail() {
 
   //포스트 갱신
   const postReqeust = () => {
-    return getPost(currentBoardType, postId);
+    return getPost(boardType, postId);
   };
 
   //댓글 갱신 (모달 상태 초기화)
   const commentReqeust = (commentRequestPage = currentCommentPageNumber) => {
     return getDataAndSetPageNumbers(() => {
-      return getComments(currentBoardType, postId, {
+      return getComments(boardType, postId, {
         page: commentRequestPage,
         limit: pageViewLimit,
         withReplies: true,
@@ -130,7 +129,7 @@ export default function PostDetail() {
   //다른 게시물 + 페이지 갱신
   const otherPostsRequest = () => {
     return getOtherPostsAndSetPageNumbers(() =>
-      getPosts(currentBoardType, {
+      getPosts(boardType, {
         page: otherPostsCurrentPageNumber,
         limit: communityPostMaxLimit,
       })
@@ -221,9 +220,9 @@ export default function PostDetail() {
 
   const handlePostDelete = async () => {
     try {
-      await deletePost(currentBoardType, postId);
+      await deletePost(boardType, postId);
       alert('해당 글이 삭제되었습니다.');
-      navigate('/community');
+      navigate(`/community/${boardType}`);
     } catch (error) {
       console.error(error);
     }
@@ -304,8 +303,9 @@ export default function PostDetail() {
     //console.log(commentBoxLocation);
     //actiyp Change => data reqeust => comment data change => commentLocation calc => commentLocation change => useEffect
     if (actionType === 'createComment') {
+      console.log(comentWrapperLocation);
       window.scroll({
-        top: window.scrollY + commentBoxLocation.bottom,
+        top: comentWrapperLocation.bottom,
         left: 0,
       });
       setActionType('');
@@ -313,12 +313,12 @@ export default function PostDetail() {
 
     if (actionType === 'pageMove') {
       window.scroll({
-        top: commentBoxLocation.top,
+        top: comentWrapperLocation.top,
         left: 0,
       });
       setActionType('');
     }
-  }, [commentBoxLocation]);
+  }, [comentWrapperLocation]);
 
   return (
     <>
@@ -353,7 +353,7 @@ export default function PostDetail() {
             <CommunityBannerText />
           </CommunityBanner>
           <PageCategorySection>
-            <PageCategory />
+            <PageCategory currentBoardType={boardType} />
           </PageCategorySection>
           <ContentsWrapper>
             <PostHeaderBox>
@@ -434,10 +434,8 @@ export default function PostDetail() {
               comments={comments}
               pageNumbers={commentPageNumbers}
               currentPageNumber={currentCommentPageNumber}
-              listHeight={'170px'}
               setContentType={setContentType}
               setReportedContent={setReportedContent}
-              setCommentBoxLocation={setCommentBoxLocation}
               setCurrentReportData={setCurrentReportData}
               setActionType={setActionType}
               commentPageGroupReCalc={commentPageGroupReCalc}
@@ -448,6 +446,7 @@ export default function PostDetail() {
             />
             <OtherPosts
               currentPostId={postId}
+              currentBoardType={boardType}
               posts={otherPosts}
               pageNumbers={otherPostsPageNumbers}
               currentPageNumber={otherPostsCurrentPageNumber}

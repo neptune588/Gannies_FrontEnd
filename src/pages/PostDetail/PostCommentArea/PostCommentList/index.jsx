@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { forwardRef, useState, useEffect } from 'react';
 
 import CommentCreate from '@/pages/PostDetail/CommentCreate';
 import More from '@/components/Icons/More';
@@ -25,25 +25,27 @@ import useSelectorList from '@/hooks/useSelectorList';
 import { deleteComment, deleteReplyComment } from '@/api/commentApi';
 import { formatDateToPost } from '@/utils/dateFormatting';
 
-export default function PostCommentList({
-  isReplyComment,
-  commenter,
-  content,
-  createDate,
-  updateDate,
-  deleteDate,
-  postId,
-  replyId,
-  commentId,
-  commenterId,
-  currentPageNumber,
-  listHeight,
-  setCurrentReportData,
-  setContentType,
-  setReportedContent,
-  commentPageGroupReCalc,
-  dataReset,
-}) {
+export default forwardRef(function PostCommentList(
+  {
+    isReplyComment,
+    commenter,
+    content,
+    createDate,
+    updateDate,
+    deleteDate,
+    postId,
+    replyId,
+    commentId,
+    commenterId,
+    currentPageNumber,
+    setCurrentReportData,
+    setContentType,
+    setReportedContent,
+    commentPageGroupReCalc,
+    dataReset,
+  },
+  ref
+) {
   const { userId: currentUserId } = useSelectorList();
 
   const [isMoreButtonOpen, setIsMoreButtonOpen] = useState(false);
@@ -92,10 +94,9 @@ export default function PostCommentList({
     }
   };
 
-  useEffect(() => {}, []);
   return (
     <>
-      <Container $isReplyComment={isReplyComment} $listHeight={listHeight}>
+      <Container ref={ref} $isReplyComment={isReplyComment}>
         {isReplyComment && (
           <ReplyIcon>
             <img src={commentReplyIcon} alt='comment-reply-icon' />
@@ -184,4 +185,4 @@ export default function PostCommentList({
       )}
     </>
   );
-}
+});

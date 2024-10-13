@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import CommunityBanner from '@/components/CommunityBanner';
@@ -54,6 +54,7 @@ export default function CreateCommunityPost({
   //제목 - 한글 1글자 이상은 최소로 있어야 한다. 최대는 50자 이하
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { boardType } = useParams();
 
   const firstRunBlockToSetSelectOptionEffect = useRef(true);
 
@@ -63,7 +64,7 @@ export default function CreateCommunityPost({
     defaultCategorySelectOptions
   );
 
-  const { bannerTitle, currentBoardType } = useSelectorList();
+  const { bannerTitle } = useSelectorList();
   //select box에 띄워주는 용도로만 사용
   const [selectedBoardTitle, setSelectedBoardTitle] = useState(
     propsBoardTypeTitle || bannerTitle
@@ -73,7 +74,7 @@ export default function CreateCommunityPost({
     changeValue: selectedBoardType,
     handleChange: handleBoardTypeChange,
   } = useEventHandler({
-    changeDefaultValue: propsBoardType || currentBoardType,
+    changeDefaultValue: propsBoardType || boardType,
   });
 
   const { isHospitalSearchModal, handleModalOpen, handleModalClose } =
@@ -150,20 +151,8 @@ export default function CreateCommunityPost({
 
       const { postId: newPostId } = res.data;
 
-      navBarMenuData.forEach((nav, idx) => {
-        nav.boardType === selectedBoardType &&
-          dispatch(
-            setBoardType({
-              menuNumber: idx,
-              boardType: selectedBoardType,
-              bannerTitle: nav.bannerTitle,
-              bannerDesc: nav.bannerDesc,
-            })
-          );
-      });
-
       window.scroll({ top: 0, left: 0 });
-      navigate(`/community/post/${newPostId}`);
+      navigate(`/community/${selectedBoardType}/post/${newPostId}`);
 
       setIsSubmit(false);
     } catch (error) {
@@ -210,7 +199,7 @@ export default function CreateCommunityPost({
       </CommunityBanner>
       <CenterdContainer>
         <CategoryBox>
-          <PageCategory />
+          <PageCategory currentBoardType={boardType} />
         </CategoryBox>
         <TitleBox>
           <CategoryTitle />
@@ -274,7 +263,10 @@ export default function CreateCommunityPost({
           </ContentsWrapper>
           {!isEditorLoading && (
             <ButtonBox>
-              <Buttons handleEditCancel={handleEditCancel} />
+              <Buttons
+                currentBoardType={boardType}
+                handleEditCancel={handleEditCancel}
+              />
             </ButtonBox>
           )}
         </form>

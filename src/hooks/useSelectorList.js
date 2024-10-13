@@ -4,6 +4,7 @@ export default function useSelectorList() {
   const navBarOptions = useSelector((state) => state.navBarOptions);
   const auth = useSelector((state) => state.auth);
   const modalsControl = useSelector((state) => state.modalsControl);
+  const locations = useSelector((state) => state.locations);
 
   const { currentActiveMenuNumber, currentBoardType, bannerTitle, bannerDesc } =
     navBarOptions;
@@ -15,6 +16,7 @@ export default function useSelectorList() {
     isPostOrCommentReportModal,
     scrollLocation,
   } = modalsControl;
+  const { comentWrapperLocation } = locations;
 
   return {
     currentActiveMenuNumber,
@@ -29,5 +31,6 @@ export default function useSelectorList() {
     isPostDeleteModal,
     isPostOrCommentReportModal,
     scrollLocation,
+    comentWrapperLocation,
   };
 }

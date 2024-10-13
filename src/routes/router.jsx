@@ -39,15 +39,15 @@ export const router = createBrowserRouter([
         element: <PrivateRoute />,
         children: [
           {
-            path: '/community',
+            path: '/community/:boardType',
             element: <Community />,
           },
           {
-            path: '/community/create-community-post',
+            path: '/community/:boardType/create-community-post',
             element: <CreateCommunityPost />,
           },
           {
-            path: '/community/post/:postId',
+            path: '/community/:boardType/post/:postId',
             element: <PostDetail />,
           },
         ],

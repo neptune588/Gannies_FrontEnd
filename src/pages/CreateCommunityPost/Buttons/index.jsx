@@ -34,7 +34,7 @@ const SubmitButton = styled.button`
   user-select: none;
 `;
 
-export default function Buttons({ handleEditCancel }) {
+export default function Buttons({ currentBoardType, handleEditCancel }) {
   const navigate = useNavigate();
 
   return (
@@ -45,7 +45,7 @@ export default function Buttons({ handleEditCancel }) {
           if (handleEditCancel) {
             handleEditCancel();
           } else {
-            navigate('/community');
+            navigate(`/community/${currentBoardType}`);
           }
         }}
       >

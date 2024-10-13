@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import uuid from 'react-uuid';
 
 import CommunityPost from '@/pages/Community/CommunityPost';
@@ -21,7 +21,6 @@ import {
 import { communityPageAlignSelectOptions } from '@/components/AlignSelectMenu/data';
 
 import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
-import useSelectorList from '@/hooks/useSelectorList';
 import useLoginCheck from '@/hooks/useLoginCheck';
 
 import { getPosts } from '@/api/postApi';
@@ -33,6 +32,7 @@ import { pageViewLimit } from '@/utils/itemLimit';
 
 export default function Community() {
   const navigate = useNavigate();
+  const { boardType } = useParams();
 
   const firstRunBlockToSetCurPageNumberEffect = useRef(true);
   const firstRunBlockToSetBoardTypeEffect = useRef(true);
@@ -54,7 +54,6 @@ export default function Community() {
   });
 
   const { checkIsLogin } = useLoginCheck();
-  const { currentBoardType, bannerTitle } = useSelectorList();
 
   const [optionList] = useState(communityPageAlignSelectOptions);
   const [selectedOption, setSelectedOption] = useState(
@@ -75,19 +74,19 @@ export default function Community() {
 
   const handlePostCreateClick = async () => {
     if (checkIsLogin()) {
-      if (bannerTitle === '공지사항' || bannerTitle === '이벤트') {
+      if (boardType === 'notice' || boardType === 'event') {
         try {
           const res = await checkAdminStatus();
 
           res.isAdmin
-            ? navigate('/community/create-community-post')
+            ? navigate(`/community/${boardType}/create-community-post`)
             : alert('해당 게시판의 글은 관리자만 작성 가능합니다!');
         } catch (error) {
           //후에 axios interceptor로 http 코드별로 핸들링
           console.error('관리자 요청 실패', error);
         }
       } else {
-        navigate('/community/create-community-post');
+        navigate(`/community/${boardType}/create-community-post`);
       }
     }
   };
@@ -95,7 +94,7 @@ export default function Community() {
   const handlePostClick = async (postId) => {
     if (checkIsLogin()) {
       window.scroll({ top: 0, left: 0 });
-      navigate(`/community/post/${postId}`);
+      navigate(`/community/${boardType}/post/${postId}`);
     } else {
       alert('로그인을 하셔야 이용 가능합니다!');
       navigate('/sign-in');
@@ -103,7 +102,7 @@ export default function Community() {
   };
 
   useEffect(() => {
-    getDataAndSetPageNumbers(() => getPosts(currentBoardType, query));
+    getDataAndSetPageNumbers(() => getPosts(boardType, query));
     //console.log('초기 실행');
   }, []);
 
@@ -132,14 +131,14 @@ export default function Community() {
     setSelectedOption(communityPageAlignSelectOptions[0].label);
 
     //console.log('reset effect 실행');
-  }, [currentBoardType]);
+  }, [boardType]);
 
   useEffect(() => {
     if (firstRunBlockToSetQueryEffect.current) {
       firstRunBlockToSetQueryEffect.current = false;
       return;
     }
-    getDataAndSetPageNumbers(() => getPosts(currentBoardType, query));
+    getDataAndSetPageNumbers(() => getPosts(boardType, query));
     //console.log('query effect 실행');
   }, [query]);
 

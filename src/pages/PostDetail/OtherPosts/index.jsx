@@ -15,6 +15,7 @@ import { formatDateToPost } from '@/utils/dateFormatting';
 
 export default memo(function OtherPosts({
   currentPostId,
+  currentBoardType,
   posts,
   pageNumbers,
   currentPageNumber,
@@ -38,7 +39,9 @@ export default memo(function OtherPosts({
                     currentPostId === post.postId
                       ? null
                       : () => {
-                          navigate(`/community/post/${post.postId}`);
+                          navigate(
+                            `/community/${currentBoardType}/post/${post.postId}`
+                          );
                         }
                   }
                   number={String(post.postId).padStart(2, '0')}

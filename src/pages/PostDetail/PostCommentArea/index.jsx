@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useRef, memo } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import uuid from 'react-uuid';
 
@@ -7,6 +8,8 @@ import Pagination from '@/components/Pagination';
 
 import { paginationWrapperStyle } from '@/styles/commonStyle/wrapper';
 import { medium_600 } from '@/styles/commonStyle/localTextStyle';
+
+import { setCommentWrapperLocation } from '@/store/locations';
 
 const PageWraaper = styled.div`
   ${paginationWrapperStyle}
@@ -26,55 +29,45 @@ export default memo(function PostCommentArea({
   comments,
   currentPageNumber,
   pageNumbers,
-  listHeight,
   setActionType,
   setContentType,
   setReportedContent,
   setCurrentReportData,
-  setCommentBoxLocation,
   dataReset,
   commentPageGroupReCalc,
   handlePageNumberClick,
   handlePrevPageClick,
   handleNextPageClick,
 }) {
+  const dispatch = useDispatch();
+
   const commentAreaYLocation = useRef(null);
-
-  const replyCommentLengthCalc = () => {
-    let length = 0;
-    comments.forEach((comment) => {
-      for (let key in comment) {
-        console.log(key);
-        if (key === 'replies') {
-          length += comment[key].length;
-        }
-      }
-    });
-
-    return length;
-  };
+  const listRefs = useRef([]);
 
   useEffect(() => {
     if (commentAreaYLocation.current) {
-      setCommentBoxLocation(() => {
-        return {
-          top: commentAreaYLocation.current.getBoundingClientRect().top,
-        };
-      });
+      dispatch(
+        setCommentWrapperLocation({
+          top: commentAreaYLocation.current.offsetTop,
+        })
+      );
     }
   }, []);
 
   useEffect(() => {
-    setCommentBoxLocation((prev) => {
-      return {
-        ...prev,
-        bottom:
-          parseInt(listHeight, 10) *
-          (comments?.length > 0
-            ? comments.length
-            : 0 + replyCommentLengthCalc()),
-      };
-    });
+    if (listRefs.current.length > 0) {
+      listRefs.current.forEach((list, idx) => {
+        if (list && idx === listRefs.current.length - 1) {
+          console.log('댓글 위치', list.getBoundingClientRect().top);
+          dispatch(
+            setCommentWrapperLocation({
+              top: commentAreaYLocation.current.offsetTop,
+              bottom: list.offsetTop,
+            })
+          );
+        }
+      });
+    }
   }, [comments]);
 
   return (
@@ -83,8 +76,11 @@ export default memo(function PostCommentArea({
         {comments?.length > 0 ? (
           comments.map((comment, idx) => {
             return (
-              <Fragment key={uuid()}>
+              <Fragment key={comment.commentId}>
                 <PostCommentList
+                  ref={(list) => {
+                    listRefs.current[idx] = list;
+                  }}
                   isReplyComment={false}
                   commenter={comment.nickname}
                   content={comment.content}
@@ -95,7 +91,6 @@ export default memo(function PostCommentArea({
                   commentId={comment.commentId}
                   commenterId={comment.userId}
                   currentPageNumber={currentPageNumber}
-                  listHeight={listHeight}
                   setCurrentReportData={setCurrentReportData}
                   setReportedContent={setReportedContent}
                   setContentType={setContentType}
@@ -107,6 +102,9 @@ export default memo(function PostCommentArea({
                     return (
                       <PostCommentList
                         key={uuid()}
+                        ref={(list) => {
+                          listRefs.current[idx] = list;
+                        }}
                         isReplyComment={true}
                         commenter={replyComment.nickname}
                         content={replyComment.content}
@@ -115,7 +113,6 @@ export default memo(function PostCommentArea({
                         replyId={replyComment.replyId}
                         commenterId={replyComment.userId}
                         currentPageNumber={currentPageNumber}
-                        listHeight={listHeight}
                         setCurrentReportData={setCurrentReportData}
                         setReportedContent={setReportedContent}
                         setContentType={setContentType}

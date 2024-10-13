@@ -27,7 +27,7 @@ const CategoryList = styled.li`
   cursor: pointer;
 `;
 
-export default function PageCategory() {
+export default function PageCategory({ currentBoardType }) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -38,8 +38,9 @@ export default function PageCategory() {
   useEffect(() => {
     const url = location.pathname.split('/');
 
-    url[2] && url[2].startsWith('post')
-      ? setCurrentCategory(`게시글 #${url[3]}`)
+    console.log(url);
+    url[3] && url[3].startsWith('post')
+      ? setCurrentCategory(`게시글 #${url[4]}`)
       : setCurrentCategory(`게시글 작성`);
   }, []);
 
@@ -56,7 +57,7 @@ export default function PageCategory() {
       <CategoryList
         $isActiveCategory={false}
         onClick={() => {
-          navigate('/community');
+          navigate(`/community/${currentBoardType}`);
         }}
       >
         {bannerTitle}
