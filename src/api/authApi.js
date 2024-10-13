@@ -113,9 +113,9 @@ export const certificatesImageUpload = async (url, formData) => {
 };
 
 //증명서image에서 이름 추출
-export const getOCR = async (userId) => {
-  const url = `/me/${userId}/name-extraction`;
-  const response = await api.post(url);
+export const getOCR = async (imageUri) => {
+  const url = `/ocr/detect-text`;
+  const response = await api.post(url, imageUri);
   return response;
 };
 

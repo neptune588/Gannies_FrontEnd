@@ -23,11 +23,11 @@ function Department() {
   const { allow, handleAllow } = useAuthAllow([false, false]);
   const [file, setFile] = useState('');
 
-  useEffect(() => {
-    steps[0] && steps[1]
-      ? navigate('/sign-up/department')
-      : navigate('/sign-up/identity');
-  }, [steps, navigate]);
+  // useEffect(() => {
+  //   steps[0] && steps[1]
+  //     ? navigate('/sign-up/department')
+  //     : navigate('/sign-up/identity');
+  // }, [steps, navigate]);
 
   // formData에 데이터 삽입
   const setFormData = ({ fields }) => {
@@ -51,18 +51,20 @@ function Department() {
       const { url, fields } = resPresignedUrl.data;
       const formData = setFormData({ fields });
       const resS3Url = await certificatesImageUpload(url, formData);
-      const s3Url = resS3Url.config.url;
+      const s3Url = resS3Url.config.url + fields.key;
       await setCertificationUrl(s3Url);
-      // getOCR
+      const ocr = await getOCR({
+        imageUri: s3Url,
+      });
       // await userSignUp(dataToSend);
       // await userSignUpEmail({
       //   email: dataToSend.email,
       // });
-      navigate('/sign-up/success', {
-        state: { email: dataToSend.email },
-      });
+      // navigate('/sign-up/success', {
+      //   state: { email: dataToSend.email },
+      // });
     } catch (error) {
-      // console.log(error.response);
+      console.log(error.response);
     }
   };
 
