@@ -22,7 +22,7 @@ export default function PostSearch() {
         <h2>비가 오는 날</h2>
         <p>검색결과</p>
       </SearchResultBox>
-      <Community isSearch={true} />
+      <Community isSearch={true} searchKeyword={keyword} />
     </>
   );
 }

@@ -25,9 +25,6 @@ const PostCreateButton = styled.button`
     width: 24px;
     height: 24px;
   }
-  &:hover {
-    background-color: #2d6ab7;
-  }
 `;
 
 const TableWrapper = styled.div`

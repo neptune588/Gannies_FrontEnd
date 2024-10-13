@@ -1,38 +1,34 @@
-import { useState } from 'react';
-
 import search from '@/assets/icons/search/search_default.svg';
 
-import {
-  Wrapper,
-  Input,
-  InactiveButton,
-  ActiveButton,
-} from '@/pages/Home/SearchBar/style';
+import { Wrapper, Input, SearchButton } from '@/pages/Home/SearchBar/style';
+
+import usePostSearch from '@/hooks/usePostSearch';
 
 function SearchBar() {
-  const [text, setText] = useState('');
-  const [allowButton, setAllowButton] = useState(false);
-
-  const handlePassword = (e) => {
-    setAllowButton(e.target.value.length >= 1 ? true : false);
-    setText(e.target.value);
-  };
+  const {
+    searchValue,
+    searchBarRef,
+    handleSearchValueChange,
+    handleSearch,
+    handleSearchButtonClick,
+  } = usePostSearch();
 
   return (
     <Wrapper>
-      <form>
+      <div>
         <img src={search} alt='searchIcon' />
         <Input
+          ref={searchBarRef}
           placeholder='관심있는 이야기를 검색해보세요'
-          value={text}
-          onChange={handlePassword}
+          value={searchValue}
+          onChange={(e) => {
+            handleSearchValueChange(e.target.value);
+          }}
+          onKeyUp={handleSearch}
         />
-      </form>
-      {allowButton ? (
-        <ActiveButton>검색</ActiveButton>
-      ) : (
-        <InactiveButton>검색</InactiveButton>
-      )}
+      </div>
+
+      <SearchButton onClick={handleSearchButtonClick}>검색</SearchButton>
     </Wrapper>
   );
 }

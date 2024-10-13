@@ -72,9 +72,6 @@ const ButtonBox = styled.div`
 
 const ConfirmButton = styled(Button)`
   ${primaryColorBoxStyle}
-  &:hover {
-    background-color: #2d6ab7;
-  }
 `;
 
 const CancelButton = styled(Button)`
@@ -197,9 +194,6 @@ const ReportConfirmButton = styled.button`
   width: 205px;
   height: 50px;
   margin: 0 auto;
-  &:hover {
-    background-color: #2d6ab7;
-  }
 `;
 
 export {

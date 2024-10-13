@@ -18,6 +18,9 @@ const primaryColorBoxStyle = css`
     return colors.primary;
   }};
   border-radius: 4px;
+  &:hover {
+    background-color: #2d6ab7;
+  }
 `;
 
 const inactiveColorBoxStyle = css`

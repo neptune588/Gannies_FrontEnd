@@ -10,13 +10,14 @@ import {
   Logo,
   LoginButton,
   SignUpButton,
+  SearchBox,
   Input,
   LogoutButton,
   MypageButton,
 } from '@/layouts/Header/style';
 
+import usePostSearch from '@/hooks/usePostSearch';
 import useSelectorList from '@/hooks/useSelectorList';
-import useEventHandler from '@/hooks/useEventHandler';
 
 import { setBoardType } from '@/store/navBarOptions';
 import { handleModal } from '@/store/modalState';
@@ -29,14 +30,11 @@ function Header() {
   const location = useLocation().pathname;
   const dispatch = useDispatch();
 
-  const [showSearchBar, setShowSearchBar] = useState(false);
-
   const { isLogin } = useSelectorList();
+  const { searchValue, searchBarRef, handleSearchValueChange, handleSearch } =
+    usePostSearch();
 
-  const { changeValue: searchValue, handleChange: handleSearchValueChange } =
-    useEventHandler({
-      changeDefaultValue: '',
-    });
+  const [showSearchBar, setShowSearchBar] = useState(false);
 
   const handleLogout = async () => {
     try {
@@ -47,12 +45,6 @@ function Header() {
       }
     } catch (error) {
       console.log(error);
-    }
-  };
-
-  const handleSearch = (e) => {
-    if (e.key === 'Enter') {
-      navigate(`/post/serach/${searchValue}`);
     }
   };
 
@@ -86,15 +78,18 @@ function Header() {
         <img src={logo} alt='logo' />
       </Logo>
       {showSearchBar && (
-        <>
+        <SearchBox>
           <img src={search} alt='searchIcon' />
           <Input
+            ref={searchBarRef}
             placeholder='관심있는 이야기를 검색해보세요'
             value={searchValue}
-            onChange={handleSearchValueChange}
+            onChange={(e) => {
+              handleSearchValueChange(e.target.value);
+            }}
             onKeyUp={handleSearch}
           />
-        </>
+        </SearchBox>
       )}
       {isLogin ? (
         <>

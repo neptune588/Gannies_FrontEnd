@@ -33,7 +33,7 @@ import { formatDateToPost } from '@/utils/dateFormatting';
 import { communityPostMaxLimit } from '@/utils/itemLimit';
 import { pageViewLimit } from '@/utils/itemLimit';
 
-export default function Community({ isSearch }) {
+export default function Community({ isSearch, searchKeyword = '' }) {
   const navigate = useNavigate();
   const { boardType } = useParams();
 
@@ -43,8 +43,10 @@ export default function Community({ isSearch }) {
 
   const {
     items: currentPosts,
+    isLoading,
     currentPageNumber,
     groupedPageNumbers: pageNumbers,
+    setIsLoading,
     getDataAndSetPageNumbers,
     handlePageNumberClick,
     handlePrevPageClick,
@@ -72,6 +74,7 @@ export default function Community({ isSearch }) {
           page: currentPageNumber,
           limit: communityPostMaxLimit,
           boardType: 'all',
+          search: searchKeyword,
         }
       : {
           page: currentPageNumber,
@@ -159,83 +162,88 @@ export default function Community({ isSearch }) {
 
   return (
     <>
-      {!isSearch && (
-        <CommunityBanner>
-          <CommunityBannerText />
-        </CommunityBanner>
-      )}
-
-      <TableWrapper>
-        <ContentsAlignBox>
-          {isSearch ? (
-            <AlignSelectMenu
-              isSearch={isSearch}
-              optionList={boardTypeOptionList}
-              handleSelectedOption={handleSelectedOption}
-              selectedOption={selectedBoardOption}
-              setSelectedOption={setSelectedBoardOption}
-            />
-          ) : (
-            <>
-              <PostCreateButton onClick={handlePostCreateClick}>
-                <img src={brush} alt='create-button' />
-                게시글 작성
-              </PostCreateButton>
-              <AlignSelectMenu
-                optionList={alignOptionList}
-                handleSelectedOption={handleSelectedOption}
-                selectedOption={selectedAlignOption}
-                setSelectedOption={setSelectedAlignOption}
-              />
-            </>
+      {!isLoading && currentPosts?.length === 0 ? (
+        <>작성 된 게시물이 없습니다.</>
+      ) : (
+        <>
+          {!isSearch && (
+            <CommunityBanner>
+              <CommunityBannerText />
+            </CommunityBanner>
           )}
-        </ContentsAlignBox>
-        <table>
-          <thead>
-            <TableHeader>
-              <th>
-                <p>번호</p>
-                <p>제목</p>
-              </th>
-              <th>
-                <p>닉네임/날짜/조회수/좋아요 수</p>
-              </th>
-            </TableHeader>
-          </thead>
-          <tbody>
-            {currentPosts?.map((post, idx) => {
-              return (
-                <CommunityPost
-                  key={uuid()}
-                  handlePostClick={() => {
-                    handlePostClick(post.postId);
-                  }}
-                  number={String(post.postId).padStart(2, '0')}
-                  title={post.title}
-                  nickname={post.user.nickname}
-                  createDate={formatDateToPost(post.createdAt)}
-                  postViewCount={parseInt(post.viewCounts, 10)}
-                  likeCount={parseInt(post.likeCounts, 10)}
-                  numberOfCommentsAndReplies={parseInt(
-                    post.numberOfCommentsAndReplies,
-                    10
-                  )}
+          <TableWrapper>
+            <ContentsAlignBox>
+              {isSearch ? (
+                <AlignSelectMenu
+                  isSearch={isSearch}
+                  optionList={boardTypeOptionList}
+                  handleSelectedOption={handleSelectedOption}
+                  selectedOption={selectedBoardOption}
+                  setSelectedOption={setSelectedBoardOption}
                 />
-              );
-            })}
-          </tbody>
-        </table>
-      </TableWrapper>
-      {pageNumbers?.length > 0 && (
-        <PageWrapper>
-          <Pagination
-            pageNumbers={pageNumbers}
-            currentPageNumber={currentPageNumber}
-            handlePageNumberClick={handlePageNumberClick}
-            handlePrevPageClick={handlePrevPageClick}
-            handleNextPageClick={handleNextPageClick}
-          />
-        </PageWrapper>
+              ) : (
+                <>
+                  <PostCreateButton onClick={handlePostCreateClick}>
+                    <img src={brush} alt='create-button' />
+                    게시글 작성
+                  </PostCreateButton>
+                  <AlignSelectMenu
+                    optionList={alignOptionList}
+                    handleSelectedOption={handleSelectedOption}
+                    selectedOption={selectedAlignOption}
+                    setSelectedOption={setSelectedAlignOption}
+                  />
+                </>
+              )}
+            </ContentsAlignBox>
+            <table>
+              <thead>
+                <TableHeader>
+                  <th>
+                    <p>번호</p>
+                    <p>제목</p>
+                  </th>
+                  <th>
+                    <p>닉네임/날짜/조회수/좋아요 수</p>
+                  </th>
+                </TableHeader>
+              </thead>
+              <tbody>
+                {currentPosts?.map((post, idx) => {
+                  return (
+                    <CommunityPost
+                      key={uuid()}
+                      handlePostClick={() => {
+                        handlePostClick(post.postId);
+                      }}
+                      number={String(post.postId).padStart(2, '0')}
+                      title={post.title}
+                      nickname={post.user.nickname}
+                      createDate={formatDateToPost(post.createdAt)}
+                      postViewCount={parseInt(post.viewCounts, 10)}
+                      likeCount={parseInt(post.likeCounts, 10)}
+                      numberOfCommentsAndReplies={parseInt(
+                        post.numberOfCommentsAndReplies,
+                        10
+                      )}
+                    />
+                  );
+                })}
+              </tbody>
+            </table>
+          </TableWrapper>
+          {pageNumbers?.length > 0 && (
+            <PageWrapper>
+              <Pagination
+                pageNumbers={pageNumbers}
+                currentPageNumber={currentPageNumber}
+                handlePageNumberClick={handlePageNumberClick}
+                handlePrevPageClick={handlePrevPageClick}
+                handleNextPageClick={handleNextPageClick}
+              />
+            </PageWrapper>
+          )}
+        </>
       )}
     </>
   );
