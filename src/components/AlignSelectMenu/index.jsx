@@ -61,9 +61,10 @@ const Dropdown = styled.div`
 export default function AlignSelectMenu({
   optionList,
   selectedOption,
+  isSearch,
+  searchedListLength,
   setSelectedOption,
   handleSelectedOption,
-  isSearch,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef(null);
@@ -91,7 +92,7 @@ export default function AlignSelectMenu({
   return (
     <SelectContainer ref={selectRef} $isSearch={isSearch}>
       <button onClick={toggleDropdown}>
-        <p>{selectedOption}</p>
+        <p>{`${selectedOption} ${searchedListLength && `(${searchedListLength})`}`}</p>
         <img src={isOpen ? upArrow : bottomArrow} alt='select-arrow' />
       </button>
       {isOpen && (
@@ -100,10 +101,13 @@ export default function AlignSelectMenu({
             <button
               key={uuid()}
               onClick={() => {
-                setSelectedOption(option.label);
+                if (isSearch) {
+                  setSelectedOption({ label: option.label, path: option.path });
+                } else {
+                  setSelectedOption(option.label);
+                  handleSelectedOption(option.query);
+                }
                 setIsOpen(false);
-
-                handleSelectedOption(option.query);
               }}
             >
               {option.label}

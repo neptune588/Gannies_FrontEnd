@@ -16,6 +16,7 @@ import {
   TableWrapper,
   TableHeader,
   PageWrapper,
+  NoSearchResults,
 } from '@/pages/Community/style';
 
 import {
@@ -33,7 +34,7 @@ import { formatDateToPost } from '@/utils/dateFormatting';
 import { communityPostMaxLimit } from '@/utils/itemLimit';
 import { pageViewLimit } from '@/utils/itemLimit';
 
-export default function Community({ isSearch, searchKeyword = '' }) {
+export default function Community({ isSearch, searchKeyword }) {
   const navigate = useNavigate();
   const { boardType } = useParams();
 
@@ -43,6 +44,7 @@ export default function Community({ isSearch, searchKeyword = '' }) {
 
   const {
     items: currentPosts,
+    totalItems: postsTotalLength,
     isLoading,
     currentPageNumber,
     groupedPageNumbers: pageNumbers,
@@ -65,15 +67,17 @@ export default function Community({ isSearch, searchKeyword = '' }) {
   const [selectedAlignOption, setSelectedAlignOption] = useState(
     communityPageAlignSelectOptions[0].label
   );
-  const [selectedBoardOption, setSelectedBoardOption] = useState(
-    SearchPageSelectOptions[0].label
-  );
+  //select menu로 label path 동시에 변경
+  const [selectedBoardOption, setSelectedBoardOption] = useState({
+    label: SearchPageSelectOptions[0].label,
+    path: SearchPageSelectOptions[0].path,
+  });
+
   const [query, setQuery] = useState(
     isSearch
       ? {
           page: currentPageNumber,
           limit: communityPostMaxLimit,
-          boardType: 'all',
           search: searchKeyword,
         }
       : {
@@ -109,10 +113,10 @@ export default function Community({ isSearch, searchKeyword = '' }) {
     }
   };
 
-  const handlePostClick = async (postId) => {
+  const handlePostClick = async ({ postBoardType, postId }) => {
     if (checkIsLogin()) {
       window.scroll({ top: 0, left: 0 });
-      navigate(`/community/${boardType}/post/${postId}`);
+      navigate(`/community/${postBoardType}/post/${postId}`);
     } else {
       alert('로그인을 하셔야 이용 가능합니다!');
       navigate('/sign-in');
@@ -120,7 +124,11 @@ export default function Community({ isSearch, searchKeyword = '' }) {
   };
 
   useEffect(() => {
-    getDataAndSetPageNumbers(() => getPosts(boardType, query));
+    getDataAndSetPageNumbers(() =>
+      isSearch
+        ? getPosts(selectedBoardOption.path, query)
+        : getPosts(boardType, query)
+    );
     //console.log('초기 실행');
   }, []);
 
@@ -145,25 +153,43 @@ export default function Community({ isSearch, searchKeyword = '' }) {
     }
 
     resetPageNumber();
-    setQuery({ page: currentPageNumber, limit: communityPostMaxLimit });
-    setSelectedAlignOption(communityPageAlignSelectOptions[0].label);
+
+    if (isSearch) {
+      setQuery({
+        page: currentPageNumber,
+        limit: communityPostMaxLimit,
+        search: searchKeyword,
+      });
+    } else {
+      setQuery({ page: currentPageNumber, limit: communityPostMaxLimit });
+      setSelectedAlignOption(communityPageAlignSelectOptions[0].label);
+    }
 
     //console.log('reset effect 실행');
-  }, [boardType]);
+  }, [
+    boardType,
+    selectedBoardOption.label,
+    selectedBoardOption.path,
+    searchKeyword,
+  ]);
 
   useEffect(() => {
     if (firstRunBlockToSetQueryEffect.current) {
       firstRunBlockToSetQueryEffect.current = false;
       return;
     }
-    getDataAndSetPageNumbers(() => getPosts(boardType, query));
+    getDataAndSetPageNumbers(() =>
+      isSearch
+        ? getPosts(selectedBoardOption.path, query)
+        : getPosts(boardType, query)
+    );
     //console.log('query effect 실행');
   }, [query]);
 
   return (
     <>
       {!isLoading && currentPosts?.length === 0 ? (
-        <>작성 된 게시물이 없습니다.</>
+        <NoSearchResults>작성 된 게시물이 없습니다.</NoSearchResults>
       ) : (
         <>
           {!isSearch && (
@@ -176,9 +202,9 @@ export default function Community({ isSearch, searchKeyword = '' }) {
               {isSearch ? (
                 <AlignSelectMenu
                   isSearch={isSearch}
+                  searchedListLength={postsTotalLength}
                   optionList={boardTypeOptionList}
-                  handleSelectedOption={handleSelectedOption}
-                  selectedOption={selectedBoardOption}
+                  selectedOption={selectedBoardOption.label}
                   setSelectedOption={setSelectedBoardOption}
                 />
               ) : (
@@ -214,8 +240,12 @@ export default function Community({ isSearch, searchKeyword = '' }) {
                     <CommunityPost
                       key={uuid()}
                       handlePostClick={() => {
-                        handlePostClick(post.postId);
+                        handlePostClick({
+                          postBoardType: post.boardType,
+                          postId: post.postId,
+                        });
                       }}
+                      searchKeyword={searchKeyword}
                       number={String(post.postId).padStart(2, '0')}
                       title={post.title}
                       nickname={post.user.nickname}

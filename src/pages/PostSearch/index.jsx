@@ -15,11 +15,14 @@ export default function PostSearch() {
   useEffect(() => {
     dispatch(setBoardType({}));
   }, []);
+  useEffect(() => {
+    console.log('검색된 단어', keyword);
+  }, [keyword]);
 
   return (
     <>
       <SearchResultBox>
-        <h2>비가 오는 날</h2>
+        <h2>{keyword}</h2>
         <p>검색결과</p>
       </SearchResultBox>
       <Community isSearch={true} searchKeyword={keyword} />

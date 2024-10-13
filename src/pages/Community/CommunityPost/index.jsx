@@ -1,3 +1,5 @@
+import Highlighter from 'react-highlight-words';
+
 import Eye from '@/components/Icons/Eye';
 import HeartInactive from '@/components/Icons/HeartInactive';
 
@@ -18,6 +20,7 @@ export default function CommunityPost({
   nickname,
   createDate,
   likeCount,
+  searchKeyword,
   postViewCount,
   numberOfCommentsAndReplies,
   handlePostClick,
@@ -26,6 +29,14 @@ export default function CommunityPost({
     <TableRow onClick={handlePostClick}>
       <PostNumberBox>{number}</PostNumberBox>
       <PostTitleBox>
+        {searchKeyword && (
+          <Highlighter
+            searchWords={[searchKeyword]}
+            autoEscape={true}
+            textToHighlight={searchKeyword}
+            highlightClassName={'.highlight'}
+          />
+        )}
         {title}
         <CommentLength>{numberOfCommentsAndReplies}</CommentLength>
       </PostTitleBox>

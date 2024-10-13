@@ -42,6 +42,14 @@ const PostTitleBox = styled.td`
   color: ${({ theme: { colors } }) => {
     return colors.black;
   }};
+
+  > span {
+    &:first-child {
+      color: ${({ theme: { colors } }) => {
+        return colors.primary;
+      }};
+    }
+  }
 `;
 
 const PostNicknameBox = styled.td`

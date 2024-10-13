@@ -1,10 +1,12 @@
-import { useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useRef, useEffect } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import useEventHandler from '@/hooks/useEventHandler';
 
-export default function () {
+export default function usePostSearch() {
   const navigate = useNavigate();
+  const { keyword } = useParams();
+  const location = useLocation();
   const searchBarRef = useRef(null);
 
   const { changeValue: searchValue, handleChange: handleSearchValueChange } =
@@ -20,8 +22,8 @@ export default function () {
       condition
         ? navigate(`/post/search/default`)
         : navigate(`/post/search/${searchValue}`);
+      handleSearchValueChange('');
     }
-    handleSearchValueChange('');
     searchBarRef.current && searchBarRef.current.focus();
   };
 
@@ -39,6 +41,14 @@ export default function () {
   useEffect(() => {
     searchBarRef.current && searchBarRef.current.focus();
   }, []);
+
+  useEffect(() => {
+    if (keyword) {
+      handleSearchValueChange(keyword);
+    } else {
+      handleSearchValueChange('');
+    }
+  }, [location]);
 
   return {
     searchValue,
