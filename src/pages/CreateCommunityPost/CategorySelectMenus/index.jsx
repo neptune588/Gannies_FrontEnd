@@ -12,9 +12,10 @@ import {
 
 export default function CategorySelectMenus({
   optionList,
-  selectedOption,
-  setSelectedOption,
-  handleSelectedOption,
+  selectedBoardTitle,
+  setSelectedBoardTitle,
+  setHospitalName,
+  handleBoardTypeChange,
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -28,7 +29,7 @@ export default function CategorySelectMenus({
       >
         <p>*카테고리</p>
         <div>
-          {selectedOption}
+          {selectedBoardTitle}
           <img src={bottomArrow} alt={'arrow'} />
         </div>
       </SelectedBox>
@@ -39,10 +40,11 @@ export default function CategorySelectMenus({
               <SelectOption
                 key={uuid()}
                 onClick={() => {
-                  setSelectedOption(option.content);
+                  setSelectedBoardTitle(option.content);
                   setIsOpen(false);
 
-                  handleSelectedOption(option.path);
+                  handleBoardTypeChange(option.path);
+                  setHospitalName('병원찾기');
                 }}
               >
                 {option.content}

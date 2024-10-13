@@ -5,8 +5,8 @@ import { xsmall_400 } from '@/styles/commonStyle/localTextStyle';
 const PopupBox = styled.ul`
   width: 70px;
   position: absolute;
-  top: 42px;
-  left: 15px;
+  top: 40px;
+  left: -40px;
   padding: 3px 3px 0 3px;
   background-color: ${({ theme: { colors } }) => {
     return colors.white;

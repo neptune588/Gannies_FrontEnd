@@ -99,15 +99,21 @@ export const userStatusVerify = async (pwFindData) => {
   return response;
 };
 
-// presignedUrl 받아오기
-export const getPresignedUrl = async (fileType) => {
-  const url = '/files/presigned-url';
-  const response = await api.post(url, fileType);
+// 인증서 업로드
+export const certificatesImageUpload = async (url, formData) => {
+  const response = await axios.post(url, formData);
   return response;
 };
 
-// 인증서 업로드
-export const certificatesImageUpload = async (url, formData) => {
+//인증서 업로드 하기 위해 필요한 URL 받기
+export const getPresignedUrl = async (fileTypeData) => {
+  const url = '/files/presigned-url';
+  const response = await api.post(url, fileTypeData);
+  return response;
+};
+
+//받아온 URL에 IMAGE url 보내기
+export const s3ImageUpload = async (url, formData) => {
   const response = await axios.post(url, formData);
   return response;
 };

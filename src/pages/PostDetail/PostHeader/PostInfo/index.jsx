@@ -26,19 +26,24 @@ const PostDate = styled.p`
 `;
 
 export default function PostInfo({
-  postViewCount = 0,
-  likeCount = 0,
-  commentCount = 0,
-  postDate,
+  postViewCount,
+  likeCount,
+  commentCount,
+  postCreateDate,
+  postUpdateDate,
 }) {
   return (
     <PostInfoSection>
       <PostMetricBox>
-        <Eye postViewCount={1500} />
-        <HeartInactive likeCount={50} />
-        <Message commentCount={24} />
+        <Eye postViewCount={postViewCount} />
+        <HeartInactive likeCount={likeCount} />
+        <Message commentCount={commentCount} />
       </PostMetricBox>
-      <PostDate>2024-08-26</PostDate>
+      <PostDate>
+        {postCreateDate === postUpdateDate
+          ? postCreateDate
+          : `${postUpdateDate}(수정됨)`}
+      </PostDate>
     </PostInfoSection>
   );
 }

@@ -1,6 +1,7 @@
-import { useNavigate } from 'react-router-dom';
-
+import { useEffect, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+
 import rightArrow from '@/assets/icons/arrows/chevron_right.svg';
 
 import { small_500 } from '@/styles/commonStyle/localTextStyle';
@@ -26,10 +27,23 @@ const CategoryList = styled.li`
   cursor: pointer;
 `;
 
-export default function PageCategory() {
+export default function PageCategory({ currentBoardType }) {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { bannerTitle } = useSelectorList();
+
+  const [currentCategory, setCurrentCategory] = useState('');
+
+  useEffect(() => {
+    const url = location.pathname.split('/');
+
+    console.log(url);
+    url[3] && url[3].startsWith('post')
+      ? setCurrentCategory(`게시글 #${url[4]}`)
+      : setCurrentCategory(`게시글 작성`);
+  }, []);
+
   return (
     <CategoryBox>
       <CategoryList
@@ -43,13 +57,13 @@ export default function PageCategory() {
       <CategoryList
         $isActiveCategory={false}
         onClick={() => {
-          navigate('/community');
+          navigate(`/community/${currentBoardType}`);
         }}
       >
         {bannerTitle}
       </CategoryList>
       <img src={rightArrow} alt='right-arrow' />
-      <CategoryList $isActiveCategory={true}>게시글 작성</CategoryList>
+      <CategoryList $isActiveCategory={true}>{currentCategory}</CategoryList>
     </CategoryBox>
   );
 }

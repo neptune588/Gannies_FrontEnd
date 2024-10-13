@@ -60,6 +60,14 @@ function Buttons({ email, password, setLoginError, setIsLoading }) {
       );
       dispatch(handleModal({ field: 'rejected', value: rejected }));
       dispatch(handleModal({ field: 'isSuspended', value: isSuspended }));
+      // handleAuth({
+      //   field: 'membershipStatus',
+      //   value: response.data.user.membershipStatus,
+      // })
+      // if (response.data.user.membershipStatus === 'email_verified') {
+      //   dispatch(handleModal({ field: 'isApproval', value: true }));
+      //   navigate('/mypage/profile/edit');
+      // }
       navigate('/');
     } catch (error) {
       setIsLoading(false);

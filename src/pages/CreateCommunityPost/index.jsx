@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import CommunityBanner from '@/components/CommunityBanner';
 import CommunityBannerText from '@/components/CommunityBannerText';
-import PageCategory from '@/pages/CreateCommunityPost/PageCategory';
+import PageCategory from '@/components/PageCategory';
 import CategoryTitle from '@/pages/CreateCommunityPost/CategoryTitle';
 import CategorySelectMenus from '@/pages/CreateCommunityPost/CategorySelectMenus';
 import Buttons from '@/pages/CreateCommunityPost/Buttons';
@@ -31,109 +31,81 @@ import useLoginCheck from '@/hooks/useLoginCheck';
 import useSelectorList from '@/hooks/useSelectorList';
 import useEventHandler from '@/hooks/useEventHandler';
 import useModalsControl from '@/hooks/useModalsControl';
+import useTinyMceImageUpload from '@/hooks/useTinyMceImageUpload';
 
 import { setIsHospitalModal } from '@/store/modalsControl';
+import { setBoardType } from '@/store/navBarOptions';
+
+import { navBarMenuData } from '@/layouts/Navbar/data';
 
 import { createPost } from '@/api/postApi';
 import { checkAdminStatus } from '@/api/authApi';
 
-export default function CreateCommunityPost() {
+export default function CreateCommunityPost({
+  title,
+  content,
+  propsBoardType,
+  propsBoardTypeTitle,
+  postId,
+  hospitalNames,
+  editRequest,
+  handleEditCancel,
+}) {
   //제목 - 한글 1글자 이상은 최소로 있어야 한다. 최대는 50자 이하
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { boardType } = useParams();
 
-  const editorRef = useRef(null);
-  const imageButtonRef = useRef(null);
   const firstRunBlockToSetSelectOptionEffect = useRef(true);
 
-  const [selectOptions, setSelectOptions] = useState(
+  const [isSubmit, setIsSubmit] = useState(false);
+  const [hospitalName, setHospitalName] = useState(hospitalNames || '병원찾기');
+  const [categorySelectOptions, setCategorySelectOptions] = useState(
     defaultCategorySelectOptions
   );
-  const [selectedOption, setSelectedOption] = useState(
-    selectOptions[0].content
+
+  const { bannerTitle } = useSelectorList();
+  //select box에 띄워주는 용도로만 사용
+  const [selectedBoardTitle, setSelectedBoardTitle] = useState(
+    propsBoardTypeTitle || bannerTitle
   );
 
-  const [previewImage, setPreviewImage] = useState('');
-  const [totalImageType, setTotalImageType] = useState([]);
+  const {
+    changeValue: selectedBoardType,
+    handleChange: handleBoardTypeChange,
+  } = useEventHandler({
+    changeDefaultValue: propsBoardType || boardType,
+  });
 
-  const [isSubmit, setIsSubmit] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const { currentBoardType } = useSelectorList();
   const { isHospitalSearchModal, handleModalOpen, handleModalClose } =
     useModalsControl();
-  const { changeValue: titleValue, handleChange: handleTitleValueChange } =
-    useEventHandler({
-      changeDefaultValue: '',
-    });
-  const { changeValue: editorValue, handleChange: handleEditorValueChange } =
-    useEventHandler({
-      changeDefaultValue: '',
-    });
-  const { changeValue: currentPath, handleChange: handleSelectedOption } =
-    useEventHandler({
-      changeDefaultValue: selectOptions[0].path,
-    });
+
   const {
     changeValue: hospitalSearchValue,
     handleChange: handlehospitalSearchValueChange,
   } = useEventHandler({
-    changeDefaultValue: selectOptions[0].path,
+    changeDefaultValue: '',
   });
 
-  const [hospitalName, SetHospitalName] = useState('');
+  const {
+    titleValue,
+    editorValue,
+    editorRef,
+    imageButtonRef,
+    imageExtensionCheck,
+    handleImageUploadClick,
+    handleImageUploadRequest,
+    handleImagePaste,
+    handleTitleValueChange,
+    handleEditorValueChange,
+  } = useTinyMceImageUpload({
+    initialTitle: title || '',
+    initialContent: content || '',
+  });
+
+  const [isEditorLoading, setIsEditorLoading] = useState(true);
 
   const { checkIsLogin } = useLoginCheck();
-
-  //form 제출 로직에서 적용할것들
-  /*     const parser = new DOMParser();
-    const doc = parser.parseFromString(value, 'text/html');
-    const htmlTags = doc.body.querySelectorAll('img');
-    const imageExtensions = [
-      'jpg',
-      'jpeg',
-      'png',
-      'gif',
-      'bmp',
-      'tiff',
-      'webp',
-      'heif',
-      'svg',
-    ];
-
-    htmlTags.forEach((tag) => {
-      imageExtensions.forEach((imageExtension) => {
-        const a = tag.src.includes(`.${imageExtension}`);
-        const b = tag.src.includes(`/${imageExtension}`);
-
-        if (a || b) {
-          setTotalImageType([...totalImageType, `image/${imageExtension}`]);
-        }
-      });
-    });
-
-    console.log(totalImageType); */
-
-  const handleImageUploadClick = () => {
-    imageButtonRef.current.value = '';
-    imageButtonRef.current && imageButtonRef.current.click();
-  };
-
-  const handleImageUpload = (e) => {
-    //console.log('업로드 발동');
-    const uploadFile = e.target.files[0];
-
-    if (!uploadFile.type.startsWith('image/')) {
-      alert('이미지 파일만 업로드 가능합니다!');
-    } else {
-      //console.log('이미지 변환')
-      const reader = new FileReader();
-      reader.readAsDataURL(uploadFile);
-      reader.onload = () => {
-        setPreviewImage(reader.result);
-      };
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -142,33 +114,50 @@ export default function CreateCommunityPost() {
       return;
     }
 
-    setIsSubmit(true);
+    try {
+      const condition01 =
+        titleValue.trim() === '' ||
+        titleValue.trim() === undefined ||
+        titleValue.trim() === null;
+      const condition02 =
+        editorValue.trim() === '' ||
+        editorValue.trim() === undefined ||
+        editorValue.trim() === null;
 
-    const condition01 =
-      titleValue === '' || titleValue === undefined || titleValue === null;
-    const condition02 =
-      editorValue === '' || editorValue === undefined || editorValue === null;
+      if (condition01 || condition02) {
+        alert('제목 혹은 내용을 입력 해주세요!');
+        return;
+      }
 
-    if (condition01 || condition02) {
-      alert('제목 혹은 내용을 입력 해주세요!');
-    } else {
+      setIsSubmit(true);
+
       const splitByWhitespace = titleValue.trim().split(' ');
       const title = splitByWhitespace.filter((str) => str !== '').join(' ');
 
       const postData = {
         title,
         content: editorValue,
+        hospitalNames: hospitalName === '병원찾기' ? null : hospitalName,
       };
 
-      try {
-        const res = await createPost(currentPath, JSON.stringify(postData));
+      /*       const imageExtension = imageExtensionCheck();
+      if (imageExtension.length > 0) {
+        postData.imageTypes = imageExtension;
+      } */
 
-        console.log(res);
-      } catch (err) {
-        console.error(err);
-      }
+      const res = editRequest
+        ? await editRequest(selectedBoardType, postId, postData)
+        : await createPost(selectedBoardType, postData);
+
+      const { postId: newPostId } = res.data;
+
+      window.scroll({ top: 0, left: 0 });
+      navigate(`/community/${selectedBoardType}/post/${newPostId}`);
+
+      setIsSubmit(false);
+    } catch (error) {
+      console.error('작성 실패', error);
     }
-    setIsSubmit(false);
   };
 
   useEffect(() => {
@@ -178,7 +167,7 @@ export default function CreateCommunityPost() {
           const res = await checkAdminStatus();
           const { isAdmin } = res.data;
 
-          isAdmin && setSelectOptions(adminCategorySelectOptions);
+          isAdmin && setCategorySelectOptions(adminCategorySelectOptions);
         } catch (error) {
           console.error(error);
         }
@@ -186,20 +175,14 @@ export default function CreateCommunityPost() {
     })();
   }, []);
 
-  useEffect(() => {
+  /*   useEffect(() => {
     if (firstRunBlockToSetSelectOptionEffect.current) {
       firstRunBlockToSetSelectOptionEffect.current = false;
       return;
     }
 
-    setSelectedOption(selectOptions[0].content);
-  }, [selectOptions]);
-  /* useEffect(() => {
-    if (editorRef.current && previewImage !== '') {
-      editorRef.current.insertContent(`<img src="${previewImage}" />`);
-      setPreviewImage('');
-    }
-  }, [previewImage]); */
+    setSelectedOption(setCategorySelectOptions[0].content);
+  }, [categorySelectOptions]); */
 
   return (
     <>
@@ -208,7 +191,7 @@ export default function CreateCommunityPost() {
           handleModalClose={handleModalClose}
           hospitalSearchValue={hospitalSearchValue}
           handlehospitalSearchValueChange={handlehospitalSearchValueChange}
-          SetHospitalName={SetHospitalName}
+          setHospitalName={setHospitalName}
         />
       )}
       <CommunityBanner>
@@ -216,7 +199,7 @@ export default function CreateCommunityPost() {
       </CommunityBanner>
       <CenterdContainer>
         <CategoryBox>
-          <PageCategory />
+          <PageCategory currentBoardType={boardType} />
         </CategoryBox>
         <TitleBox>
           <CategoryTitle />
@@ -238,24 +221,27 @@ export default function CreateCommunityPost() {
             <DataInputWrapper>
               <div>
                 <CategorySelectMenus
-                  optionList={selectOptions}
-                  selectedOption={selectedOption}
-                  setSelectedOption={setSelectedOption}
-                  handleSelectedOption={handleSelectedOption}
+                  optionList={categorySelectOptions}
+                  selectedBoardTitle={selectedBoardTitle}
+                  setSelectedBoardTitle={setSelectedBoardTitle}
+                  setHospitalName={setHospitalName}
+                  handleBoardTypeChange={handleBoardTypeChange}
                 />
               </div>
-              {(currentBoardType === 'practice' ||
-                currentBoardType === 'job') && (
+              {(selectedBoardTitle === '취업정보' ||
+                selectedBoardTitle === '실습정보') && (
                 <div>
                   <DataInputBox>
                     <p>*병원정보</p>
                     <button
                       type='button'
                       onClick={() => {
-                        handleModalOpen({ modalDispatch: setIsHospitalModal });
+                        handleModalOpen({
+                          modalDispatch: setIsHospitalModal,
+                        });
                       }}
                     >
-                      병원찾기
+                      {hospitalName}
                       <img src={searchIcon} alt='search-icon' />
                     </button>
                   </DataInputBox>
@@ -264,16 +250,25 @@ export default function CreateCommunityPost() {
             </DataInputWrapper>
             <PostCreateEditor
               editorRef={editorRef}
+              initialContent={content}
               imageButtonRef={imageButtonRef}
               editorValue={editorValue}
+              isEditorLoading={isEditorLoading}
+              setIsEditorLoading={setIsEditorLoading}
               handleImageUploadClick={handleImageUploadClick}
               handleEditorValueChange={handleEditorValueChange}
-              handleImageUpload={handleImageUpload}
+              handleImageUploadRequest={handleImageUploadRequest}
+              handleImagePaste={handleImagePaste}
             />
           </ContentsWrapper>
-          <ButtonBox>
-            <Buttons />
-          </ButtonBox>
+          {!isEditorLoading && (
+            <ButtonBox>
+              <Buttons
+                currentBoardType={boardType}
+                handleEditCancel={handleEditCancel}
+              />
+            </ButtonBox>
+          )}
         </form>
       </CenterdContainer>
     </>

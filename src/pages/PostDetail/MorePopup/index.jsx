@@ -1,20 +1,65 @@
 import { PopupBox, PopupList } from '@/pages/PostDetail/MorePopup/style';
 
+import {
+  setIsPostDeleteModal,
+  setIsPostOrCommentReportModal,
+} from '@/store/modalsControl';
+
+import useModalsControl from '@/hooks/useModalsControl';
+
 export default function MorePopup({
-  isLogin = true,
-  handlePutClick = null,
-  handleDeleteClick = null,
-  handleReportClick = null,
+  ownComment,
+  ownPost,
+  contentType,
+  postId,
+  commentId,
+  replyId,
+  reportedContent,
+  setContentType,
+  setReportedContent,
+  setCurrentReportData,
+  setIsMorePopup,
+  handleEditOpen,
+  handleCommentDelete,
 }) {
+  const { handleModalOpen } = useModalsControl();
+
   return (
     <PopupBox>
-      {isLogin ? (
+      {ownComment || ownPost ? (
         <>
-          <PopupList>수정</PopupList>
-          <PopupList>삭제</PopupList>
+          <PopupList onClick={handleEditOpen}>수정</PopupList>
+          <PopupList
+            onClick={
+              ownComment
+                ? handleCommentDelete
+                : () => {
+                    handleModalOpen({ modalDispatch: setIsPostDeleteModal });
+                    setIsMorePopup && setIsMorePopup(false);
+                  }
+            }
+          >
+            삭제
+          </PopupList>
         </>
       ) : (
-        <PopupList>신고하기</PopupList>
+        <PopupList
+          onClick={() => {
+            setContentType(contentType);
+            setReportedContent(reportedContent);
+            setCurrentReportData(() => {
+              return {
+                postId: postId,
+                commentId: commentId,
+                replyCommentId: replyId,
+              };
+            });
+            setIsMorePopup && setIsMorePopup(false);
+            handleModalOpen({ modalDispatch: setIsPostOrCommentReportModal });
+          }}
+        >
+          신고하기
+        </PopupList>
       )}
     </PopupBox>
   );

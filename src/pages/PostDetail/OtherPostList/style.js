@@ -21,6 +21,11 @@ const TableRow = styled.tr`
     ${({ theme: { colors } }) => {
       return colors.gray['40'];
     }};
+  &:hover {
+    background-color: ${({ theme: { colors } }) => {
+      return colors.gray['10'];
+    }};
+  }
   > td {
     &:nth-child(1n) {
       ${small_600}

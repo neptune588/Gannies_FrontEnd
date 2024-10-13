@@ -4,6 +4,7 @@ export default function useSelectorList() {
   const navBarOptions = useSelector((state) => state.navBarOptions);
   const auth = useSelector((state) => state.auth);
   const modalsControl = useSelector((state) => state.modalsControl);
+  const locations = useSelector((state) => state.locations);
 
   const { currentActiveMenuNumber, currentBoardType, bannerTitle, bannerDesc } =
     navBarOptions;
@@ -18,8 +19,15 @@ export default function useSelectorList() {
     suspensionEndDate,
     suspensionReason,
   } = auth;
-  const { isHospitalSearchModal, isUserBanModal, isDeleteModal } =
-    modalsControl;
+
+  const {
+    isHospitalSearchModal,
+    isUserBanModal,
+    isPostDeleteModal,
+    isPostOrCommentReportModal,
+    scrollLocation,
+  } = modalsControl;
+  const { comentWrapperLocation } = locations;
 
   return {
     currentActiveMenuNumber,
@@ -37,6 +45,9 @@ export default function useSelectorList() {
     suspensionReason,
     isHospitalSearchModal,
     isUserBanModal,
-    isDeleteModal,
+    isPostDeleteModal,
+    isPostOrCommentReportModal,
+    scrollLocation,
+    comentWrapperLocation,
   };
 }

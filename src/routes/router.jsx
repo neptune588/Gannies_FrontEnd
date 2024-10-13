@@ -27,7 +27,6 @@ import SignUp from '@/pages/SignUp/SignUp';
 import EmailVerification from '@/pages/EmailVerification';
 import PrivateRoute from '@/routes/PrivateRoute';
 import SignOutRoute from '@/routes/SignOutRoute';
-import LoadingCircle from '@/components/LoadingCircle';
 
 export const router = createBrowserRouter([
   {
@@ -48,10 +47,18 @@ export const router = createBrowserRouter([
         ),
         children: [
           {
-            path: 'create-community-post',
+            path: '/community/:boardType/create-community-post',
             element: <CreateCommunityPost />,
           },
         ],
+      },
+      {
+        path: '/community/:boardType',
+        element: <Community />,
+      },
+      {
+        path: '/community/:boardType/post/:postId',
+        element: <PostDetail />,
       },
       {
         path: '/community/detail',
@@ -169,9 +176,5 @@ export const router = createBrowserRouter([
         element: <SignUpSuccess />,
       },
     ],
-  },
-  {
-    element: <LoadingCircle />,
-    path: '/test',
   },
 ]);

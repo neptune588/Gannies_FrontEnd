@@ -1,50 +1,67 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import {
   setIsHospitalModal,
-  setIsDeleteModal,
+  setIsPostDeleteModal,
   setIsUserBanModal,
+  setIsPostOrCommentReportModal,
+  setSaveScrollLocation,
 } from '@/store/modalsControl';
 
 import useSelectorList from '@/hooks/useSelectorList';
 
 export default function useModalsControl() {
+  const firstRunBlockToModalEffect = useRef(true);
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const [currentScrollLoaction, setCurrentScrollLoaction] = useState(null);
-  const { isHospitalSearchModal, isDeleteModal, isUserBanModal } =
-    useSelectorList();
+  const {
+    isHospitalSearchModal,
+    isPostDeleteModal,
+    isUserBanModal,
+    isPostOrCommentReportModal,
+    scrollLocation,
+  } = useSelectorList();
 
   const handleModalOpen = ({ modalDispatch }) => {
-    setCurrentScrollLoaction(window.scrollY);
+    dispatch(setSaveScrollLocation(window.scrollY));
     dispatch(modalDispatch(true));
-    //console.log(currentScrollLoaction);
   };
 
   const handleModalClose = ({ modalDispatch }) => {
     dispatch(modalDispatch(false));
     setTimeout(() => {
-      window.scroll({ top: currentScrollLoaction, left: 0 });
+      window.scroll({ top: scrollLocation, left: 0 });
     }, 10);
   };
 
   useEffect(() => {
-    const modalState = isHospitalSearchModal || isDeleteModal || isUserBanModal;
+    if (firstRunBlockToModalEffect.current) {
+      firstRunBlockToModalEffect.current = false;
+      return;
+    }
+
+    const modalState =
+      isHospitalSearchModal ||
+      isPostDeleteModal ||
+      isUserBanModal ||
+      isPostOrCommentReportModal;
 
     if (modalState) {
       dispatch(setIsHospitalModal(false));
-      dispatch(setIsDeleteModal(false));
+      dispatch(setIsPostDeleteModal(false));
       dispatch(setIsUserBanModal(false));
+      dispatch(setIsPostOrCommentReportModal(false));
     }
   }, [location]);
 
   return {
     isHospitalSearchModal,
-    isDeleteModal,
+    isPostDeleteModal,
     isUserBanModal,
+    isPostOrCommentReportModal,
     handleModalOpen,
     handleModalClose,
   };

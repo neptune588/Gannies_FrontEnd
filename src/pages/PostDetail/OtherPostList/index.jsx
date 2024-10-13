@@ -7,21 +7,30 @@ import {
 } from '@/pages/PostDetail/OtherPostList/style';
 
 export default function OtherPostList({
-  currentPostId,
+  number,
+  title,
+  nickname,
+  createDate,
+  postViewCount,
+  likeCount,
+  numberOfCommentsAndReplies,
   ownPostId,
-  commentLength = 150,
-  postViewCount = 1500,
-  likeCount = 1500,
+  currentPostId,
+  handlePostClick,
 }) {
   return (
-    <TableRow $currentPostId={currentPostId} $ownPostId={ownPostId}>
-      <td>01</td>
+    <TableRow
+      $currentPostId={currentPostId}
+      $ownPostId={ownPostId}
+      onClick={handlePostClick || undefined}
+    >
+      <td>{number}</td>
       <td>
-        자연 친화적인 라이프 스타일을 위한 환경 보호 방법
-        <CommentLengthView>[{commentLength}]</CommentLengthView>
+        {title}
+        <CommentLengthView>[{numberOfCommentsAndReplies}]</CommentLengthView>
       </td>
-      <td>동그레</td>
-      <td>2024-03-27</td>
+      <td>{nickname}</td>
+      <td>{createDate}</td>
       <td>
         <Eye postViewCount={postViewCount} />
       </td>
