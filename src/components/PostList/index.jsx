@@ -18,6 +18,7 @@ import Eye from '@/components/Icons/Eye';
 import HeartInactive from '@/components/Icons/HeartInactive';
 import { useState } from 'react';
 import { cancelPostScrap, postScrap } from '@/api/scrapApi';
+import useUserState from '@/hooks/useUserState';
 
 function PostList({
   postNumber = null,
@@ -29,6 +30,8 @@ function PostList({
   date = null,
   pageName = 'home',
   scrapViewState = false,
+  boardType = null,
+  postId = null,
 }) {
   const [scrapClickState, setScrapClickState] = useState(true);
 
@@ -54,8 +57,22 @@ function PostList({
     }
   };
 
+  const { navigateBasedOnState } = useUserState();
+
+  const handlePostClick = async (postId) => {
+    navigateBasedOnState(
+      `/community/${boardType}/post/${postId}`,
+      'approved_member'
+    );
+  };
+
   return (
-    <PostWrapper $pageName={pageName}>
+    <PostWrapper
+      $pageName={pageName}
+      onClick={() => {
+        handlePostClick(postId);
+      }}
+    >
       <PostLeftBox>
         {postNumber && <PostNumber>{postNumber}</PostNumber>}
         {category && <Category $pageName={pageName}>{category}</Category>}

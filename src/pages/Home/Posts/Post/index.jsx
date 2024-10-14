@@ -80,6 +80,8 @@ function Post({ title, boardType }) {
               views={post.viewCounts}
               likes={post.likeCounts}
               date={post.createAt}
+              boardType={boardType}
+              postId={post.postId}
             />
           );
         })}
