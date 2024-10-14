@@ -37,7 +37,7 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: '/community',
+        path: '/community/:boardType',
         element: <Community />,
       },
       {
@@ -47,22 +47,20 @@ export const router = createBrowserRouter([
         ),
         children: [
           {
-            path: '/community/:boardType/create-community-post',
+            path: ':boardType/create-community-post',
             element: <CreateCommunityPost />,
           },
         ],
       },
       {
-        path: '/community/:boardType',
-        element: <Community />,
-      },
-      {
-        path: '/community/:boardType/post/:postId',
-        element: <PostDetail />,
-      },
-      {
-        path: '/community/detail',
-        element: <PostDetail />,
+        path: '/community',
+        element: <PrivateRoute minStatus='email_verified' />,
+        children: [
+          {
+            path: ':boardType/post/:postId',
+            element: <PostDetail />,
+          },
+        ],
       },
     ],
   },
