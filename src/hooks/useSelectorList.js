@@ -8,7 +8,18 @@ export default function useSelectorList() {
 
   const { currentActiveMenuNumber, currentBoardType, bannerTitle, bannerDesc } =
     navBarOptions;
-  const { isLogin, userId, isTempPassword } = auth;
+  const {
+    isLogin,
+    userId,
+    membershipStatus,
+    isSuspended,
+    rejected,
+    rejectedReason,
+    suspensionDuration,
+    suspensionEndDate,
+    suspensionReason,
+  } = auth;
+
   const {
     isHospitalSearchModal,
     isUserBanModal,
@@ -25,7 +36,13 @@ export default function useSelectorList() {
     bannerDesc,
     isLogin,
     userId,
-    isTempPassword,
+    membershipStatus,
+    isSuspended,
+    rejected,
+    rejectedReason,
+    suspensionDuration,
+    suspensionEndDate,
+    suspensionReason,
     isHospitalSearchModal,
     isUserBanModal,
     isPostDeleteModal,

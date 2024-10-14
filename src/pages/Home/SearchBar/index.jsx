@@ -14,7 +14,7 @@ function SearchBar() {
   const [allowButton, setAllowButton] = useState(false);
 
   const handlePassword = (e) => {
-    setAllowButton(e.target.value.length >= 1 ? true : false);
+    setAllowButton(e.target.value.length >= 1);
     setText(e.target.value);
   };
 

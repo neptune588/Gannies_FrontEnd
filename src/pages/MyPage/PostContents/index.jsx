@@ -17,6 +17,7 @@ export default function PostContents({
   pageName,
   scrapViewState = null,
 }) {
+  console.log(postData);
   return (
     <>
       <PostsWrapper>
@@ -56,6 +57,8 @@ export default function PostContents({
                   date={formatDateToPost(list.createdAt)}
                   pageName={pageName}
                   scrapViewState={scrapViewState}
+                  postId={list.postId}
+                  boardType={list.boardType}
                 />
               );
             })}

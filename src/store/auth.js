@@ -2,26 +2,39 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isLogin: false,
+  isSuspended: null,
+  membershipStatus: null,
+  rejected: null,
   userId: null,
+  nickname: null,
 };
 
-//리듀서에서 return 하는 값은 해당 리듀서의 새로운 상태
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
     setLogin(state, action) {
-      const { userId } = action.payload;
-      console.log(userId);
-
-      state.isLogin = true;
-      state.userId = userId;
+      return {
+        ...state,
+        isLogin: true,
+        ...action.payload,
+      };
     },
     setLogout() {
       return initialState;
     },
+    setState(state, action) {
+      return {
+        ...state,
+        ...Object.fromEntries(
+          Object.entries(action.payload).filter(
+            ([, value]) => value !== undefined
+          )
+        ),
+      };
+    },
   },
 });
 
-export const { setLogin, setLogout } = authSlice.actions;
+export const { setLogin, setLogout, setState } = authSlice.actions;
 export default authSlice.reducer;

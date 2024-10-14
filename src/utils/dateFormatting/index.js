@@ -7,3 +7,7 @@ export const formatDateToPost = (date) => {
 
   return `${year}-${month}-${day}`;
 };
+
+export const formatDateToSuspend = (date) => {
+  return date.replace('T', '').replace('Z', '').slice(0, -4);
+};
