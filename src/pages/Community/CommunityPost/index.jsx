@@ -1,4 +1,4 @@
-import Highlighter from 'react-highlight-words';
+import DOMPurify from 'dompurify';
 
 import Eye from '@/components/Icons/Eye';
 import HeartInactive from '@/components/Icons/HeartInactive';
@@ -29,15 +29,11 @@ export default function CommunityPost({
     <TableRow onClick={handlePostClick}>
       <PostNumberBox>{number}</PostNumberBox>
       <PostTitleBox>
-        {searchKeyword && (
-          <Highlighter
-            searchWords={[searchKeyword]}
-            autoEscape={true}
-            textToHighlight={searchKeyword}
-            highlightClassName={'.highlight'}
-          />
-        )}
-        {title}
+        <p
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(title),
+          }}
+        ></p>
         <CommentLength>{numberOfCommentsAndReplies}</CommentLength>
       </PostTitleBox>
       <PostNicknameBox>{nickname}</PostNicknameBox>

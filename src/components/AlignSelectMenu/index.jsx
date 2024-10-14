@@ -92,7 +92,10 @@ export default function AlignSelectMenu({
   return (
     <SelectContainer ref={selectRef} $isSearch={isSearch}>
       <button onClick={toggleDropdown}>
-        <p>{`${selectedOption} ${searchedListLength && `(${searchedListLength})`}`}</p>
+        <p>
+          {`${selectedOption} `}
+          {searchedListLength && <span>({searchedListLength})</span>}
+        </p>
         <img src={isOpen ? upArrow : bottomArrow} alt='select-arrow' />
       </button>
       {isOpen && (

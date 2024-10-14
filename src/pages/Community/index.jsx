@@ -247,7 +247,10 @@ export default function Community({ isSearch, searchKeyword }) {
                       }}
                       searchKeyword={searchKeyword}
                       number={String(post.postId).padStart(2, '0')}
-                      title={post.title}
+                      title={post.title.replace(
+                        searchKeyword,
+                        `<span>${searchKeyword}</span>`
+                      )}
                       nickname={post.user.nickname}
                       createDate={formatDateToPost(post.createdAt)}
                       postViewCount={parseInt(post.viewCounts, 10)}

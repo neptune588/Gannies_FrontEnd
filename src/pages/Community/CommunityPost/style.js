@@ -36,6 +36,7 @@ const PostNumberBox = styled.td`
 `;
 
 const PostTitleBox = styled.td`
+  display: flex;
   flex: 0 0 50rem;
   ${ellipsisStyle}
   ${small_400}
@@ -43,8 +44,8 @@ const PostTitleBox = styled.td`
     return colors.black;
   }};
 
-  > span {
-    &:first-child {
+  > p {
+    > span {
       color: ${({ theme: { colors } }) => {
         return colors.primary;
       }};
