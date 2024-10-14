@@ -27,7 +27,7 @@ function Success() {
 
   const sendEmail = async () => {
     try {
-      await userSignUpEmail(email);
+      await userSignUpEmail({ email: email });
       alert('이메일을 전송하였습니다.');
     } catch (error) {
       console.log(error.response);
