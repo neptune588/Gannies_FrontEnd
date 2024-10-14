@@ -17,20 +17,29 @@ function Success() {
 
   useEffect(() => {
     const fetch = async () => {
-      if (!email) {
-        const response = await checkMemberState();
-        setEmail(response.data.email);
+      try {
+        if (!email) {
+          const response = await checkMemberState();
+          setEmail(response.data.email);
+        }
+      } catch (error) {
+        alert(
+          '회원 상태를 확인하는 중 오류가 발생했습니다. 다시 시도해주세요.'
+        );
       }
     };
+
     fetch();
   }, []);
 
   const sendEmail = async () => {
     try {
       await userSignUpEmail(email);
-      alert('이메일을 전송하였습니다.');
+      alert('이메일을 전송에 성공하였습니다.');
     } catch (error) {
-      console.log(error.response);
+      alert(
+        '이메일을 전송하는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
+      );
     }
   };
 

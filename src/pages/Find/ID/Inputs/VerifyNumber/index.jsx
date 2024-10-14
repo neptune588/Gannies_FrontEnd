@@ -49,10 +49,10 @@ function VerifyNumber({ phoneNumber, allow, handleAllow }) {
         handleAllow(2, true);
         setInstructionState(true);
       }
-      console.log(response);
     } catch (error) {
       handleAllow(2, false);
       setInstructionState(false);
+      alert('인증번호 발급 확인 에러');
     }
   };
 

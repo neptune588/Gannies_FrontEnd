@@ -37,7 +37,7 @@ export default function PersonalInfo() {
           setNickname(response.data.nickname);
         }
       } catch (error) {
-        console.log(error);
+        alert('정보를 가져오는 중 오류가 발생했습니다. 다시 시도해주세요.');
       }
     };
 
@@ -59,13 +59,16 @@ export default function PersonalInfo() {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    const response = await changeUserNickname({ newNickname: nickname });
-    setInfo((prev) => ({
-      ...prev,
-      nickname: nickname,
-    }));
-    setIsEditable(!isEditable);
-    console.log(response);
+    try {
+      await changeUserNickname({ newNickname: nickname });
+      setInfo((prev) => ({
+        ...prev,
+        nickname: nickname,
+      }));
+      setIsEditable(!isEditable);
+    } catch (error) {
+      alert('닉네임 변경 중 오류가 발생했습니다. 다시 시도해주세요.');
+    }
   };
 
   const handleWithdrawal = async (e) => {

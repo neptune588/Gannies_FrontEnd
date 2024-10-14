@@ -40,11 +40,11 @@ function Department() {
   };
 
   const setCertificationUrl = async (s3Url) => {
-    await handleDataToSend('certificationDocumentUrl', s3Url);
+    handleDataToSend('certificationDocumentUrl', s3Url);
   };
 
   const setUsername = async (username) => {
-    await handleDataToSend('username', username);
+    handleDataToSend('username', username);
   };
 
   useEffect(() => {
@@ -69,7 +69,7 @@ function Department() {
             state: { email: data.email },
           });
         } catch (error) {
-          console.error('Error during signup:', error);
+          alert('회원가입 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
         }
       };
       signUpProcess();
@@ -90,7 +90,7 @@ function Department() {
       });
       setUsername(ocr.data.name);
     } catch (error) {
-      console.log(error.response);
+      alert('회원가입 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
     }
   };
 

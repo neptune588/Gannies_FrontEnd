@@ -33,8 +33,6 @@ export function MainLayout() {
 
   useEffect(() => {
     const url = location.pathname;
-
-    console.log(boardType);
     if (url.startsWith('/community')) {
       const nav = navBarMenuData.find(
         (navMenu) => boardType === navMenu.boardType

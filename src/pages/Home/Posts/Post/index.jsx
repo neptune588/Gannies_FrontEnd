@@ -31,11 +31,15 @@ function Post({ title, boardType }) {
   };
 
   const fetch = async () => {
-    const res = await getPosts(boardType, {
-      limit: mainPageViewLimit,
-      sortType: 'LIKES',
-    });
-    setPosts(res.data.items);
+    try {
+      const res = await getPosts(boardType, {
+        limit: mainPageViewLimit,
+        sortType: 'LIKES',
+      });
+      setPosts(res.data.items);
+    } catch (error) {
+      alert('게시물을 가져오는 중 오류가 발생했습니다. 다시 시도해주세요.');
+    }
   };
 
   const foundMenu = () => {

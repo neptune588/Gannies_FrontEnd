@@ -47,7 +47,7 @@ function Email({ allow, handleAllow }) {
           }
         }
       } catch (error) {
-        console.error('Error checking email duplicate:', error);
+        alert('이메일 중복 확인 중 오류가 발생했습니다. 다시 시도해주세요.');
       }
     };
     if (!isValid) handleAllow(1, false);

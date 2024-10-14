@@ -54,10 +54,9 @@ function PhoneNumber({ allow, handleAllow }) {
   const handleSendButton = async () => {
     try {
       handleAllow(1, true);
-      const response = await sendPhoneNumber({ phoneNumber: phoneNumber });
-      console.log(response);
+      await sendPhoneNumber({ phoneNumber: phoneNumber });
     } catch (error) {
-      alert('error');
+      alert('휴대폰 인증번호 발급 에러');
     }
   };
 

@@ -41,12 +41,15 @@ export default function PasswordChange() {
 
   const handleModify = async (e) => {
     e.preventDefault();
-    console.log(currentPassword, newPassword);
-    const response = await changeUserPassword({
-      oldPassword: currentPassword,
-      newPassword: newPassword,
-    });
-    console.log(response);
+
+    try {
+      await changeUserPassword({
+        oldPassword: currentPassword,
+        newPassword: newPassword,
+      });
+    } catch (error) {
+      alert('비밀번호 변경 중 오류가 발생했습니다. 다시 시도해주세요.');
+    }
   };
 
   return (
