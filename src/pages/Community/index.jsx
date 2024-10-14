@@ -16,9 +16,13 @@ import {
   TableWrapper,
   TableHeader,
   PageWrapper,
+  NoSearchResults,
 } from '@/pages/Community/style';
 
-import { communityPageAlignSelectOptions } from '@/components/AlignSelectMenu/data';
+import {
+  communityPageAlignSelectOptions,
+  SearchPageSelectOptions,
+} from '@/components/AlignSelectMenu/data';
 
 import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
 
@@ -31,7 +35,8 @@ import { pageViewLimit } from '@/utils/itemLimit';
 import Modal from '@/components/Modal';
 import useUserState from '@/hooks/useUserState';
 
-export default function Community() {
+export default function Community({ isSearch, searchKeyword }) {
+  const navigate = useNavigate();
   const { boardType } = useParams();
 
   const firstRunBlockToSetCurPageNumberEffect = useRef(true);
@@ -40,8 +45,11 @@ export default function Community() {
 
   const {
     items: currentPosts,
+    totalItems: postsTotalLength,
+    isLoading,
     currentPageNumber,
     groupedPageNumbers: pageNumbers,
+    setIsLoading,
     getDataAndSetPageNumbers,
     handlePageNumberClick,
     handlePrevPageClick,
@@ -54,14 +62,29 @@ export default function Community() {
   });
   const { navigateBasedOnState } = useUserState();
 
-  const [optionList] = useState(communityPageAlignSelectOptions);
-  const [selectedOption, setSelectedOption] = useState(
+  const [alignOptionList] = useState(communityPageAlignSelectOptions);
+  const [boardTypeOptionList] = useState(SearchPageSelectOptions);
+  const [selectedAlignOption, setSelectedAlignOption] = useState(
     communityPageAlignSelectOptions[0].label
   );
-  const [query, setQuery] = useState({
-    page: currentPageNumber,
-    limit: communityPostMaxLimit,
+  //select menu로 label path 동시에 변경
+  const [selectedBoardOption, setSelectedBoardOption] = useState({
+    label: SearchPageSelectOptions[0].label,
+    path: SearchPageSelectOptions[0].path,
   });
+
+  const [query, setQuery] = useState(
+    isSearch
+      ? {
+          page: currentPageNumber,
+          limit: communityPostMaxLimit,
+          search: searchKeyword,
+        }
+      : {
+          page: currentPageNumber,
+          limit: communityPostMaxLimit,
+        }
+  );
 
   const handleSelectedOption = ({ ...optionalQuery }) => {
     setQuery({
@@ -95,7 +118,7 @@ export default function Community() {
     }
   };
 
-  const handlePostClick = async (postId) => {
+  const handlePostClick = async ({ postBoardType, postId }) => {
     // if (checkIsLogin()) {
     //   window.scroll({ top: 0, left: 0 });
     //   navigate(`/community/${boardType}/post/${postId}`);
@@ -103,14 +126,19 @@ export default function Community() {
     //   alert('로그인을 하셔야 이용 가능합니다!');
     //   navigate('/sign-in');
     // }
+    window.scroll({ top: 0, left: 0 });
     navigateBasedOnState(
-      `/community/${boardType}/post/${postId}`,
+      `/community/${postBoardType}/post/${postId}`,
       'approved_member'
     );
   };
 
   useEffect(() => {
-    getDataAndSetPageNumbers(() => getPosts(boardType, query));
+    getDataAndSetPageNumbers(() =>
+      isSearch
+        ? getPosts(selectedBoardOption.path, query)
+        : getPosts(boardType, query)
+    );
     //console.log('초기 실행');
   }, []);
 
@@ -135,85 +163,131 @@ export default function Community() {
     }
 
     resetPageNumber();
-    setQuery({ page: currentPageNumber, limit: communityPostMaxLimit });
-    setSelectedOption(communityPageAlignSelectOptions[0].label);
+
+    if (isSearch) {
+      setQuery({
+        page: currentPageNumber,
+        limit: communityPostMaxLimit,
+        search: searchKeyword,
+      });
+    } else {
+      setQuery({ page: currentPageNumber, limit: communityPostMaxLimit });
+      setSelectedAlignOption(communityPageAlignSelectOptions[0].label);
+    }
 
     //console.log('reset effect 실행');
-  }, [boardType]);
+  }, [
+    boardType,
+    selectedBoardOption.label,
+    selectedBoardOption.path,
+    searchKeyword,
+  ]);
 
   useEffect(() => {
     if (firstRunBlockToSetQueryEffect.current) {
       firstRunBlockToSetQueryEffect.current = false;
       return;
     }
-    getDataAndSetPageNumbers(() => getPosts(boardType, query));
+    getDataAndSetPageNumbers(() =>
+      isSearch
+        ? getPosts(selectedBoardOption.path, query)
+        : getPosts(boardType, query)
+    );
     //console.log('query effect 실행');
   }, [query]);
 
   return (
     <>
-      <Modal />
-      <CommunityBanner>
-        <CommunityBannerText />
-      </CommunityBanner>
-      <TableWrapper>
-        <ContentsAlignBox>
-          <PostCreateButton onClick={handlePostCreateClick}>
-            <img src={brush} alt='create-button' />
-            게시글 작성
-          </PostCreateButton>
-          <AlignSelectMenu
-            optionList={optionList}
-            handleSelectedOption={handleSelectedOption}
-            selectedOption={selectedOption}
-            setSelectedOption={setSelectedOption}
-          />
-        </ContentsAlignBox>
-        <table>
-          <thead>
-            <TableHeader>
-              <th>
-                <p>번호</p>
-                <p>제목</p>
-              </th>
-              <th>
-                <p>닉네임/날짜/조회수/좋아요 수</p>
-              </th>
-            </TableHeader>
-          </thead>
-          <tbody>
-            {currentPosts?.map((post) => {
-              return (
-                <CommunityPost
-                  key={uuid()}
-                  handlePostClick={() => {
-                    handlePostClick(post.postId);
-                  }}
-                  number={String(post.postId).padStart(2, '0')}
-                  title={post.title}
-                  nickname={post.user.nickname}
-                  createDate={formatDateToPost(post.createdAt)}
-                  postViewCount={parseInt(post.viewCounts, 10)}
-                  likeCount={parseInt(post.likeCounts, 10)}
-                  numberOfCommentsAndReplies={parseInt(
-                    post.numberOfCommentsAndReplies,
-                    10
-                  )}
+      {!isLoading && currentPosts?.length === 0 ? (
+        <NoSearchResults>작성 된 게시물이 없습니다.</NoSearchResults>
+      ) : (
+        <>
+          {!isSearch && (
+            <CommunityBanner>
+              <CommunityBannerText />
+            </CommunityBanner>
+          )}
+          <TableWrapper>
+            <ContentsAlignBox>
+              {isSearch ? (
+                <AlignSelectMenu
+                  isSearch={isSearch}
+                  searchedListLength={postsTotalLength}
+                  optionList={boardTypeOptionList}
+                  selectedOption={selectedBoardOption.label}
+                  setSelectedOption={setSelectedBoardOption}
                 />
-              );
-            })}
-          </tbody>
-        </table>
-      </TableWrapper>
-      <PageWrapper>
-        <Pagination
-          pageNumbers={pageNumbers}
-          currentPageNumber={currentPageNumber}
-          handlePageNumberClick={handlePageNumberClick}
-          handlePrevPageClick={handlePrevPageClick}
-          handleNextPageClick={handleNextPageClick}
-        />
-      </PageWrapper>
+              ) : (
+                <>
+                  <PostCreateButton onClick={handlePostCreateClick}>
+                    <img src={brush} alt='create-button' />
+                    게시글 작성
+                  </PostCreateButton>
+                  <AlignSelectMenu
+                    optionList={alignOptionList}
+                    handleSelectedOption={handleSelectedOption}
+                    selectedOption={selectedAlignOption}
+                    setSelectedOption={setSelectedAlignOption}
+                  />
+                </>
+              )}
+            </ContentsAlignBox>
+            <table>
+              <thead>
+                <TableHeader>
+                  <th>
+                    <p>번호</p>
+                    <p>제목</p>
+                  </th>
+                  <th>
+                    <p>닉네임/날짜/조회수/좋아요 수</p>
+                  </th>
+                </TableHeader>
+              </thead>
+              <tbody>
+                {currentPosts?.map((post, idx) => {
+                  return (
+                    <CommunityPost
+                      key={uuid()}
+                      handlePostClick={() => {
+                        handlePostClick({
+                          postBoardType: post.boardType,
+                          postId: post.postId,
+                        });
+                      }}
+                      searchKeyword={searchKeyword}
+                      number={String(post.postId).padStart(2, '0')}
+                      title={post.title.replace(
+                        searchKeyword,
+                        `<span>${searchKeyword}</span>`
+                      )}
+                      nickname={post.user.nickname}
+                      createDate={formatDateToPost(post.createdAt)}
+                      postViewCount={parseInt(post.viewCounts, 10)}
+                      likeCount={parseInt(post.likeCounts, 10)}
+                      numberOfCommentsAndReplies={parseInt(
+                        post.numberOfCommentsAndReplies,
+                        10
+                      )}
+                    />
+                  );
+                })}
+              </tbody>
+            </table>
+          </TableWrapper>
+          {pageNumbers?.length > 0 && (
+            <PageWrapper>
+              <Pagination
+                pageNumbers={pageNumbers}
+                currentPageNumber={currentPageNumber}
+                handlePageNumberClick={handlePageNumberClick}
+                handlePrevPageClick={handlePrevPageClick}
+                handleNextPageClick={handleNextPageClick}
+              />
+            </PageWrapper>
+          )}
+        </>
+      )}
     </>
   );
 }

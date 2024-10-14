@@ -9,6 +9,8 @@ export default function useFetchAndPaginate({
 
   const [items, setItems] = useState([]);
   const [totalItems, setTotalItems] = useState(0);
+  //결과물 0과 초기상태에서 FETCH할떄를 구분하기 위한 상태.
+  const [isLoading, setIsLoading] = useState(true);
   const [currentPageNumber, setCurrentPageNumber] = useState(defaultPageNumber);
   //전체 페이지 배열 [[][][][]...의 형태]
   const [pageTotalNumbers, setPageTotalNumbers] = useState([]);
@@ -18,12 +20,14 @@ export default function useFetchAndPaginate({
   const [currentGroupOrder, setCurrentGroupOrder] = useState(0);
 
   const getDataAndSetPageNumbers = async (getData) => {
+    setIsLoading(true);
     try {
       const res = await getData();
       const { items, totalItems } = res.data;
 
       setItems(items);
       setTotalItems(totalItems);
+      setIsLoading(false);
 
       setPageTotalNumbers(() => {
         let arrNumber = 0;
@@ -151,6 +155,7 @@ export default function useFetchAndPaginate({
 
   return {
     items,
+    isLoading,
     totalItems,
     itemMaxLimit,
     pageTotalNumbers,
@@ -158,6 +163,7 @@ export default function useFetchAndPaginate({
     currentGroupOrder,
     groupedPageNumbers,
     setItems,
+    setIsLoading,
     setCurrentPageNumber,
     setCurrentGroupOrder,
     getDataAndSetPageNumbers,

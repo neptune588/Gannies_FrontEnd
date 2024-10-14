@@ -10,11 +10,13 @@ import {
   Logo,
   LoginButton,
   SignUpButton,
+  SearchBox,
   Input,
   LogoutButton,
   MypageButton,
 } from '@/layouts/Header/style';
 
+import usePostSearch from '@/hooks/usePostSearch';
 import useSelectorList from '@/hooks/useSelectorList';
 
 import { setBoardType } from '@/store/navBarOptions';
@@ -29,21 +31,14 @@ function Header() {
   const location = useLocation().pathname;
   const dispatch = useDispatch();
 
-  const [text, setText] = useState('');
   const [showSearchBar, setShowSearchBar] = useState(false);
-
   const { isLogin } = useSelectorList();
+  const { searchValue, searchBarRef, handleSearchValueChange, handleSearch } =
+    usePostSearch();
+  const { navigateBasedOnState } = useUserState();
 
-  useEffect(() => {
-    if (location.startsWith('/community') || location.startsWith('/mypage')) {
-      setShowSearchBar(true);
-    } else {
-      setShowSearchBar(false);
-    }
-  }, [location]);
-
-  const handleSearchBar = (e) => {
-    setText(e.target.value);
+  const handleMyPage = () => {
+    navigateBasedOnState('/mypage/profile/edit', 'email_verified');
   };
 
   const handleLogout = async () => {
@@ -58,11 +53,17 @@ function Header() {
     }
   };
 
-  const { navigateBasedOnState } = useUserState();
-
-  const handleMyPage = () => {
-    navigateBasedOnState('/mypage/profile/edit', 'email_verified');
-  };
+  useEffect(() => {
+    if (
+      location.startsWith('/community') ||
+      location.startsWith('/mypage') ||
+      location.startsWith('/post')
+    ) {
+      setShowSearchBar(true);
+    } else {
+      setShowSearchBar(false);
+    }
+  }, [location]);
 
   return (
     <Wrapper>
@@ -82,14 +83,18 @@ function Header() {
         <img src={logo} alt='logo' />
       </Logo>
       {showSearchBar && (
-        <form>
+        <SearchBox>
           <img src={search} alt='searchIcon' />
           <Input
+            ref={searchBarRef}
             placeholder='관심있는 이야기를 검색해보세요'
-            value={text}
-            onChange={handleSearchBar}
+            value={searchValue}
+            onChange={(e) => {
+              handleSearchValueChange(e.target.value);
+            }}
+            onKeyUp={handleSearch}
           />
-        </form>
+        </SearchBox>
       )}
       {isLogin ? (
         <>

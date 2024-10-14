@@ -36,12 +36,21 @@ const PostNumberBox = styled.td`
 `;
 
 const PostTitleBox = styled.td`
+  display: flex;
   flex: 0 0 50rem;
   ${ellipsisStyle}
   ${small_400}
   color: ${({ theme: { colors } }) => {
     return colors.black;
   }};
+
+  > p {
+    > span {
+      color: ${({ theme: { colors } }) => {
+        return colors.primary;
+      }};
+    }
+  }
 `;
 
 const PostNicknameBox = styled.td`

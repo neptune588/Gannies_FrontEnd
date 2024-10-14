@@ -3,7 +3,12 @@ import styled from 'styled-components';
 import { primaryColorBoxStyle } from '@/styles/commonStyle/box';
 import { postsHeaderStyle } from '@/styles/commonStyle/etc';
 import { paginationWrapperStyle } from '@/styles/commonStyle/wrapper';
-import { small_500, small_600 } from '@/styles/commonStyle/localTextStyle';
+import {
+  small_500,
+  small_600,
+  large_500,
+} from '@/styles/commonStyle/localTextStyle';
+import { centerAlignStyle } from '@/styles/commonStyle/etc';
 
 const ContentsAlignBox = styled.div`
   display: flex;
@@ -24,9 +29,6 @@ const PostCreateButton = styled.button`
   > img {
     width: 24px;
     height: 24px;
-  }
-  &:hover {
-    background-color: #2d6ab7;
   }
 `;
 
@@ -63,10 +65,18 @@ const PageWrapper = styled.section`
   margin: 50px auto 95px;
 `;
 
+const NoSearchResults = styled.p`
+  ${centerAlignStyle}
+  ${large_500}
+  
+  padding: 150px 0;
+`;
+
 export {
   ContentsAlignBox,
   PostCreateButton,
   TableWrapper,
   TableHeader,
   PageWrapper,
+  NoSearchResults,
 };

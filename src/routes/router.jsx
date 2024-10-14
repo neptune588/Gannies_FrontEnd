@@ -25,6 +25,7 @@ import UserApproval from '@/pages/Admin/UserApproval';
 import PostManagement from '@/pages/Admin/PostManagement';
 import SignUp from '@/pages/SignUp/SignUp';
 import EmailVerification from '@/pages/EmailVerification';
+import PostSearch from '@/pages/PostSearch';
 import PrivateRoute from '@/routes/PrivateRoute';
 import SignOutRoute from '@/routes/SignOutRoute';
 
@@ -51,6 +52,10 @@ export const router = createBrowserRouter([
             element: <CreateCommunityPost />,
           },
         ],
+      },
+      {
+        path: '/post/search/:keyword',
+        element: <PostSearch />,
       },
       {
         path: '/community/:boardType',
