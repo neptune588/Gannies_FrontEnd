@@ -23,13 +23,12 @@ function Department() {
   const { allow, handleAllow } = useAuthAllow([false, false]);
   const [file, setFile] = useState('');
 
-  // useEffect(() => {
-  //   steps[0] && steps[1]
-  //     ? navigate('/sign-up/department')
-  //     : navigate('/sign-up/identity');
-  // }, [steps, navigate]);
+  useEffect(() => {
+    steps[0] && steps[1]
+      ? navigate('/sign-up/department')
+      : navigate('/sign-up/identity');
+  }, [steps, navigate]);
 
-  // formData에 데이터 삽입
   const setFormData = ({ fields }) => {
     const formData = new FormData();
     formData.append('Content-Type', file.type);
@@ -44,6 +43,39 @@ function Department() {
     await handleDataToSend('certificationDocumentUrl', s3Url);
   };
 
+  const setUsername = async (username) => {
+    await handleDataToSend('username', username);
+  };
+
+  useEffect(() => {
+    if (dataToSend.certificationDocumentUrl && dataToSend.username) {
+      const signUpProcess = async () => {
+        try {
+          const data = {
+            nickname: '마마미',
+            email: 'kseng11@naver.com',
+            phoneNumber: '01094238723',
+            password: 'Qqwer1234!',
+            status: 'current_student',
+            certificationDocumentUrl:
+              'https://caugannies.s3.ap-northeast-2.amazonaws.com…24/10/14/71c96f52-1492-4b68-b97f-f7b807281a38.png',
+            username: '박뀨스',
+          };
+          await userSignUp(data);
+          await userSignUpEmail({
+            email: data.email,
+          });
+          navigate('/sign-up/success', {
+            state: { email: data.email },
+          });
+        } catch (error) {
+          console.error('Error during signup:', error);
+        }
+      };
+      signUpProcess();
+    }
+  }, [dataToSend]);
+
   const signUp = async () => {
     try {
       handleSteps(2, true);
@@ -52,17 +84,11 @@ function Department() {
       const formData = setFormData({ fields });
       const resS3Url = await certificatesImageUpload(url, formData);
       const s3Url = resS3Url.config.url + fields.key;
-      await setCertificationUrl(s3Url);
+      setCertificationUrl(s3Url);
       const ocr = await getOCR({
         imageUri: s3Url,
       });
-      // await userSignUp(dataToSend);
-      // await userSignUpEmail({
-      //   email: dataToSend.email,
-      // });
-      // navigate('/sign-up/success', {
-      //   state: { email: dataToSend.email },
-      // });
+      setUsername(ocr.data.name);
     } catch (error) {
       console.log(error.response);
     }

@@ -17,6 +17,7 @@ function SignUp() {
     password: '',
     status: '',
     certificationDocumentUrl: '',
+    username: '',
   });
 
   const handleSteps = (index, value) => {
