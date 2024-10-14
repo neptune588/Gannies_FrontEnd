@@ -1,3 +1,5 @@
+import DOMPurify from 'dompurify';
+
 import Eye from '@/components/Icons/Eye';
 import HeartInactive from '@/components/Icons/HeartInactive';
 
@@ -18,6 +20,7 @@ export default function CommunityPost({
   nickname,
   createDate,
   likeCount,
+  searchKeyword,
   postViewCount,
   numberOfCommentsAndReplies,
   handlePostClick,
@@ -26,7 +29,11 @@ export default function CommunityPost({
     <TableRow onClick={handlePostClick}>
       <PostNumberBox>{number}</PostNumberBox>
       <PostTitleBox>
-        {title}
+        <p
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(title),
+          }}
+        ></p>
         <CommentLength>{numberOfCommentsAndReplies}</CommentLength>
       </PostTitleBox>
       <PostNicknameBox>{nickname}</PostNicknameBox>

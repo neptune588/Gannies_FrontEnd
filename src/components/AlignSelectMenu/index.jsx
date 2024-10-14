@@ -9,9 +9,8 @@ import upArrow from '@/assets/icons/arrows/chevron_up.svg';
 
 const SelectContainer = styled.div`
   ${defaultBorderBoxStyle}
-  ${centerAlignStyle}
   ${xsmall_400}
-  width: 95px;
+  width: ${({ $isSearch }) => ($isSearch ? '155px' : '95px')};
   height: 35px;
   position: relative;
   > button {
@@ -36,7 +35,7 @@ const Dropdown = styled.div`
   position: absolute;
   top: 37px;
   left: -1px;
-  width: 95px;
+  width: ${({ $isSearch }) => ($isSearch ? '155px' : '95px')};
   background-color: white;
   z-index: 1000;
   ${defaultBorderBoxStyle}
@@ -44,14 +43,14 @@ const Dropdown = styled.div`
 
   button {
     color: ${(props) => props.theme.colors.gray[80]};
-    ${centerAlignStyle}
     cursor: pointer;
     margin: 1px 0px;
     ${xsmall_400};
     height: 28px;
-    width: 86px;
+    width: ${({ $isSearch }) => ($isSearch ? '100%' : '86px')};
     border-radius: 4px;
-
+    text-align: ${({ $isSearch }) => $isSearch && 'left'};
+    padding: ${({ $isSearch }) => $isSearch && '0 20px'};
     &:hover {
       background-color: ${(props) => props.theme.colors.secondary};
       color: ${(props) => props.theme.colors.primary};
@@ -62,6 +61,8 @@ const Dropdown = styled.div`
 export default function AlignSelectMenu({
   optionList,
   selectedOption,
+  isSearch,
+  searchedListLength,
   setSelectedOption,
   handleSelectedOption,
 }) {
@@ -89,21 +90,27 @@ export default function AlignSelectMenu({
   }, [isOpen]);
 
   return (
-    <SelectContainer ref={selectRef}>
+    <SelectContainer ref={selectRef} $isSearch={isSearch}>
       <button onClick={toggleDropdown}>
-        <p>{selectedOption}</p>
+        <p>
+          {`${selectedOption} `}
+          {searchedListLength && <span>({searchedListLength})</span>}
+        </p>
         <img src={isOpen ? upArrow : bottomArrow} alt='select-arrow' />
       </button>
       {isOpen && (
-        <Dropdown>
+        <Dropdown $isSearch={isSearch}>
           {optionList.map((option) => (
             <button
               key={uuid()}
               onClick={() => {
-                setSelectedOption(option.label);
+                if (isSearch) {
+                  setSelectedOption({ label: option.label, path: option.path });
+                } else {
+                  setSelectedOption(option.label);
+                  handleSelectedOption(option.query);
+                }
                 setIsOpen(false);
-
-                handleSelectedOption(option.query);
               }}
             >
               {option.label}

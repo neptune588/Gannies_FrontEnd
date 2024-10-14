@@ -17,26 +17,25 @@ export const Wrapper = styled.header`
   width: 1128px;
   ${medium_400}
 
-  > form {
-    width: 482px;
-    height: 40px;
-    border-radius: 100px;
-    border: 1px solid ${(props) => props.theme.colors.gray[40]};
-    display: flex;
-    align-items: center;
-    padding-left: 20px;
-    padding-right: 20px;
-    background-color: white;
-    margin-left: 162px;
-    > img {
-      width: 24px;
-      height: 24px;
-    }
-  }
-
   > span {
     cursor: default;
     color: ${(props) => props.theme.colors.primary};
+  }
+`;
+export const SearchBox = styled.div`
+  width: 482px;
+  height: 40px;
+  border-radius: 100px;
+  border: 1px solid ${(props) => props.theme.colors.gray[40]};
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-color: white;
+  margin-left: 162px;
+  > img {
+    width: 24px;
+    height: 24px;
   }
 `;
 

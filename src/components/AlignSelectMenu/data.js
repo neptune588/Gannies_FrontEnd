@@ -42,3 +42,38 @@ export const myPageAlignSelectOptions = [
     },
   },
 ];
+
+export const SearchPageSelectOptions = [
+  {
+    label: '전체',
+    path: 'all',
+  },
+  {
+    label: '이론정보',
+    path: 'theory',
+  },
+  {
+    label: '실습정보',
+    path: 'practice',
+  },
+  {
+    label: '국가고시준비',
+    path: 'exam',
+  },
+  {
+    label: '취업정보',
+    path: 'job',
+  },
+  {
+    label: '구인구직',
+    path: 'employment',
+  },
+  {
+    label: '이벤트',
+    path: 'event',
+  },
+  {
+    label: '공지사항',
+    path: 'notice',
+  },
+];
