@@ -28,6 +28,7 @@ import EmailVerification from '@/pages/EmailVerification';
 import PostSearch from '@/pages/PostSearch';
 import PrivateRoute from '@/routes/PrivateRoute';
 import SignOutRoute from '@/routes/SignOutRoute';
+import AdminSignIn from '@/pages/Admin/AdminSignIn';
 
 export const router = createBrowserRouter([
   {
@@ -38,11 +39,11 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: '/community',
+        path: '/community/:boardType',
         element: <Community />,
       },
       {
-        path: '/community',
+        path: '//community/:boardType',
         element: (
           <PrivateRoute minStatus='email_verified' blockSuspended={true} />
         ),
@@ -58,18 +59,14 @@ export const router = createBrowserRouter([
         element: <PostSearch />,
       },
       {
-        path: '/community/:boardType',
-        element: <Community />,
-      },
-      {
         path: '/community/:boardType/post/:postId',
         element: <PostDetail />,
       },
-      {
-        path: '/community/detail',
-        element: <PostDetail />,
-      },
     ],
+  },
+  {
+    path: '/admin/sign-in',
+    element: <AdminSignIn />,
   },
   {
     element: <AdminLayout />,

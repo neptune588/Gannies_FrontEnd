@@ -11,6 +11,7 @@ import {
 import { adminTabMenuData } from '@/pages/Admin/data';
 
 import useEventHandler from '@/hooks/useEventHandler';
+import useSelectorList from '@/hooks/useSelectorList';
 
 export default function AdminSideTab() {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ export default function AdminSideTab() {
   const { changeValue: currentActiveTabMenu, handleChange } = useEventHandler({
     changeDefaultValue: null,
   });
+  const { isLogin, isAdmin, nickname } = useSelectorList();
 
   const [tabData] = useState(adminTabMenuData);
 
@@ -41,7 +43,7 @@ export default function AdminSideTab() {
     <TabContainer>
       <ProfileBox>
         <div></div>
-        <p>관리자 입니다</p>
+        <p>{isLogin ? `${nickname} 입니다.` : '로그인 상태가 아닙니다.'}</p>
       </ProfileBox>
       <ul>
         {tabData?.map((tab) => {

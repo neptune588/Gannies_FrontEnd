@@ -1,9 +1,9 @@
-import { cookieApi } from '@/api/axiosInstance';
+import { api, cookieApi } from '@/api/axiosInstance';
 
 //관리자 로그인
-export const adminSignUp = async (signInData) => {
+export const adminSignIn = async (signInData) => {
   const url = '/admin/sign-in';
-  const response = await cookieApi.post(url, signInData);
+  const response = await api.post(url, signInData);
   return response;
 };
 
