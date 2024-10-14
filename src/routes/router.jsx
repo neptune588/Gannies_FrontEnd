@@ -26,7 +26,8 @@ import PostManagement from '@/pages/Admin/PostManagement';
 import SignUp from '@/pages/SignUp/SignUp';
 import EmailVerification from '@/pages/EmailVerification';
 import PostSearch from '@/pages/PostSearch';
-import PrivateRoute from './PrivateRoute';
+import PrivateRoute from '@/routes/PrivateRoute';
+import SignOutRoute from '@/routes/SignOutRoute';
 
 export const router = createBrowserRouter([
   {
@@ -37,25 +38,36 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        element: <PrivateRoute />,
+        path: '/community',
+        element: <Community />,
+      },
+      {
+        path: '/community',
+        element: (
+          <PrivateRoute minStatus='email_verified' blockSuspended={true} />
+        ),
         children: [
-          {
-            path: '/community/:boardType',
-            element: <Community />,
-          },
           {
             path: '/community/:boardType/create-community-post',
             element: <CreateCommunityPost />,
-          },
-          {
-            path: '/community/:boardType/post/:postId',
-            element: <PostDetail />,
           },
         ],
       },
       {
         path: '/post/search/:keyword',
         element: <PostSearch />,
+      },
+      {
+        path: '/community/:boardType',
+        element: <Community />,
+      },
+      {
+        path: '/community/:boardType/post/:postId',
+        element: <PostDetail />,
+      },
+      {
+        path: '/community/detail',
+        element: <PostDetail />,
       },
     ],
   },
@@ -64,44 +76,49 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/admin/report-history',
-        element: <PrivateRoute element={<ReportHistory />} />, // PrivateRoute 적용
+        element: <ReportHistory />,
       },
       {
         path: '/admin/member-management',
-        element: <PrivateRoute element={<MemberManagement />} />, // PrivateRoute 적용
+        element: <MemberManagement />,
       },
       {
         path: '/admin/user-approval',
-        element: <PrivateRoute element={<UserApproval />} />, // PrivateRoute 적용
+        element: <UserApproval />,
       },
       {
         path: '/admin/post-management',
-        element: <PrivateRoute element={<PostManagement />} />, // PrivateRoute 적용
+        element: <PostManagement />,
       },
     ],
   },
   {
-    element: <MypageLayout />,
+    element: <PrivateRoute minStatus='email_verified' />,
     children: [
       {
-        path: '/mypage/profile/edit',
-        element: <PersonalInfo />,
-      },
-      {
-        path: '/mypage/profile/change-password',
-        element: <PasswordChange />,
-      },
-      {
-        path: '/mypage/written-posts',
-        element: <WrittenPost />,
-      },
-      {
-        path: '/mypage/scrap-posts',
-        element: <ScrappedPost />,
-      },
-      {
-        path: '/mypage/written-comment',
-        element: <WrittenComment />,
+        element: <MypageLayout />,
+        children: [
+          {
+            path: '/mypage/profile/edit',
+            element: <PersonalInfo />,
+          },
+          {
+            path: '/mypage/profile/change-password',
+            element: <PasswordChange />,
+          },
+          {
+            path: '/mypage/written-posts',
+            element: <WrittenPost />,
+          },
+          {
+            path: '/mypage/scrap-posts',
+            element: <ScrappedPost />,
+          },
+          {
+            path: '/mypage/written-comment',
+            element: <WrittenComment />,
+          },
+        ],
       },
     ],
   },
@@ -109,54 +126,59 @@ export const router = createBrowserRouter([
     element: <HeaderLayout />,
     children: [
       {
-        path: '/sign-in',
-        element: <SignIn />,
-      },
-      {
-        path: '/sign-up',
-        element: <SignUp />,
+        element: <SignOutRoute />,
         children: [
           {
-            path: 'identity',
-            element: <Identity />,
+            path: '/sign-in',
+            element: <SignIn />,
           },
           {
-            path: 'info',
-            element: <Info />,
+            path: '/sign-up',
+            element: <SignUp />,
+            children: [
+              {
+                path: 'identity',
+                element: <Identity />,
+              },
+              {
+                path: 'info',
+                element: <Info />,
+              },
+              {
+                path: 'department',
+                element: <Department />,
+              },
+            ],
           },
           {
-            path: 'department',
-            element: <Department />,
+            path: '/find/id',
+            element: <ID />,
           },
           {
-            path: 'success',
-            element: <SignUpSuccess />,
+            path: '/find/id/success',
+            element: <FindIDSuccess />,
+          },
+          {
+            path: '/find/password',
+            element: <Password />,
+          },
+          {
+            path: '/find/password/success',
+            element: <FindPasswordSuccess />,
+          },
+          {
+            path: '/sign-up/email',
+            element: <EmailVerification />,
+          },
+          {
+            path: '*',
+            element: <Error404 />,
           },
         ],
       },
       {
-        path: '/find/id',
-        element: <ID />,
-      },
-      {
-        path: '/find/id/success',
-        element: <FindIDSuccess />,
-      },
-      {
-        path: '/find/password',
-        element: <Password />,
-      },
-      {
-        path: '/find/password/success',
-        element: <FindPasswordSuccess />,
-      },
-      {
-        path: '/sign-up/email',
-        element: <EmailVerification />,
-      },
-      {
-        path: '*',
-        element: <Error404 />,
+        path: '/sign-up/success',
+        element: <SignUpSuccess />,
       },
     ],
   },

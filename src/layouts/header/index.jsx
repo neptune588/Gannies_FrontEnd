@@ -24,17 +24,22 @@ import { handleModal } from '@/store/modalState';
 import { setLogout } from '@/store/auth';
 
 import { userSignOut } from '@/api/authApi';
+import useUserState from '@/hooks/useUserState';
 
 function Header() {
   const navigate = useNavigate();
   const location = useLocation().pathname;
   const dispatch = useDispatch();
 
+  const [showSearchBar, setShowSearchBar] = useState(false);
   const { isLogin } = useSelectorList();
   const { searchValue, searchBarRef, handleSearchValueChange, handleSearch } =
     usePostSearch();
+  const { navigateBasedOnState } = useUserState();
 
-  const [showSearchBar, setShowSearchBar] = useState(false);
+  const handleMyPage = () => {
+    navigateBasedOnState('/mypage/profile/edit', 'email_verified');
+  };
 
   const handleLogout = async () => {
     try {
@@ -95,7 +100,7 @@ function Header() {
         <>
           <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
           <span>|</span>
-          <MypageButton to='/mypage/profile/edit'>마이페이지</MypageButton>
+          <MypageButton onClick={handleMyPage}>마이페이지</MypageButton>
         </>
       ) : (
         <>

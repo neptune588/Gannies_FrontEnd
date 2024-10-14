@@ -1,10 +1,10 @@
+import { api, cacheApi, cookieApi } from '@/api/axiosInstance';
 import axios from 'axios';
-import { api, cookieApi } from '@/api/axiosInstance';
 
 //이메일 중복 확인
 export const checkEmailDuplicate = async (email) => {
   const url = '/users/check/email';
-  const response = await api.post(url, { email: email });
+  const response = await api.post(url, email);
   return response;
 };
 
@@ -46,7 +46,7 @@ export const userSignOut = async () => {
 //회원가입 -> 이메일 인증 테스트
 export const userSignUpEmailTest = async (email) => {
   const url = '/test-email';
-  const response = await api.post(url, { email: email });
+  const response = await api.post(url, email);
   return response;
 };
 
@@ -99,6 +99,12 @@ export const userStatusVerify = async (pwFindData) => {
   return response;
 };
 
+// 인증서 업로드
+export const certificatesImageUpload = async (url, formData) => {
+  const response = await axios.post(url, formData);
+  return response;
+};
+
 //인증서 업로드 하기 위해 필요한 URL 받기
 export const getPresignedUrl = async (fileTypeData) => {
   const url = '/files/presigned-url';
@@ -113,23 +119,23 @@ export const s3ImageUpload = async (url, formData) => {
 };
 
 //증명서image에서 이름 추출
-export const getOCR = async (userId) => {
-  const url = `/me/${userId}/name-extraction`;
-  const response = await api.post(url);
+export const getOCR = async (imageUri) => {
+  const url = `/ocr/detect-text`;
+  const response = await api.post(url, imageUri);
   return response;
 };
 
 //세션 만료 체크(로그인 기한 다됐는지)
 export const getSessionStatus = async () => {
   const url = `/auth/session-status`;
-  const response = await cookieApi.get(url);
+  const response = await cacheApi.get(url);
   return response;
 };
 
 //회원 상태 확인
-export const checkMembershipStatus = async () => {
+export const checkMemberState = async () => {
   const url = `/auth/user-status`;
-  const response = await cookieApi.get(url);
+  const response = await cacheApi.get(url);
   return response;
 };
 

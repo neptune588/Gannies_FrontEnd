@@ -29,6 +29,37 @@ function Buttons({ email, password, setLoginError, setIsLoading }) {
     try {
       setIsLoading(true);
       const response = await userSignIn({ email: email, password: password });
+      const {
+        isSuspended,
+        isTempPasswordSignIn,
+        userId,
+        nickname,
+        rejected,
+        membershipStatus,
+        rejectedReason,
+        suspensionDuration,
+        suspensionEndDate,
+        suspensionReason,
+      } = response.data.user;
+      dispatch(
+        setLogin({
+          isSuspended,
+          nickname,
+          userId,
+          rejected,
+          membershipStatus,
+          rejectedReason,
+          ...(rejectedReason && { rejectedReason }),
+          ...(suspensionDuration && { suspensionDuration }),
+          ...(suspensionEndDate && { suspensionEndDate }),
+          ...(suspensionReason && { suspensionReason }),
+        })
+      );
+      dispatch(
+        handleModal({ field: 'isTempPassword', value: isTempPasswordSignIn })
+      );
+      dispatch(handleModal({ field: 'rejected', value: rejected }));
+      dispatch(handleModal({ field: 'isSuspended', value: isSuspended }));
       // handleAuth({
       //   field: 'membershipStatus',
       //   value: response.data.user.membershipStatus,
@@ -37,12 +68,6 @@ function Buttons({ email, password, setLoginError, setIsLoading }) {
       //   dispatch(handleModal({ field: 'isApproval', value: true }));
       //   navigate('/mypage/profile/edit');
       // }
-      const {
-        user: { userId },
-      } = response.data;
-      dispatch(setLogin({ userId }));
-      const isTempPassword = response.data.user.isTempPasswordSignIn;
-      dispatch(handleModal({ field: 'isTempPassword', value: isTempPassword }));
       navigate('/');
     } catch (error) {
       setIsLoading(false);

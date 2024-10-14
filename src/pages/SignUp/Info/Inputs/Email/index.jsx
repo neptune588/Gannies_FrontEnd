@@ -4,12 +4,12 @@ import Positive from '@/components/Instruction/Positive';
 import Negative from '@/components/Instruction/Negative';
 
 import InputSection from '@/pages/SignUp/components/InputSection';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { checkEmailDuplicate } from '@/api/authApi';
 import { useInputBorder } from '@/hooks/useInputBorder';
 
-function Email({ handleAllow }) {
+function Email({ allow, handleAllow }) {
   const [email, setEmail] = useState('');
   const { handleDataToSend } = useOutletContext();
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -28,26 +28,31 @@ function Email({ handleAllow }) {
     handleIsValid,
     handleInputBlur,
   } = useInputBorder(undefined, validate);
+  const [checkDuplicate, setCheckDuplicate] = useState(false);
+  const prevEmailRef = useRef(email);
 
   useEffect(() => {
     const fetchData = async () => {
-      if (isValid) {
-        try {
-          const response = await checkEmailDuplicate(email);
-          if (response.data.statusCode === 400) {
-            setInstructionIndex(3);
-          } else {
-            handleAllow(1, isValid ? true : false);
+      try {
+        if (isValid && !checkDuplicate) {
+          const response = await checkEmailDuplicate({ email });
+          if (response.status === 201) {
+            setCheckDuplicate(true);
+            if (!response.data.available) {
+              setInstructionIndex(3);
+              handleAllow(1, false);
+            } else {
+              handleAllow(1, true);
+            }
           }
-        } catch (error) {
-          console.error('Error checking email duplicate:', error);
         }
+      } catch (error) {
+        console.error('Error checking email duplicate:', error);
       }
     };
-
-    handleInstruction();
+    if (!isValid) handleAllow(1, false);
     fetchData();
-  }, [isValid]);
+  }, [isValid, checkDuplicate]);
 
   const handleEmail = async (e) => {
     const email = e.target.value;
@@ -70,22 +75,31 @@ function Email({ handleAllow }) {
         onChange={handleEmail}
         value={email}
         $isFocused={isFocused}
-        $isValid={isValid}
+        $isValid={allow[1] || isValid === undefined}
         onFocus={() => handleIsFocused(true)}
         onBlur={() => {
           handleIsFocused(false);
           handleInputBlur(email);
-          handleInstruction();
+          if (email !== prevEmailRef.current) {
+            handleInstruction();
+            setCheckDuplicate(false);
+            prevEmailRef.current = email;
+          }
           if (!email) {
+            handleInstruction();
             handleIsValid(false);
           }
         }}
       />
-      {isValid ? (
+      {allow[1] ? (
         <Positive text={instruction[0]} />
-      ) : isValid === false ? (
-        <Negative text={instruction[instructionIndex]} />
-      ) : null}
+      ) : (
+        <>
+          {isValid !== undefined && (
+            <Negative text={instruction[instructionIndex]} />
+          )}
+        </>
+      )}
     </InputSection>
   );
 }

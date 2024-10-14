@@ -8,11 +8,18 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useAuthAllow } from '@/hooks/useAuthAllow';
 import NextButton from '@/pages/SignUp/components/NextButton';
-import { userSignUp, userSignUpEmail } from '@/api/authApi';
+import {
+  certificatesImageUpload,
+  getOCR,
+  getPresignedUrl,
+  userSignUp,
+  userSignUpEmail,
+} from '@/api/authApi';
 
 function Department() {
   const navigate = useNavigate();
-  const { steps, handleSteps, stepsIcon, dataToSend } = useOutletContext();
+  const { steps, handleSteps, stepsIcon, dataToSend, handleDataToSend } =
+    useOutletContext();
   const { allow, handleAllow } = useAuthAllow([false, false]);
   const [file, setFile] = useState('');
 
@@ -22,21 +29,66 @@ function Department() {
       : navigate('/sign-up/identity');
   }, [steps, navigate]);
 
+  const setFormData = ({ fields }) => {
+    const formData = new FormData();
+    formData.append('Content-Type', file.type);
+    Object.entries(fields).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    formData.append('file', file);
+    return formData;
+  };
+
+  const setCertificationUrl = async (s3Url) => {
+    await handleDataToSend('certificationDocumentUrl', s3Url);
+  };
+
+  const setUsername = async (username) => {
+    await handleDataToSend('username', username);
+  };
+
+  useEffect(() => {
+    if (dataToSend.certificationDocumentUrl && dataToSend.username) {
+      const signUpProcess = async () => {
+        try {
+          const data = {
+            nickname: '마마미',
+            email: 'kseng11@naver.com',
+            phoneNumber: '01094238723',
+            password: 'Qqwer1234!',
+            status: 'current_student',
+            certificationDocumentUrl:
+              'https://caugannies.s3.ap-northeast-2.amazonaws.com…24/10/14/71c96f52-1492-4b68-b97f-f7b807281a38.png',
+            username: '박뀨스',
+          };
+          await userSignUp(data);
+          await userSignUpEmail({
+            email: data.email,
+          });
+          navigate('/sign-up/success', {
+            state: { email: data.email },
+          });
+        } catch (error) {
+          console.error('Error during signup:', error);
+        }
+      };
+      signUpProcess();
+    }
+  }, [dataToSend]);
+
   const signUp = async () => {
     try {
       handleSteps(2, true);
-      // const response = await getPresignedUrl(file.type);
-      // const { url, fields } = response.data;
-      // console.log(url, fields);
-      // const imageUrl = await certificatesImageUpload(url, file, fields);
-      // const response = await getPresignedUrl({ fileType: fileName.type });
-      await userSignUp(dataToSend);
-      await userSignUpEmail({
-        email: dataToSend.email,
+      const resPresignedUrl = await getPresignedUrl({ fileType: file.type });
+      const { url, fields } = resPresignedUrl.data;
+      const formData = setFormData({ fields });
+      const resS3Url = await certificatesImageUpload(url, formData);
+      const s3Url = resS3Url.config.url + fields.key;
+      setCertificationUrl(s3Url);
+      const ocr = await getOCR({
+        imageUri: s3Url,
       });
-      navigate('/sign-up/success', {
-        state: { email: dataToSend.email },
-      });
+      setUsername(ocr.data.name);
     } catch (error) {
       console.log(error.response);
     }

@@ -34,7 +34,6 @@ function Password() {
         state: { email: response.data.maskedEmail },
       });
     } catch (error) {
-      console.log(error.response);
       openModal();
     }
   };

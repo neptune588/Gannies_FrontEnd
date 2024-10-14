@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import uuid from 'react-uuid';
 
 import CommunityPost from '@/pages/Community/CommunityPost';
@@ -25,7 +25,6 @@ import {
 } from '@/components/AlignSelectMenu/data';
 
 import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
-import useLoginCheck from '@/hooks/useLoginCheck';
 
 import { getPosts } from '@/api/postApi';
 import { checkAdminStatus } from '@/api/authApi';
@@ -33,6 +32,8 @@ import { checkAdminStatus } from '@/api/authApi';
 import { formatDateToPost } from '@/utils/dateFormatting';
 import { communityPostMaxLimit } from '@/utils/itemLimit';
 import { pageViewLimit } from '@/utils/itemLimit';
+import Modal from '@/components/Modal';
+import useUserState from '@/hooks/useUserState';
 
 export default function Community({ isSearch, searchKeyword }) {
   const navigate = useNavigate();
@@ -59,8 +60,7 @@ export default function Community({ isSearch, searchKeyword }) {
     itemMaxLimit: communityPostMaxLimit,
     pageViewLimit: pageViewLimit,
   });
-
-  const { checkIsLogin } = useLoginCheck();
+  const { navigateBasedOnState } = useUserState();
 
   const [alignOptionList] = useState(communityPageAlignSelectOptions);
   const [boardTypeOptionList] = useState(SearchPageSelectOptions);
@@ -95,32 +95,42 @@ export default function Community({ isSearch, searchKeyword }) {
   };
 
   const handlePostCreateClick = async () => {
-    if (checkIsLogin()) {
-      if (boardType === 'notice' || boardType === 'event') {
-        try {
-          const res = await checkAdminStatus();
-
-          res.isAdmin
-            ? navigate(`/community/${boardType}/create-community-post`)
-            : alert('해당 게시판의 글은 관리자만 작성 가능합니다!');
-        } catch (error) {
-          //후에 axios interceptor로 http 코드별로 핸들링
-          console.error('관리자 요청 실패', error);
-        }
-      } else {
-        navigate(`/community/${boardType}/create-community-post`);
+    if (boardType === 'notice' || boardType === 'event') {
+      try {
+        const res = await checkAdminStatus();
+        res.isAdmin
+          ? navigateBasedOnState(
+              `/community/${boardType}/create-community-post`,
+              'approved_member',
+              true
+            )
+          : alert('해당 게시판의 글은 관리자만 작성 가능합니다!');
+      } catch (error) {
+        //후에 axios interceptor로 http 코드별로 핸들링
+        console.error('관리자 요청 실패', error);
       }
+    } else {
+      navigateBasedOnState(
+        `/community/${boardType}/create-community-post`,
+        'approved_member',
+        true
+      );
     }
   };
 
   const handlePostClick = async ({ postBoardType, postId }) => {
-    if (checkIsLogin()) {
-      window.scroll({ top: 0, left: 0 });
-      navigate(`/community/${postBoardType}/post/${postId}`);
-    } else {
-      alert('로그인을 하셔야 이용 가능합니다!');
-      navigate('/sign-in');
-    }
+    // if (checkIsLogin()) {
+    //   window.scroll({ top: 0, left: 0 });
+    //   navigate(`/community/${boardType}/post/${postId}`);
+    // } else {
+    //   alert('로그인을 하셔야 이용 가능합니다!');
+    //   navigate('/sign-in');
+    // }
+    window.scroll({ top: 0, left: 0 });
+    navigateBasedOnState(
+      `/community/${postBoardType}/post/${postId}`,
+      'approved_member'
+    );
   };
 
   useEffect(() => {

@@ -1,24 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import Banner from '@/pages/Home/Banner';
 import SearchBar from '@/pages/Home/SearchBar';
 import Link from '@/pages/Home/Link';
-import Post from '@/pages/Home/Post';
-
-import { posts } from '@/pages/Home/data';
-
 import { setBoardType } from '@/store/navBarOptions';
-import IsApproval from '@/components/Modal/IsApproval';
-import IsTempPassword from '@/components/Modal/IsTempPassword';
+import Posts from '@/pages/Home/Posts';
+import Modal from '@/components/Modal';
 
 function Home() {
   const location = useLocation();
   const dispatch = useDispatch();
-  const modalState = useSelector((state) => state.modalState);
-
-  const [data] = useState(posts);
 
   useEffect(() => {
     const url = location.pathname;
@@ -36,12 +29,10 @@ function Home() {
 
   return (
     <>
-      {modalState.isApproval && <IsApproval />}
-      {modalState.isTempPassword && <IsTempPassword />}
+      <Modal />
       <Banner />
       <SearchBar />
-      <Post title={'인기 게시글'} posts={data} />
-      <Post title={'새 게시글'} posts={data} />
+      <Posts />
       <Link />
     </>
   );

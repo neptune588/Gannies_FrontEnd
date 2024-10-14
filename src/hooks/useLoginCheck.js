@@ -35,15 +35,21 @@ const useLoginCheck = () => {
 
   const checkIsLogin = () => {
     if (!isLogin) {
-      alert('로그인을 하셔야 이용이 가능합니다!');
       navigate('/sign-in');
     } else {
       return checkLoginStatus();
     }
   };
 
+  const boolIsLogin = () => {
+    if (!isLogin) {
+      return false;
+    }
+    return true;
+  };
   return {
     checkIsLogin,
+    boolIsLogin,
   };
 };
 
