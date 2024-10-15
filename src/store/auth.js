@@ -2,9 +2,9 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isLogin: false,
-  isSuspended: null,
-  membershipStatus: null,
-  rejected: null,
+  // isSuspended: null,
+  // membershipStatus: null,
+  // rejected: null,
   userId: null,
   nickname: null,
 };

@@ -43,31 +43,39 @@ function Buttons({ email, password, setLoginError, setIsLoading }) {
       } = response.data.user;
       dispatch(
         setLogin({
-          isSuspended,
           nickname,
           userId,
-          rejected,
-          membershipStatus,
-          rejectedReason,
-          ...(rejectedReason && { rejectedReason }),
-          ...(suspensionDuration && { suspensionDuration }),
-          ...(suspensionEndDate && { suspensionEndDate }),
-          ...(suspensionReason && { suspensionReason }),
         })
       );
       dispatch(
-        handleModal({ field: 'isTempPassword', value: isTempPasswordSignIn })
+        handleModal({
+          field: 'isApproval',
+          value: { status: membershipStatus === 'email_verified' },
+        })
       );
-      dispatch(handleModal({ field: 'rejected', value: rejected }));
-      dispatch(handleModal({ field: 'isSuspended', value: isSuspended }));
-      // handleAuth({
-      //   field: 'membershipStatus',
-      //   value: response.data.user.membershipStatus,
-      // })
-      // if (response.data.user.membershipStatus === 'email_verified') {
-      //   dispatch(handleModal({ field: 'isApproval', value: true }));
-      //   navigate('/mypage/profile/edit');
-      // }
+      dispatch(
+        handleModal({
+          field: 'isTempPassword',
+          value: { status: isTempPasswordSignIn },
+        })
+      );
+      dispatch(
+        handleModal({
+          field: 'isSuspended',
+          value: {
+            status: isSuspended,
+            duration: suspensionDuration,
+            endDate: suspensionEndDate,
+            reason: suspensionReason,
+          },
+        })
+      );
+      dispatch(
+        handleModal({
+          field: 'rejected',
+          value: { status: rejected, reason: rejectedReason },
+        })
+      );
       navigate('/');
     } catch (error) {
       setIsLoading(false);

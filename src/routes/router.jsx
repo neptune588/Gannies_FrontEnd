@@ -59,7 +59,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/community',
-        element: <PrivateRoute minStatus='email_verified' />,
+        element: <PrivateRoute minStatus='approved_member' />,
         children: [
           {
             path: ':boardType/post/:postId',

@@ -1,5 +1,5 @@
 import { changeUserNickname, getUserInfo } from '@/api/userApi';
-import IsApproval from '@/components/Modal/IsApproval';
+import Modal from '@/components/Modal';
 import IsWithdrawal from '@/components/Modal/IsWithdrawal';
 import {
   Title,
@@ -9,7 +9,6 @@ import {
   EditSaveAndAccountDeleteBox,
 } from '@/pages/MyPage/PersonalInfo/style';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 
 export default function PersonalInfo() {
   const [nickname, setNickname] = useState('');
@@ -20,7 +19,6 @@ export default function PersonalInfo() {
     email: '',
   });
   const [isEditable, setIsEditable] = useState(false);
-  const modalState = useSelector((state) => state.modalState);
   const [openWithdrawalModal, setOpenWithdrawalModal] = useState(false);
 
   useEffect(() => {
@@ -81,7 +79,7 @@ export default function PersonalInfo() {
       {openWithdrawalModal && (
         <IsWithdrawal setOpenModal={setOpenWithdrawalModal} />
       )}
-      {modalState.isApproval && <IsApproval />}
+      <Modal />
       <Title>회원정보수정</Title>
       <PersonalInfoWrapper>
         <form>

@@ -1,17 +1,18 @@
-import { useSelector } from 'react-redux';
 import Rejected from '@/components/Modal/Rejected';
 import IsApproval from '@/components/Modal/IsApproval';
 import IsTempPassword from '@/components/Modal/IsTempPassword';
 import IsSuspended from '@/components/Modal/IsSuspended';
+import useSelectorList from '@/hooks/useSelectorList';
 const Modal = () => {
-  const modalState = useSelector((state) => state.modalState);
+  const { isApproval, isSuspended, isTempPassword, rejected } =
+    useSelectorList();
 
   return (
     <>
-      {modalState.rejected && <Rejected />}
-      {modalState.isApproval && <IsApproval />}
-      {modalState.isTempPassword && <IsTempPassword />}
-      {modalState.isSuspended && <IsSuspended />}
+      {rejected.status && <Rejected />}
+      {isApproval.status && <IsApproval />}
+      {isTempPassword.status && <IsTempPassword />}
+      {isSuspended.status && <IsSuspended />}
     </>
   );
 };
