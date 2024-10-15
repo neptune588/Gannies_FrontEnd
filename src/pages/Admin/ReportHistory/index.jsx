@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import uuid from 'react-uuid';
 
 import TitleSection from '@/pages/Admin/TitleSection';
@@ -16,45 +16,67 @@ import ReportedReviewModal from '@/pages/Admin/ReportedReviewModal';
 
 import arrow from '@/assets/icons/arrows/chevron_down.svg';
 
-import { TitleCategory } from '@/pages/Admin/ReportHistory/style';
+import { TitleCategory, ListClickBox } from '@/pages/Admin/ReportHistory/style';
 
-import { reportedHeaderColumns, reportedData } from '@/pages/Admin/data';
+import {
+  reportedPostsHeaderColumns,
+  reportedCommentsHeaderColumns,
+} from '@/pages/Admin/data';
 
 import useEventHandler from '@/hooks/useEventHandler';
+import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
+import useModalsControl from '@/hooks/useModalsControl';
+
+import { setIsReportedCotentModal } from '@/store/modalsControl';
+
+import {
+  getReportedPosts,
+  getReportedComments,
+  setPostStatusChange,
+  setCommentStatusChange,
+} from '@/api/reportApi';
+
+import { pageViewLimit, communityPostMaxLimit } from '@/utils/itemLimit';
+import { formatDateToPost } from '@/utils/dateFormatting';
 
 export default function ReportHistory() {
-  const [tableData, setTableData] = useState(reportedData);
-  const [headerColumns] = useState(reportedHeaderColumns);
-  const [tempPageData] = useState(
-    Array.from({ length: 10 }, (_, index) => {
-      return index;
-    })
-  );
+  const modalsRef = useRef([]);
 
   const {
-    changeValue: currentPageNumber,
-    handleChange: handlePageNumberClick,
-  } = useEventHandler({
-    changeDefaultValue: 0,
+    items: tableLists,
+    totalItems,
+    isLoading,
+    itemMaxLimit,
+    currentPageNumber,
+    groupedPageNumbers: pageNumbers,
+    setItems: setTableLists,
+    setIsLoading,
+    setCurrentPageNumber,
+    getDataAndSetPageNumbers: getReportedPostsAndSetPageNumbers,
+    handlePageNumberClick,
+    handlePrevPageClick,
+    handleNextPageClick,
+  } = useFetchAndPaginate({
+    defaultPageNumber: 1,
+    itemMaxLimit: communityPostMaxLimit,
+    pageViewLimit,
   });
 
-  const { changeValue: currenntActiveCategory, handleChange } = useEventHandler(
-    {
-      changeDefaultValue: '게시글',
-    }
-  );
+  const { isReportedCotentModal, handleModalOpen } = useModalsControl();
 
-  const handleStatusValueChange = (status, listNumber) => {
-    const statusChangefnc = (arr) => {
-      return arr.map((list, idx) => {
-        return {
-          ...list,
-          statusValue: idx === listNumber ? status : list.statusValue,
-        };
-      });
-    };
-    setTableData((prev) => statusChangefnc(prev));
-  };
+  const [headerColumns, setHearderColumns] = useState(
+    reportedPostsHeaderColumns
+  );
+  const [query, setQuery] = useState({
+    page: currentPageNumber,
+    limit: communityPostMaxLimit,
+    withReplies: true,
+  });
+  const [reviewModalContents, setReviewModalContents] = useState({});
+
+  const { changeValue: curActiveCategory, handleChange } = useEventHandler({
+    changeDefaultValue: '게시글',
+  });
 
   const handleInnerModalToggle = (listNumber) => {
     const toggleFnc = (arr) => {
@@ -65,15 +87,94 @@ export default function ReportHistory() {
         };
       });
     };
-    setTableData((prev) => toggleFnc(prev));
+    setTableLists((prev) => toggleFnc(prev));
   };
+
+  const handleStatusChange = async ({ ...props }, listNumber) => {
+    try {
+      const data = props;
+
+      console.log(data);
+      /*       curActiveCategory === '게시글 '
+        ? await setPostStatusChange(data)
+        : await setCommentStatusChange(data); */
+
+      const statusChangeFnc = (arr) => {
+        return arr.map((list, idx) => {
+          return {
+            ...list,
+            status: idx === listNumber ? props.status : list.status,
+            innerModalState: idx === listNumber ? false : list.innerModalState,
+          };
+        });
+      };
+      setTableLists((prev) => statusChangeFnc(prev));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    if (curActiveCategory === '게시글') {
+      //console.log('카테고리 -> 게시글');
+      setHearderColumns(reportedPostsHeaderColumns);
+      setCurrentPageNumber(1);
+    } else {
+      //console.log('카테고리 -> 댓글');
+      setHearderColumns(reportedCommentsHeaderColumns);
+      setCurrentPageNumber(1);
+    }
+  }, [curActiveCategory]);
+
+  useEffect(() => {
+    setQuery({
+      page: currentPageNumber,
+      limit: communityPostMaxLimit,
+      withReplies: true,
+    });
+  }, [currentPageNumber, curActiveCategory]);
+
+  useEffect(() => {
+    (async () => {
+      window.scroll({ top: 0, left: 0 });
+      if (curActiveCategory === '게시글') {
+        //console.log('데이터 요청 => 게시글로 데이터 변경');
+        await getReportedPostsAndSetPageNumbers(() => {
+          return getReportedPosts(query);
+        });
+      } else {
+        //console.log('데이터 요청 => 댓글로 데이터 변경');
+        await getReportedPostsAndSetPageNumbers(() => {
+          return getReportedComments(query);
+        });
+      }
+
+      setTableLists((prev) => {
+        //key값 다르면 렌더링할때 undfiend => 바뀐값 이런식으로 나옴
+        //key를 통일시켜서 tablelist 값이 바껴도 그전값 -> 바뀐값으로 표기하자.
+        return prev.map((list) => {
+          return {
+            ...list,
+            contentId: String(list.postId || list.commentId).padStart(2, '0'),
+            content: list.postTitle || list.commentContent,
+            creator: list.postAuthor || list.commentAuthor,
+          };
+        });
+      });
+    })();
+  }, [query]);
 
   return (
     <>
-      <ReportedReviewModal activeCategory={currenntActiveCategory} />
+      {isReportedCotentModal && (
+        <ReportedReviewModal
+          activeCategory={curActiveCategory}
+          reviewModalContents={reviewModalContents}
+        />
+      )}
       <TitleSection>
         <TitleCategory
-          $currenntActiveCategory={currenntActiveCategory}
+          $currenntActiveCategory={curActiveCategory}
           $ownCategory={'게시글'}
           onClick={() => {
             handleChange('게시글');
@@ -82,7 +183,7 @@ export default function ReportHistory() {
           게시글
         </TitleCategory>
         <TitleCategory
-          $currenntActiveCategory={currenntActiveCategory}
+          $currenntActiveCategory={curActiveCategory}
           $ownCategory={'댓글'}
           onClick={() => {
             handleChange('댓글');
@@ -92,7 +193,7 @@ export default function ReportHistory() {
         </TitleCategory>
       </TitleSection>
       <ArrLengthSection>
-        <ArrLengthView length={tableData.length} />
+        <ArrLengthView length={totalItems} />
       </ArrLengthSection>
       <TableWrapper>
         <table>
@@ -111,41 +212,84 @@ export default function ReportHistory() {
             </TableHeaderRow>
           </thead>
           <tbody>
-            {tableData?.map((data, idx) => {
+            {tableLists?.map((list, idx) => {
               return (
                 <TableBodyRow key={uuid()} currentActiveTab={'신고내역'}>
-                  <td>{String(data.order).padStart(2, '0')}</td>
-                  <td>{data.contents}</td>
-                  <td>{data.contributor}</td>
-                  <td>{data.complainant}</td>
-                  <td>{data.reportDate}</td>
-                  <td>{data.reportDetail}</td>
+                  <td>{list.contentId}</td>
+                  <td>{list.content}</td>
+                  <td>{list.creator}</td>
+                  <td>{list.reporter}</td>
+                  <td>{formatDateToPost(list.reportDate)}</td>
                   <td>
-                    {data.innerModalState && (
-                      <InnerSelectModal currentActiveTab={'신고내역'}>
+                    {list.otherReportedReason
+                      ? list.otherReportedReason
+                      : list.reportReason}
+                  </td>
+                  <td>
+                    {list.innerModalState && (
+                      <InnerSelectModal
+                        ref={(el) => (modalsRef[idx].current = el)}
+                        currentActiveTab={'신고내역'}
+                      >
                         <ModalInnerList
                           currentActiveTab={'신고내역'}
-                          handleStatusValueChange={() => {
-                            handleStatusValueChange('처리 중', idx);
-                            handleInnerModalToggle(idx);
+                          handleStatusChange={() => {
+                            handleStatusChange(
+                              curActiveCategory === '게시글'
+                                ? {
+                                    reportId: list.reportId,
+                                    postId: list.contentId,
+                                    status: 'pending',
+                                  }
+                                : {
+                                    reportId: list.reportId,
+                                    type: 'comment',
+                                    status: 'pending',
+                                  },
+                              idx
+                            );
                           }}
                         >
                           처리 중
                         </ModalInnerList>
                         <ModalInnerList
                           currentActiveTab={'신고내역'}
-                          handleStatusValueChange={() => {
-                            handleStatusValueChange('처리완료', idx);
-                            handleInnerModalToggle(idx);
+                          handleStatusChange={() => {
+                            handleStatusChange(
+                              curActiveCategory === '게시글'
+                                ? {
+                                    reportId: list.reportId,
+                                    postId: list.contentId,
+                                    status: 'completed',
+                                  }
+                                : {
+                                    reportId: list.reportId,
+                                    type: 'comment',
+                                    status: 'completed',
+                                  },
+                              idx
+                            );
                           }}
                         >
                           처리완료
                         </ModalInnerList>
                         <ModalInnerList
                           currentActiveTab={'신고내역'}
-                          handleStatusValueChange={() => {
-                            handleStatusValueChange('신고반려', idx);
-                            handleInnerModalToggle(idx);
+                          handleStatusChange={() => {
+                            handleStatusChange(
+                              curActiveCategory === '게시글'
+                                ? {
+                                    reportId: list.reportId,
+                                    postId: list.contentId,
+                                    status: 'rejected',
+                                  }
+                                : {
+                                    reportId: list.reportId,
+                                    type: 'comment',
+                                    status: 'rejected',
+                                  },
+                              idx
+                            );
                           }}
                         >
                           신고반려
@@ -157,23 +301,52 @@ export default function ReportHistory() {
                         handleInnerModalToggle(idx);
                       }}
                       currentActiveTab={'신고내역'}
-                      currentValue={data.statusValue}
-                      innerModalState={data.innerModalState}
+                      currentValue={(() => {
+                        if (list.status === 'pending') {
+                          return '처리 중';
+                        } else if (list.status === 'completed') {
+                          return '처리완료';
+                        } else if (list.status === 'rejected') {
+                          return '신고반려';
+                        }
+                      })()}
+                      innerModalState={list.innerModalState}
                     />
                   </td>
+                  <ListClickBox
+                    onClick={() => {
+                      setReviewModalContents({
+                        contentId: list.contentId,
+                        content: list.content,
+                        creator: list.creator,
+                        category: list.postCategory || '디폴트',
+                        reporter: list.reporter,
+                        reportDate: formatDateToPost(list.reportDate),
+                        reportReason: list.reportReason,
+                        otherReportedReason: list.otherReportedReason,
+                      });
+                      handleModalOpen({
+                        modalDispatch: setIsReportedCotentModal,
+                      });
+                    }}
+                  />
                 </TableBodyRow>
               );
             })}
           </tbody>
         </table>
       </TableWrapper>
-      <PaginationWrapper>
-        <Pagination
-          pageCountData={tempPageData}
-          activePageNumber={currentPageNumber}
-          handlePageNumberClick={handlePageNumberClick}
-        />
-      </PaginationWrapper>
+      {pageNumbers?.length > 0 && (
+        <PaginationWrapper>
+          <Pagination
+            pageNumbers={pageNumbers}
+            currentPageNumber={currentPageNumber}
+            handlePageNumberClick={handlePageNumberClick}
+            handlePrevPageClick={handlePrevPageClick}
+            handleNextPageClick={handleNextPageClick}
+          />
+        </PaginationWrapper>
+      )}
     </>
   );
 }

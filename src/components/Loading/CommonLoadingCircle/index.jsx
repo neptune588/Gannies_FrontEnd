@@ -17,7 +17,7 @@ const Container = styled.div`
   background-color: ${({ theme: { colors } }) => {
     return colors.white;
   }};
-  opacity: 0.95;
+  opacity: 0.75;
   cursor: pointer;
   z-index: 10;
 `;

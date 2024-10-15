@@ -27,6 +27,7 @@ export default function useSelectorList() {
     isUserBanModal,
     isPostDeleteModal,
     isPostOrCommentReportModal,
+    isReportedCotentModal,
     scrollLocation,
   } = modalsControl;
   const { comentWrapperLocation } = locations;
@@ -51,6 +52,7 @@ export default function useSelectorList() {
     isUserBanModal,
     isPostDeleteModal,
     isPostOrCommentReportModal,
+    isReportedCotentModal,
     scrollLocation,
     comentWrapperLocation,
   };

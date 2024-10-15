@@ -14,16 +14,15 @@ const useLoginCheck = () => {
 
   const { isLogin } = useSelectorList();
 
-  const checkLoginStatus = async () => {
+  const checkLoginStatus = async (isAdminPage) => {
     try {
       const response = await getSessionStatus();
       const { expires } = response.data;
       if (expires) {
-        await userSignOut();
         dispatch(setLogout());
 
         alert('접속이 만료되었습니다. 다시 로그인 해주세요.');
-        navigate('/sign-in');
+        isAdminPage ? navigate('/admin/sign-in') : navigate('/sign-in');
       } else {
         return true;
       }
@@ -33,11 +32,11 @@ const useLoginCheck = () => {
     }
   };
 
-  const checkIsLogin = () => {
+  const checkIsLogin = ({ isAdminPage = false } = {}) => {
     if (!isLogin) {
-      navigate('/sign-in');
+      isAdminPage ? navigate('/admin/sign-in') : navigate('/sign-in');
     } else {
-      return checkLoginStatus();
+      return checkLoginStatus(isAdminPage);
     }
   };
 
@@ -47,6 +46,7 @@ const useLoginCheck = () => {
     }
     return true;
   };
+
   return {
     checkIsLogin,
     boolIsLogin,

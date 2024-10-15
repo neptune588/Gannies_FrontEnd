@@ -139,6 +139,7 @@ export const checkMemberState = async () => {
   return response;
 };
 
+//관리자 계정 확인
 export const checkAdminStatus = async () => {
   const url = `/auth/is-admin`;
   const response = await cookieApi.get(url);

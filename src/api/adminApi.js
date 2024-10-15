@@ -3,7 +3,7 @@ import { api, cookieApi } from '@/api/axiosInstance';
 //관리자 로그인
 export const adminSignIn = async (signInData) => {
   const url = '/admin/sign-in';
-  const response = await api.post(url, signInData);
+  const response = await cookieApi.post(url, signInData);
   return response;
 };
 

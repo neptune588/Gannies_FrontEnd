@@ -15,4 +15,13 @@ const TitleCategory = styled.h2`
   user-select: none;
 `;
 
-export { TitleCategory };
+const ListClickBox = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% - 146px);
+  height: 100%;
+  cursor: pointer;
+`;
+
+export { TitleCategory, ListClickBox };

@@ -12,6 +12,7 @@ import { adminTabMenuData } from '@/pages/Admin/data';
 
 import useEventHandler from '@/hooks/useEventHandler';
 import useSelectorList from '@/hooks/useSelectorList';
+import useLoginCheck from '@/hooks/useLoginCheck';
 
 export default function AdminSideTab() {
   const navigate = useNavigate();
@@ -26,7 +27,6 @@ export default function AdminSideTab() {
 
   useEffect(() => {
     const path = location.pathname.split('/admin')[1];
-    console.log(path);
 
     if (path === '/report-history') {
       handleChange('신고내역');
@@ -43,7 +43,17 @@ export default function AdminSideTab() {
     <TabContainer>
       <ProfileBox>
         <div></div>
-        <p>{isLogin ? `${nickname} 입니다.` : '로그인 상태가 아닙니다.'}</p>
+        <p>
+          {(() => {
+            if (isLogin && isAdmin) {
+              return `${nickname} 입니다.`;
+            } else if (isLogin) {
+              return '';
+            } else if (isAdmin) {
+              return '로그인 상태가 아닙니다.';
+            }
+          })()}
+        </p>
       </ProfileBox>
       <ul>
         {tabData?.map((tab) => {

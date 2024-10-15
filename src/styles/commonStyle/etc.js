@@ -54,6 +54,8 @@ const adminPageCellStyle = css`
   }
 
   &:nth-child(2n) {
+    display: inline-block;
+    text-align: left;
     width: ${({ $currentActiveTab }) => {
       if ($currentActiveTab === '신고내역') {
         return '413px';
@@ -66,6 +68,7 @@ const adminPageCellStyle = css`
         return '142px';
       }
     }};
+    ${ellipsisStyle}
   }
 
   &:nth-child(3n) {

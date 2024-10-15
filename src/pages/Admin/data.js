@@ -42,9 +42,9 @@ const adminTabMenuData = [
   },
 ];
 
-const reportedHeaderColumns = [
+const reportedPostsHeaderColumns = [
   {
-    header: '순서',
+    header: '게시물 ID',
   },
   {
     header: '제목',
@@ -66,106 +66,27 @@ const reportedHeaderColumns = [
   },
 ];
 
-const reportedData = [
+const reportedCommentsHeaderColumns = [
   {
-    order: 1,
-    contents: '우짤래미***',
-    contributor: '욕쟁이할아범',
-    complainant: '악성민원인',
-    reportDate: '2024-02-04',
-    reportDetail: '욕을 너무 많이해서 신고 했습니다.',
-    statusValue: '처리 중',
-    innerModalState: false,
+    header: '댓글 ID',
   },
   {
-    order: 2,
-    contents: '우짤래미***',
-    contributor: '욕쟁이할아범',
-    complainant: '악성민원인',
-    reportDate: '2024-02-04',
-    reportDetail: '욕을 너무 많이해서 신고 했습니다.',
-    statusValue: '처리완료',
-    innerModalState: false,
+    header: '내용',
   },
   {
-    order: 3,
-    contents: '우짤래미***',
-    contributor: '욕쟁이할아범',
-    complainant: '악성민원인',
-    reportDate: '2024-02-04',
-    reportDetail: '욕을 너무 많이해서 신고 했습니다.',
-    statusValue: '처리완료',
-    innerModalState: false,
+    header: '작성자',
   },
   {
-    order: 4,
-    contents: '우짤래미***',
-    contributor: '욕쟁이할아범',
-    complainant: '악성민원인',
-    reportDate: '2024-02-04',
-    reportDetail: '욕을 너무 많이해서 신고 했습니다.',
-    statusValue: '신고반려',
-    innerModalState: false,
+    header: '신고자',
   },
   {
-    order: 5,
-    contents: '우짤래미***',
-    contributor: '욕쟁이할아범',
-    complainant: '악성민원인',
-    reportDate: '2024-02-04',
-    reportDetail: '욕을 너무 많이해서 신고 했습니다.',
-    statusValue: '처리 중',
-    innerModalState: false,
+    header: '신고일자',
   },
   {
-    order: 6,
-    contents: '우짤래미***',
-    contributor: '욕쟁이할아범',
-    complainant: '악성민원인',
-    reportDate: '2024-02-04',
-    reportDetail: '욕을 너무 많이해서 신고 했습니다.',
-    statusValue: '처리완료',
-    innerModalState: false,
+    header: '신고사유',
   },
   {
-    order: 7,
-    contents: '우짤래미***',
-    contributor: '욕쟁이할아범',
-    complainant: '악성민원인',
-    reportDate: '2024-02-04',
-    reportDetail: '욕을 너무 많이해서 신고 했습니다.',
-    statusValue: '처리 중',
-    innerModalState: false,
-  },
-  {
-    order: 8,
-    contents: '우짤래미***',
-    contributor: '욕쟁이할아범',
-    complainant: '악성민원인',
-    reportDate: '2024-02-04',
-    reportDetail: '욕을 너무 많이해서 신고 했습니다.',
-    statusValue: '처리 중',
-    innerModalState: false,
-  },
-  {
-    order: 9,
-    contents: '우짤래미***',
-    contributor: '욕쟁이할아범',
-    complainant: '악성민원인',
-    reportDate: '2024-02-04',
-    reportDetail: '욕을 너무 많이해서 신고 했습니다.',
-    statusValue: '처리 중',
-    innerModalState: false,
-  },
-  {
-    order: 10,
-    contents: '우짤래미***',
-    contributor: '욕쟁이할아범',
-    complainant: '악성민원인',
-    reportDate: '2024-02-04',
-    reportDetail: '욕을 너무 많이해서 신고 했습니다.',
-    statusValue: '신고반려',
-    innerModalState: false,
+    header: '상태',
   },
 ];
 
@@ -532,8 +453,8 @@ const postManagementData = [
 ];
 export {
   adminTabMenuData,
-  reportedHeaderColumns,
-  reportedData,
+  reportedPostsHeaderColumns,
+  reportedCommentsHeaderColumns,
   memberManagementHeaderColumns,
   memberManagementData,
   userApprovalHeaderColumns,

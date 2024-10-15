@@ -47,14 +47,14 @@ const List = styled.li`
 `;
 
 export default function ModalInnerList({
-  handleStatusValueChange = null,
+  handleStatusChange,
   currentActiveTab,
   children,
 }) {
   return (
     <List
       $currentActiveTab={currentActiveTab}
-      onClick={handleStatusValueChange || null}
+      onClick={handleStatusChange || null}
     >
       {children}
     </List>

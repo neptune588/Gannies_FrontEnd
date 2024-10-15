@@ -7,10 +7,12 @@ const Container = styled.div`
     $isHospitalSearchModal,
     $isPostDeleteModal,
     $isPostOrCommentReportModal,
+    $isReportedCotentModal,
   }) => {
     return $isHospitalSearchModal ||
       $isPostDeleteModal ||
-      $isPostOrCommentReportModal
+      $isPostOrCommentReportModal ||
+      $isReportedCotentModal
       ? 'hidden'
       : null;
   }};
@@ -18,10 +20,12 @@ const Container = styled.div`
     $isHospitalSearchModal,
     $isPostDeleteModal,
     $isPostOrCommentReportModal,
+    $isReportedCotentModal,
   }) => {
     return $isHospitalSearchModal ||
       $isPostDeleteModal ||
-      $isPostOrCommentReportModal
+      $isPostOrCommentReportModal ||
+      $isReportedCotentModal
       ? '100vh'
       : null;
   }};

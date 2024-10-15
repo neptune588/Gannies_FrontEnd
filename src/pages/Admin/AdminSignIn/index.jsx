@@ -7,6 +7,7 @@ import logo from '@/assets/images/admin_page_logo.png';
 
 import Eye from '@/components/Icons/Eye';
 import EyeSlash from '@/components/Icons/EyeSlash';
+import CommonLoadingCircle from '@/components/Loading/CommonLoadingCircle';
 
 import {
   Container,
@@ -88,6 +89,7 @@ export default function AdminSignIn() {
         user: { userId, nickname },
       } = res.data;
 
+      console.log(res);
       dispatch(setAdminLogin({ userId, nickname }));
       navigate('/admin/report-history');
     } catch (error) {
@@ -124,51 +126,57 @@ export default function AdminSignIn() {
   });
 
   return (
-    <Container>
-      <Wrapper>
-        <ImageLogo
-          onClick={() => {
-            navigate('/admin/sign-in');
-            setValue('adminEmail', '');
-            setValue('adminPassword', '');
-            clearErrors();
-          }}
-        >
-          <img src={logo} alt='logo' />
-        </ImageLogo>
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
-          <InputBox>
-            <div>
-              <input
-                placeholder='이메일'
-                type='text'
-                {...register('adminEmail')}
-              />
-            </div>
-            <p>{errors.adminEmail?.message}</p>
-          </InputBox>
-          <InputBox>
-            <div>
-              <input
-                id='password-input'
-                placeholder='비밀번호'
-                type={isPasswordView ? 'text' : 'password'}
-                {...register('adminPassword')}
-              />
-              {isPasswordView ? (
-                <Eye handlePasswordViewClick={handlePasswordViewClick} />
-              ) : (
-                <EyeSlash handlePasswordViewClick={handlePasswordViewClick} />
-              )}
-            </div>
-            <p>{errors.adminPassword?.message}</p>
-          </InputBox>
-          <SubmitButton type='submit' disabled={!emailValue || !passwordValue}>
-            로그인
-          </SubmitButton>
-          <p>{errors.formError?.message}</p>
-        </form>
-      </Wrapper>
-    </Container>
+    <>
+      {isSubmit && <CommonLoadingCircle />}
+      <Container>
+        <Wrapper>
+          <ImageLogo
+            onClick={() => {
+              navigate('/admin/sign-in');
+              setValue('adminEmail', '');
+              setValue('adminPassword', '');
+              clearErrors();
+            }}
+          >
+            <img src={logo} alt='logo' />
+          </ImageLogo>
+          <form onSubmit={handleSubmit(onSubmit)} noValidate>
+            <InputBox>
+              <div>
+                <input
+                  placeholder='이메일'
+                  type='text'
+                  {...register('adminEmail')}
+                />
+              </div>
+              <p>{errors.adminEmail?.message}</p>
+            </InputBox>
+            <InputBox>
+              <div>
+                <input
+                  id='password-input'
+                  placeholder='비밀번호'
+                  type={isPasswordView ? 'text' : 'password'}
+                  {...register('adminPassword')}
+                />
+                {isPasswordView ? (
+                  <Eye handlePasswordViewClick={handlePasswordViewClick} />
+                ) : (
+                  <EyeSlash handlePasswordViewClick={handlePasswordViewClick} />
+                )}
+              </div>
+              <p>{errors.adminPassword?.message}</p>
+            </InputBox>
+            <SubmitButton
+              type='submit'
+              disabled={!emailValue || !passwordValue}
+            >
+              로그인
+            </SubmitButton>
+            <p>{errors.formError?.message}</p>
+          </form>
+        </Wrapper>
+      </Container>
+    </>
   );
 }
