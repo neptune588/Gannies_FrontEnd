@@ -50,47 +50,44 @@ const useUserState = () => {
       suspensionEndDate,
       suspensionReason,
     } = await checkState();
-    const numStatus = statusToNumber(membershipStatus);
-    if (numStatus < numMinStatus) {
-      if (numStatus === 1) {
+    const resNumStatus = statusToNumber(membershipStatus);
+    if (rejected) {
+      dispatch(
+        handleModal({
+          field: 'rejected',
+          value: { status: rejected, reason: rejectedReason },
+        })
+      );
+      return;
+    } else if (blockSuspended && isSuspended) {
+      dispatch(
+        handleModal({
+          field: 'isSuspended',
+          value: {
+            status: isSuspended,
+            duration: suspensionDuration,
+            endDate: suspensionEndDate,
+            reason: suspensionReason,
+          },
+        })
+      );
+      return;
+    } else if (resNumStatus < numMinStatus) {
+      if (resNumStatus === 1) {
         navigate('/sign-up/success');
-      } else if (numStatus === 2) {
-        if (rejected) {
-          dispatch(
-            handleModal({
-              field: 'rejected',
-              value: { status: rejected, reason: rejectedReason },
-            })
-          );
-          return;
-        } else {
-          dispatch(
-            handleModal({
-              field: 'isApproval',
-              value: { status: membershipStatus === 'email_verified' },
-            })
-          );
-        }
+      } else if (resNumStatus === 2) {
+        dispatch(
+          handleModal({
+            field: 'isApproval',
+            value: { status: membershipStatus === 'email_verified' },
+          })
+        );
       } else {
         dispatch(setLogout());
         navigate('/sign-in');
       }
-      return;
+      return null;
     } else {
-      if (blockSuspended && isSuspended) {
-        dispatch(
-          handleModal({
-            field: 'isSuspended',
-            value: {
-              status: isSuspended,
-              duration: suspensionDuration,
-              endDate: suspensionEndDate,
-              reason: suspensionReason,
-            },
-          })
-        );
-        return;
-      }
       navigate(path);
     }
   };

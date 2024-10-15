@@ -48,7 +48,7 @@ export const router = createBrowserRouter([
       {
         path: '/community',
         element: (
-          <PrivateRoute minStatus='email_verified' blockSuspended={true} />
+          <PrivateRoute minStatus='approved_member' blockSuspended={true} />
         ),
         children: [
           {

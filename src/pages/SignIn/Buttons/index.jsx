@@ -60,7 +60,7 @@ function Buttons({ email, password, setLoginError, setIsLoading, setText }) {
       dispatch(
         handleModal({
           field: 'isApproval',
-          value: { status: membershipStatus === 'email_verified' },
+          value: { status: membershipStatus === 'email_verified' && !rejected },
         })
       );
       dispatch(
