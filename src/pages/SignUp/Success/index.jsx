@@ -34,8 +34,8 @@ function Success() {
 
   const sendEmail = async () => {
     try {
-      await userSignUpEmail(email);
-      alert('이메일을 전송에 성공하였습니다.');
+      await userSignUpEmail({ email: email });
+      alert('이메일을 전송하였습니다.');
     } catch (error) {
       alert(
         '이메일을 전송하는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'

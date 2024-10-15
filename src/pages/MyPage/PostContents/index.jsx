@@ -17,7 +17,6 @@ export default function PostContents({
   pageName,
   scrapViewState = null,
 }) {
-  console.log(postData);
   return (
     <>
       <PostsWrapper>
