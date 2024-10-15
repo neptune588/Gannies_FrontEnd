@@ -90,6 +90,11 @@ function Email({ allow, handleAllow }) {
             handleIsValid(false);
           }
         }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+          }
+        }}
       />
       {allow[1] ? (
         <Positive text={instruction[0]} />

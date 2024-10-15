@@ -39,6 +39,11 @@ function Name({ allow, handleAllow }) {
             handleIsValid(false);
           }
         }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+          }
+        }}
       />
       {isValid === false && <Negative text={instruction} />}
     </InputSection>

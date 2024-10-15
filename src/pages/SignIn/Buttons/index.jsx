@@ -16,7 +16,7 @@ import { userSignIn } from '@/api/authApi';
 import { setLogin } from '@/store/auth';
 import { handleModal } from '@/store/modalState';
 
-function Buttons({ email, password, setLoginError, setIsLoading }) {
+function Buttons({ email, password, setLoginError, setIsLoading, setText }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [autoLogin, setAutoLogin] = useState(false);
@@ -27,6 +27,16 @@ function Buttons({ email, password, setLoginError, setIsLoading }) {
 
   const handleLogin = async () => {
     try {
+      if (!email) {
+        setText('이메일을 입력해주세요.');
+        setLoginError(true);
+        return;
+      } else if (!password) {
+        setText('비밀번호를 입력해주세요.');
+        setLoginError(true);
+        return;
+      }
+
       setIsLoading(true);
       const response = await userSignIn({ email: email, password: password });
       const {

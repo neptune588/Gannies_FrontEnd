@@ -24,7 +24,11 @@ export const ActiveButton = styled(Link)`
   ${centerAlignStyle};
 `;
 
-export const InactiveButton = styled(ActiveButton)`
+export const InactiveButton = styled(Link)`
   ${inactiveColorBoxStyle};
+  height: 48px;
+  ${medium_400}
+  width: 360px;
+  ${centerAlignStyle};
   cursor: default;
 `;

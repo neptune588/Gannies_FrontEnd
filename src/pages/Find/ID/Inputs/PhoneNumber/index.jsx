@@ -63,6 +63,11 @@ function PhoneNumber({ phoneNumber, setPhoneNumber, allow, handleAllow }) {
             onBlur={() => {
               handleIsFocused(false);
             }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+              }
+            }}
           />
         </InputWrapper>
         {!allow[0] || phoneNumber.length < 10 ? (

@@ -92,6 +92,11 @@ export default function PersonalInfo() {
                 onChange={handleNickname}
                 maxLength={10}
                 disabled={!isEditable}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                  }
+                }}
               />
               <button onClick={handleModify}>
                 {!isEditable ? '수정하기' : '취소하기'}

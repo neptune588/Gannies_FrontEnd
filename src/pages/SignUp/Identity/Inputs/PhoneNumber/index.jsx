@@ -93,6 +93,11 @@ function PhoneNumber({ allow, handleAllow }) {
                 handleIsValid(false);
               }
             }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+              }
+            }}
           />
         </InputWrapper>
         {!allow[0] || phoneNumber.length < 10 ? (

@@ -92,6 +92,11 @@ function VerifyNumber({ allow, handleAllow }) {
                   handleIsFocused(false);
                   handleInstruction();
                 }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                  }
+                }}
               />
               <Clock time={time} />
             </InputWrapper>

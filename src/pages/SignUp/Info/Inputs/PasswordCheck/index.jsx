@@ -70,6 +70,11 @@ function PasswordCheck({ allow, handleAllow }) {
             handleInstruction();
             handleValidate();
           }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+            }
+          }}
         />
         {showPassword ? (
           <EyeIcon onClick={handleShowPassword} />

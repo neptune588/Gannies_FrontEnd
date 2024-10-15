@@ -36,13 +36,15 @@ export const ActiveButton = styled.button`
   ${ButtonStyle};
 `;
 
-export const DisabledButton = styled(ActiveButton)`
+export const DisabledButton = styled.button`
   ${disabledColorBoxStyle};
+  ${ButtonStyle};
   cursor: default;
 `;
 
-export const InactiveButton = styled(ActiveButton)`
+export const InactiveButton = styled.button`
   ${inactiveColorBoxStyle};
+  ${ButtonStyle};
   cursor: default;
 `;
 

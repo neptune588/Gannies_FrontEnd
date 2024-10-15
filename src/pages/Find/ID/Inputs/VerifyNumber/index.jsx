@@ -72,6 +72,11 @@ function VerifyNumber({ phoneNumber, allow, handleAllow }) {
                 onBlur={() => {
                   handleIsFocused(false);
                 }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                  }
+                }}
               />
               <Clock time={time} />
             </InputWrapper>

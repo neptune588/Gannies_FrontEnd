@@ -69,6 +69,11 @@ function Document({ allow, handleAllow, file, setFile }) {
             accept='.png, .jpeg, .jpg, .gif'
             onChange={uploadFile}
             ref={inputRef}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+              }
+            }}
           />
           <Instruction text='*졸업증명서, 재학증면서만 가능 (최대 1MB 이내)' />
           <Instruction text='*JPG / JPEG / PNG / GIF (이미지만)' />

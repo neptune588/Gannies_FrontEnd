@@ -34,7 +34,13 @@ const inactiveColorBoxStyle = css`
 `;
 
 const disabledColorBoxStyle = css`
-  ${primaryColorBoxStyle};
+  color: ${({ theme: { colors } }) => {
+    return colors.white;
+  }};
+  background-color: ${({ theme: { colors } }) => {
+    return colors.primary;
+  }};
+  border-radius: 4px;
   opacity: 0.5;
 `;
 

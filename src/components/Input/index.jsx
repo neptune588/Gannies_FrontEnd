@@ -1,7 +1,8 @@
 import { InputBox } from '@/components/Input/style';
+import React from 'react';
 
-function Input(props) {
-  return <InputBox {...props} />;
+function Input(props, ref) {
+  return <InputBox ref={ref ? ref : null} {...props} />;
 }
 
-export default Input;
+export default React.forwardRef(Input);

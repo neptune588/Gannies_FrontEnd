@@ -48,6 +48,7 @@ export default function PasswordChange() {
         newPassword: newPassword,
       });
     } catch (error) {
+      console.log(error.response);
       alert('비밀번호 변경 중 오류가 발생했습니다. 다시 시도해주세요.');
     }
   };
@@ -65,6 +66,11 @@ export default function PasswordChange() {
                 value={currentPassword}
                 onChange={handleCurrentPassword}
                 type={passwordView[0] ? 'text' : 'password'}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                  }
+                }}
               />
               {passwordView[0] ? (
                 <div>
@@ -93,6 +99,11 @@ export default function PasswordChange() {
                 value={newPassword}
                 onChange={handleNewPassword}
                 type={passwordView[1] ? 'text' : 'password'}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                  }
+                }}
               />
               {passwordView[1] ? (
                 <div>
@@ -125,6 +136,11 @@ export default function PasswordChange() {
                 value={newPasswordCheck}
                 onChange={handleNewPasswordCheck}
                 type={passwordView[2] ? 'text' : 'password'}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                  }
+                }}
               />
               {passwordView[2] ? (
                 <div>
