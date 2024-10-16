@@ -32,7 +32,7 @@ export const userDelete = async () => {
 //로그인
 export const userSignIn = async (signInData) => {
   const url = '/auth/sign-in';
-  const response = await api.post(url, signInData);
+  const response = await cookieApi.post(url, signInData);
   return response;
 };
 
