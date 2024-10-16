@@ -10,7 +10,7 @@ export const adminSignIn = async (signInData) => {
 //회원 탈퇴(추방) 처리
 export const deleteUser = async (userData) => {
   const url = '/admin/withdrawal';
-  const response = await cookieApi.delete(url, userData);
+  const response = await cookieApi.post(url, userData);
   return response;
 };
 
@@ -22,16 +22,16 @@ export const cancelDeleteUser = async (userData) => {
 };
 
 //회원 정지 처리
-export const blockUser = async (userData) => {
+export const blockUser = async (userBanData) => {
   const url = '/admin/suspension';
-  const response = await cookieApi.post(url, userData);
+  const response = await cookieApi.post(url, userBanData);
   return response;
 };
 
 //회원 정지 취소
-export const unblockUser = async (userData) => {
+export const unblockUser = async (userIdData) => {
   const url = '/admin/suspension/cancel';
-  const response = await cookieApi.post(url, userData);
+  const response = await cookieApi.post(url, userIdData);
   return response;
 };
 

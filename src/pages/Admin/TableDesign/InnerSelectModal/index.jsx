@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 
 import { defaultBorderBoxStyle } from '@/styles/commonStyle/box';
-import { xsmall_700 } from '@/styles/commonStyle/localTextStyle';
-xsmall_700;
 
 const ModalBox = styled.ul`
   ${defaultBorderBoxStyle}
@@ -25,9 +23,6 @@ const ModalBox = styled.ul`
   z-index: 10;
 `;
 
-export default function InnerSelectModal({
-  currentActiveTab = '신고내역',
-  children,
-}) {
+export default function InnerSelectModal({ currentActiveTab, children }) {
   return <ModalBox $currentActiveTab={currentActiveTab}>{children}</ModalBox>;
 }

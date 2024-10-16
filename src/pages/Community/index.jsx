@@ -212,6 +212,7 @@ export default function Community({ isSearch, searchKeyword }) {
               {isSearch ? (
                 <AlignSelectMenu
                   isSearch={isSearch}
+                  pageType={'search'}
                   searchedListLength={postsTotalLength}
                   optionList={boardTypeOptionList}
                   selectedOption={selectedBoardOption.label}

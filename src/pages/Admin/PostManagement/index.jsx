@@ -11,7 +11,7 @@ import TableHeaderRow from '@/pages/Admin/TableDesign/TableHeaderRow';
 import TableBodyRow from '@/pages/Admin/TableDesign/TableBodyRow';
 import PaginationWrapper from '@/pages/Admin/PaginationWrapper';
 import Pagination from '@/components/Pagination';
-import DeleteModal from '@/pages/Admin/DeleteModal';
+import DeleteModal from '@/pages/Admin/Modals/DeleteModal';
 
 import deleteDefault from '@/assets/icons/trush/trush_default.svg';
 import deleteActive from '@/assets/icons/trush/trush_active.svg';

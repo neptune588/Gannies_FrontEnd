@@ -7,16 +7,19 @@ import ArrLengthView from '@/pages/Admin/ArrLengthView';
 import TableWrapper from '@/pages/Admin/TableDesign/TableWrapper';
 import TableHeaderRow from '@/pages/Admin/TableDesign/TableHeaderRow';
 import TableBodyRow from '@/pages/Admin/TableDesign/TableBodyRow';
-import InnerSelectModal from '@/pages/Admin/TableDesign/InnerSelectModal';
-import ModalInnerList from '@/pages/Admin/TableDesign/InnerSelectModal/ModalInnerList';
-import InnerModalOpenButton from '@/pages/Admin/TableDesign/InnerModalOpenButton';
 import PaginationWrapper from '@/pages/Admin/PaginationWrapper';
 import Pagination from '@/components/Pagination';
-import ReportedReviewModal from '@/pages/Admin/ReportedReviewModal';
+import ReportedReviewModal from '@/pages/Admin/Modals/ReportedReviewModal';
 
 import arrow from '@/assets/icons/arrows/chevron_down.svg';
 
-import { TitleCategory, ListClickBox } from '@/pages/Admin/ReportHistory/style';
+import {
+  TitleCategory,
+  DummyClickBox,
+  OptionListBox,
+  OptionList,
+  OptionListOpenButton,
+} from '@/pages/Admin/ReportHistory/style';
 
 import {
   reportedPostsHeaderColumns,
@@ -40,17 +43,12 @@ import { pageViewLimit, communityPostMaxLimit } from '@/utils/itemLimit';
 import { formatDateToPost } from '@/utils/dateFormatting';
 
 export default function ReportHistory() {
-  const modalsRef = useRef([]);
-
   const {
     items: tableLists,
     totalItems,
-    isLoading,
-    itemMaxLimit,
     currentPageNumber,
     groupedPageNumbers: pageNumbers,
     setItems: setTableLists,
-    setIsLoading,
     setCurrentPageNumber,
     getDataAndSetPageNumbers: getReportedPostsAndSetPageNumbers,
     handlePageNumberClick,
@@ -72,39 +70,40 @@ export default function ReportHistory() {
     limit: communityPostMaxLimit,
     withReplies: true,
   });
-  const [reviewModalContents, setReviewModalContents] = useState({});
+  const [reviewModalProps, setReviewModalProps] = useState({});
 
   const { changeValue: curActiveCategory, handleChange } = useEventHandler({
     changeDefaultValue: '게시글',
   });
 
-  const handleInnerModalToggle = (listNumber) => {
+  const handleOptionListToggle = (listNumber) => {
     const toggleFnc = (arr) => {
       return arr.map((list, idx) => {
         return {
           ...list,
-          innerModalState: idx === listNumber ? !list.innerModalState : false,
+          isOptionListOpen: idx === listNumber ? !list.isOptionListOpen : false,
         };
       });
     };
     setTableLists((prev) => toggleFnc(prev));
   };
 
-  const handleStatusChange = async ({ ...props }, listNumber) => {
+  const handleStatusChange = async ({ ...parameter }, listNumber) => {
     try {
-      const data = props;
+      const data = parameter;
 
-      console.log(data);
-      /*       curActiveCategory === '게시글 '
+      console.log(curActiveCategory);
+      curActiveCategory === '게시글'
         ? await setPostStatusChange(data)
-        : await setCommentStatusChange(data); */
+        : await setCommentStatusChange(data);
 
       const statusChangeFnc = (arr) => {
         return arr.map((list, idx) => {
           return {
             ...list,
-            status: idx === listNumber ? props.status : list.status,
-            innerModalState: idx === listNumber ? false : list.innerModalState,
+            status: idx === listNumber ? data.status : list.status,
+            isOptionListOpen:
+              idx === listNumber ? false : list.isOptionListOpen,
           };
         });
       };
@@ -127,6 +126,7 @@ export default function ReportHistory() {
   }, [curActiveCategory]);
 
   useEffect(() => {
+    window.scroll({ top: 0, left: 0 });
     setQuery({
       page: currentPageNumber,
       limit: communityPostMaxLimit,
@@ -136,7 +136,6 @@ export default function ReportHistory() {
 
   useEffect(() => {
     (async () => {
-      window.scroll({ top: 0, left: 0 });
       if (curActiveCategory === '게시글') {
         //console.log('데이터 요청 => 게시글로 데이터 변경');
         await getReportedPostsAndSetPageNumbers(() => {
@@ -169,7 +168,7 @@ export default function ReportHistory() {
       {isReportedCotentModal && (
         <ReportedReviewModal
           activeCategory={curActiveCategory}
-          reviewModalContents={reviewModalContents}
+          reviewModalProps={reviewModalProps}
         />
       )}
       <TitleSection>
@@ -226,24 +225,20 @@ export default function ReportHistory() {
                       : list.reportReason}
                   </td>
                   <td>
-                    {list.innerModalState && (
-                      <InnerSelectModal
-                        ref={(el) => (modalsRef[idx].current = el)}
-                        currentActiveTab={'신고내역'}
-                      >
-                        <ModalInnerList
-                          currentActiveTab={'신고내역'}
-                          handleStatusChange={() => {
+                    {list.isOptionListOpen && (
+                      <OptionListBox>
+                        <OptionList
+                          onClick={() => {
                             handleStatusChange(
                               curActiveCategory === '게시글'
                                 ? {
-                                    reportId: list.reportId,
-                                    postId: list.contentId,
+                                    reportId: parseInt(list.reportId, 10),
+                                    postId: parseInt(list.contentId, 10),
                                     status: 'pending',
                                   }
                                 : {
-                                    reportId: list.reportId,
-                                    type: 'comment',
+                                    reportId: parseInt(list.reportId, 10),
+                                    type: list.type,
                                     status: 'pending',
                                   },
                               idx
@@ -251,20 +246,19 @@ export default function ReportHistory() {
                           }}
                         >
                           처리 중
-                        </ModalInnerList>
-                        <ModalInnerList
-                          currentActiveTab={'신고내역'}
-                          handleStatusChange={() => {
+                        </OptionList>
+                        <OptionList
+                          onClick={() => {
                             handleStatusChange(
                               curActiveCategory === '게시글'
                                 ? {
-                                    reportId: list.reportId,
-                                    postId: list.contentId,
+                                    reportId: parseInt(list.reportId, 10),
+                                    postId: parseInt(list.contentId, 10),
                                     status: 'completed',
                                   }
                                 : {
-                                    reportId: list.reportId,
-                                    type: 'comment',
+                                    reportId: parseInt(list.reportId, 10),
+                                    type: list.type,
                                     status: 'completed',
                                   },
                               idx
@@ -272,20 +266,19 @@ export default function ReportHistory() {
                           }}
                         >
                           처리완료
-                        </ModalInnerList>
-                        <ModalInnerList
-                          currentActiveTab={'신고내역'}
-                          handleStatusChange={() => {
+                        </OptionList>
+                        <OptionList
+                          onClick={() => {
                             handleStatusChange(
                               curActiveCategory === '게시글'
                                 ? {
-                                    reportId: list.reportId,
-                                    postId: list.contentId,
+                                    reportId: parseInt(list.reportId, 10),
+                                    postId: parseInt(list.contentId, 10),
                                     status: 'rejected',
                                   }
                                 : {
-                                    reportId: list.reportId,
-                                    type: 'comment',
+                                    reportId: parseInt(list.reportId, 10),
+                                    type: list.type,
                                     status: 'rejected',
                                   },
                               idx
@@ -293,33 +286,37 @@ export default function ReportHistory() {
                           }}
                         >
                           신고반려
-                        </ModalInnerList>
-                      </InnerSelectModal>
+                        </OptionList>
+                      </OptionListBox>
                     )}
-                    <InnerModalOpenButton
-                      handleInnerModalToggle={() => {
-                        handleInnerModalToggle(idx);
+                    <OptionListOpenButton
+                      onClick={() => {
+                        handleOptionListToggle(idx);
                       }}
-                      currentActiveTab={'신고내역'}
-                      currentValue={(() => {
-                        if (list.status === 'pending') {
-                          return '처리 중';
-                        } else if (list.status === 'completed') {
-                          return '처리완료';
-                        } else if (list.status === 'rejected') {
-                          return '신고반려';
-                        }
-                      })()}
-                      innerModalState={list.innerModalState}
-                    />
+                      $status={list.status}
+                      $modalState={list.isOptionListOpen}
+                    >
+                      <span>
+                        {(() => {
+                          if (list.status === 'pending') {
+                            return '처리 중';
+                          } else if (list.status === 'completed') {
+                            return '처리완료';
+                          } else if (list.status === 'rejected') {
+                            return '신고반려';
+                          }
+                        })()}
+                      </span>
+                      <img src={arrow} alt='bottom-arrow' />
+                    </OptionListOpenButton>
                   </td>
-                  <ListClickBox
+                  <DummyClickBox
                     onClick={() => {
-                      setReviewModalContents({
+                      setReviewModalProps({
                         contentId: list.contentId,
                         content: list.content,
                         creator: list.creator,
-                        category: list.postCategory || '디폴트',
+                        category: list.postCategory,
                         reporter: list.reporter,
                         reportDate: formatDateToPost(list.reportDate),
                         reportReason: list.reportReason,

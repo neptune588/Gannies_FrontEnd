@@ -65,8 +65,8 @@ const TopAreaLastDataBox = styled.div`
 
   > div {
     ${adminPageModalInnerDataBoxStyle}
-    overflow-y: ${({ $activeCategory }) => {
-      return $activeCategory === '댓글' && 'scroll';
+    overflow: ${({ $activeCategory }) => {
+      return $activeCategory === '댓글' && 'auto';
     }};
     height: ${({ $activeCategory }) => {
       return $activeCategory === '댓글' && '140px';

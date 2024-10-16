@@ -21,6 +21,8 @@ import { setAdminLogin } from '@/store/auth';
 
 import { adminSignIn } from '@/api/adminApi';
 
+import { isIncludesWhiteSpaceCheck } from '@/utils/whiteSpaceCheck';
+
 export default function AdminSignIn() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -47,10 +49,6 @@ export default function AdminSignIn() {
     setIsPasswordView((prev) => !prev);
   };
 
-  const whiteSpaceCheck = (value) => {
-    return value.split('').some((str) => str === ' ');
-  };
-
   const onSubmit = async (data) => {
     if (isSubmit) {
       return;
@@ -58,8 +56,8 @@ export default function AdminSignIn() {
 
     const { adminEmail, adminPassword } = data;
 
-    const adminEmailValue = whiteSpaceCheck(adminEmail);
-    const adminPasswordValue = whiteSpaceCheck(adminPassword);
+    const adminEmailValue = isIncludesWhiteSpaceCheck(adminEmail);
+    const adminPasswordValue = isIncludesWhiteSpaceCheck(adminPassword);
 
     if (adminEmailValue) {
       setError('adminEmail', {

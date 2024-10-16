@@ -6,6 +6,7 @@ const initialState = {
   isPostDeleteModal: false,
   isPostOrCommentReportModal: false,
   isReportedCotentModal: false,
+  isUserWithdrawModal: false,
   scrollLocation: 0,
 };
 
@@ -30,6 +31,9 @@ const modalsControlSlice = createSlice({
     setIsReportedCotentModal(state, action) {
       state.isReportedCotentModal = action.payload;
     },
+    setIsUserWithdrawModal(state, action) {
+      state.isUserWithdrawModal = action.payload;
+    },
     setSaveScrollLocation(state, action) {
       state.scrollLocation = action.payload;
     },
@@ -42,6 +46,7 @@ export const {
   setIsPostDeleteModal,
   setIsPostOrCommentReportModal,
   setIsReportedCotentModal,
+  setIsUserWithdrawModal,
   setSaveScrollLocation,
 } = modalsControlSlice.actions;
 export default modalsControlSlice.reducer;

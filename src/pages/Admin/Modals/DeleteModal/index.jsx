@@ -13,7 +13,7 @@ import {
   InformationMessage,
   NoticeMessage,
   ConfirmButton,
-} from '@/pages/Admin/DeleteModal/style';
+} from '@/pages/Admin/Modals/DeleteModal/style';
 
 export default function DeleteModal({ deleteSelectCalc }) {
   return (

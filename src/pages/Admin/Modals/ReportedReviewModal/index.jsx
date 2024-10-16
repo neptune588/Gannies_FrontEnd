@@ -12,7 +12,7 @@ import {
   TopAreaLastDataBox,
   BottomAreaLastDataBox,
   ModalCloseButton,
-} from '@/pages/Admin/ReportedReviewModal/style';
+} from '@/pages/Admin/Modals/ReportedReviewModal/style';
 
 import useModalsControl from '@/hooks/useModalsControl';
 
@@ -20,7 +20,7 @@ import { setIsReportedCotentModal } from '@/store/modalsControl';
 
 export default function ReportedReviewModal({
   activeCategory,
-  reviewModalContents,
+  reviewModalProps,
 }) {
   const { handleModalClose } = useModalsControl();
 
@@ -40,40 +40,40 @@ export default function ReportedReviewModal({
         <DataAreaTop $activeCategory={activeCategory}>
           <DataBox>
             <p>작성자</p>
-            <div>{reviewModalContents.creator}</div>
+            <div>{reviewModalProps.creator}</div>
           </DataBox>
           <DataBox>
             <p>작성일자</p>
-            <div>{reviewModalContents.reportDate}</div>
+            <div>{reviewModalProps.reportDate}</div>
           </DataBox>
           <DataBox>
             <p>카테고리</p>
-            <div>{reviewModalContents.category}</div>
+            <div>{reviewModalProps.category}</div>
           </DataBox>
           <DataBox>
             <p>{activeCategory === '게시글' ? '게시물 ID' : '댓글 ID'}</p>
-            <div>{reviewModalContents.contentId}</div>
+            <div>{reviewModalProps.contentId}</div>
           </DataBox>
           <TopAreaLastDataBox $activeCategory={activeCategory}>
             <p>{activeCategory === '게시글' ? '게시글 제목' : '댓글 본문'}</p>
-            <div>{reviewModalContents.content}</div>
+            <div>{reviewModalProps.content}</div>
           </TopAreaLastDataBox>
         </DataAreaTop>
         <DataAreaBottom>
           <DataBox>
             <p>신고자</p>
-            <div>{reviewModalContents.reporter}</div>
+            <div>{reviewModalProps.reporter}</div>
           </DataBox>
           <DataBox>
             <p>신고날짜</p>
-            <div>{reviewModalContents.reportDate}</div>
+            <div>{reviewModalProps.reportDate}</div>
           </DataBox>
           <BottomAreaLastDataBox>
             <p>신고사유</p>
             <div>
-              {reviewModalContents.otherReportedReason
-                ? reviewModalContents.otherReportedReason
-                : reviewModalContents.reportReason}
+              {reviewModalProps.otherReportedReason
+                ? reviewModalProps.otherReportedReason
+                : reviewModalProps.reportReason}
             </div>
           </BottomAreaLastDataBox>
         </DataAreaBottom>

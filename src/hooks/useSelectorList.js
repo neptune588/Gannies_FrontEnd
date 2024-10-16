@@ -8,6 +8,7 @@ export default function useSelectorList() {
 
   const { currentActiveMenuNumber, currentBoardType, bannerTitle, bannerDesc } =
     navBarOptions;
+
   const {
     isLogin,
     userId,
@@ -28,8 +29,10 @@ export default function useSelectorList() {
     isPostDeleteModal,
     isPostOrCommentReportModal,
     isReportedCotentModal,
+    isUserWithdrawModal,
     scrollLocation,
   } = modalsControl;
+
   const { comentWrapperLocation } = locations;
 
   return {
@@ -53,6 +56,7 @@ export default function useSelectorList() {
     isPostDeleteModal,
     isPostOrCommentReportModal,
     isReportedCotentModal,
+    isUserWithdrawModal,
     scrollLocation,
     comentWrapperLocation,
   };

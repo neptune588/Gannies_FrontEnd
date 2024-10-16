@@ -77,3 +77,18 @@ export const SearchPageSelectOptions = [
     path: 'notice',
   },
 ];
+
+export const adminPageUserSearchTypes = [
+  {
+    label: '회원 닉네임',
+    query: 'nickname',
+  },
+  {
+    label: '회원 이메일',
+    query: 'email',
+  },
+  {
+    label: '회원 고유 ID',
+    query: 'userId',
+  },
+];

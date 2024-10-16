@@ -9,9 +9,9 @@ import SearchInput from '@/pages/Admin/SearchInput';
 import TableWrapper from '@/pages/Admin/TableDesign/TableWrapper';
 import TableHeaderRow from '@/pages/Admin/TableDesign/TableHeaderRow';
 import TableBodyRow from '@/pages/Admin/TableDesign/TableBodyRow';
-import InnerModalOpenButton from '@/pages/Admin/TableDesign/InnerModalOpenButton';
+import InnerModalOpenButton from '@/pages/Admin/TableDesign/PopupOpenButton';
 import InnerSelectModal from '@/pages/Admin/TableDesign/InnerSelectModal';
-import ModalInnerList from '@/pages/Admin/TableDesign/InnerSelectModal/ModalInnerList';
+import ModalInnerList from '@/pages/Admin/TableDesign/InnerSelectModal/PopupList';
 import PaginationWrapper from '@/pages/Admin/PaginationWrapper';
 import Pagination from '@/components/Pagination';
 
@@ -95,6 +95,7 @@ export default function UserApproval() {
             {tableData?.map((data, idx) => {
               return (
                 <TableBodyRow key={uuid()} currentActiveTab={'회원 가입승인'}>
+                  <td>{data.order}</td>
                   <td>{data.nickname}</td>
                   <td>{data.email}</td>
                   <td>{data.signUpDate}</td>

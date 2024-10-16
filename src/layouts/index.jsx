@@ -9,7 +9,6 @@ import MyPageSideTab from '@/pages/MyPage/MyPageSideTab';
 import AdminSideTab from '@/pages/Admin/AdminSideTab';
 
 import {
-  Container,
   CenterdWrapper,
   MyPageCenterdWrapper,
   MyPageTitle,
@@ -20,7 +19,6 @@ import {
   AdminContentsWrapper,
 } from '@/layouts/style';
 
-import useModalsControl from '@/hooks/useModalsControl';
 import useLoginCheck from '@/hooks/useLoginCheck';
 
 import { setBoardType } from '@/store/navBarOptions';
@@ -56,25 +54,15 @@ export function MainLayout() {
     }
   }, [boardType]);
 
-  const {
-    isHospitalSearchModal,
-    isPostDeleteModal,
-    isPostOrCommentReportModal,
-  } = useModalsControl();
-
   return (
-    <Container
-      $isHospitalSearchModal={isHospitalSearchModal}
-      $isPostDeleteModal={isPostDeleteModal}
-      $isPostOrCommentReportModal={isPostOrCommentReportModal}
-    >
+    <>
       <Header />
       <Navbar />
       <CenterdWrapper>
         <Outlet />
       </CenterdWrapper>
       <Footer />
-    </Container>
+    </>
   );
 }
 
@@ -102,8 +90,6 @@ export function AdminLayout() {
   const dispatch = useDispatch();
 
   const { checkIsLogin } = useLoginCheck();
-
-  const { isReportedCotentModal } = useModalsControl();
 
   /* 
   관리자 로그인을 하면 
@@ -139,14 +125,14 @@ sidetab에서 isAdmin과 isLogin이 true면 nickname을 띄운다
   }, []);
 
   return (
-    <Container $isReportedCotentModal={isReportedCotentModal}>
+    <>
       <AdminSideTab />
       <AdminContainer>
         <AdminContentsWrapper>
           <Outlet />
         </AdminContentsWrapper>
       </AdminContainer>
-    </Container>
+    </>
   );
 }
 

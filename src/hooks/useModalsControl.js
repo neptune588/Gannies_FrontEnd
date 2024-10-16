@@ -8,6 +8,7 @@ import {
   setIsUserBanModal,
   setIsPostOrCommentReportModal,
   setIsReportedCotentModal,
+  setIsUserWithdrawModal,
   setSaveScrollLocation,
 } from '@/store/modalsControl';
 
@@ -24,16 +25,19 @@ export default function useModalsControl() {
     isUserBanModal,
     isPostOrCommentReportModal,
     isReportedCotentModal,
+    isUserWithdrawModal,
     scrollLocation,
   } = useSelectorList();
 
   const handleModalOpen = ({ modalDispatch }) => {
     dispatch(setSaveScrollLocation(window.scrollY));
     dispatch(modalDispatch(true));
+    document.body.style.overflow = 'hidden';
   };
 
   const handleModalClose = ({ modalDispatch }) => {
     dispatch(modalDispatch(false));
+    document.body.style.overflow = 'auto';
     setTimeout(() => {
       window.scroll({ top: scrollLocation, left: 0 });
     }, 10);
@@ -50,7 +54,8 @@ export default function useModalsControl() {
       isPostDeleteModal ||
       isUserBanModal ||
       isPostOrCommentReportModal ||
-      isReportedCotentModal;
+      isReportedCotentModal ||
+      isUserWithdrawModal;
 
     if (modalState) {
       dispatch(setIsHospitalModal(false));
@@ -58,6 +63,8 @@ export default function useModalsControl() {
       dispatch(setIsUserBanModal(false));
       dispatch(setIsPostOrCommentReportModal(false));
       dispatch(setIsReportedCotentModal(false));
+      dispatch(setIsUserWithdrawModal(false));
+      document.body.style.overflow = 'auto';
     }
   }, [location]);
 
@@ -67,6 +74,7 @@ export default function useModalsControl() {
     isUserBanModal,
     isPostOrCommentReportModal,
     isReportedCotentModal,
+    isUserWithdrawModal,
     handleModalOpen,
     handleModalClose,
   };
