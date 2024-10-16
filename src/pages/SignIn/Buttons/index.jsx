@@ -38,6 +38,7 @@ function Buttons({ email, password, setLoginError, setIsLoading, setText }) {
       }
 
       setIsLoading(true);
+      console.log(email, password);
       const response = await userSignIn({ email: email, password: password });
       const {
         isSuspended,
@@ -88,6 +89,7 @@ function Buttons({ email, password, setLoginError, setIsLoading, setText }) {
       );
       navigate('/');
     } catch (error) {
+      console.log(error.response);
       setIsLoading(false);
       setLoginError(true);
     }
