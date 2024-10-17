@@ -29,7 +29,9 @@ const PostsHeaderLeftBox = styled.div`
 
 const PostsHeaderRightBox = styled(PostsHeaderLeftBox)`
   > p {
-    width: 82px;
+    width: ${({ $pageName }) => {
+      return $pageName === 'myComments' ? '109px' : '82px';
+    }};
     text-align: left;
 
     &:first-of-type {

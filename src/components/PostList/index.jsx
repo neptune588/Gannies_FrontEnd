@@ -12,6 +12,8 @@ import {
   IconBox,
   Date,
   ScrapBox,
+  PostUpperContainer,
+  PostLowerContainer,
 } from '@/components/PostList/style';
 
 import Eye from '@/components/Icons/Eye';
@@ -32,9 +34,9 @@ function PostList({
   scrapViewState = false,
   boardType = null,
   postId = null,
+  content = null,
 }) {
   const [scrapClickState, setScrapClickState] = useState(true);
-
   const handleScrap = async (e) => {
     try {
       e.stopPropagation();
@@ -74,40 +76,53 @@ function PostList({
         handlePostClick(postId);
       }}
     >
-      <PostLeftBox>
-        {postNumber && <PostNumber>{postNumber}</PostNumber>}
-        {category && <Category $pageName={pageName}>{category}</Category>}
-        <PostTitle $pageName={pageName}>
-          {title}
-          {comment > 0 && <CommentLength>{comment}</CommentLength>}
-        </PostTitle>
-      </PostLeftBox>
-      <PostRightBox>
-        {!scrapViewState && (
-          <>
-            <IconBox $pageName={pageName}>
-              <Eye postViewCount={views} />
-            </IconBox>
-            <IconBox $pageName={pageName}>
-              <HeartInactive likeCount={likes} />
-            </IconBox>
-          </>
-        )}
+      <PostUpperContainer $pageName={pageName}>
+        <PostLeftBox>
+          {postNumber && (
+            <PostNumber $pageName={pageName}>{postNumber}</PostNumber>
+          )}
+          {category && <Category $pageName={pageName}>{category}</Category>}
+          <PostTitle $pageName={pageName}>
+            {title}
+            {comment > 0 && <CommentLength>{comment}</CommentLength>}
+          </PostTitle>
+        </PostLeftBox>
+        <PostRightBox>
+          {!scrapViewState && (
+            <>
+              {views && (
+                <IconBox $pageName={pageName}>
+                  <Eye postViewCount={views} />
+                </IconBox>
+              )}
+              {likes && (
+                <IconBox $pageName={pageName}>
+                  <HeartInactive likeCount={likes} />
+                </IconBox>
+              )}
+            </>
+          )}
 
-        {date && (
-          <DescriptionBox $pageName={pageName}>
-            <Date>{date}</Date>
-          </DescriptionBox>
-        )}
-        {scrapViewState && (
-          <ScrapBox
-            $scrapClickState={scrapClickState}
-            onClick={(e) => handleScrap(e)}
-          >
-            <Scrap scrapClickState={scrapClickState} pageName={pageName} />
-          </ScrapBox>
-        )}
-      </PostRightBox>
+          {date && (
+            <DescriptionBox $pageName={pageName}>
+              <Date>{date}</Date>
+            </DescriptionBox>
+          )}
+          {scrapViewState && (
+            <ScrapBox
+              $scrapClickState={scrapClickState}
+              onClick={(e) => handleScrap(e)}
+            >
+              <Scrap scrapClickState={scrapClickState} pageName={pageName} />
+            </ScrapBox>
+          )}
+        </PostRightBox>
+      </PostUpperContainer>
+      {content && (
+        <PostLowerContainer>
+          <p>{content}</p>
+        </PostLowerContainer>
+      )}
     </PostWrapper>
   );
 }

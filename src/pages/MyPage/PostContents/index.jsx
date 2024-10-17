@@ -27,18 +27,20 @@ export default function PostContents({
             <p>제목</p>
           </PostsHeaderLeftBox>
           <PostsHeaderRightBox $pageName={pageName}>
-            {scrapViewState ? (
-              <>
-                <p>작성일</p>
-                <p>스크랩</p>
-              </>
-            ) : (
+            {pageName === 'myPosts' && (
               <>
                 <p>조회수</p>
                 <p>공감수</p>
                 <p>작성일</p>
               </>
             )}
+            {pageName === 'myScraps' && (
+              <>
+                <p>작성일</p>
+                <p>스크랩</p>
+              </>
+            )}
+            {pageName === 'myComments' && <p>작성일</p>}
           </PostsHeaderRightBox>
         </PostsHeader>
         <PostListBox>
@@ -47,7 +49,9 @@ export default function PostContents({
               return (
                 <PostList
                   key={uuid()}
-                  postNumber={String(list.postId).padStart(2, '0')}
+                  postNumber={String(
+                    pageName === 'myComments' ? list.commentId : list.postId
+                  ).padStart(2, '0')}
                   category={getCategoryLabel(list.boardType)}
                   title={list.title}
                   comment={list.numberOfCommentsAndReplies}
@@ -58,6 +62,7 @@ export default function PostContents({
                   scrapViewState={scrapViewState}
                   postId={list.postId}
                   boardType={list.boardType}
+                  content={list.content}
                 />
               );
             })}
