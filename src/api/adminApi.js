@@ -56,10 +56,17 @@ export const getPendingUsers = async (params) => {
   return response;
 };
 
-//회원가입 승인 밑 거절
-export const approveOrRejectRegistration = async (isApprovalData) => {
-  const url = '/admin/approval';
-  const response = await cookieApi.post(url, isApprovalData);
+//회원가입 최종 승인
+export const signUpApprove = async (userIdData) => {
+  const url = '/admin/user/approval';
+  const response = await cookieApi.post(url, userIdData);
+  return response;
+};
+
+//회원가입 최종 거절
+export const signUpReject = async (rejectReasonData) => {
+  const url = '/admin/user/rejection';
+  const response = await cookieApi.post(url, rejectReasonData);
   return response;
 };
 

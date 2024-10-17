@@ -1,70 +1,123 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import uuid from 'react-uuid';
 
 import TitleSection from '@/pages/Admin/TitleSection';
 import Title from '@/pages/Admin/Title';
 import ArrLengthSection from '@/pages/Admin/ArrLengthSection';
 import ArrLengthView from '@/pages/Admin/ArrLengthView';
-import SearchInput from '@/pages/Admin/SearchInput';
 import TableWrapper from '@/pages/Admin/TableDesign/TableWrapper';
 import TableHeaderRow from '@/pages/Admin/TableDesign/TableHeaderRow';
 import TableBodyRow from '@/pages/Admin/TableDesign/TableBodyRow';
-import InnerModalOpenButton from '@/pages/Admin/TableDesign/PopupOpenButton';
-import InnerSelectModal from '@/pages/Admin/TableDesign/InnerSelectModal';
-import ModalInnerList from '@/pages/Admin/TableDesign/InnerSelectModal/PopupList';
 import PaginationWrapper from '@/pages/Admin/PaginationWrapper';
 import Pagination from '@/components/Pagination';
 
 import arrow from '@/assets/icons/arrows/chevron_down.svg';
 
-import { PrimaryColor } from '@/pages/Admin/UserApproval/style';
-
 import {
-  userApprovalHeaderColumns,
-  userApprovalData,
-} from '@/pages/Admin/data';
+  PrimaryColor,
+  OptionListBox,
+  OptionList,
+  OptionListOpenButton,
+} from '@/pages/Admin/UserApproval/style';
+
+import { userApprovalHeaderColumns } from '@/pages/Admin/data';
 
 import useEventHandler from '@/hooks/useEventHandler';
+import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
+
+import { getPendingUsers, signUpApprove, signUpReject } from '@/api/adminApi';
+
+import { communityPostMaxLimit, pageViewLimit } from '@/utils/itemLimit';
+import { formatDateToPost } from '@/utils/dateFormatting';
+import { questionAlert, confirmAlert } from '@/utils/sweetAlert';
 
 export default function UserApproval() {
-  const [tableData, setTableData] = useState(userApprovalData);
   const [headerColumns] = useState(userApprovalHeaderColumns);
-  const [tempPageData] = useState(
-    Array.from({ length: 10 }, (_, index) => {
-      return index;
-    })
-  );
 
   const {
-    changeValue: currentPageNumber,
-    handleChange: handlePageNumberClick,
-  } = useEventHandler({
-    changeDefaultValue: 0,
+    items: approvalPendingUsers,
+    totalItems,
+    currentPageNumber,
+    groupedPageNumbers: pageNumbers,
+    setItems: setApprovalPendingUsers,
+    getDataAndSetPageNumbers: getApprovalPendingUsersAndSetPageNumbers,
+    setCurrentPageNumber,
+    handlePageNumberClick,
+    handlePrevPageClick,
+    handleNextPageClick,
+  } = useFetchAndPaginate({
+    defaultPageNumber: 1,
+    itemMaxLimit: communityPostMaxLimit,
+    pageViewLimit,
   });
 
-  const handleStatusValueChange = (status, listNumber) => {
-    const statusChangefnc = (arr) => {
-      return arr.map((list, idx) => {
-        return {
-          ...list,
-          statusValue: idx === listNumber ? status : list.statusValue,
-        };
-      });
-    };
-    setTableData((prev) => statusChangefnc(prev));
-  };
+  const [query, setQuery] = useState({});
 
-  const handleInnerModalToggle = (listNumber) => {
+  const handleOptionListToggle = (listNumber) => {
     const toggleFnc = (arr) => {
       return arr.map((list, idx) => {
         return {
           ...list,
-          innerModalState: idx === listNumber ? !list.innerModalState : false,
+          isOptionListOpen: idx === listNumber ? !list.isOptionListOpen : false,
         };
       });
     };
-    setTableData((prev) => toggleFnc(prev));
+    setApprovalPendingUsers((prev) => toggleFnc(prev));
   };
+
+  const handleUserApprove = async (userId) => {
+    const question = await questionAlert({
+      title: '회원 승인',
+      text: '해당 회원의 가입을 승인 하시겠습니까?',
+    });
+
+    try {
+      if (question) {
+        await signUpApprove({ userId });
+        confirmAlert('해당 회원의 가입을 승인 했습니다!');
+        setQuery({ page: currentPageNumber, limit: communityPostMaxLimit });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleUserReject = async (userId) => {
+    const question = await questionAlert({
+      title: '회원 거절',
+      text: '해당 회원의 가입을 거절 하시겠습니까?',
+    });
+
+    try {
+      if (question) {
+        await signUpReject({
+          userId,
+          rejectedReason:
+            '업로드한 인증서류 파일이 졸업증명서 혹은 재학증명서가 아닙니다. 확인 부탁드립니다.',
+        });
+        confirmAlert('해당 회원의 가입을 거절 했습니다!');
+        setQuery({ page: currentPageNumber, limit: communityPostMaxLimit });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    window.scroll({ top: 0, left: 0 });
+    setQuery({
+      page: currentPageNumber,
+      limit: communityPostMaxLimit,
+    });
+  }, [currentPageNumber]);
+
+  useEffect(() => {
+    (async () => {
+      await getApprovalPendingUsersAndSetPageNumbers(() => {
+        return getPendingUsers(query);
+      });
+    })();
+  }, [query]);
 
   return (
     <>
@@ -72,8 +125,7 @@ export default function UserApproval() {
         <Title>회원 가입승인</Title>
       </TitleSection>
       <ArrLengthSection>
-        <ArrLengthView length={tableData.length} />
-        <SearchInput />
+        <ArrLengthView length={totalItems} />
       </ArrLengthSection>
       <TableWrapper>
         <table>
@@ -92,70 +144,81 @@ export default function UserApproval() {
             </TableHeaderRow>
           </thead>
           <tbody>
-            {tableData?.map((data, idx) => {
-              return (
-                <TableBodyRow key={uuid()} currentActiveTab={'회원 가입승인'}>
-                  <td>{data.order}</td>
-                  <td>{data.nickname}</td>
-                  <td>{data.email}</td>
-                  <td>{data.signUpDate}</td>
-                  <td>{data.enrollmentStatus}</td>
-                  <td>
-                    <PrimaryColor>{data.attachedFile}</PrimaryColor>
-                  </td>
-                  <td>
-                    {data.innerModalState && (
-                      <InnerSelectModal currentActiveTab={'회원 가입승인'}>
-                        <ModalInnerList
-                          currentActiveTab={'회원 가입승인'}
-                          handleStatusValueChange={() => {
-                            handleStatusValueChange('승인대기', idx);
-                            handleInnerModalToggle(idx);
+            {approvalPendingUsers?.length > 0
+              ? approvalPendingUsers?.map((user, idx) => {
+                  return (
+                    <TableBodyRow
+                      key={uuid()}
+                      currentActiveTab={'회원 가입승인'}
+                    >
+                      <td>{String(idx + 1).padStart(2, '0')}</td>
+                      <td>{user.nickname}</td>
+                      <td>{user.email}</td>
+                      <td>{formatDateToPost(user.createdAt)}</td>
+                      <td>
+                        {user.studentStatus === 'current_student'
+                          ? '재학생'
+                          : '졸업생'}
+                      </td>
+                      <td>
+                        <PrimaryColor
+                          href={user.certificationDocumentUrl}
+                          target='_blank'
+                          rel='noopener noreferrer'
+                        >
+                          {user.certificationDocumentUrl}
+                        </PrimaryColor>
+                      </td>
+                      <td>
+                        {user.isOptionListOpen && (
+                          <OptionListBox>
+                            <OptionList
+                              $order='승인완료'
+                              onClick={() => {
+                                handleUserApprove(user.userId);
+                                handleOptionListToggle(idx);
+                              }}
+                            >
+                              승인완료
+                            </OptionList>
+                            <OptionList
+                              $order='승인거절'
+                              onClick={() => {
+                                handleUserReject(user.userId);
+                                handleOptionListToggle(idx);
+                              }}
+                            >
+                              승인거절
+                            </OptionList>
+                          </OptionListBox>
+                        )}
+                        <OptionListOpenButton
+                          $modalState={user.isOptionListOpen}
+                          onClick={() => {
+                            handleOptionListToggle(idx);
                           }}
                         >
                           승인대기
-                        </ModalInnerList>
-                        <ModalInnerList
-                          currentActiveTab={'회원 가입승인'}
-                          handleStatusValueChange={() => {
-                            handleStatusValueChange('승인완료', idx);
-                            handleInnerModalToggle(idx);
-                          }}
-                        >
-                          승인완료
-                        </ModalInnerList>
-                        <ModalInnerList
-                          currentActiveTab={'회원 가입승인'}
-                          handleStatusValueChange={() => {
-                            handleStatusValueChange('승인거절', idx);
-                            handleInnerModalToggle(idx);
-                          }}
-                        >
-                          승인거절
-                        </ModalInnerList>
-                      </InnerSelectModal>
-                    )}
-                    <InnerModalOpenButton
-                      currentActiveTab={'회원 가입승인'}
-                      currentValue={data.statusValue}
-                      handleInnerModalToggle={() => {
-                        handleInnerModalToggle(idx);
-                      }}
-                      innerModalState={data.innerModalState}
-                    />
-                  </td>
-                </TableBodyRow>
-              );
-            })}
+                          <img src={arrow} alt='bottom-arrow' />
+                        </OptionListOpenButton>
+                      </td>
+                    </TableBodyRow>
+                  );
+                })
+              : ''}
           </tbody>
         </table>
       </TableWrapper>
       <PaginationWrapper>
-        <Pagination
-          pageCountData={tempPageData}
-          activePageNumber={currentPageNumber}
-          handlePageNumberClick={handlePageNumberClick}
-        />
+        {pageNumbers?.length > 0 && (
+          <Pagination
+            pageNumbers={pageNumbers}
+            currentPageNumber={currentPageNumber}
+            handlePageNumberClick={handlePageNumberClick}
+            handlePrevPageClick={handlePrevPageClick}
+            handleNextPageClick={handleNextPageClick}
+          />
+        )}
       </PaginationWrapper>
     </>
   );

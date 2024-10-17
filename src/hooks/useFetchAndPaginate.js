@@ -27,7 +27,6 @@ export default function useFetchAndPaginate({
 
       setItems(items);
       setTotalItems(totalItems);
-      setIsLoading(false);
 
       setPageTotalNumbers(() => {
         let arrNumber = 0;
@@ -49,6 +48,7 @@ export default function useFetchAndPaginate({
         });
         return pageGroups;
       });
+      setIsLoading(false);
     } catch (error) {
       console.error(error);
     }

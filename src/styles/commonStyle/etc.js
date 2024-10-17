@@ -117,8 +117,9 @@ const adminPageCellStyle = css`
   }
 
   &:nth-child(6) {
+    ${ellipsisStyle}
     display: ${({ $currentActiveTab }) => {
-      $currentActiveTab === '회원관리' && 'flex';
+      $currentActiveTab === '회원관리' ? 'flex' : 'inline-blcok';
     }};
     align-items: ${({ $currentActiveTab }) => {
       $currentActiveTab === '회원관리' && 'center';
@@ -140,6 +141,8 @@ const adminPageCellStyle = css`
         return '146px';
       } else if ($currentActiveTab === '회원관리') {
         return '110px';
+      } else if ($currentActiveTab === '회원 가입승인') {
+        return '125px';
       }
     }};
   }

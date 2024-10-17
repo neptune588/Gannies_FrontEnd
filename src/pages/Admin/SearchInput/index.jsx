@@ -66,7 +66,7 @@ export default function SearchInput({
 
     if (e.key === 'Enter') {
       if (isIncludesWhiteSpaceCheck(searchValue)) {
-        errorAlert('검색어에 공백이 들어갈 수 없습니다!');
+        errorAlert('검색어 사이에 공백이 들어갈 수 없습니다!');
         return;
       }
 

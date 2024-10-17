@@ -19,21 +19,16 @@ const OptionListBox = styled.ul`
   background-color: ${({ theme: { colors } }) => {
     return colors.white;
   }};
-  padding: 0 9.5px;
+  padding: 5px;
   z-index: 10;
 `;
 
 const OptionList = styled.li`
   ${centerAlignStyle}
   ${xsmall_700}
-  border-bottom: 1px solid
-    ${({ theme: { colors } }) => {
-    return colors.gray['50'];
-  }};
   user-select: none;
   cursor: pointer;
-  padding: 10px 0;
-
+  padding: 8px;
   color: ${({ $status, theme: { colors } }) => {
     if ($status === '해당없음') {
       return colors.gray['50'];
@@ -44,8 +39,11 @@ const OptionList = styled.li`
     }
   }};
 
-  &:last-child {
-    border-bottom: none;
+  border-radius: 4px;
+  &:hover {
+    background-color: ${({ theme: { colors } }) => {
+      return colors.secondary;
+    }};
   }
 `;
 
