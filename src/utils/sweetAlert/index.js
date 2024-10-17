@@ -46,7 +46,7 @@ export const errorAlert = (text) => {
       if (confirmButton) {
         confirmButton.style.backgroundColor = '#5080E1';
         confirmButton.style.color = 'white';
-        confirmButton.style.fontSize = '1.4rem !important';
+        confirmButton.style.fontSize = '1.4rem';
         confirmButton.style.padding = '10px 25px';
         confirmButton.style.border = 'none';
         confirmButton.style.borderRadius = '4px';

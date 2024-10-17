@@ -51,7 +51,10 @@ export default function UserApproval() {
     pageViewLimit,
   });
 
-  const [query, setQuery] = useState({});
+  const [query, setQuery] = useState({
+    page: currentPageNumber,
+    limit: communityPostMaxLimit,
+  });
 
   const handleOptionListToggle = (listNumber) => {
     const toggleFnc = (arr) => {

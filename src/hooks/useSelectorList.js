@@ -30,6 +30,7 @@ export default function useSelectorList() {
     isPostOrCommentReportModal,
     isReportedCotentModal,
     isUserWithdrawModal,
+    isItemDeleteModal,
     scrollLocation,
   } = modalsControl;
 
@@ -57,6 +58,7 @@ export default function useSelectorList() {
     isPostOrCommentReportModal,
     isReportedCotentModal,
     isUserWithdrawModal,
+    isItemDeleteModal,
     scrollLocation,
     comentWrapperLocation,
   };

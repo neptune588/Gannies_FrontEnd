@@ -1,17 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
-
-import AlignSelectMenu from '@/components/AlignSelectMenu';
 
 import searchGray from '@/assets/icons/search/search_default.svg';
 
 import useEventHandler from '@/hooks/useEventHandler';
-
-import { adminPageUserSearchTypes } from '@/components/AlignSelectMenu/data';
-
-import { communityPostMaxLimit } from '@/utils/itemLimit';
-import { isIncludesWhiteSpaceCheck } from '@/utils/whiteSpaceCheck';
-import { errorAlert } from '@/utils/sweetAlert';
 
 import { placeholderTextStyle } from '@/styles/commonStyle/text';
 
@@ -36,72 +28,29 @@ const SearchBox = styled.label`
   > img {
     width: 24px;
     height: 24px;
+    cursor: pointer;
   }
 `;
 
 export default function SearchInput({
-  currentPageNumber,
-  setQuery,
-  setActionType,
-  setCurrentPageNumber,
+  searchValue,
+  handleSearchValueChange,
+  handleSearch,
 }) {
-  const [serachTypes] = useState(adminPageUserSearchTypes);
-  const [selectedSearchType, setSelectedSearchType] = useState(
-    adminPageUserSearchTypes[0].label
-  );
-  const [selectedSearchTypeQuery, setSelectedSearchTypeQuery] = useState(
-    adminPageUserSearchTypes[0].query
-  );
-  const [isSearch, setIsSearch] = useState(false);
-
-  const { changeValue: searchValue, handleChange: handleValueChange } =
-    useEventHandler({
-      changeDefaultValue: '',
-    });
-
-  const handleSearch = async (e) => {
-    if (isSearch) {
-      return;
-    }
-
-    if (e.key === 'Enter') {
-      if (isIncludesWhiteSpaceCheck(searchValue)) {
-        errorAlert('검색어 사이에 공백이 들어갈 수 없습니다!');
-        return;
-      }
-
-      setIsSearch(true);
-      setActionType('');
-      setCurrentPageNumber(1);
-      setQuery({
-        page: currentPageNumber,
-        limit: communityPostMaxLimit,
-        type: selectedSearchTypeQuery,
-        search: searchValue,
-      });
-      setIsSearch(false);
-    }
-  };
-
   return (
     <>
-      <AlignSelectMenu
-        optionList={serachTypes}
-        pageType={'admin'}
-        selectedOption={selectedSearchType}
-        setSelectedOption={setSelectedSearchType}
-        handleSelectedOption={setSelectedSearchTypeQuery}
-      />
       <SearchBox>
         <input
           type='text'
-          placeholder='회원검색'
+          placeholder={'검색어를 입력 해주세요.'}
           maxLength={50}
           value={searchValue}
           onChange={(e) => {
-            handleValueChange(e.target.value);
+            handleSearchValueChange(e.target.value);
           }}
-          onKeyUp={handleSearch}
+          onKeyUp={(e) => {
+            handleSearch(e);
+          }}
         />
         <img src={searchGray} alt='serach-icon' />
       </SearchBox>

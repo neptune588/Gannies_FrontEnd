@@ -59,8 +59,10 @@ export default function ReportHistory() {
     itemMaxLimit: communityPostMaxLimit,
     pageViewLimit,
   });
-
   const { isReportedCotentModal, handleModalOpen } = useModalsControl();
+  const { changeValue: curActiveCategory, handleChange } = useEventHandler({
+    changeDefaultValue: '게시글',
+  });
 
   const [headerColumns, setHearderColumns] = useState(
     reportedPostsHeaderColumns
@@ -71,10 +73,6 @@ export default function ReportHistory() {
     withReplies: true,
   });
   const [reviewModalProps, setReviewModalProps] = useState({});
-
-  const { changeValue: curActiveCategory, handleChange } = useEventHandler({
-    changeDefaultValue: '게시글',
-  });
 
   const handleOptionListToggle = (listNumber) => {
     const toggleFnc = (arr) => {

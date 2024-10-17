@@ -71,15 +71,15 @@ export const signUpReject = async (rejectReasonData) => {
 };
 
 //게시물 페이지 단위로 조회 밑 검색
-export const getPostsOrSearchPost = async (params) => {
+export const getPostsOrSearchPosts = async (params) => {
   const url = '/admin/posts';
   const response = await cookieApi.get(url, { params });
   return response;
 };
 
-//특정 게시물 삭제(1개)
-export const deletePost = async (postId) => {
-  const url = `/admin/posts/${postId}`;
+//게시물 삭제
+export const deletePosts = async (postIds) => {
+  const url = `/admin/posts/${postIds}`;
   const response = await cookieApi.delete(url);
   return response;
 };

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import uuid from 'react-uuid';
 
 import TitleSection from '@/pages/Admin/TitleSection';
@@ -13,6 +13,7 @@ import PaginationWrapper from '@/pages/Admin/PaginationWrapper';
 import Pagination from '@/components/Pagination';
 import UserBanModal from '@/pages/Admin/Modals/UserBanModal';
 import UserWithdrawModal from '@/pages/Admin/Modals/UserWithdrawModal';
+import AlignSelectMenu from '@/components/AlignSelectMenu';
 
 import arrow from '@/assets/icons/arrows/chevron_down.svg';
 
@@ -32,6 +33,7 @@ import { setIsUserWithdrawModal } from '@/store/modalsControl';
 
 import { userBanWeeklyOptions } from '@/pages/Admin/Modals/UserBanModal/data';
 import { memberManagementHeaderColumns } from '@/pages/Admin/data';
+import { adminPageUserSearchTypes } from '@/components/AlignSelectMenu/data';
 
 import { getUsers, blockUser, unblockUser, deleteUser } from '@/api/adminApi';
 
@@ -39,8 +41,11 @@ import { formatDateToPost } from '@/utils/dateFormatting';
 import { communityPostMaxLimit, pageViewLimit } from '@/utils/itemLimit';
 import { isOnlyWhiteSpaceCheck } from '@/utils/whiteSpaceCheck';
 import { errorAlert, questionAlert } from '@/utils/sweetAlert';
+import { isIncludesWhiteSpaceCheck } from '@/utils/whiteSpaceCheck';
 
 export default function MemberManagement() {
+  const debounceRef = useRef(null);
+
   const {
     items: users,
     totalItems,
@@ -57,7 +62,6 @@ export default function MemberManagement() {
     itemMaxLimit: communityPostMaxLimit,
     pageViewLimit,
   });
-
   const {
     handleModalOpen,
     handleModalClose,
@@ -75,12 +79,24 @@ export default function MemberManagement() {
   const [userBanOptions] = useState(userBanWeeklyOptions);
   const [isSubmit, setIsSubmit] = useState(false);
   const [actionType, setActionType] = useState('');
+  const [serachTypes] = useState(adminPageUserSearchTypes);
+  const [selectedSearchType, setSelectedSearchType] = useState(
+    adminPageUserSearchTypes[0].label
+  );
+  const [selectedSearchTypeQuery, setSelectedSearchTypeQuery] = useState(
+    adminPageUserSearchTypes[0].query
+  );
 
   const { changeValue: selectedUserBanWeek, handleChange: handleWeekSelect } =
     useEventHandler({
       changeDefaultValue: userBanWeeklyOptions[0].week,
     });
   const { changeValue: value, handleChange: handleValueChange } =
+    useEventHandler({
+      changeDefaultValue: '',
+    });
+
+  const { changeValue: searchValue, handleChange: handleSearchValueChange } =
     useEventHandler({
       changeDefaultValue: '',
     });
@@ -168,6 +184,33 @@ export default function MemberManagement() {
     }
   };
 
+  const handleSearch = async (e) => {
+    if (e.key === 'Enter') {
+      if (isIncludesWhiteSpaceCheck(searchValue)) {
+        errorAlert('검색어 사이에 공백이 들어갈 수 없습니다!');
+        return;
+      }
+
+      clearTimeout(debounceRef.current);
+      debounceRef.current = setTimeout(() => {
+        setActionType('');
+        setCurrentPageNumber(1);
+        setQuery({
+          page: currentPageNumber,
+          limit: communityPostMaxLimit,
+          type: selectedSearchTypeQuery,
+          search: searchValue,
+        });
+      }, 100);
+    }
+  };
+
+  useEffect(() => {
+    return () => {
+      debounceRef.current = null;
+    };
+  }, []);
+
   useEffect(() => {
     if (actionType === 'pageMove') {
       window.scroll({ top: 0, left: 0 });
@@ -218,11 +261,17 @@ export default function MemberManagement() {
       <ArrLengthSection>
         <ArrLengthView length={totalItems} />
         <SearchBox>
+          <AlignSelectMenu
+            optionList={serachTypes}
+            pageType={'admin'}
+            selectedOption={selectedSearchType}
+            setSelectedOption={setSelectedSearchType}
+            handleSelectedOption={setSelectedSearchTypeQuery}
+          />
           <SearchInput
-            currentPageNumber={currentPageNumber}
-            setQuery={setQuery}
-            setActionType={setActionType}
-            setCurrentPageNumber={setCurrentPageNumber}
+            searchValue={searchValue}
+            handleSearchValueChange={handleSearchValueChange}
+            handleSearch={handleSearch}
           />
         </SearchBox>
       </ArrLengthSection>

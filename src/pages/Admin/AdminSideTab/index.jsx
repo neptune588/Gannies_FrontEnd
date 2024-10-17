@@ -34,8 +34,8 @@ export default function AdminSideTab() {
       handleChange('회원관리');
     } else if (path === '/user-approval') {
       handleChange('회원 가입승인');
-    } else if (path === '/post-management') {
-      handleChange('게시물 관리');
+    } else if (path === '/item-management') {
+      handleChange('게시물&댓글 관리');
     }
   }, []);
 
