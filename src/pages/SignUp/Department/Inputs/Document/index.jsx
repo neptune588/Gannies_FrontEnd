@@ -11,14 +11,15 @@ import {
   ActiveInputBox,
   InactiveInputBox,
   InputBox,
-  PreviewBox,
 } from '@/pages/SignUp/Department/Inputs/Document/style';
+import Modal from '@/pages/SignUp/Department/Inputs/Document/Modal';
 
 function Document({ allow, handleAllow, file, setFile }) {
   const inputRef = useRef();
   const fileTypes = ['image/jpeg', 'image/png', 'image/gif'];
-  const maxSize = 1048576; // 1MB in bytes
+  const maxSize = 1048576;
   const [valid, setValid] = useState(undefined);
+  const [modalState, setModalState] = useState('');
 
   const uploadFile = (event) => {
     const file = event.target.files[0];
@@ -81,9 +82,10 @@ function Document({ allow, handleAllow, file, setFile }) {
             <Negative text='파일 형식 또는 크기를 확인해주세요' />
           )}
           {file && (
-            <PreviewBox>
-              <img alt='img' src={URL.createObjectURL(file)} />
-            </PreviewBox>
+            <button onClick={() => setModalState(true)}>미리보기</button>
+          )}
+          {file && modalState && (
+            <Modal file={file} setModalState={setModalState} />
           )}
         </InputSection>
       )}
