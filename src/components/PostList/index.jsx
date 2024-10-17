@@ -35,8 +35,9 @@ function PostList({
 }) {
   const [scrapClickState, setScrapClickState] = useState(true);
 
-  const handleScrap = async () => {
+  const handleScrap = async (e) => {
     try {
+      e.stopPropagation();
       if (scrapClickState) {
         const res = await cancelPostScrap(postNumber);
         if (res.status === 200) {
@@ -53,7 +54,7 @@ function PostList({
         }
       }
     } catch (error) {
-      console.log(error.response);
+      alert('error');
     }
   };
 
@@ -99,7 +100,10 @@ function PostList({
           </DescriptionBox>
         )}
         {scrapViewState && (
-          <ScrapBox $scrapClickState={scrapClickState} onClick={handleScrap}>
+          <ScrapBox
+            $scrapClickState={scrapClickState}
+            onClick={(e) => handleScrap(e)}
+          >
             <Scrap scrapClickState={scrapClickState} pageName={pageName} />
           </ScrapBox>
         )}

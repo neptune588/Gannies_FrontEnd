@@ -7,8 +7,6 @@ import { myPageAlignSelectOptions } from '@/components/AlignSelectMenu/data';
 
 import { TitleBox, Title, PageWrapper } from '@/pages/MyPage/WrittenPost/style';
 
-// import { posts } from '@/pages/Home/data';
-
 import { getUserScraps } from '@/api/userApi';
 import { communityPostMaxLimit } from '@/utils/itemLimit';
 import { pageViewLimit } from '@/utils/itemLimit';
