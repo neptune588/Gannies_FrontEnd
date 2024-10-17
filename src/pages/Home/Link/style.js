@@ -1,88 +1,90 @@
 import styled from 'styled-components';
 
-import { h4_400, h4_600 } from '@/styles/commonStyle/localTextStyle';
+import {
+  h3_600,
+  medium_600,
+  small_400,
+  xsmall_500,
+} from '@/styles/commonStyle/localTextStyle';
 
 export const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
   margin: auto;
   align-items: center;
-  background-color: ${(props) => props.theme.colors.primary};
-  height: 197px;
+  background: linear-gradient(
+    to bottom,
+    ${(props) => props.theme.colors.primary} 180px,
+    ${(props) => props.theme.colors.white} 180px
+  );
   width: 1128px;
   margin-top: 53px;
-  border-radius: 8px;
 `;
 
-export const LeftWrapper = styled.div`
+export const UpperWrapper = styled.div`
+  color: white;
   display: flex;
   flex-direction: column;
-  color: white;
-  padding-left: 48px;
+  align-items: center;
+  margin-bottom: 56px;
 
   > h3 {
-    color: ${(props) => props.theme.colors.gray[10]};
-    ${h4_400}
+    ${h3_600}
     letter-spacing: 0px;
+    margin-top: 44px;
+  }
+
+  > p {
+    ${small_400}
+    margin-top: 13px;
   }
 `;
 
-export const LowerBox = styled.div``;
-
-export const Title = styled.span`
-  color: ${(props) => props.theme.colors.gray[10]};
-  ${h4_400}
-  letter-spacing: 0px;
+export const LowerWrapper = styled.div`
+  width: 1024px;
 `;
-export const Goto = styled.div`
-  margin-top: 11px;
-  color: ${(props) => props.theme.colors.white};
-  ${h4_600}
-  display: flex;
-  align-items: center;
 
-  > div {
-    display: flex;
-    margin-left: 9px;
-    background-color: rgba(256, 256, 256, 0.5);
-    width: 30px;
-    height: 30px;
-    padding: 3px;
-    border-radius: 4px;
+export const LinkContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  &:last-of-type {
+    margin-top: 40px;
   }
 `;
 
-export const ArrowIconWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 9px;
-  background-color: ${(props) => props.theme.colors.white};
-  opacity: 0.45;
-  width: 30px;
-  height: 30px;
-  border-radius: 4px;
-`;
-
-export const ArrowIcon = styled.img`
-  width: 24px;
-  height: 24px;
-`;
-
-export const LinkIcon = styled.img`
-  width: 106px;
-  height: 106px;
-  margin-left: 20px;
+export const LinkBox = styled.div`
+  width: 220px;
+  height: 100px;
+  background-color: white;
+  border-radius: 12px;
+  color: ${(props) => props.theme.colors.primary};
+  padding: 22px 20px;
+  position: relative;
+  box-shadow: 0px 4px 11px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-`;
 
-export const RightWrapper = styled.div`
-  margin-right: 48px;
-  margin-left: 20px;
+  > p {
+    ${xsmall_500}
+    margin-bottom: 5px;
+  }
+  > h6 {
+    ${medium_600}
+  }
 
   > img {
-    width: 106px;
-    height: 106px;
-    margin-left: 20px;
-    cursor: pointer;
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    top: 33px;
+    right: 20px;
   }
+`;
+
+export const IconBox = styled.div`
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  right: 20px;
+  top: 10px;
 `;
