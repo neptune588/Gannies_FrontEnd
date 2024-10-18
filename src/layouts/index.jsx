@@ -25,6 +25,7 @@ import useModalsControl from '@/hooks/useModalsControl';
 import { setBoardType } from '@/store/navBarOptions';
 
 import { navBarMenuData } from '@/layouts/Navbar/data';
+import Modal from '@/components/Modal';
 
 export function MainLayout() {
   const location = useLocation();
@@ -68,6 +69,7 @@ export function MainLayout() {
         <Outlet />
       </CenterdWrapper>
       <Footer />
+      <Modal />
     </Container>
   );
 }
@@ -87,6 +89,7 @@ export function MypageLayout() {
         </MyPageFlexWrapper>
       </MyPageCenterdWrapper>
       <Footer />
+      <Modal />
     </>
   );
 }
@@ -112,6 +115,7 @@ export function HeaderLayout() {
         <Outlet />
       </CenterdWrapper>
       <EmptyFooterBox />
+      <Modal />
     </>
   );
 }

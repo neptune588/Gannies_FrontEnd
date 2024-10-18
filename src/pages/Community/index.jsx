@@ -197,7 +197,6 @@ export default function Community({ isSearch, searchKeyword }) {
 
   return (
     <>
-      <Modal />
       {!isLoading && currentPosts?.length === 0 ? (
         <NoSearchResults>작성 된 게시물이 없습니다.</NoSearchResults>
       ) : (

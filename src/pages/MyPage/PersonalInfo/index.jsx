@@ -1,5 +1,4 @@
 import { changeUserNickname, getUserInfo } from '@/api/userApi';
-import Modal from '@/components/Modal';
 import IsWithdrawal from '@/components/Modal/IsWithdrawal';
 import {
   Title,
@@ -79,7 +78,6 @@ export default function PersonalInfo() {
       {openWithdrawalModal && (
         <IsWithdrawal setOpenModal={setOpenWithdrawalModal} />
       )}
-      <Modal />
       <Title>회원정보수정</Title>
       <PersonalInfoWrapper>
         <form>

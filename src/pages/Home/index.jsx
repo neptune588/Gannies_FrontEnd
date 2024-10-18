@@ -7,7 +7,6 @@ import SearchBar from '@/pages/Home/SearchBar';
 import Link from '@/pages/Home/Link';
 import { setBoardType } from '@/store/navBarOptions';
 import Posts from '@/pages/Home/Posts';
-import Modal from '@/components/Modal';
 
 function Home() {
   const location = useLocation();
@@ -29,7 +28,6 @@ function Home() {
 
   return (
     <>
-      <Modal />
       <Banner />
       <SearchBar />
       <Posts />
