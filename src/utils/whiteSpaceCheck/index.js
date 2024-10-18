@@ -3,6 +3,5 @@ export const isIncludesWhiteSpaceCheck = (value) => {
 };
 
 export const isOnlyWhiteSpaceCheck = (value) => {
-  console.log(value);
   return value.trim().length === 0;
 };

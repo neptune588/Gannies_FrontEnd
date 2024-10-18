@@ -17,6 +17,8 @@ import {
 
 import { deletePosts } from '@/api/adminApi';
 
+import { confirmAlert } from '@/utils/sweetAlert';
+
 export default function DeleteModal({
   ItemReset,
   selectedIds,
@@ -24,13 +26,14 @@ export default function DeleteModal({
   handleModalClose,
 }) {
   const handleItemDelete = async () => {
-    console.log('dd');
-    /*     try {
-      await deletePosts(selectedIds);
+    try {
+      await deletePosts({ data: { postIds: selectedIds } });
       ItemReset();
+      confirmAlert('해당 게시물들이 성공적으로 삭제 되었습니다!');
+      handleModalClose();
     } catch (error) {
       console.error(error);
-    } */
+    }
   };
 
   return (

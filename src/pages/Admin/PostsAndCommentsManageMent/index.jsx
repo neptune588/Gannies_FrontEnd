@@ -175,26 +175,15 @@ export default function PostsAndCommentsManageMent() {
     });
   };
 
-  const resetStateAndQueryChange = (searchValue) => {
-    setActionType('');
-    setCurrentPageNumber(1);
-    setQuery({
-      page: currentPageNumber,
-      limit: communityPostMaxLimit,
-      search: searchValue,
-    });
-  };
-
   const handleSearch = async (e) => {
-    let debounce;
     if (e.key === 'Enter') {
       if (isOnlyWhiteSpaceCheck(searchValue)) {
         errorAlert('검색어를 입력 해주세요!');
         return;
       }
 
-      clearTimeout(debounce.current);
-      debounce.current = setTimeout(() => {
+      clearTimeout(debounceRef.current);
+      debounceRef.current = setTimeout(() => {
         setActionType('');
         setCurrentPageNumber(1);
         setQuery({
@@ -268,7 +257,11 @@ export default function PostsAndCommentsManageMent() {
         <ArrLengthSection>
           <ArrLengthView length={totalItems} />
           <SearchBox>
-            <SearchInput resetStateAndQueryChange={resetStateAndQueryChange} />
+            <SearchInput
+              searchValue={searchValue}
+              handleSearchValueChange={handleSearchValueChange}
+              handleSearch={handleSearch}
+            />
           </SearchBox>
         </ArrLengthSection>
         <div>

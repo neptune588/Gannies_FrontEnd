@@ -10,6 +10,7 @@ import TableHeaderRow from '@/pages/Admin/TableDesign/TableHeaderRow';
 import TableBodyRow from '@/pages/Admin/TableDesign/TableBodyRow';
 import PaginationWrapper from '@/pages/Admin/PaginationWrapper';
 import Pagination from '@/components/Pagination';
+import UserRejectReasonModal from '@/pages/Admin/Modals/UserRejectReasonModal';
 
 import arrow from '@/assets/icons/arrows/chevron_down.svg';
 
@@ -22,14 +23,18 @@ import {
 
 import { userApprovalHeaderColumns } from '@/pages/Admin/data';
 
-import useEventHandler from '@/hooks/useEventHandler';
 import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
+import useModalsControl from '@/hooks/useModalsControl';
+import useEventHandler from '@/hooks/useEventHandler';
+
+import { setIsUserRejectReasonModal } from '@/store/modalsControl';
 
 import { getPendingUsers, signUpApprove, signUpReject } from '@/api/adminApi';
 
 import { communityPostMaxLimit, pageViewLimit } from '@/utils/itemLimit';
 import { formatDateToPost } from '@/utils/dateFormatting';
-import { questionAlert, confirmAlert } from '@/utils/sweetAlert';
+import { questionAlert, confirmAlert, errorAlert } from '@/utils/sweetAlert';
+import { isOnlyWhiteSpaceCheck } from '@/utils/whiteSpaceCheck';
 
 export default function UserApproval() {
   const [headerColumns] = useState(userApprovalHeaderColumns);
@@ -41,7 +46,6 @@ export default function UserApproval() {
     groupedPageNumbers: pageNumbers,
     setItems: setApprovalPendingUsers,
     getDataAndSetPageNumbers: getApprovalPendingUsersAndSetPageNumbers,
-    setCurrentPageNumber,
     handlePageNumberClick,
     handlePrevPageClick,
     handleNextPageClick,
@@ -50,11 +54,21 @@ export default function UserApproval() {
     itemMaxLimit: communityPostMaxLimit,
     pageViewLimit,
   });
+  const { handleModalOpen, handleModalClose, isUserRejectReasonModal } =
+    useModalsControl();
+  const { changeValue: rejectReason, handleChange: handleRejectReasonChange } =
+    useEventHandler({
+      changeDefaultValue: '',
+    });
 
   const [query, setQuery] = useState({
     page: currentPageNumber,
     limit: communityPostMaxLimit,
   });
+  const [userRejectReasonModalProps, setUserRejectReasonModalProps] = useState(
+    {}
+  );
+  const [isSubmit, setIsSubmit] = useState(false);
 
   const handleOptionListToggle = (listNumber) => {
     const toggleFnc = (arr) => {
@@ -66,6 +80,11 @@ export default function UserApproval() {
       });
     };
     setApprovalPendingUsers((prev) => toggleFnc(prev));
+  };
+
+  const handleRejectModalClose = () => {
+    handleRejectReasonChange('');
+    handleModalClose({ modalDispatch: setIsUserRejectReasonModal });
   };
 
   const handleUserApprove = async (userId) => {
@@ -85,22 +104,29 @@ export default function UserApproval() {
     }
   };
 
-  const handleUserReject = async (userId) => {
-    const question = await questionAlert({
-      title: '회원 거절',
-      text: '해당 회원의 가입을 거절 하시겠습니까?',
-    });
+  const handleUserReject = async (e, userId) => {
+    e.preventDefault();
+
+    if (isSubmit) {
+      return;
+    }
+
+    if (isOnlyWhiteSpaceCheck(rejectReason)) {
+      errorAlert('거절 사유를 입력 해주세요!');
+      return;
+    }
 
     try {
-      if (question) {
-        await signUpReject({
-          userId,
-          rejectedReason:
-            '업로드한 인증서류 파일이 졸업증명서 혹은 재학증명서가 아닙니다. 확인 부탁드립니다.',
-        });
-        confirmAlert('해당 회원의 가입을 거절 했습니다!');
-        setQuery({ page: currentPageNumber, limit: communityPostMaxLimit });
-      }
+      setIsSubmit(true);
+      await signUpReject({
+        userId,
+        rejectedReason: rejectReason,
+      });
+      confirmAlert('해당 회원의 가입을 거절 했습니다!');
+      handleRejectModalClose();
+      setQuery({ page: currentPageNumber, limit: communityPostMaxLimit });
+      setIsSubmit(false);
+      //isSumbit자체는 부모 쪽에서 정의됐으므로 submit 초기화 해줘야함.
     } catch (error) {
       console.error(error);
     }
@@ -124,6 +150,15 @@ export default function UserApproval() {
 
   return (
     <>
+      {isUserRejectReasonModal && (
+        <UserRejectReasonModal
+          userRejectReasonModalProps={userRejectReasonModalProps}
+          rejectReason={rejectReason}
+          handleRejectReasonChange={handleRejectReasonChange}
+          handleModalClose={handleRejectModalClose}
+          handleUserReject={handleUserReject}
+        />
+      )}
       <TitleSection>
         <Title>회원 가입승인</Title>
       </TitleSection>
@@ -187,7 +222,22 @@ export default function UserApproval() {
                             <OptionList
                               $order='승인거절'
                               onClick={() => {
-                                handleUserReject(user.userId);
+                                //handleUserReject(user.userId);
+                                setUserRejectReasonModalProps({
+                                  userId: user.userId,
+                                  userNickname: user.nickname,
+                                  userEmail: user.email,
+                                  userStudentStatus:
+                                    user.studentStatus === 'current_student'
+                                      ? '재학생'
+                                      : '졸업생',
+                                  userSignUpDate: formatDateToPost(
+                                    user.createdAt
+                                  ),
+                                });
+                                handleModalOpen({
+                                  modalDispatch: setIsUserRejectReasonModal,
+                                });
                                 handleOptionListToggle(idx);
                               }}
                             >

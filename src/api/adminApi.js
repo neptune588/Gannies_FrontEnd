@@ -78,9 +78,9 @@ export const getPostsOrSearchPosts = async (params) => {
 };
 
 //게시물 삭제
-export const deletePosts = async (postIds) => {
-  const url = `/admin/posts/${postIds}`;
-  const response = await cookieApi.delete(url);
+export const deletePosts = async (postIdsData) => {
+  const url = `/admin/posts`;
+  const response = await cookieApi.delete(url, postIdsData);
   return response;
 };
 
