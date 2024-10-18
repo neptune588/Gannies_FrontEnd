@@ -10,7 +10,7 @@ const VITE_KAKAO_PLACE_SEARCH_API_KEY = import.meta.env
 
 export const api = axios.create({
   baseURL: BASE_URL,
-  timeout: 5000,
+  timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -19,7 +19,7 @@ export const api = axios.create({
 
 export const cookieApi = axios.create({
   baseURL: BASE_URL,
-  timeout: 5000,
+  timeout: 10000,
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
@@ -29,7 +29,7 @@ export const cookieApi = axios.create({
 
 export const hospitalApi = axios.create({
   baseURL: VITE_KAKAO_PLACE_SEARCH_API_BASE_URL,
-  timeout: 5000,
+  timeout: 10000,
   headers: {
     Authorization: `KakaoAK ${VITE_KAKAO_PLACE_SEARCH_API_KEY}`,
   },
@@ -39,7 +39,7 @@ export const hospitalApi = axios.create({
 export const cacheApi = setupCache(
   axios.create({
     baseURL: BASE_URL,
-    timeout: 5000,
+    timeout: 10000,
     withCredentials: true,
     headers: {
       'Content-Type': 'application/json',
