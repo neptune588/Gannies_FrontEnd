@@ -16,20 +16,10 @@ const useUserState = () => {
     const isLogin = await checkIsLogin();
     if (!isLogin) return null;
     const response = await checkMemberState();
-    const {
-      nickname,
-      rejectedReason,
-      suspensionDuration,
-      suspensionEndDate,
-      suspensionReason,
-    } = response.data;
+    const { nickname } = response.data;
     dispatch(
       setState({
         nickname,
-        ...(rejectedReason && { rejectedReason }),
-        ...(suspensionDuration && { suspensionDuration }),
-        ...(suspensionEndDate && { suspensionEndDate }),
-        ...(suspensionReason && { suspensionReason }),
       })
     );
     return response.data;

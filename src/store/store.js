@@ -6,7 +6,7 @@ import localStorage from 'redux-persist/lib/storage';
 import authReducer from '@/store/auth';
 import navBarOptionsReducer from '@/store/navBarOptions';
 import locationsReducer from '@/store/locations';
-import modalState from '@/store/modalState';
+import modalStateReducer from '@/store/modalState';
 import modalsControlReducer from '@/store/modalsControl';
 
 const modalStatePersistConfig = {
@@ -31,7 +31,7 @@ const persistedNavBarOptionsReducer = persistReducer(
 
 const persistedModalStateReducer = persistReducer(
   modalStatePersistConfig,
-  modalState
+  modalStateReducer
 );
 const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
 

@@ -28,6 +28,7 @@ import EmailVerification from '@/pages/EmailVerification';
 import PostSearch from '@/pages/PostSearch';
 import PrivateRoute from '@/routes/PrivateRoute';
 import SignOutRoute from '@/routes/SignOutRoute';
+import MyPage from '@/pages/MyPage';
 
 export const router = createBrowserRouter([
   {
@@ -97,24 +98,30 @@ export const router = createBrowserRouter([
         element: <MypageLayout />,
         children: [
           {
-            path: '/mypage/profile/edit',
-            element: <PersonalInfo />,
-          },
-          {
-            path: '/mypage/profile/change-password',
-            element: <PasswordChange />,
-          },
-          {
-            path: '/mypage/written-posts',
-            element: <WrittenPost />,
-          },
-          {
-            path: '/mypage/scrap-posts',
-            element: <ScrappedPost />,
-          },
-          {
-            path: '/mypage/written-comment',
-            element: <WrittenComment />,
+            path: '/mypage',
+            element: <MyPage />,
+            children: [
+              {
+                path: 'profile/edit',
+                element: <PersonalInfo />,
+              },
+              {
+                path: 'profile/change-password',
+                element: <PasswordChange />,
+              },
+              {
+                path: 'written-posts',
+                element: <WrittenPost />,
+              },
+              {
+                path: 'scrap-posts',
+                element: <ScrappedPost />,
+              },
+              {
+                path: 'written-comment',
+                element: <WrittenComment />,
+              },
+            ],
           },
         ],
       },

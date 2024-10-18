@@ -4,9 +4,6 @@ const initialState = {
   isLogin: false,
   userId: null,
   nickname: null,
-  // isSuspended: null,
-  // membershipStatus: null,
-  // rejected: null,
 };
 const authSlice = createSlice({
   name: 'auth',
