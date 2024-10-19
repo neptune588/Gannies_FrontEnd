@@ -36,9 +36,10 @@ function Inputs({
   const emailRef = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [showAutoComplete, setShowAutoComplete] = useState(false);
 
   useEffect(() => {
-    emailRef.current && emailRef.current.focus();
+    emailRef.current?.focus();
   }, []);
 
   const handleEmail = (e) => {
@@ -126,15 +127,21 @@ function Inputs({
     <Wrapper>
       <InputWrapper $isFocused={isFocusedEmail} onSubmit={handleSubmit}>
         <InputBox
-          type='text'
+          type='email'
           placeholder='이메일'
           value={email}
           onChange={handleEmail}
-          onFocus={() => handleIsFocusedEmail(true)}
+          onFocus={() => {
+            handleIsFocusedEmail(true);
+            setShowAutoComplete(true);
+          }}
           onBlur={() => {
             handleIsFocusedEmail(false);
           }}
           ref={emailRef}
+          autoComplete={showAutoComplete ? 'email' : 'off'}
+          name='email'
+          required
         />
       </InputWrapper>
       <InputWrapper $isFocused={isFocusedPassword} onSubmit={handleSubmit}>
@@ -147,6 +154,9 @@ function Inputs({
           onBlur={() => {
             handleIsFocusedPassword(false);
           }}
+          autoComplete='current-password'
+          name='password'
+          required
         />
         {showPassword ? (
           <EyeIcon onClick={handleShowPassword} />

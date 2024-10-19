@@ -10,8 +10,6 @@ import {
   SignUpButton,
 } from '@/pages/SignIn/Buttons/style';
 import { userSignIn } from '@/api/authApi';
-// import { handleModal } from '@/store/modalState';
-// import axios from 'axios';
 
 import { setLogin } from '@/store/auth';
 import { handleModal } from '@/store/modalState';
@@ -23,6 +21,47 @@ function Buttons({ email, password, setLoginError, setIsLoading, setText }) {
 
   const handleAutoLogin = () => {
     setAutoLogin(!autoLogin);
+  };
+
+  const setModal = (
+    isSuspended,
+    isTempPasswordSignIn,
+    rejected,
+    membershipStatus,
+    rejectedReason,
+    suspensionDuration,
+    suspensionEndDate,
+    suspensionReason
+  ) => {
+    dispatch(
+      handleModal({
+        field: 'isApproval',
+        value: { status: membershipStatus === 'email_verified' && !rejected },
+      })
+    );
+    dispatch(
+      handleModal({
+        field: 'isTempPassword',
+        value: { status: isTempPasswordSignIn },
+      })
+    );
+    dispatch(
+      handleModal({
+        field: 'isSuspended',
+        value: {
+          status: isSuspended,
+          duration: suspensionDuration,
+          endDate: suspensionEndDate,
+          reason: suspensionReason,
+        },
+      })
+    );
+    dispatch(
+      handleModal({
+        field: 'rejected',
+        value: { status: rejected, reason: rejectedReason },
+      })
+    );
   };
 
   const handleLogin = async () => {
@@ -38,7 +77,6 @@ function Buttons({ email, password, setLoginError, setIsLoading, setText }) {
       }
 
       setIsLoading(true);
-      console.log(email, password);
       const response = await userSignIn({ email: email, password: password });
       const {
         isSuspended,
@@ -58,34 +96,15 @@ function Buttons({ email, password, setLoginError, setIsLoading, setText }) {
           userId,
         })
       );
-      dispatch(
-        handleModal({
-          field: 'isApproval',
-          value: { status: membershipStatus === 'email_verified' && !rejected },
-        })
-      );
-      dispatch(
-        handleModal({
-          field: 'isTempPassword',
-          value: { status: isTempPasswordSignIn },
-        })
-      );
-      dispatch(
-        handleModal({
-          field: 'isSuspended',
-          value: {
-            status: isSuspended,
-            duration: suspensionDuration,
-            endDate: suspensionEndDate,
-            reason: suspensionReason,
-          },
-        })
-      );
-      dispatch(
-        handleModal({
-          field: 'rejected',
-          value: { status: rejected, reason: rejectedReason },
-        })
+      setModal(
+        isSuspended,
+        isTempPasswordSignIn,
+        rejected,
+        membershipStatus,
+        rejectedReason,
+        suspensionDuration,
+        suspensionEndDate,
+        suspensionReason
       );
       navigate('/');
     } catch (error) {
