@@ -3,9 +3,9 @@ import Instruction from '@/components/Instruction';
 import InputSection from '@/pages/SignUp/components/InputSection';
 import DefaultInput from '@/pages/SignUp/components/DefaultInput';
 import Negative from '@/components/Instruction/Negative';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
-import { useInputBorder } from '@/hooks/useInputBorder';
+import { useInputValid } from '@/hooks/useInputValid';
 import { checkNicknameDuplicate } from '@/api/authApi';
 
 function Nickname({ allow, handleAllow }) {
@@ -19,54 +19,32 @@ function Nickname({ allow, handleAllow }) {
     '유효하지 않은 닉네임 형식입니다',
     '중복된 닉네임입니다',
   ];
-  const [instructionIndex, setInstructionIndex] = useState(2);
-  const {
-    isFocused,
-    isValid,
-    handleIsValid,
-    handleIsFocused,
-    handleInputBlur,
-  } = useInputBorder(undefined, validate);
-  const [checkDuplicate, setCheckDuplicate] = useState(false);
-  const prevNicknameRef = useRef(nickname);
+  const [instructionIndex, setInstructionIndex] = useState(undefined);
+  const { isFocused, setIsFocused, checkIsValid } = useInputValid(
+    undefined,
+    validate
+  );
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (isValid && !checkDuplicate) {
-          const response = await checkNicknameDuplicate({ nickname: nickname });
-          if (response.status === 201) {
-            setCheckDuplicate(true);
-            if (!response.data.available) {
-              setInstructionIndex(3);
-              handleAllow(0, false);
-            } else {
-              handleAllow(0, true);
-            }
-          }
-        }
-      } catch (error) {
-        alert('닉네임 중복 확인 중 오류가 발생했습니다. 다시 시도해주세요.');
-      }
-    };
-    if (!isValid) handleAllow(0, false);
-    fetchData();
-  }, [isValid, checkDuplicate]);
-
-  const handleNickname = (e) => {
-    const newNickname = e.target.value;
-    setNickname(newNickname);
-    handleDataToSend('nickname', newNickname);
-  };
-
-  const handleInstruction = () => {
-    if (!nickname) {
-      setInstructionIndex(1);
+  const handleNickname = async (e) => {
+    const nickname = e.target.value;
+    setNickname(nickname);
+    handleDataToSend('nickname', nickname);
+    const allow = await checkIsValid(
+      nickname,
+      'nickname',
+      checkNicknameDuplicate
+    );
+    setInstructionIndex(allow);
+    if (allow === 0) {
+      handleAllow(0, true);
     } else {
-      setInstructionIndex(2);
+      handleAllow(0, false);
     }
   };
 
+  useEffect(() => {
+    console.log(allow);
+  }, [allow]);
   return (
     <InputSection $margin='10px' title='닉네임*'>
       <DefaultInput
@@ -74,19 +52,19 @@ function Nickname({ allow, handleAllow }) {
         onChange={handleNickname}
         value={nickname}
         $isFocused={isFocused}
-        $isValid={allow[0] || isValid === undefined}
-        onFocus={() => handleIsFocused(true)}
-        onBlur={() => {
-          handleIsFocused(false);
-          handleInputBlur(nickname);
-          if (nickname !== prevNicknameRef.current) {
-            handleInstruction();
-            setCheckDuplicate(false);
-            prevNicknameRef.current = nickname;
+        $isValid={allow[0]}
+        onFocus={() => {
+          setIsFocused(true);
+          if (allow[0] === undefined) {
+            handleAllow(0, false);
+            setInstructionIndex(1);
           }
-          if (!nickname) {
-            handleInstruction();
-            handleIsValid(false);
+        }}
+        onBlur={() => {
+          setIsFocused(false);
+          if (!allow[0] && !nickname) {
+            handleAllow(0, undefined);
+            setInstructionIndex(undefined);
           }
         }}
         onKeyDown={(e) => {
@@ -101,9 +79,7 @@ function Nickname({ allow, handleAllow }) {
         <>
           <Instruction text='*한글 또는 영문 2-8자' />
           <Instruction text='*숫자 및 특수문자 불가' />
-          {isValid !== undefined && (
-            <Negative text={instruction[instructionIndex]} />
-          )}
+          {<Negative text={instruction[instructionIndex]} />}
         </>
       )}
     </InputSection>

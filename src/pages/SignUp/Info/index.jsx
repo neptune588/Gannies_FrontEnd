@@ -12,13 +12,18 @@ import { useAuthAllow } from '@/hooks/useAuthAllow';
 function Info() {
   const navigate = useNavigate();
   const { steps, stepsIcon, handleSteps } = useOutletContext();
-  const { allow, handleAllow } = useAuthAllow([false, false, false, false]);
+  const { allow, handleAllow } = useAuthAllow([
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+  ]);
 
-  useEffect(() => {
-    steps[0] && !steps[1]
-      ? navigate('/sign-up/info')
-      : navigate('/sign-up/identity');
-  }, [steps, navigate]);
+  // useEffect(() => {
+  //   steps[0] && !steps[1]
+  //     ? navigate('/sign-up/info')
+  //     : navigate('/sign-up/identity');
+  // }, [steps, navigate]);
 
   const handleNextButton = () => {
     handleSteps(1, true);
