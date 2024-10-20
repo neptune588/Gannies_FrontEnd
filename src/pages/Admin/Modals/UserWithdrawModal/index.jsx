@@ -15,7 +15,7 @@ import {
 export default function UserWithdrawModal({
   userWithdrawModalProps,
   UserWithdrawReason,
-  reset,
+  modalStateReset,
   handleValueChange,
   handleUserWithdrawSubmit,
 }) {
@@ -24,7 +24,7 @@ export default function UserWithdrawModal({
       <ModalWrapper>
         <ModalCloseButton
           onClick={() => {
-            reset();
+            modalStateReset();
           }}
         >
           <img src={close} alt='modal-close-button' />
@@ -61,7 +61,7 @@ export default function UserWithdrawModal({
       </ModalWrapper>
       <ModalCloseArea
         handleModalClose={() => {
-          reset();
+          modalStateReset();
         }}
       />
     </ModalContainer>

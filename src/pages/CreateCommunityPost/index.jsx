@@ -33,7 +33,6 @@ import useEventHandler from '@/hooks/useEventHandler';
 import useModalsControl from '@/hooks/useModalsControl';
 import useTinyMceImageUpload from '@/hooks/useTinyMceImageUpload';
 
-import { setIsHospitalModal } from '@/store/modalsControl';
 import { setBoardType } from '@/store/navBarOptions';
 
 import { navBarMenuData } from '@/layouts/Navbar/data';
@@ -237,7 +236,7 @@ export default function CreateCommunityPost({
                       type='button'
                       onClick={() => {
                         handleModalOpen({
-                          modalDispatch: setIsHospitalModal,
+                          modalName: 'isHospitalModal',
                         });
                       }}
                     >

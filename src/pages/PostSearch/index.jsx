@@ -15,9 +15,9 @@ export default function PostSearch() {
   useEffect(() => {
     dispatch(setBoardType({}));
   }, []);
-  useEffect(() => {
+  /*   useEffect(() => {
     console.log('검색된 단어', keyword);
-  }, [keyword]);
+  }, [keyword]); */
 
   return (
     <>

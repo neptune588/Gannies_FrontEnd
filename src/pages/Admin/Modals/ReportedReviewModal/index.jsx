@@ -16,8 +16,6 @@ import {
 
 import useModalsControl from '@/hooks/useModalsControl';
 
-import { setIsReportedCotentModal } from '@/store/modalsControl';
-
 export default function ReportedReviewModal({
   activeCategory,
   reviewModalProps,
@@ -34,7 +32,7 @@ export default function ReportedReviewModal({
           src={cross}
           alt={'modal-close-button'}
           onClick={() => {
-            handleModalClose({ modalDispatch: setIsReportedCotentModal });
+            handleModalClose({ modalName: 'isReportedCotentModal' });
           }}
         />
         <DataAreaTop $activeCategory={activeCategory}>
@@ -80,7 +78,7 @@ export default function ReportedReviewModal({
       </ModalWrapper>
       <ModalCloseArea
         handleModalClose={() => {
-          handleModalClose({ modalDispatch: setIsReportedCotentModal });
+          handleModalClose({ modalName: 'isReportedCotentModal' });
         }}
       />
     </ModalContainer>

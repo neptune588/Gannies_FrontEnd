@@ -9,6 +9,7 @@ const initialState = {
   isUserWithdrawModal: false,
   isItemDeleteModal: false,
   isUserRejectReasonModal: false,
+  isPostOrCommentDetailModal: false,
   scrollLocation: 0,
 };
 
@@ -17,30 +18,16 @@ const modalsControlSlice = createSlice({
   name: 'modalsControl',
   initialState,
   reducers: {
-    setIsHospitalModal(state, action) {
+    setModal(state, action) {
+      const { modalName, modalState } = action.payload;
       //console.log(action);
-      state.isHospitalSearchModal = action.payload;
-    },
-    setIsUserBanModal(state, action) {
-      state.isUserBanModal = action.payload;
-    },
-    setIsPostDeleteModal(state, action) {
-      state.isPostDeleteModal = action.payload;
-    },
-    setIsPostOrCommentReportModal(state, action) {
-      state.isPostOrCommentReportModal = action.payload;
-    },
-    setIsReportedCotentModal(state, action) {
-      state.isReportedCotentModal = action.payload;
-    },
-    setIsUserWithdrawModal(state, action) {
-      state.isUserWithdrawModal = action.payload;
-    },
-    setIsItemDeleteModal(state, action) {
-      state.isItemDeleteModal = action.payload;
-    },
-    setIsUserRejectReasonModal(state, action) {
-      state.isUserRejectReasonModal = action.payload;
+      if (!Object.prototype.hasOwnProperty.call(state, modalName)) {
+        throw new Error(
+          'Redux Slice Error : 파라미터가 올바르게 전달되지 않았습니다.'
+        );
+      }
+
+      state[modalName] = modalState;
     },
     setSaveScrollLocation(state, action) {
       state.scrollLocation = action.payload;
@@ -48,15 +35,5 @@ const modalsControlSlice = createSlice({
   },
 });
 
-export const {
-  setIsHospitalModal,
-  setIsUserBanModal,
-  setIsPostDeleteModal,
-  setIsPostOrCommentReportModal,
-  setIsReportedCotentModal,
-  setIsUserWithdrawModal,
-  setIsItemDeleteModal,
-  setIsUserRejectReasonModal,
-  setSaveScrollLocation,
-} = modalsControlSlice.actions;
+export const { setModal, setSaveScrollLocation } = modalsControlSlice.actions;
 export default modalsControlSlice.reducer;

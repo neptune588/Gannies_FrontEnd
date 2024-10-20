@@ -30,8 +30,6 @@ import useEventHandler from '@/hooks/useEventHandler';
 import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
 import useModalsControl from '@/hooks/useModalsControl';
 
-import { setIsReportedCotentModal } from '@/store/modalsControl';
-
 import {
   getReportedPosts,
   getReportedComments,
@@ -321,7 +319,7 @@ export default function ReportHistory() {
                         otherReportedReason: list.otherReportedReason,
                       });
                       handleModalOpen({
-                        modalDispatch: setIsReportedCotentModal,
+                        modalName: 'isReportedCotentModal',
                       });
                     }}
                   />

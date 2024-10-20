@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import uuid from 'react-uuid';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import TitleSection from '@/pages/Admin/TitleSection';
 import Title from '@/pages/Admin/Title';
@@ -16,20 +17,19 @@ import UserWithdrawModal from '@/pages/Admin/Modals/UserWithdrawModal';
 import AlignSelectMenu from '@/components/AlignSelectMenu';
 
 import arrow from '@/assets/icons/arrows/chevron_down.svg';
+import { faUndoAlt } from '@fortawesome/free-solid-svg-icons';
 
 import {
   OptionListBox,
   OptionList,
   OptionListOpenButton,
   SearchBox,
+  ResetButton,
 } from '@/pages/Admin/MemberManagement/style';
 
 import useEventHandler from '@/hooks/useEventHandler';
 import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
 import useModalsControl from '@/hooks/useModalsControl';
-
-import { setIsUserBanModal } from '@/store/modalsControl';
-import { setIsUserWithdrawModal } from '@/store/modalsControl';
 
 import { userBanWeeklyOptions } from '@/pages/Admin/Modals/UserBanModal/data';
 import { memberManagementHeaderColumns } from '@/pages/Admin/data';
@@ -113,11 +113,23 @@ export default function MemberManagement() {
     setUsers((prev) => toggleFnc(prev));
   };
 
-  const reset = () => {
-    handleModalClose({ modalDispatch: setIsUserBanModal });
-    handleModalClose({ modalDispatch: setIsUserWithdrawModal });
+  const modalStateReset = () => {
+    handleModalClose({ modalName: 'isUserBanModal' });
+    handleModalClose({ modalName: 'isUserWithdrawModal' });
     handleValueChange('');
     handleWeekSelect(userBanWeeklyOptions[0].week);
+  };
+
+  const handleAllStateReset = () => {
+    setActionType('');
+    setSelectedSearchType(adminPageUserSearchTypes[0].label);
+    setSelectedSearchTypeQuery(adminPageUserSearchTypes[0].query);
+    setCurrentPageNumber(1);
+    setQuery({
+      page: 1,
+      limit: communityPostMaxLimit,
+      withReplies: true,
+    });
   };
 
   const handleSubmit = async (e, type) => {
@@ -146,7 +158,7 @@ export default function MemberManagement() {
             deletionReason: value,
           });
 
-      reset();
+      modalStateReset();
       setQuery((prev) => {
         return {
           ...prev,
@@ -196,7 +208,7 @@ export default function MemberManagement() {
         setActionType('');
         setCurrentPageNumber(1);
         setQuery({
-          page: currentPageNumber,
+          page: 1,
           limit: communityPostMaxLimit,
           type: selectedSearchTypeQuery,
           search: searchValue,
@@ -240,7 +252,7 @@ export default function MemberManagement() {
           userBanReason={value}
           userBanModalProps={modalProps}
           selectedUserBanWeek={selectedUserBanWeek}
-          reset={reset}
+          modalStateReset={modalStateReset}
           handleWeekSelect={handleWeekSelect}
           handleValueChange={handleValueChange}
           handleUserBanSubmit={handleSubmit}
@@ -250,7 +262,7 @@ export default function MemberManagement() {
         <UserWithdrawModal
           userWithdrawModalProps={modalProps}
           UserWithdrawReason={value}
-          reset={reset}
+          modalStateReset={modalStateReset}
           handleValueChange={handleValueChange}
           handleUserWithdrawSubmit={handleSubmit}
         />
@@ -273,6 +285,9 @@ export default function MemberManagement() {
             handleSearchValueChange={handleSearchValueChange}
             handleSearch={handleSearch}
           />
+          <ResetButton onClick={handleAllStateReset}>
+            <FontAwesomeIcon icon={faUndoAlt} />
+          </ResetButton>
         </SearchBox>
       </ArrLengthSection>
       <TableWrapper>
@@ -333,7 +348,7 @@ export default function MemberManagement() {
                                   userId: user.userId,
                                 });
                                 handleModalOpen({
-                                  modalDispatch: setIsUserBanModal,
+                                  modalName: 'isUserBanModal',
                                 });
                                 handleOptionListToggle(idx);
                               }}
@@ -350,7 +365,7 @@ export default function MemberManagement() {
                               userId: user.userId,
                             });
                             handleModalOpen({
-                              modalDispatch: setIsUserWithdrawModal,
+                              modalName: 'isUserWithdrawModal',
                             });
                             handleOptionListToggle(idx);
                           }}

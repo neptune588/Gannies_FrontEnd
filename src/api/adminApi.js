@@ -91,9 +91,9 @@ export const getCommentsOrReplyComments = async (params) => {
   return response;
 };
 
-//특정 댓글 밑 답글 삭제(1개)
-export const deleteCommentOrReplyComment = async (commentId) => {
-  const url = `/admin/comments/${commentId}`;
-  const response = await cookieApi.delete(url);
+//댓글 또는 답글 삭제
+export const deleteCommentsOrReplyComments = async (commentIdsData) => {
+  const url = `/admin/comments`;
+  const response = await cookieApi.delete(url, commentIdsData);
   return response;
 };

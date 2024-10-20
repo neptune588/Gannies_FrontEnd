@@ -159,6 +159,24 @@ const postManagementHeaderColumns = [
   },
 ];
 
+const commentManagementHeaderColumns = [
+  {
+    header: '댓글 ID',
+  },
+  {
+    header: '카테고리',
+  },
+  {
+    header: '내용',
+  },
+  {
+    header: '작성자',
+  },
+  {
+    header: '작성일자',
+  },
+];
+
 export {
   adminTabMenuData,
   reportedPostsHeaderColumns,
@@ -166,4 +184,5 @@ export {
   memberManagementHeaderColumns,
   userApprovalHeaderColumns,
   postManagementHeaderColumns,
+  commentManagementHeaderColumns,
 };

@@ -27,8 +27,6 @@ import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
 import useModalsControl from '@/hooks/useModalsControl';
 import useEventHandler from '@/hooks/useEventHandler';
 
-import { setIsUserRejectReasonModal } from '@/store/modalsControl';
-
 import { getPendingUsers, signUpApprove, signUpReject } from '@/api/adminApi';
 
 import { communityPostMaxLimit, pageViewLimit } from '@/utils/itemLimit';
@@ -84,7 +82,7 @@ export default function UserApproval() {
 
   const handleRejectModalClose = () => {
     handleRejectReasonChange('');
-    handleModalClose({ modalDispatch: setIsUserRejectReasonModal });
+    handleModalClose({ modalName: 'isUserRejectReasonModal' });
   };
 
   const handleUserApprove = async (userId) => {
@@ -236,7 +234,7 @@ export default function UserApproval() {
                                   ),
                                 });
                                 handleModalOpen({
-                                  modalDispatch: setIsUserRejectReasonModal,
+                                  modalName: 'isUserRejectReasonModal',
                                 });
                                 handleOptionListToggle(idx);
                               }}
@@ -246,12 +244,13 @@ export default function UserApproval() {
                           </OptionListBox>
                         )}
                         <OptionListOpenButton
+                          $status={user.status}
                           $modalState={user.isOptionListOpen}
                           onClick={() => {
                             handleOptionListToggle(idx);
                           }}
                         >
-                          승인대기
+                          {user.status}
                           <img src={arrow} alt='bottom-arrow' />
                         </OptionListOpenButton>
                       </td>

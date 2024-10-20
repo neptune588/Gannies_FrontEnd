@@ -22,7 +22,7 @@ export default function UserBanModal({
   userBanReason,
   userBanModalProps,
   selectedUserBanWeek,
-  reset,
+  modalStateReset,
   handleWeekSelect,
   handleValueChange,
   handleUserBanSubmit,
@@ -32,7 +32,7 @@ export default function UserBanModal({
       <ModalWrapper>
         <ModalCloseButton
           onClick={() => {
-            reset();
+            modalStateReset();
           }}
         >
           <img src={close} alt='modal-close-button' />
@@ -89,7 +89,7 @@ export default function UserBanModal({
       </ModalWrapper>
       <ModalCloseArea
         handleModalClose={() => {
-          reset();
+          modalStateReset();
         }}
       />
     </ModalContainer>

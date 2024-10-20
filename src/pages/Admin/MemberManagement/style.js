@@ -74,4 +74,30 @@ const OptionListOpenButton = styled.button`
   }
 `;
 
-export { SearchBox, OptionListBox, OptionList, OptionListOpenButton };
+const ResetButton = styled.button`
+  margin-left: 10px;
+  > svg {
+    font-size: ${({ theme: { typo } }) => {
+      return typo.size.h3;
+    }};
+    color: ${({ theme: { colors } }) => {
+      return colors.gray['60'];
+    }};
+    rotate: 0deg;
+    transition: all 0.2s;
+    &: hover {
+      color: ${({ theme: { colors } }) => {
+        return colors.gray['80'];
+      }};
+      rotate: 360deg;
+    }
+  }
+`;
+
+export {
+  SearchBox,
+  OptionListBox,
+  OptionList,
+  OptionListOpenButton,
+  ResetButton,
+};

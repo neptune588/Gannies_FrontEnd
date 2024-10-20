@@ -24,11 +24,6 @@ import {
   ReportConfirmButton,
 } from '@/pages/PostDetail/Modals/style';
 
-import {
-  setIsPostDeleteModal,
-  setIsPostOrCommentReportModal,
-} from '@/store/modalsControl';
-
 import useModalsControl from '@/hooks/useModalsControl';
 import useEventHandler from '@/hooks/useEventHandler';
 import useSelectorList from '@/hooks/useSelectorList';
@@ -41,7 +36,7 @@ import { reportPost } from '@/api/postApi';
 export function PostDeleteModal({ handlePostDelete, setIsMorePopup }) {
   const { handleModalClose } = useModalsControl();
   const handleClose = () => {
-    handleModalClose({ modalDispatch: setIsPostDeleteModal });
+    handleModalClose({ modalName: 'isPostDeleteModal' });
     setIsMorePopup(false);
   };
 
@@ -82,7 +77,7 @@ export function ReportModal({
 
   const [currentStep, setCurrentStep] = useState(1);
   const handleClose = () => {
-    handleModalClose({ modalDispatch: setIsPostOrCommentReportModal });
+    handleModalClose({ modalName: 'isPostOrCommentReportModal' });
     setIsMorePopup(false);
   };
 
@@ -185,7 +180,7 @@ export function ReportModalDetail({
 
       setIsSubmit(false);
       alert('신고가 정상적으로 접수 되었습니다.');
-      handleModalClose({ modalDispatch: setIsPostOrCommentReportModal });
+      handleModalClose({ modalName: 'isPostOrCommentReportModal' });
     } catch (error) {
       console.error(error);
     }
@@ -249,7 +244,7 @@ export function ReportModalDetail({
         <ModalCloseButton
           onClick={() => {
             handleModalClose({
-              modalDispatch: setIsPostOrCommentReportModal,
+              modalName: 'isPostOrCommentReportModal',
             });
             setIsMorePopup(false);
           }}

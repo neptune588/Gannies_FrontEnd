@@ -54,8 +54,12 @@ const OptionListOpenButton = styled.button`
   align-items: center;
   user-select: none;
   cursor: pointer;
-  color: ${({ theme: { colors } }) => {
-    return colors.gray['50'];
+  color: ${({ $status, theme: { colors } }) => {
+    if ($status === '승인대기') {
+      return colors.gray['50'];
+    } else {
+      return colors.negative;
+    }
   }};
 
   > img {

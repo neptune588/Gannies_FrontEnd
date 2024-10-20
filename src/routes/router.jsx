@@ -39,17 +39,13 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: '/community/:boardType',
-        element: <Community />,
-      },
-      {
-        path: '//community/:boardType',
+        path: '/community',
         element: (
           <PrivateRoute minStatus='email_verified' blockSuspended={true} />
         ),
         children: [
           {
-            path: '/community/:boardType/create-community-post',
+            path: ':boardType/create-community-post',
             element: <CreateCommunityPost />,
           },
         ],

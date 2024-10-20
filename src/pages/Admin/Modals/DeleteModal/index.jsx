@@ -15,21 +15,32 @@ import {
   ConfirmButton,
 } from '@/pages/Admin/Modals/DeleteModal/style';
 
-import { deletePosts } from '@/api/adminApi';
+import { deletePosts, deleteCommentsOrReplyComments } from '@/api/adminApi';
 
 import { confirmAlert } from '@/utils/sweetAlert';
 
 export default function DeleteModal({
-  ItemReset,
+  stateReset,
   selectedIds,
+  currentActiveCategory,
+  updateChangedQueries,
   deleteItemLength,
   handleModalClose,
 }) {
   const handleItemDelete = async () => {
+    console.log(selectedIds);
     try {
-      await deletePosts({ data: { postIds: selectedIds } });
-      ItemReset();
-      confirmAlert('해당 게시물들이 성공적으로 삭제 되었습니다!');
+      if (currentActiveCategory === '게시글') {
+        await deletePosts({ data: { postIds: selectedIds } });
+      } else {
+        await deleteCommentsOrReplyComments({ data: selectedIds });
+      }
+
+      stateReset();
+      updateChangedQueries();
+      confirmAlert(
+        `해당 ${currentActiveCategory === '게시글' ? '게시글' : '댓글'}들이 성공적으로 삭제 되었습니다!`
+      );
       handleModalClose();
     } catch (error) {
       console.error(error);
@@ -48,10 +59,13 @@ export default function DeleteModal({
           </AlertImgBox>
           <WarningMessage>정말 삭제를 하시겠습니까?</WarningMessage>
           <InformationMessage>
-            총 {deleteItemLength}개의 게시글이 삭제될 예정입니다
+            총 {deleteItemLength}개의{' '}
+            {currentActiveCategory === '게시글' ? '게시글' : '댓글'}이 삭제될
+            예정입니다
           </InformationMessage>
           <NoticeMessage>
-            삭제된 게시물은 영구적으로 삭제되며, <br />
+            삭제된 {currentActiveCategory === '게시글' ? '게시글' : '댓글'}은
+            영구적으로 삭제되며, <br />
             복구는 불가능 합니다
           </NoticeMessage>
         </ContentsWrapper>

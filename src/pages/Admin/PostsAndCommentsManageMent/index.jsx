@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import uuid from 'react-uuid';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import TitleSection from '@/pages/Admin/TitleSection';
-import Title from '@/pages/Admin/Title';
 import ArrLengthSection from '@/pages/Admin/ArrLengthSection';
 import ArrLengthView from '@/pages/Admin/ArrLengthView';
 import SearchInput from '@/pages/Admin/SearchInput';
@@ -12,10 +12,12 @@ import TableBodyRow from '@/pages/Admin/TableDesign/TableBodyRow';
 import PaginationWrapper from '@/pages/Admin/PaginationWrapper';
 import Pagination from '@/components/Pagination';
 import DeleteModal from '@/pages/Admin/Modals/DeleteModal';
+import PostOrCommentDetailModal from '@/pages/Admin/Modals/PostOrCommentDetailModal';
 
 import deleteDefault from '@/assets/icons/trush/trush_default.svg';
 import deleteSelected from '@/assets/icons/trush/trush_selected.svg';
 import checkThick from '@/assets/icons/check/check_thick.svg';
+import { faUndoAlt } from '@fortawesome/free-solid-svg-icons';
 
 import {
   TableTopArea,
@@ -25,16 +27,25 @@ import {
   CommentLength,
   SearchBox,
 } from '@/pages/Admin/PostsAndCommentsManageMent/style';
+import {
+  TitleCategory,
+  DummyClickBox,
+} from '@/pages/Admin/ReportHistory/style';
+import { ResetButton } from '@/pages/Admin/MemberManagement/style';
 
-import { postManagementHeaderColumns } from '@/pages/Admin/data';
+import {
+  postManagementHeaderColumns,
+  commentManagementHeaderColumns,
+} from '@/pages/Admin/data';
 
 import useEventHandler from '@/hooks/useEventHandler';
 import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
 import useModalsControl from '@/hooks/useModalsControl';
 
-import { setIsItemDeleteModal } from '@/store/modalsControl';
-
-import { getPostsOrSearchPosts } from '@/api/adminApi';
+import {
+  getPostsOrSearchPosts,
+  getCommentsOrReplyComments,
+} from '@/api/adminApi';
 
 import { communityPostMaxLimit, pageViewLimit } from '@/utils/itemLimit';
 import { formatDateToPost } from '@/utils/dateFormatting';
@@ -60,8 +71,12 @@ export default function PostsAndCommentsManageMent() {
     itemMaxLimit: communityPostMaxLimit,
     pageViewLimit,
   });
-  const { isItemDeleteModal, handleModalOpen, handleModalClose } =
-    useModalsControl();
+  const {
+    isItemDeleteModal,
+    isPostOrCommentDetailModal,
+    handleModalOpen,
+    handleModalClose,
+  } = useModalsControl();
   const {
     changeValue: isDeleteButtonActive,
     handleChange: handleDeleteButtonActiveChange,
@@ -69,19 +84,33 @@ export default function PostsAndCommentsManageMent() {
     changeDefaultValue: false,
   });
 
-  const [headerColumns] = useState(postManagementHeaderColumns);
+  const [headerColumns, setHeaderColumns] = useState(
+    postManagementHeaderColumns
+  );
   const [query, setQuery] = useState({
     page: currentPageNumber,
     limit: communityPostMaxLimit,
+    withReplies: true,
   });
   const [selectedIds, setSelectedIds] = useState([]);
   const [actionType, setActionType] = useState('');
+  const [detailModalInfo, setDetailModalInfo] = useState({});
   const { changeValue: searchValue, handleChange: handleSearchValueChange } =
     useEventHandler({
       changeDefaultValue: '',
     });
+  const {
+    changeValue: curActiveCategory,
+    handleChange: handleActiveCategoryChange,
+  } = useEventHandler({
+    changeDefaultValue: '게시글',
+  });
 
-  const handleDeleteSelectStateChange = ({ selectItemIdx, selectId }) => {
+  const handleDeleteSelectStateChange = ({
+    selectItemIdx,
+    selectId,
+    commentType,
+  }) => {
     // 클릭x => 클릭o
     //1) delete select on
     //2) 배열에 [postId] 추가
@@ -105,9 +134,10 @@ export default function PostsAndCommentsManageMent() {
     };
     //선택한 요소 id 토글
     setSelectedIds((prev) => {
-      const selectedIdIndex = prev.findIndex(
-        (selectedId) => selectedId === selectId
-      );
+      const selectedIdIndex =
+        curActiveCategory === '게시글'
+          ? prev.findIndex((selectedId) => selectedId === selectId)
+          : prev.findIndex((list) => list.commentId === selectId);
 
       //-1이면 어차피 뒤쪽꺼 실행되어서 상관없음
 
@@ -120,7 +150,12 @@ export default function PostsAndCommentsManageMent() {
         arr.splice(selectedIdIndex, 1);
         return arr;
       } else {
-        return [...prev, selectId];
+        return [
+          ...prev,
+          curActiveCategory === '게시글'
+            ? selectId
+            : { type: commentType, commentId: selectId },
+        ];
       }
     });
     setTableItems((prev) => changeFnc(prev));
@@ -162,16 +197,25 @@ export default function PostsAndCommentsManageMent() {
     if (selectedIds.length === 0) {
       errorAlert('리스트를 선택 하셔야 삭제가 가능합니다!');
     } else if (selectedIds.length > 0) {
-      handleModalOpen({ modalDispatch: setIsItemDeleteModal });
+      handleModalOpen({ modalName: 'isItemDeleteModal' });
     }
   };
 
-  const ItemReset = () => {
+  const stateReset = () => {
     setActionType('');
-    setSelectedIds([]);
     setCurrentPageNumber(1);
+    handleSearchValueChange('');
+    setSelectedIds([]);
+  };
+
+  const updateChangedQueries = () => {
     setQuery((prev) => {
-      return { ...prev, page: currentPageNumber, limit: communityPostMaxLimit };
+      return {
+        ...prev,
+        page: currentPageNumber,
+        limit: communityPostMaxLimit,
+        withReplies: true,
+      };
     });
   };
 
@@ -187,16 +231,46 @@ export default function PostsAndCommentsManageMent() {
         setActionType('');
         setCurrentPageNumber(1);
         setQuery({
-          page: currentPageNumber,
+          page: 1,
           limit: communityPostMaxLimit,
           search: searchValue,
+          withReplies: true,
         });
       }, 100);
     }
   };
 
+  const checkIsSelected = ({ listId, commentId }) => {
+    if (curActiveCategory === '게시글') {
+      return selectedIds.some((selectedId) => selectedId === listId);
+    } else if (curActiveCategory === '댓글') {
+      return selectedIds.some((list) => list.commentId === commentId);
+    }
+  };
+
+  const getItemProperties = (item) => {
+    if (curActiveCategory === '게시글') {
+      return {
+        itemId: item.postId,
+        boardType: item.boardType,
+        itemTitleOrContent: item.title,
+        nickname: item.author,
+        deleteSelectState: checkIsSelected({ listId: item.postId }),
+      };
+    } else {
+      return {
+        itemId: item.id,
+        boardType: item.category,
+        itemTitleOrContent: item.content,
+        nickname: item.nickname,
+        deleteSelectState: checkIsSelected({ commentId: item.id }),
+      };
+    }
+  };
+
   useEffect(() => {
     return () => {
+      clearTimeout(debounceRef.current);
       debounceRef.current = null;
     };
   }, []);
@@ -204,20 +278,32 @@ export default function PostsAndCommentsManageMent() {
   useEffect(() => {
     if (actionType === 'pageMove') {
       window.scroll({ top: 0, left: 0 });
-      setQuery((prev) => {
-        return {
-          ...prev,
-          page: currentPageNumber,
-          limit: communityPostMaxLimit,
-        };
-      });
+      updateChangedQueries();
     }
   }, [currentPageNumber]);
 
   useEffect(() => {
+    if (curActiveCategory === '게시글') {
+      setHeaderColumns(postManagementHeaderColumns);
+    } else if (curActiveCategory === '댓글') {
+      setHeaderColumns(commentManagementHeaderColumns);
+    }
+
+    window.scroll({ top: 0, left: 0 });
+    stateReset();
+    setQuery({
+      page: 1,
+      limit: communityPostMaxLimit,
+      withReplies: true,
+    });
+  }, [curActiveCategory]);
+
+  useEffect(() => {
     (async () => {
       await getTableItemsAndSetPageNumbers(() => {
-        return getPostsOrSearchPosts(query);
+        return curActiveCategory === '게시글'
+          ? getPostsOrSearchPosts(query)
+          : getCommentsOrReplyComments(query);
       });
 
       setTableItems((prev) => {
@@ -225,13 +311,20 @@ export default function PostsAndCommentsManageMent() {
         //key를 통일시켜서 tablelist 값이 바껴도 그전값 -> 바뀐값으로 표기하자.
         return prev.map((item) => {
           //console.log(item);
+          const {
+            itemId,
+            boardType,
+            nickname,
+            itemTitleOrContent,
+            deleteSelectState,
+          } = getItemProperties(item);
           return {
             ...item,
-            deleteSelectState: selectedIds?.some(
-              (selectedId) => selectedId === item.postId
-            )
-              ? true
-              : false,
+            itemId,
+            boardType,
+            nickname,
+            itemTitleOrContent,
+            deleteSelectState,
           };
         });
       });
@@ -243,15 +336,43 @@ export default function PostsAndCommentsManageMent() {
       {isItemDeleteModal && (
         <DeleteModal
           deleteItemLength={selectedIds.length}
+          currentActiveCategory={curActiveCategory}
           selectedIds={selectedIds}
-          ItemReset={ItemReset}
+          stateReset={stateReset}
+          updateChangedQueries={updateChangedQueries}
           handleModalClose={() => {
-            handleModalClose({ modalDispatch: setIsItemDeleteModal });
+            handleModalClose({ modalName: 'isItemDeleteModal' });
+          }}
+        />
+      )}
+      {isPostOrCommentDetailModal && (
+        <PostOrCommentDetailModal
+          currentActiveCategory={curActiveCategory}
+          detailModalInfo={detailModalInfo}
+          handleModalClose={() => {
+            handleModalClose({ modalName: 'isPostOrCommentDetailModal' });
           }}
         />
       )}
       <TitleSection>
-        <Title>게시물 관리</Title>
+        <TitleCategory
+          $currenntActiveCategory={curActiveCategory}
+          $ownCategory={'게시글'}
+          onClick={() => {
+            handleActiveCategoryChange('게시글');
+          }}
+        >
+          게시글
+        </TitleCategory>
+        <TitleCategory
+          $currenntActiveCategory={curActiveCategory}
+          $ownCategory={'댓글'}
+          onClick={() => {
+            handleActiveCategoryChange('댓글');
+          }}
+        >
+          댓글
+        </TitleCategory>
       </TitleSection>
       <TableTopArea>
         <ArrLengthSection>
@@ -262,6 +383,18 @@ export default function PostsAndCommentsManageMent() {
               handleSearchValueChange={handleSearchValueChange}
               handleSearch={handleSearch}
             />
+            <ResetButton
+              onClick={() => {
+                stateReset();
+                setQuery({
+                  page: 1,
+                  limit: communityPostMaxLimit,
+                  withReplies: true,
+                });
+              }}
+            >
+              <FontAwesomeIcon icon={faUndoAlt} />
+            </ResetButton>
           </SearchBox>
         </ArrLengthSection>
         <div>
@@ -300,15 +433,18 @@ export default function PostsAndCommentsManageMent() {
             {tableItems?.map((item, idx) => {
               return (
                 <TableBodyRow key={uuid()} currentActiveTab={'게시물 관리'}>
-                  <td>{String(item.postId).padStart(2, '0')}</td>
+                  <td>{String(item.itemId).padStart(2, '0')}</td>
                   <td>{boardTypeFormatting(item.boardType)}</td>
                   <td>
-                    {item.title}
-                    <CommentLength>
-                      {`[${item.numberOfCommentsAndReplies}]`}
-                    </CommentLength>
+                    {item.itemTitleOrContent}
+                    {(item.numberOfCommentsAndReplies ||
+                      item.numberOfCommentsAndReplies === 0) && (
+                      <CommentLength>
+                        {`[${item.numberOfCommentsAndReplies}]`}
+                      </CommentLength>
+                    )}
                   </td>
-                  <td>{item.author}</td>
+                  <td>{item.nickname}</td>
                   <td>
                     {formatDateToPost(item.createdAt)}
                     {isDeleteButtonActive && (
@@ -324,11 +460,27 @@ export default function PostsAndCommentsManageMent() {
                       onClick={() => {
                         handleDeleteSelectStateChange({
                           selectItemIdx: idx,
-                          selectId: item.postId,
+                          selectId: item.itemId,
+                          commentType: item.type,
                         });
                       }}
                     />
                   )}
+                  <DummyClickBox
+                    onClick={() => {
+                      setDetailModalInfo({
+                        creator: item.nickname,
+                        createDate: formatDateToPost(item.createdAt),
+                        boardType: item.boardType,
+                        itemId: item.itemId,
+                        titleOrContent: item.itemTitleOrContent,
+                        navLink: `/community/${item.boardType}/post/${item.postId}`,
+                      });
+                      handleModalOpen({
+                        modalName: 'isPostOrCommentDetailModal',
+                      });
+                    }}
+                  />
                 </TableBodyRow>
               );
             })}
