@@ -19,19 +19,16 @@ function Info() {
     undefined,
   ]);
 
-  // useEffect(() => {
-  //   steps[0] && !steps[1]
-  //     ? navigate('/sign-up/info')
-  //     : navigate('/sign-up/identity');
-  // }, [steps, navigate]);
+  useEffect(() => {
+    steps[0] && !steps[1]
+      ? navigate('/sign-up/info')
+      : navigate('/sign-up/identity');
+  }, [steps, navigate]);
 
   const handleNextButton = () => {
     handleSteps(1, true);
   };
 
-  useEffect(() => {
-    console.log(allow);
-  }, [allow]);
   return (
     <>
       <Title title='회원가입' />

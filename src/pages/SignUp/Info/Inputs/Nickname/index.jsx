@@ -3,16 +3,17 @@ import Instruction from '@/components/Instruction';
 import InputSection from '@/pages/SignUp/components/InputSection';
 import DefaultInput from '@/pages/SignUp/components/DefaultInput';
 import Negative from '@/components/Instruction/Negative';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { useInputValid } from '@/hooks/useInputValid';
 import { checkNicknameDuplicate } from '@/api/authApi';
+import { preventEnterKey } from '@/utils/PreventEnterKey';
 
 function Nickname({ allow, handleAllow }) {
   const [nickname, setNickname] = useState('');
   const { handleDataToSend } = useOutletContext();
   const regex = /^[a-zA-Z가-힣]{2,8}$/;
-  const validate = (nickname) => nickname.length >= 2 && regex.test(nickname);
+  const validate = (nickname) => regex.test(nickname);
   const instruction = [
     '사용 가능한 닉네임입니다',
     '필수 정보입니다',
@@ -20,10 +21,8 @@ function Nickname({ allow, handleAllow }) {
     '중복된 닉네임입니다',
   ];
   const [instructionIndex, setInstructionIndex] = useState(undefined);
-  const { isFocused, setIsFocused, checkIsValid } = useInputValid(
-    undefined,
-    validate
-  );
+  const { isFocused, focusIfEmpty, blurIfEmpty, setIsFocused, checkIsValid } =
+    useInputValid(undefined, validate);
 
   const handleNickname = async (e) => {
     const nickname = e.target.value;
@@ -35,16 +34,10 @@ function Nickname({ allow, handleAllow }) {
       checkNicknameDuplicate
     );
     setInstructionIndex(allow);
-    if (allow === 0) {
-      handleAllow(0, true);
-    } else {
-      handleAllow(0, false);
-    }
+
+    handleAllow(0, allow === 0 ? true : false);
   };
 
-  useEffect(() => {
-    console.log(allow);
-  }, [allow]);
   return (
     <InputSection $margin='10px' title='닉네임*'>
       <DefaultInput
@@ -56,30 +49,28 @@ function Nickname({ allow, handleAllow }) {
         onFocus={() => {
           setIsFocused(true);
           if (allow[0] === undefined) {
-            handleAllow(0, false);
-            setInstructionIndex(1);
+            const instructionIndex = focusIfEmpty(0, handleAllow);
+            setInstructionIndex(instructionIndex);
           }
         }}
         onBlur={() => {
           setIsFocused(false);
           if (!allow[0] && !nickname) {
-            handleAllow(0, undefined);
-            setInstructionIndex(undefined);
+            const instructionIndex = blurIfEmpty(0, handleAllow);
+            setInstructionIndex(instructionIndex);
           }
         }}
         onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            e.preventDefault();
-          }
+          preventEnterKey(e);
         }}
       />
       {allow[0] ? (
-        <Positive text={instruction[0]} />
+        <Positive text={instruction[instructionIndex]} />
       ) : (
         <>
           <Instruction text='*한글 또는 영문 2-8자' />
           <Instruction text='*숫자 및 특수문자 불가' />
-          {<Negative text={instruction[instructionIndex]} />}
+          <Negative text={instruction[instructionIndex]} />
         </>
       )}
     </InputSection>

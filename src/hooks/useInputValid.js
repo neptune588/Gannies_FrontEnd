@@ -1,10 +1,9 @@
 import { useState } from 'react';
 
-export function useInputValid(initialState = undefined, validate) {
+export function useInputValid(initialState = undefined, validate = null) {
   const [isFocused, setIsFocused] = useState(initialState);
   const checkDuplicate = async (value, key, api) => {
     try {
-      console.log({ [key]: value });
       const response = await api({ [key]: value });
       if (response.status === 201) {
         return response.data.available;
@@ -14,12 +13,24 @@ export function useInputValid(initialState = undefined, validate) {
     }
   };
 
+  const focusIfEmpty = (numAllow, handleAllow) => {
+    handleAllow(numAllow, false);
+    return 1;
+  };
+
+  const blurIfEmpty = (numAllow, handleAllow) => {
+    handleAllow(numAllow, undefined);
+    return undefined;
+  };
+
   const checkIsValid = async (value, key = null, api = null) => {
     if (!value) {
       return 1;
-    } else if (!validate(value)) {
+    } else if (validate && key && !api) {
+      return validate(value, key) ? 0 : 2;
+    } else if (validate && !validate(value)) {
       return 2;
-    } else if (api) {
+    } else if (key && api) {
       const response = await checkDuplicate(value, key, api);
       if (!response) return 3;
     }
@@ -28,6 +39,8 @@ export function useInputValid(initialState = undefined, validate) {
 
   return {
     isFocused,
+    focusIfEmpty,
+    blurIfEmpty,
     setIsFocused,
     checkIsValid,
   };
