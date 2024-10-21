@@ -13,6 +13,7 @@ import {
   InputBox,
 } from '@/pages/SignUp/Department/Inputs/Document/style';
 import Modal from '@/pages/SignUp/Department/Inputs/Document/Modal';
+import { preventEnterKey } from '@/utils/PreventEnterKey';
 
 function Document({ allow, handleAllow, file, setFile }) {
   const inputRef = useRef();
@@ -52,7 +53,7 @@ function Document({ allow, handleAllow, file, setFile }) {
       {allow[0] && (
         <InputSection $margin='37px' title='인증서류 업로드*'>
           {file.name ? (
-            <ActiveInputBox onClick={handleBoxClick}>
+            <ActiveInputBox onClick={() => setModalState(true)}>
               <Clip />
               <div>{file.name}</div>
               <Close onClick={deleteFile} />
@@ -71,18 +72,13 @@ function Document({ allow, handleAllow, file, setFile }) {
             onChange={uploadFile}
             ref={inputRef}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault();
-              }
+              preventEnterKey(e);
             }}
           />
           <Instruction text='*졸업증명서, 재학증면서만 가능 (최대 1MB 이내)' />
           <Instruction text='*JPG / JPEG / PNG / GIF (이미지만)' />
           {valid === false && (
             <Negative text='파일 형식 또는 크기를 확인해주세요' />
-          )}
-          {file && (
-            <button onClick={() => setModalState(true)}>미리보기</button>
           )}
           {file && modalState && (
             <Modal file={file} setModalState={setModalState} />
