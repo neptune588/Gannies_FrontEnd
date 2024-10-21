@@ -2,6 +2,7 @@ import { useRef, useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import useEventHandler from '@/hooks/useEventHandler';
+import { isOnlyWhiteSpaceCheck } from '@/utils/whiteSpaceCheck';
 
 export default function usePostSearch() {
   const navigate = useNavigate();
@@ -17,10 +18,13 @@ export default function usePostSearch() {
   const handleSearch = (e) => {
     if (e.key === 'Enter') {
       const condition =
-        searchValue === '' || searchValue === null || searchValue === undefined;
+        searchValue === '' ||
+        searchValue === null ||
+        searchValue === undefined ||
+        isOnlyWhiteSpaceCheck(searchValue);
 
       condition
-        ? navigate(`/post/search/default`)
+        ? alert('검색어를 한 글자 이상 입력해주세요.')
         : navigate(`/post/search/${searchValue}`);
       handleSearchValueChange('');
     }
@@ -29,10 +33,13 @@ export default function usePostSearch() {
 
   const handleSearchButtonClick = () => {
     const condition =
-      searchValue === '' || searchValue === null || searchValue === undefined;
+      searchValue === '' ||
+      searchValue === null ||
+      searchValue === undefined ||
+      isOnlyWhiteSpaceCheck(searchValue);
 
     condition
-      ? navigate(`/post/search/default`)
+      ? alert('검색어를 한 글자 이상 입력해주세요.')
       : navigate(`/post/search/${searchValue}`);
 
     handleSearchValueChange('');
