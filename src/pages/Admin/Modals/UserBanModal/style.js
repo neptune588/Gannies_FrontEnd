@@ -26,15 +26,15 @@ const ModalTitle = styled.h2`
   margin-bottom: 35px;
 `;
 
-const InputTitle = styled.p`
+const InfoBoxTitle = styled.p`
   ${adminPageModalInnerDataTitleStyle}
 `;
 
-const InputBox = styled.label`
+const InfoBox = styled.div`
   display: block;
   margin-bottom: 20px;
 
-  > input,
+  > div,
   > textarea {
     width: 100%;
     ${adminPageModalInnerDataBoxStyle}
@@ -44,7 +44,7 @@ const InputBox = styled.label`
     margin-bottom: 50px;
     > textarea {
       height: 150px;
-      overflow-y: scroll;
+      overflow: auto;
     }
   }
 `;
@@ -91,13 +91,18 @@ const ConfirmButton = styled.button`
   width: 205px;
   height: 50px;
   margin: 0 auto;
+
+  &:disabled {
+    background-color: #ddd;
+    color: #888;
+  }
 `;
 
 export {
   ModalWrapper,
   ModalTitle,
-  InputBox,
-  InputTitle,
+  InfoBox,
+  InfoBoxTitle,
   RadioSection,
   RadioBox,
   ModalCloseButton,

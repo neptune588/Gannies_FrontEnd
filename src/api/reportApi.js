@@ -14,24 +14,10 @@ export const getReportedPost = async (postId) => {
   return response;
 };
 
-//신고된 특정 게시물 삭제
-export const deleteReportedPost = async (postId) => {
-  const url = `/reports/posts/${postId}`;
-  const response = await cookieApi.delete(url);
-  return response;
-};
-
-//신고된 게시물 게시물 상태 처리완료로 변경
-export const setPostStatusToCompleted = async (postId) => {
-  const url = `/reports/posts/${postId}/complete`;
-  const response = await cookieApi.post(url);
-  return response;
-};
-
-//신고된 게시물 게시물 상태 신고반려로 변경
-export const setPostStatusToRejectReport = async (postId) => {
-  const url = `/reports/posts/${postId}/reject`;
-  const response = await cookieApi.post(url);
+//신고된 게시물 상태 변경
+export const setPostStatusChange = async (postData) => {
+  const url = `/reports/posts/status`;
+  const response = await cookieApi.post(url, postData);
   return response;
 };
 
@@ -49,23 +35,9 @@ export const getReportedComment = async (commentId) => {
   return response;
 };
 
-//신고된 특정 댓글 삭제 (1개)
-export const deleteReportedComment = async (commentId) => {
-  const url = `/reports/comments/${commentId}`;
-  const response = await cookieApi.delete(url);
-  return response;
-};
-
-//신고된 댓글 댓글 상태 처리완료로 변경
-export const setCommentStatusToCompleted = async (commentId) => {
-  const url = `/reports/comment/${commentId}/complete`;
-  const response = await cookieApi.post(url);
-  return response;
-};
-
-//신고된 댓글 댓글 상태 신고반려로 변경
-export const setCommentStatusToRejectReport = async (commentId) => {
-  const url = `/reports/comment/${commentId}/reject`;
-  const response = await cookieApi.post(url);
+//신고된 댓글 상태 변경
+export const setCommentStatusChange = async (commentData) => {
+  const url = `/reports/comments/status`;
+  const response = await cookieApi.post(url, commentData);
   return response;
 };

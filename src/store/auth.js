@@ -7,6 +7,7 @@ const initialState = {
   rejected: null,
   userId: null,
   nickname: null,
+  isAdmin: false,
 };
 
 const authSlice = createSlice({
@@ -19,6 +20,14 @@ const authSlice = createSlice({
         isLogin: true,
         ...action.payload,
       };
+    },
+    setAdminLogin(state, action) {
+      const { userId, nickname } = action.payload;
+
+      state.userId = userId;
+      state.nickname = nickname;
+      state.isLogin = true;
+      state.isAdmin = true;
     },
     setLogout() {
       return initialState;
@@ -36,5 +45,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { setLogin, setLogout, setState } = authSlice.actions;
+export const { setLogin, setLogout, setState, setAdminLogin } =
+  authSlice.actions;
 export default authSlice.reducer;

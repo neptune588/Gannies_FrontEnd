@@ -8,11 +8,14 @@ export default function useSelectorList() {
 
   const { currentActiveMenuNumber, currentBoardType, bannerTitle, bannerDesc } =
     navBarOptions;
+
   const {
     isLogin,
     userId,
     membershipStatus,
     isSuspended,
+    isAdmin,
+    nickname,
     rejected,
     rejectedReason,
     suspensionDuration,
@@ -25,8 +28,14 @@ export default function useSelectorList() {
     isUserBanModal,
     isPostDeleteModal,
     isPostOrCommentReportModal,
+    isReportedCotentModal,
+    isUserWithdrawModal,
+    isItemDeleteModal,
+    isUserRejectReasonModal,
+    isPostOrCommentDetailModal,
     scrollLocation,
   } = modalsControl;
+
   const { comentWrapperLocation } = locations;
 
   return {
@@ -36,6 +45,8 @@ export default function useSelectorList() {
     bannerDesc,
     isLogin,
     userId,
+    nickname,
+    isAdmin,
     membershipStatus,
     isSuspended,
     rejected,
@@ -47,6 +58,11 @@ export default function useSelectorList() {
     isUserBanModal,
     isPostDeleteModal,
     isPostOrCommentReportModal,
+    isReportedCotentModal,
+    isUserWithdrawModal,
+    isItemDeleteModal,
+    isUserRejectReasonModal,
+    isPostOrCommentDetailModal,
     scrollLocation,
     comentWrapperLocation,
   };

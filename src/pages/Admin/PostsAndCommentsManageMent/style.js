@@ -17,8 +17,8 @@ const PostDeleteButton = styled.button`
   ${small_600}
   width: 95px;
   height: 50px;
-  color: ${({ $deleteButtonState, theme: { colors } }) => {
-    return $deleteButtonState ? colors.negative : colors.gray['50'];
+  color: ${({ $isDeleteButtonActive, theme: { colors } }) => {
+    return $isDeleteButtonActive ? colors.negative : colors.gray['50'];
   }};
   background-color: ${({ theme: { colors } }) => {
     return colors.white;
@@ -60,9 +60,20 @@ const TableRowSelectWrapper = styled.div`
   z-index: 10;
 `;
 
+const CommentLength = styled.span`
+  color: ${({ theme: { colors } }) => {
+    return colors.highlight;
+  }};
+  font-weight: ${({ theme: { typo } }) => {
+    return typo.weight.semibold;
+  }};
+  margin-left: 3px;
+`;
+
 export {
   TableTopArea,
   PostDeleteButton,
   PostDeletetSelectButton,
   TableRowSelectWrapper,
+  CommentLength,
 };
