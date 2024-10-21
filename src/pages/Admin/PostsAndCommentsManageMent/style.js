@@ -70,17 +70,10 @@ const CommentLength = styled.span`
   margin-left: 3px;
 `;
 
-const SearchBox = styled.div`
-  display: flex;
-  align-items: center;
-  margin-left: 15px;
-`;
-
 export {
   TableTopArea,
   PostDeleteButton,
   PostDeletetSelectButton,
   TableRowSelectWrapper,
   CommentLength,
-  SearchBox,
 };

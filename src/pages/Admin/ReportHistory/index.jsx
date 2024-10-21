@@ -88,7 +88,6 @@ export default function ReportHistory() {
     try {
       const data = parameter;
 
-      console.log(curActiveCategory);
       curActiveCategory === '게시글'
         ? await setPostStatusChange(data)
         : await setCommentStatusChange(data);
@@ -113,12 +112,11 @@ export default function ReportHistory() {
     if (curActiveCategory === '게시글') {
       //console.log('카테고리 -> 게시글');
       setHearderColumns(reportedPostsHeaderColumns);
-      setCurrentPageNumber(1);
     } else {
       //console.log('카테고리 -> 댓글');
       setHearderColumns(reportedCommentsHeaderColumns);
-      setCurrentPageNumber(1);
     }
+    setCurrentPageNumber(1);
   }, [curActiveCategory]);
 
   useEffect(() => {

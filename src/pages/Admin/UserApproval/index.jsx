@@ -27,7 +27,12 @@ import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
 import useModalsControl from '@/hooks/useModalsControl';
 import useEventHandler from '@/hooks/useEventHandler';
 
-import { getPendingUsers, signUpApprove, signUpReject } from '@/api/adminApi';
+import {
+  getPendingUsers,
+  signUpApprove,
+  signUpReject,
+  sendEmail,
+} from '@/api/adminApi';
 
 import { communityPostMaxLimit, pageViewLimit } from '@/utils/itemLimit';
 import { formatDateToPost } from '@/utils/dateFormatting';
@@ -95,7 +100,19 @@ export default function UserApproval() {
       if (question) {
         await signUpApprove({ userId });
         confirmAlert('해당 회원의 가입을 승인 했습니다!');
+
         setQuery({ page: currentPageNumber, limit: communityPostMaxLimit });
+
+        try {
+          await sendEmail(
+            {
+              userId,
+            },
+            { type: 'approval' }
+          );
+        } catch (error) {
+          errorAlert(error.message);
+        }
       }
     } catch (error) {
       console.error(error);
@@ -116,17 +133,32 @@ export default function UserApproval() {
 
     try {
       setIsSubmit(true);
+
       await signUpReject({
         userId,
         rejectedReason: rejectReason,
       });
+
       confirmAlert('해당 회원의 가입을 거절 했습니다!');
       handleRejectModalClose();
       setQuery({ page: currentPageNumber, limit: communityPostMaxLimit });
-      setIsSubmit(false);
+
+      try {
+        await sendEmail(
+          {
+            userId,
+          },
+          { type: 'rejection' }
+        );
+      } catch (error) {
+        errorAlert(error.message);
+      }
+
       //isSumbit자체는 부모 쪽에서 정의됐으므로 submit 초기화 해줘야함.
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsSubmit(false);
     }
   };
 

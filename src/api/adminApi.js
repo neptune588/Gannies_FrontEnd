@@ -1,5 +1,12 @@
 import { api, cookieApi } from '@/api/axiosInstance';
 
+//관리자 페이지 비밀번호 체크
+export const adminPasswordCheck = async (password) => {
+  const url = '/admin/check-password';
+  const response = await cookieApi.post(url, password);
+  return response;
+};
+
 //관리자 로그인
 export const adminSignIn = async (signInData) => {
   const url = '/admin/sign-in';
@@ -84,7 +91,7 @@ export const deletePosts = async (postIdsData) => {
   return response;
 };
 
-//댓글 밑 답글 페이지 단위로 조회(10개)
+//댓글 밑 답글 페이지 단위로 조회
 export const getCommentsOrReplyComments = async (params) => {
   const url = '/admin/comments';
   const response = await cookieApi.get(url, { params });
@@ -95,5 +102,12 @@ export const getCommentsOrReplyComments = async (params) => {
 export const deleteCommentsOrReplyComments = async (commentIdsData) => {
   const url = `/admin/comments`;
   const response = await cookieApi.delete(url, commentIdsData);
+  return response;
+};
+
+//이메일 전송
+export const sendEmail = async (sendData, params) => {
+  const url = `/admin/email`;
+  const response = await cookieApi.post(url, sendData, { params });
   return response;
 };

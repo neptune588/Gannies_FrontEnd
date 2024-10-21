@@ -47,7 +47,7 @@ export default function PostOrCommentDetailModal({
           </DataBox>
           <DataBox>
             <p>
-              {currentActiveCategory === '게시글' ? '게시물 ID' : '댓글 ID'}
+              {currentActiveCategory === '게시글' ? '게시글 ID' : '댓글 ID'}
             </p>
             <div>{detailModalInfo.itemId}</div>
           </DataBox>

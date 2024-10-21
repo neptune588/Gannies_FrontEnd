@@ -35,12 +35,18 @@ import { userBanWeeklyOptions } from '@/pages/Admin/Modals/UserBanModal/data';
 import { memberManagementHeaderColumns } from '@/pages/Admin/data';
 import { adminPageUserSearchTypes } from '@/components/AlignSelectMenu/data';
 
-import { getUsers, blockUser, unblockUser, deleteUser } from '@/api/adminApi';
+import {
+  getUsers,
+  blockUser,
+  unblockUser,
+  deleteUser,
+  sendEmail,
+} from '@/api/adminApi';
 
 import { formatDateToPost } from '@/utils/dateFormatting';
 import { communityPostMaxLimit, pageViewLimit } from '@/utils/itemLimit';
 import { isOnlyWhiteSpaceCheck } from '@/utils/whiteSpaceCheck';
-import { errorAlert, questionAlert } from '@/utils/sweetAlert';
+import { errorAlert, questionAlert, confirmAlert } from '@/utils/sweetAlert';
 import { isIncludesWhiteSpaceCheck } from '@/utils/whiteSpaceCheck';
 
 export default function MemberManagement() {
@@ -157,7 +163,6 @@ export default function MemberManagement() {
             userId: modalProps.userId,
             deletionReason: value,
           });
-
       modalStateReset();
       setQuery((prev) => {
         return {
@@ -166,11 +171,29 @@ export default function MemberManagement() {
           limit: communityPostMaxLimit,
         };
       });
-      setIsSubmit(false);
+
+      confirmAlert(
+        type === 'userBan'
+          ? '해당 회원을 정지 시켰습니다.'
+          : '해당 회원을 탈퇴 시켰습니다.'
+      );
+
+      try {
+        await sendEmail(
+          {
+            userId: modalProps.userId,
+          },
+          { type: type === 'userBan' ? 'suspension' : 'withdrawal' }
+        );
+      } catch (error) {
+        errorAlert(error.message);
+      }
     } catch (error) {
       //200
       //400
       console.error(error);
+    } finally {
+      setIsSubmit(false);
     }
   };
 

@@ -13,6 +13,7 @@ import PaginationWrapper from '@/pages/Admin/PaginationWrapper';
 import Pagination from '@/components/Pagination';
 import DeleteModal from '@/pages/Admin/Modals/DeleteModal';
 import PostOrCommentDetailModal from '@/pages/Admin/Modals/PostOrCommentDetailModal';
+import AlignSelectMenu from '@/components/AlignSelectMenu';
 
 import deleteDefault from '@/assets/icons/trush/trush_default.svg';
 import deleteSelected from '@/assets/icons/trush/trush_selected.svg';
@@ -25,13 +26,12 @@ import {
   PostDeletetSelectButton,
   TableRowSelectWrapper,
   CommentLength,
-  SearchBox,
 } from '@/pages/Admin/PostsAndCommentsManageMent/style';
 import {
   TitleCategory,
   DummyClickBox,
 } from '@/pages/Admin/ReportHistory/style';
-import { ResetButton } from '@/pages/Admin/MemberManagement/style';
+import { SearchBox, ResetButton } from '@/pages/Admin/MemberManagement/style';
 
 import {
   postManagementHeaderColumns,
@@ -41,6 +41,11 @@ import {
 import useEventHandler from '@/hooks/useEventHandler';
 import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
 import useModalsControl from '@/hooks/useModalsControl';
+
+import {
+  adminPagePostsSearchTypes,
+  adminPageCommentsSearchTypes,
+} from '@/components/AlignSelectMenu/data';
 
 import {
   getPostsOrSearchPosts,
@@ -95,6 +100,14 @@ export default function PostsAndCommentsManageMent() {
   const [selectedIds, setSelectedIds] = useState([]);
   const [actionType, setActionType] = useState('');
   const [detailModalInfo, setDetailModalInfo] = useState({});
+  const [searchTypes, setSearchTypes] = useState(adminPagePostsSearchTypes);
+  const [selectedSearchType, setSelectedSearchType] = useState(
+    adminPagePostsSearchTypes[0].label
+  );
+  const [selectedSearchTypeQuery, setSelectedSearchTypeQuery] = useState(
+    adminPagePostsSearchTypes[0].query
+  );
+
   const { changeValue: searchValue, handleChange: handleSearchValueChange } =
     useEventHandler({
       changeDefaultValue: '',
@@ -201,9 +214,30 @@ export default function PostsAndCommentsManageMent() {
     }
   };
 
+  const checkCurrentCategory = (currentQuery) => {
+    if (curActiveCategory === '게시글') {
+      currentQuery.withReplies = true;
+    }
+
+    return currentQuery;
+  };
+
+  const searchTypeReset = () => {
+    if (curActiveCategory === '게시글') {
+      setSelectedSearchType(adminPagePostsSearchTypes[0].label);
+      setSelectedSearchTypeQuery(adminPagePostsSearchTypes[0].query);
+      setSearchTypes(adminPagePostsSearchTypes);
+    } else if (curActiveCategory === '댓글') {
+      setSelectedSearchType(adminPageCommentsSearchTypes[0].label);
+      setSelectedSearchTypeQuery(adminPageCommentsSearchTypes[0].query);
+      setSearchTypes(adminPageCommentsSearchTypes);
+    }
+  };
+
   const stateReset = () => {
     setActionType('');
     setCurrentPageNumber(1);
+    searchTypeReset();
     handleSearchValueChange('');
     setSelectedIds([]);
   };
@@ -212,9 +246,10 @@ export default function PostsAndCommentsManageMent() {
     setQuery((prev) => {
       return {
         ...prev,
-        page: currentPageNumber,
-        limit: communityPostMaxLimit,
-        withReplies: true,
+        ...checkCurrentCategory({
+          page: currentPageNumber,
+          limit: communityPostMaxLimit,
+        }),
       };
     });
   };
@@ -230,12 +265,15 @@ export default function PostsAndCommentsManageMent() {
       debounceRef.current = setTimeout(() => {
         setActionType('');
         setCurrentPageNumber(1);
-        setQuery({
-          page: 1,
-          limit: communityPostMaxLimit,
-          search: searchValue,
-          withReplies: true,
-        });
+
+        setQuery(
+          checkCurrentCategory({
+            page: 1,
+            limit: communityPostMaxLimit,
+            type: selectedSearchTypeQuery,
+            search: searchValue,
+          })
+        );
       }, 100);
     }
   };
@@ -248,7 +286,7 @@ export default function PostsAndCommentsManageMent() {
     }
   };
 
-  const getItemProperties = (item) => {
+  const setItemProperties = (item) => {
     if (curActiveCategory === '게시글') {
       return {
         itemId: item.postId,
@@ -289,13 +327,14 @@ export default function PostsAndCommentsManageMent() {
       setHeaderColumns(commentManagementHeaderColumns);
     }
 
-    window.scroll({ top: 0, left: 0 });
+    searchTypeReset();
     stateReset();
-    setQuery({
-      page: 1,
-      limit: communityPostMaxLimit,
-      withReplies: true,
-    });
+    window.scroll({ top: 0, left: 0 });
+    setQuery(checkCurrentCategory({ page: 1, limit: communityPostMaxLimit }));
+
+    //setTimeout제거
+    clearTimeout(debounceRef.current);
+    debounceRef.current = null;
   }, [curActiveCategory]);
 
   useEffect(() => {
@@ -317,7 +356,7 @@ export default function PostsAndCommentsManageMent() {
             nickname,
             itemTitleOrContent,
             deleteSelectState,
-          } = getItemProperties(item);
+          } = setItemProperties(item);
           return {
             ...item,
             itemId,
@@ -330,6 +369,10 @@ export default function PostsAndCommentsManageMent() {
       });
     })();
   }, [query]);
+
+  useEffect(() => {
+    console.log(tableItems);
+  }, [tableItems]);
 
   return (
     <>
@@ -378,6 +421,13 @@ export default function PostsAndCommentsManageMent() {
         <ArrLengthSection>
           <ArrLengthView length={totalItems} />
           <SearchBox>
+            <AlignSelectMenu
+              optionList={searchTypes}
+              pageType={'admin'}
+              selectedOption={selectedSearchType}
+              setSelectedOption={setSelectedSearchType}
+              handleSelectedOption={setSelectedSearchTypeQuery}
+            />
             <SearchInput
               searchValue={searchValue}
               handleSearchValueChange={handleSearchValueChange}
@@ -386,11 +436,12 @@ export default function PostsAndCommentsManageMent() {
             <ResetButton
               onClick={() => {
                 stateReset();
-                setQuery({
-                  page: 1,
-                  limit: communityPostMaxLimit,
-                  withReplies: true,
-                });
+                setQuery(
+                  checkCurrentCategory({
+                    page: 1,
+                    limit: communityPostMaxLimit,
+                  })
+                );
               }}
             >
               <FontAwesomeIcon icon={faUndoAlt} />
