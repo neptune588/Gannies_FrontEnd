@@ -1,10 +1,5 @@
 import { PopupBox, PopupList } from '@/pages/PostDetail/MorePopup/style';
 
-import {
-  setIsPostDeleteModal,
-  setIsPostOrCommentReportModal,
-} from '@/store/modalsControl';
-
 import useModalsControl from '@/hooks/useModalsControl';
 
 export default function MorePopup({
@@ -34,7 +29,7 @@ export default function MorePopup({
               ownComment
                 ? handleCommentDelete
                 : () => {
-                    handleModalOpen({ modalDispatch: setIsPostDeleteModal });
+                    handleModalOpen({ modalName: 'isPostDeleteModal' });
                     setIsMorePopup && setIsMorePopup(false);
                   }
             }
@@ -55,7 +50,7 @@ export default function MorePopup({
               };
             });
             setIsMorePopup && setIsMorePopup(false);
-            handleModalOpen({ modalDispatch: setIsPostOrCommentReportModal });
+            handleModalOpen({ modalName: 'isPostOrCommentReportModal' });
           }}
         >
           신고하기

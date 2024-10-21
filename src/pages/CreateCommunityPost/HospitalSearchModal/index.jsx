@@ -25,8 +25,6 @@ import {
   ModalCloseButton,
 } from '@/pages/CreateCommunityPost/HospitalSearchModal/style';
 
-import { setIsHospitalModal } from '@/store/modalsControl';
-
 import { getHospitals } from '@/api/hospitalSearchApi';
 
 export default function HospitalSearchModal({
@@ -124,7 +122,7 @@ export default function HospitalSearchModal({
         <ModalCloseButton
           type='button'
           onClick={() => {
-            handleModalClose({ modalDispatch: setIsHospitalModal });
+            handleModalClose({ modalName: 'isHospitalModal' });
             dataReset();
           }}
         >
@@ -162,7 +160,7 @@ export default function HospitalSearchModal({
                         onClick={() => {
                           setHospitalName(hospital.place_name);
                           handleModalClose({
-                            modalDispatch: setIsHospitalModal,
+                            modalName: 'isHospitalModal',
                           });
                           dataReset();
                         }}
@@ -209,7 +207,7 @@ export default function HospitalSearchModal({
       </ModalWrapper>
       <ModalCloseArea
         handleModalClose={() => {
-          handleModalClose({ modalDispatch: setIsHospitalModal });
+          handleModalClose({ modalName: 'isHospitalModal' });
           dataReset();
         }}
       />

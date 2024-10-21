@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import uuid from 'react-uuid';
 
 import CommunityPost from '@/pages/Community/CommunityPost';
@@ -211,6 +211,7 @@ export default function Community({ isSearch, searchKeyword }) {
               {isSearch ? (
                 <AlignSelectMenu
                   isSearch={isSearch}
+                  pageType={'search'}
                   searchedListLength={postsTotalLength}
                   optionList={boardTypeOptionList}
                   selectedOption={selectedBoardOption.label}

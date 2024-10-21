@@ -22,13 +22,14 @@ import FindPasswordSuccess from '@/pages/Find/Password/Success';
 import ReportHistory from '@/pages/Admin/ReportHistory';
 import MemberManagement from '@/pages/Admin/MemberManagement';
 import UserApproval from '@/pages/Admin/UserApproval';
-import PostManagement from '@/pages/Admin/PostManagement';
+import PostsAndCommentsManageMent from '@/pages/Admin/PostsAndCommentsManageMent';
 import SignUp from '@/pages/SignUp/SignUp';
 import EmailVerification from '@/pages/EmailVerification';
 import PostSearch from '@/pages/PostSearch';
 import PrivateRoute from '@/routes/PrivateRoute';
 import SignOutRoute from '@/routes/SignOutRoute';
 import MyPage from '@/pages/MyPage';
+import AdminSignIn from '@/pages/Admin/AdminSignIn';
 
 export const router = createBrowserRouter([
   {
@@ -49,7 +50,11 @@ export const router = createBrowserRouter([
       {
         path: '/community',
         element: (
-          <PrivateRoute minStatus='approved_member' blockSuspended={true} />
+          <PrivateRoute
+            minStatus='approved_member'
+            blockSuspended={true}
+            blockMember={true}
+          />
         ),
         children: [
           {
@@ -71,6 +76,10 @@ export const router = createBrowserRouter([
     ],
   },
   {
+    path: '/admin/sign-in',
+    element: <AdminSignIn />,
+  },
+  {
     element: <AdminLayout />,
     children: [
       {
@@ -86,8 +95,8 @@ export const router = createBrowserRouter([
         element: <UserApproval />,
       },
       {
-        path: '/admin/post-management',
-        element: <PostManagement />,
+        path: '/admin/item-management',
+        element: <PostsAndCommentsManageMent />,
       },
     ],
   },

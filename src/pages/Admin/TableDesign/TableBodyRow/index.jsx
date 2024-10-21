@@ -31,6 +31,12 @@ const BodyRow = styled.tr`
       return colors.gray['90'];
     }};
   }
+
+  &:hover {
+    background-color: ${({ theme: { colors } }) => {
+      return colors.gray['10'];
+    }};
+  }
 `;
 
 export default function TableBodyRow({ children, currentActiveTab }) {

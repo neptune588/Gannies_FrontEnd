@@ -2,13 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import {
-  setIsHospitalModal,
-  setIsPostDeleteModal,
-  setIsUserBanModal,
-  setIsPostOrCommentReportModal,
-  setSaveScrollLocation,
-} from '@/store/modalsControl';
+import { setModal, setSaveScrollLocation } from '@/store/modalsControl';
 
 import useSelectorList from '@/hooks/useSelectorList';
 
@@ -22,16 +16,23 @@ export default function useModalsControl() {
     isPostDeleteModal,
     isUserBanModal,
     isPostOrCommentReportModal,
+    isReportedCotentModal,
+    isUserWithdrawModal,
+    isItemDeleteModal,
+    isUserRejectReasonModal,
+    isPostOrCommentDetailModal,
     scrollLocation,
   } = useSelectorList();
 
-  const handleModalOpen = ({ modalDispatch }) => {
+  const handleModalOpen = ({ modalName }) => {
     dispatch(setSaveScrollLocation(window.scrollY));
-    dispatch(modalDispatch(true));
+    dispatch(setModal({ modalName, modalState: true }));
+    document.body.style.overflow = 'hidden';
   };
 
-  const handleModalClose = ({ modalDispatch }) => {
-    dispatch(modalDispatch(false));
+  const handleModalClose = ({ modalName }) => {
+    dispatch(setModal({ modalName, modalState: false }));
+    document.body.style.overflow = 'auto';
     setTimeout(() => {
       window.scroll({ top: scrollLocation, left: 0 });
     }, 10);
@@ -42,19 +43,23 @@ export default function useModalsControl() {
       firstRunBlockToModalEffect.current = false;
       return;
     }
-
-    const modalState =
-      isHospitalSearchModal ||
-      isPostDeleteModal ||
-      isUserBanModal ||
-      isPostOrCommentReportModal;
-
-    if (modalState) {
-      dispatch(setIsHospitalModal(false));
-      dispatch(setIsPostDeleteModal(false));
-      dispatch(setIsUserBanModal(false));
-      dispatch(setIsPostOrCommentReportModal(false));
-    }
+    dispatch(
+      setModal({ modalName: 'isHospitalSearchModal', modalState: false })
+    );
+    dispatch(setModal({ modalName: 'isPostDeleteModal', modalState: false }));
+    dispatch(setModal({ modalName: 'isUserBanModal', modalState: false }));
+    dispatch(
+      setModal({ modalName: 'isPostOrCommentReportModal', modalState: false })
+    );
+    dispatch(
+      setModal({ modalName: 'isReportedCotentModal', modalState: false })
+    );
+    dispatch(setModal({ modalName: 'isUserWithdrawModal', modalState: false }));
+    dispatch(setModal({ modalName: 'isItemDeleteModal', modalState: false }));
+    dispatch(
+      setModal({ modalName: 'isUserRejectReasonModal', modalState: false })
+    );
+    document.body.style.overflow = 'auto';
   }, [location]);
 
   return {
@@ -62,6 +67,11 @@ export default function useModalsControl() {
     isPostDeleteModal,
     isUserBanModal,
     isPostOrCommentReportModal,
+    isReportedCotentModal,
+    isUserWithdrawModal,
+    isItemDeleteModal,
+    isUserRejectReasonModal,
+    isPostOrCommentDetailModal,
     handleModalOpen,
     handleModalClose,
   };

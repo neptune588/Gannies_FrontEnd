@@ -2,31 +2,6 @@ import styled from 'styled-components';
 
 import { h4_600 } from '@/styles/commonStyle/localTextStyle';
 
-const Container = styled.div`
-  overflow: ${({
-    $isHospitalSearchModal,
-    $isPostDeleteModal,
-    $isPostOrCommentReportModal,
-  }) => {
-    return $isHospitalSearchModal ||
-      $isPostDeleteModal ||
-      $isPostOrCommentReportModal
-      ? 'hidden'
-      : null;
-  }};
-  height: ${({
-    $isHospitalSearchModal,
-    $isPostDeleteModal,
-    $isPostOrCommentReportModal,
-  }) => {
-    return $isHospitalSearchModal ||
-      $isPostDeleteModal ||
-      $isPostOrCommentReportModal
-      ? '100vh'
-      : null;
-  }};
-`;
-
 const CenterdWrapper = styled.div`
   width: 1128px;
   margin: 0 auto;
@@ -71,7 +46,6 @@ const AdminContentsWrapper = styled.div`
 `;
 
 export {
-  Container,
   CenterdWrapper,
   MyPageCenterdWrapper,
   MyPageTitle,

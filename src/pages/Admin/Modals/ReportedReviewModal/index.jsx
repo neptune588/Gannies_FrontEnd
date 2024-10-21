@@ -12,58 +12,75 @@ import {
   TopAreaLastDataBox,
   BottomAreaLastDataBox,
   ModalCloseButton,
-} from '@/pages/Admin/ReportedReviewModal/style';
+} from '@/pages/Admin/Modals/ReportedReviewModal/style';
 
-export default function ReportedReviewModal({ activeCategory }) {
+import useModalsControl from '@/hooks/useModalsControl';
+
+export default function ReportedReviewModal({
+  activeCategory,
+  reviewModalProps,
+}) {
+  const { handleModalClose } = useModalsControl();
+
   return (
     <ModalContainer>
       <ModalWrapper>
         <ModalTitle>
           {activeCategory === '게시글' ? '신고된 게시글' : '신고된 댓글'}
         </ModalTitle>
-        <ModalCloseButton src={cross} alt={'modal-close-button'} />
+        <ModalCloseButton
+          src={cross}
+          alt={'modal-close-button'}
+          onClick={() => {
+            handleModalClose({ modalName: 'isReportedCotentModal' });
+          }}
+        />
         <DataAreaTop $activeCategory={activeCategory}>
           <DataBox>
             <p>작성자</p>
-            <div>나는야 작성자</div>
+            <div>{reviewModalProps.creator}</div>
           </DataBox>
           <DataBox>
             <p>작성일자</p>
-            <div>2024-08-01</div>
+            <div>{reviewModalProps.reportDate}</div>
           </DataBox>
           <DataBox>
             <p>카테고리</p>
-            <div>이론정보</div>
+            <div>{reviewModalProps.category}</div>
           </DataBox>
           <DataBox>
-            <p>번호</p>
-            <div>1122</div>
+            <p>{activeCategory === '게시글' ? '게시물 ID' : '댓글 ID'}</p>
+            <div>{reviewModalProps.contentId}</div>
           </DataBox>
           <TopAreaLastDataBox $activeCategory={activeCategory}>
             <p>{activeCategory === '게시글' ? '게시글 제목' : '댓글 본문'}</p>
-            <div>
-              {activeCategory === '게시글'
-                ? '상대방을 열받게 하는 24가지 방법'
-                : 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Animi asperiores velit qui blanditiis quam aliquam quod placeat numquam sunt? Magni perferendis exercitationem tempora ratione quasi dignissimos perspiciatis facilis. Atque, a?Lorem ipsum, dolor sit amet consectetur adipisicing elit. Animi asperiores velit qui blanditiis quam aliquam quod placeat numquam sunt? Magni perferendis exercitationem tempora ratione quasi dignissimos perspiciatis facilis. Atque, a?Lorem ipsum, dolor sit amet consectetur adipisicing elit. Animi asperiores velit qui blanditiis quam aliquam quod placeat numquam sunt? Magni perferendis exercitationem tempora ratione quasi dignissimos perspiciatis facilis. Atque, a?'}
-            </div>
+            <div>{reviewModalProps.content}</div>
           </TopAreaLastDataBox>
         </DataAreaTop>
         <DataAreaBottom>
           <DataBox>
             <p>신고자</p>
-            <div>블랙컨슈머</div>
+            <div>{reviewModalProps.reporter}</div>
           </DataBox>
           <DataBox>
             <p>신고날짜</p>
-            <div>2024-08-24</div>
+            <div>{reviewModalProps.reportDate}</div>
           </DataBox>
           <BottomAreaLastDataBox>
             <p>신고사유</p>
-            <div>재밌어서</div>
+            <div>
+              {reviewModalProps.otherReportedReason
+                ? reviewModalProps.otherReportedReason
+                : reviewModalProps.reportReason}
+            </div>
           </BottomAreaLastDataBox>
         </DataAreaBottom>
       </ModalWrapper>
-      <ModalCloseArea />
+      <ModalCloseArea
+        handleModalClose={() => {
+          handleModalClose({ modalName: 'isReportedCotentModal' });
+        }}
+      />
     </ModalContainer>
   );
 }

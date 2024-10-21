@@ -77,3 +77,56 @@ export const SearchPageSelectOptions = [
     path: 'notice',
   },
 ];
+
+export const adminPageUserSearchTypes = [
+  {
+    label: '회원 닉네임',
+    query: 'nickname',
+  },
+  {
+    label: '회원 이메일',
+    query: 'email',
+  },
+  {
+    label: '회원 고유 ID',
+    query: 'userId',
+  },
+];
+
+export const adminPagePostsSearchTypes = [
+  {
+    label: '게시글 제목',
+    query: 'title',
+  },
+  {
+    label: '작성자',
+    query: 'nickname',
+  },
+  {
+    label: '게시글 내용',
+    query: 'content',
+  },
+  {
+    label: '게시글 ID',
+    query: 'postId',
+  },
+];
+
+export const adminPageCommentsSearchTypes = [
+  {
+    label: '원 게시글 제목',
+    query: 'title',
+  },
+  {
+    label: '작성자',
+    query: 'nickname',
+  },
+  {
+    label: '댓글 내용',
+    query: 'content',
+  },
+  {
+    label: '댓글 ID',
+    query: 'commentId',
+  },
+];
