@@ -306,7 +306,6 @@ export default function PostDetail() {
     //console.log(commentBoxLocation);
     //actiyp Change => data reqeust => comment data change => commentLocation calc => commentLocation change => useEffect
     if (actionType === 'createComment') {
-      console.log(comentWrapperLocation);
       window.scroll({
         top: comentWrapperLocation.bottom,
         left: 0,

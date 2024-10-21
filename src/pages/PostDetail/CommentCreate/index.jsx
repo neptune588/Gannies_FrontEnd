@@ -17,6 +17,8 @@ import {
   editReplyComment,
 } from '@/api/commentApi';
 
+import { isOnlyWhiteSpaceCheck } from '@/utils/whiteSpaceCheck';
+
 export default function CommentCreate({
   requestType,
   listType,
@@ -45,11 +47,7 @@ export default function CommentCreate({
       return;
     }
 
-    if (
-      value.trim() === '' ||
-      value.trim() === null ||
-      value.trim() === undefined
-    ) {
+    if (isOnlyWhiteSpaceCheck(value)) {
       alert('내용을 입력 해주세요!');
       return;
     }
@@ -110,9 +108,9 @@ export default function CommentCreate({
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsSubmit(false);
     }
-
-    setIsSubmit(false);
   };
 
   return (

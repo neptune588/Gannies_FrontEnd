@@ -29,20 +29,20 @@ export default function Pagination({
             if (setActionType) {
               setActionType('pageMove');
             }
-            handlePrevPageClick({ stepSize: 1 });
+            handlePrevPageClick({ stepSize: 10 });
           }}
         >
-          <img src={prevArrow} alt={'prev-page-button'} />
+          <img src={prev10PagesArrow} alt={'prev-page-button'} />
         </ArrowButton>
         <ArrowButton
           onClick={() => {
             if (setActionType) {
               setActionType('pageMove');
             }
-            handlePrevPageClick({ stepSize: 10 });
+            handlePrevPageClick({ stepSize: 1 });
           }}
         >
-          <img src={prev10PagesArrow} alt={'prev-10pages-button'} />
+          <img src={prevArrow} alt={'prev-10pages-button'} />
         </ArrowButton>
       </ArrowBox>
       <PageNumberBox>

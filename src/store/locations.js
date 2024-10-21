@@ -25,7 +25,9 @@ const locationsSlice = createSlice({
           : bottom;
 
       state.comentWrapperLocation.bottom = console.log(
+        'top',
         state.comentWrapperLocation.top,
+        'bottom',
         state.comentWrapperLocation.bottom
       );
     },

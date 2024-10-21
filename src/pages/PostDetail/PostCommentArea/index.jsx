@@ -48,7 +48,7 @@ export default memo(function PostCommentArea({
     if (commentAreaYLocation.current) {
       dispatch(
         setCommentWrapperLocation({
-          top: commentAreaYLocation.current.offsetTop,
+          top: commentAreaYLocation.current.scrollTop,
         })
       );
     }
@@ -58,10 +58,9 @@ export default memo(function PostCommentArea({
     if (listRefs.current.length > 0) {
       listRefs.current.forEach((list, idx) => {
         if (list && idx === listRefs.current.length - 1) {
-          console.log('댓글 위치', list.getBoundingClientRect().top);
           dispatch(
             setCommentWrapperLocation({
-              top: commentAreaYLocation.current.offsetTop,
+              top: commentAreaYLocation.current.scrollTop,
               bottom: list.offsetTop,
             })
           );
