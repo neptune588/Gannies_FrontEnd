@@ -90,12 +90,12 @@ function PostList({
         <PostRightBox>
           {!scrapViewState && (
             <>
-              {views && (
+              {views !== null && (
                 <IconBox $pageName={pageName}>
                   <Eye postViewCount={views} />
                 </IconBox>
               )}
-              {likes && (
+              {likes !== null && (
                 <IconBox $pageName={pageName}>
                   <HeartInactive likeCount={likes} />
                 </IconBox>
