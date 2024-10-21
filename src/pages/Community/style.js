@@ -37,6 +37,10 @@ const TableWrapper = styled.div`
   margin: 0 auto;
   > table {
     width: 100%;
+
+    > tbody {
+      height: ${({ height }) => height};
+    }
   }
 `;
 

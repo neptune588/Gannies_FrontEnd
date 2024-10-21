@@ -32,7 +32,6 @@ import { checkAdminStatus } from '@/api/authApi';
 import { formatDateToPost } from '@/utils/dateFormatting';
 import { communityPostMaxLimit } from '@/utils/itemLimit';
 import { pageViewLimit } from '@/utils/itemLimit';
-import Modal from '@/components/Modal';
 import useUserState from '@/hooks/useUserState';
 
 export default function Community({ isSearch, searchKeyword }) {
@@ -244,7 +243,7 @@ export default function Community({ isSearch, searchKeyword }) {
                   </th>
                 </TableHeader>
               </thead>
-              <tbody>
+              <tbody height={currentPosts.length === 0 ? '669px' : 'auto'}>
                 {currentPosts?.map((post, idx) => {
                   return (
                     <CommunityPost
