@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { AdminLayout, HeaderLayout, MainLayout, MypageLayout } from '@/layouts';
 import Home from '@/pages/Home';
 import SignIn from '@/pages/SignIn';
@@ -185,7 +185,7 @@ export const router = createBrowserRouter([
             element: <EmailVerification />,
           },
           {
-            path: '*',
+            path: '/404',
             element: <Error404 />,
           },
         ],
@@ -193,6 +193,10 @@ export const router = createBrowserRouter([
       {
         path: '/sign-up/success',
         element: <SignUpSuccess />,
+      },
+      {
+        path: '*',
+        element: <Navigate to='/404' replace />,
       },
     ],
   },
