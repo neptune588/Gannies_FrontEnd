@@ -18,6 +18,7 @@ function Buttons({ email, password, setLoginError, setIsLoading, setText }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [autoLogin, setAutoLogin] = useState(false);
+  let loadingTimer;
 
   const handleAutoLogin = () => {
     setAutoLogin(!autoLogin);
@@ -64,6 +65,12 @@ function Buttons({ email, password, setLoginError, setIsLoading, setText }) {
     );
   };
 
+  const loadingTimeout = () => {
+    loadingTimer = setTimeout(() => {
+      setIsLoading(true);
+    }, 8);
+  };
+
   const handleLogin = async () => {
     try {
       if (!email) {
@@ -76,7 +83,7 @@ function Buttons({ email, password, setLoginError, setIsLoading, setText }) {
         return;
       }
 
-      setIsLoading(true);
+      loadingTimeout();
       const response = await userSignIn({ email: email, password: password });
       const {
         isSuspended,
@@ -106,11 +113,20 @@ function Buttons({ email, password, setLoginError, setIsLoading, setText }) {
         suspensionEndDate,
         suspensionReason
       );
+      clearTimeout(loadingTimer);
       navigate('/');
     } catch (error) {
-      console.log(error.response);
+      clearTimeout(loadingTimer);
       setIsLoading(false);
       setLoginError(true);
+
+      if (!error.response) {
+        alert('서버에 연결할 수 없습니다.');
+      } else if (error.response.status === 400) {
+        setText('이메일 또는 비밀번호를 다시 확인해주세요.');
+      } else {
+        alert('로그인 요청 중 에러가 발생하였습니다.');
+      }
     }
   };
   return (

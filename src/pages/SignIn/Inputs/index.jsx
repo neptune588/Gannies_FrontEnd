@@ -37,6 +37,7 @@ function Inputs({
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showAutoComplete, setShowAutoComplete] = useState(false);
+  let loadingTimer;
 
   useEffect(() => {
     emailRef.current?.focus();
@@ -54,6 +55,12 @@ function Inputs({
     setShowPassword(!showPassword);
   };
 
+  const loadingTimeout = () => {
+    loadingTimer = setTimeout(() => {
+      setIsLoading(true);
+    }, 8);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -67,7 +74,7 @@ function Inputs({
         return;
       }
 
-      setIsLoading(true);
+      loadingTimeout();
       const response = await userSignIn({ email: email, password: password });
       const {
         isSuspended,
@@ -116,10 +123,20 @@ function Inputs({
           value: { status: rejected, reason: rejectedReason },
         })
       );
+      clearTimeout(loadingTimer);
       navigate('/');
     } catch (error) {
+      clearTimeout(loadingTimer);
       setIsLoading(false);
       setLoginError(true);
+
+      if (!error.response) {
+        alert('서버에 연결할 수 없습니다.');
+      } else if (error.response.status === 400) {
+        setText('이메일 또는 비밀번호를 다시 확인해주세요.');
+      } else {
+        alert('로그인 요청 중 에러가 발생하였습니다.');
+      }
     }
   };
 
@@ -127,7 +144,7 @@ function Inputs({
     <Wrapper>
       <InputWrapper $isFocused={isFocusedEmail} onSubmit={handleSubmit}>
         <InputBox
-          type='email'
+          type='text'
           placeholder='이메일'
           value={email}
           onChange={handleEmail}
