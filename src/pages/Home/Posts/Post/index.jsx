@@ -74,7 +74,7 @@ function Post({ title, boardType }) {
           <img src={chevron_right} alt='chevron_right' />
         </ShowMoreButton>
       </Wrapper>
-      <PostListWrapper>
+      <PostListWrapper height={posts.length === 0 ? '375px' : 'auto'}>
         {posts.map((post) => {
           return (
             <PostList
