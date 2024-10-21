@@ -23,6 +23,11 @@ function Name({ name, setName, allow, handleAllow }) {
         onBlur={() => {
           handleIsFocused(false);
         }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+          }
+        }}
       />
     </InputSection>
   );

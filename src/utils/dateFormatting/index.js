@@ -9,5 +9,5 @@ export const formatDateToPost = (date) => {
 };
 
 export const formatDateToSuspend = (date) => {
-  return date.replace('T', '').replace('Z', '').slice(0, -4);
+  return date.replace('T', ' ').replace('Z', '').slice(0, -4);
 };

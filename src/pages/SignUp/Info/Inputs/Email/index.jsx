@@ -4,10 +4,11 @@ import Positive from '@/components/Instruction/Positive';
 import Negative from '@/components/Instruction/Negative';
 
 import InputSection from '@/pages/SignUp/components/InputSection';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { checkEmailDuplicate } from '@/api/authApi';
-import { useInputBorder } from '@/hooks/useInputBorder';
+import { useInputValid } from '@/hooks/useInputValid';
+import { preventEnterKey } from '@/utils/PreventEnterKey';
 
 function Email({ allow, handleAllow }) {
   const [email, setEmail] = useState('');
@@ -20,52 +21,18 @@ function Email({ allow, handleAllow }) {
     '유효하지 않은 이메일 형식입니다',
     '중복된 이메일입니다',
   ];
-  const [instructionIndex, setInstructionIndex] = useState(2);
-  const {
-    isFocused,
-    isValid,
-    handleIsFocused,
-    handleIsValid,
-    handleInputBlur,
-  } = useInputBorder(undefined, validate);
-  const [checkDuplicate, setCheckDuplicate] = useState(false);
-  const prevEmailRef = useRef(email);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (isValid && !checkDuplicate) {
-          const response = await checkEmailDuplicate({ email });
-          if (response.status === 201) {
-            setCheckDuplicate(true);
-            if (!response.data.available) {
-              setInstructionIndex(3);
-              handleAllow(1, false);
-            } else {
-              handleAllow(1, true);
-            }
-          }
-        }
-      } catch (error) {
-        console.error('Error checking email duplicate:', error);
-      }
-    };
-    if (!isValid) handleAllow(1, false);
-    fetchData();
-  }, [isValid, checkDuplicate]);
+  const [instructionIndex, setInstructionIndex] = useState(undefined);
+  const { isFocused, focusIfEmpty, blurIfEmpty, setIsFocused, checkIsValid } =
+    useInputValid(undefined, validate);
 
   const handleEmail = async (e) => {
     const email = e.target.value;
     setEmail(email);
     handleDataToSend('email', email);
-  };
+    const allow = await checkIsValid(email, 'email', checkEmailDuplicate);
+    setInstructionIndex(allow);
 
-  const handleInstruction = () => {
-    if (!email) {
-      setInstructionIndex(1);
-    } else {
-      setInstructionIndex(2);
-    }
+    handleAllow(1, allow === 0 ? true : false);
   };
 
   return (
@@ -75,30 +42,29 @@ function Email({ allow, handleAllow }) {
         onChange={handleEmail}
         value={email}
         $isFocused={isFocused}
-        $isValid={allow[1] || isValid === undefined}
-        onFocus={() => handleIsFocused(true)}
+        $isValid={allow[1]}
+        onFocus={() => {
+          setIsFocused(true);
+          if (allow[1] === undefined) {
+            const instructionIndex = focusIfEmpty(1, handleAllow);
+            setInstructionIndex(instructionIndex);
+          }
+        }}
         onBlur={() => {
-          handleIsFocused(false);
-          handleInputBlur(email);
-          if (email !== prevEmailRef.current) {
-            handleInstruction();
-            setCheckDuplicate(false);
-            prevEmailRef.current = email;
+          setIsFocused(false);
+          if (!allow[1] && !email) {
+            const instructionIndex = blurIfEmpty(1, handleAllow);
+            setInstructionIndex(instructionIndex);
           }
-          if (!email) {
-            handleInstruction();
-            handleIsValid(false);
-          }
+        }}
+        onKeyDown={(e) => {
+          preventEnterKey(e);
         }}
       />
       {allow[1] ? (
-        <Positive text={instruction[0]} />
+        <Positive text={instruction[instructionIndex]} />
       ) : (
-        <>
-          {isValid !== undefined && (
-            <Negative text={instruction[instructionIndex]} />
-          )}
-        </>
+        <Negative text={instruction[instructionIndex]} />
       )}
     </InputSection>
   );

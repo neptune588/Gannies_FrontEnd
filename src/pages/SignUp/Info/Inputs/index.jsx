@@ -8,7 +8,7 @@ function Inputs({ allow, handleAllow }) {
     <>
       <Nickname allow={allow} handleAllow={handleAllow} />
       <Email allow={allow} handleAllow={handleAllow} />
-      <Password handleAllow={handleAllow} />
+      <Password allow={allow} handleAllow={handleAllow} />
       <PasswordCheck allow={allow} handleAllow={handleAllow} />
     </>
   );

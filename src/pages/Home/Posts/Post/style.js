@@ -42,6 +42,7 @@ export const ShowMoreButton = styled(Link)`
 export const PostListWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  height: ${({ height }) => height};
 `;
 
 export const Container = styled.div`

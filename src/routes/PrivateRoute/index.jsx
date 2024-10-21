@@ -1,68 +1,84 @@
-import { Outlet, Navigate } from 'react-router-dom';
+import { Outlet, Navigate, useParams } from 'react-router-dom';
 import useUserState from '@/hooks/useUserState';
-import useSelectorList from '@/hooks/useSelectorList';
 import { statusToNumber } from '@/utils/statusToNumber';
 import { useDispatch } from 'react-redux';
 import { handleModal } from '@/store/modalState';
 import { useEffect, useState } from 'react';
 import { setLogout } from '@/store/auth';
+import { checkAdminStatus } from '@/api/authApi';
 
-const PrivateRoute = ({ minStatus, blockSuspended = false }) => {
+const PrivateRoute = ({
+  minStatus,
+  blockSuspended = false,
+  blockMember = false,
+}) => {
   const dispatch = useDispatch();
-  const { isSuspended, rejected, membershipStatus } = useSelectorList();
   const numMinStatus = statusToNumber(minStatus);
-  const numStatus = statusToNumber(membershipStatus);
-
+  const { boardType } = useParams();
   const { checkState } = useUserState();
   const [navigatePath, setNavigatePath] = useState(null);
 
   useEffect(() => {
     const checkUserState = async () => {
-      if (rejected) {
-        dispatch(handleModal({ field: 'rejected', value: rejected }));
-        setNavigatePath('/');
-        return;
-      } else if (blockSuspended && isSuspended) {
-        dispatch(handleModal({ field: 'isSuspended', value: isSuspended }));
-        setNavigatePath('/');
-        return;
-      } else if (numStatus < numMinStatus) {
+      if (blockMember && (boardType === 'notice' || boardType === 'event')) {
+        const res = await checkAdminStatus();
+        if (!res.isAdmin) {
+          setNavigatePath('/');
+          alert('해당 게시판의 글은 관리자만 작성 가능합니다!');
+        }
+      }
+      const {
+        isSuspended,
+        rejected,
+        membershipStatus,
+        rejectedReason,
+        suspensionDuration,
+        suspensionEndDate,
+        suspensionReason,
+      } = await checkState();
+
+      const numStatus = statusToNumber(membershipStatus);
+      if (numStatus < numMinStatus) {
         if (numStatus === 1) {
           setNavigatePath('/sign-up/success');
         } else if (numStatus === 2) {
-          dispatch(handleModal({ field: 'isApproval', value: true }));
-          setNavigatePath('/');
+          if (rejected) {
+            dispatch(
+              handleModal({
+                field: 'rejected',
+                value: { status: rejected, reason: rejectedReason },
+              })
+            );
+            setNavigatePath('/');
+          } else {
+            dispatch(
+              handleModal({
+                field: 'isApproval',
+                value: { status: membershipStatus === 'email_verified' },
+              })
+            );
+            setNavigatePath('/');
+          }
         } else {
           dispatch(setLogout());
           setNavigatePath('/sign-in');
         }
-        return;
-      }
-
-      const {
-        isSuspended: resSuspended,
-        rejected: resRejected,
-        membershipStatus: resMembershipStatus,
-      } = await checkState();
-
-      if (resRejected) {
-        dispatch(handleModal({ field: 'rejected', value: resRejected }));
-        setNavigatePath('/');
-      } else if (blockSuspended && resSuspended) {
-        alert('정지');
-        setNavigatePath('/');
       } else {
-        const numResStatus = statusToNumber(resMembershipStatus);
-        if (numResStatus >= numMinStatus) {
-          setNavigatePath(null);
-        } else if (numResStatus === 1) {
-          setNavigatePath('/sign-up/success');
-        } else if (numResStatus === 2) {
-          dispatch(handleModal({ field: 'isApproval', value: true }));
+        if (blockSuspended && isSuspended) {
+          dispatch(
+            handleModal({
+              field: 'isSuspended',
+              value: {
+                status: isSuspended,
+                duration: suspensionDuration,
+                endDate: suspensionEndDate,
+                reason: suspensionReason,
+              },
+            })
+          );
           setNavigatePath('/');
         } else {
-          dispatch(setLogout());
-          setNavigatePath('/sign-in');
+          setNavigatePath(null);
         }
       }
     };

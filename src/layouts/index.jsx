@@ -25,6 +25,7 @@ import { setBoardType } from '@/store/navBarOptions';
 import { setLogout } from '@/store/auth';
 
 import { navBarMenuData } from '@/layouts/Navbar/data';
+import Modal from '@/components/Modal';
 
 import { checkAdminStatus } from '@/api/authApi';
 
@@ -35,8 +36,6 @@ export function MainLayout() {
 
   useEffect(() => {
     const url = location.pathname;
-
-    console.log(boardType);
     if (url.startsWith('/community')) {
       const nav = navBarMenuData.find(
         (navMenu) => boardType === navMenu.boardType
@@ -62,6 +61,7 @@ export function MainLayout() {
         <Outlet />
       </CenterdWrapper>
       <Footer />
+      <Modal />
     </>
   );
 }
@@ -81,6 +81,7 @@ export function MypageLayout() {
         </MyPageFlexWrapper>
       </MyPageCenterdWrapper>
       <Footer />
+      <Modal />
     </>
   );
 }
@@ -144,6 +145,7 @@ export function HeaderLayout() {
         <Outlet />
       </CenterdWrapper>
       <EmptyFooterBox />
+      <Modal />
     </>
   );
 }

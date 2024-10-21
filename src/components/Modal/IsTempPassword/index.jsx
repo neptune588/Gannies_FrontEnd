@@ -8,13 +8,18 @@ import {
   ModalBox,
 } from '@/components/Modal/style';
 import { useDispatch } from 'react-redux';
-import { handleModal } from '@/store/modalState';
+import { handleModal, initialState } from '@/store/modalState';
 
 function IsTempPassword() {
   const dispatch = useDispatch();
 
   const closeModal = () => {
-    dispatch(handleModal({ field: 'isTempPassword', value: false }));
+    dispatch(
+      handleModal({
+        field: 'isTempPassword',
+        value: initialState.isTempPassword,
+      })
+    );
   };
 
   return (

@@ -1,33 +1,42 @@
-import chevron_right_white from '@/assets/icons/arrows/chevron_right_white.svg';
-import department from '@/assets/images/homepage_example.png';
+import arrow_up_right from '@/assets/icons/arrows/arrow_up_right.svg';
 
+import { links } from '@/pages/Home/Link/data.js';
 import {
   Wrapper,
-  LeftWrapper,
-  RightWrapper,
-  LowerBox,
+  UpperWrapper,
+  LowerWrapper,
+  IconBox,
+  LinkBox,
+  LinkContainer,
 } from '@/pages/Home/Link/style';
 
 function Link() {
+  const handleClick = (path) => {
+    window.open(path, '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <Wrapper>
-      <LeftWrapper>
-        <h3>우리학교 다른홈페이지</h3>
-        <LowerBox>
-          바로가기
-          <div>
-            <img src={chevron_right_white} alt='chevron_left_white' />
-          </div>
-        </LowerBox>
-      </LeftWrapper>
-      <RightWrapper>
-        <img src={department} alt='LinkIcon' />
-        <img src={department} alt='LinkIcon' />
-        <img src={department} alt='LinkIcon' />
-        <img src={department} alt='LinkIcon' />
-        <img src={department} alt='LinkIcon' />
-        <img src={department} alt='LinkIcon' />
-      </RightWrapper>
+      <UpperWrapper>
+        <h3>간호 관련 중요 사이트들을 한 곳에</h3>
+        <p>원하는 사이트를 클릭해보세요</p>
+      </UpperWrapper>
+      <LowerWrapper>
+        {links.map((group, groupIndex) => (
+          <LinkContainer key={groupIndex}>
+            {group.map((link, index) => (
+              <LinkBox key={index} onClick={() => handleClick(link.path)}>
+                <IconBox>
+                  <img src={arrow_up_right} alt='arrow_up_right' />
+                </IconBox>
+                {link.subtitle && <p>{link.subtitle}</p>}
+                <h6>{link.title}</h6>
+                <img src={link.icon} alt='LinkIcon' />
+              </LinkBox>
+            ))}
+          </LinkContainer>
+        ))}
+      </LowerWrapper>
     </Wrapper>
   );
 }

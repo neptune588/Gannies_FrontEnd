@@ -1,15 +1,25 @@
 import styled from 'styled-components';
 
-import { xsmall_500, xsmall_600 } from '@/styles/commonStyle/localTextStyle';
+import {
+  small_400,
+  xsmall_500,
+  xsmall_600,
+} from '@/styles/commonStyle/localTextStyle';
 import { centerAlignStyle } from '@/styles/commonStyle/etc';
 
 export const PostWrapper = styled.li`
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+`;
+
+export const PostUpperContainer = styled.div`
   display: flex;
   width: ${({ $pageName }) => {
     return $pageName === 'home' && '565px';
   }};
   height: ${({ $pageName }) => {
-    return $pageName === 'home' ? '57px' : '75px';
+    return $pageName === 'myComments' ? '57px' : '75px';
   }};
   padding-left: ${({ $pageName }) => {
     return $pageName === 'home' && '7px';
@@ -20,16 +30,35 @@ export const PostWrapper = styled.li`
   cursor: pointer;
 `;
 
+export const PostLowerContainer = styled.div`
+  width: 689px;
+  margin-left: 70px;
+  padding-bottom: 22px;
+  > p {
+    ${small_400}
+    color: ${({ theme: { colors } }) => {
+      return colors.gray['90'];
+    }};
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+`;
+
 export const PostLeftBox = styled.div`
   display: flex;
   align-items: center;
 `;
 export const PostRightBox = styled(PostLeftBox)``;
+
 export const PostNumber = styled.p`
   width: 70px;
   text-align: center;
   color: ${({ theme: { colors } }) => {
     return colors.gray['80'];
+  }};
+  margin-top: ${({ $pageName }) => {
+    return $pageName === 'myComments' && '41px';
   }};
   ${xsmall_600}
 `;
@@ -57,14 +86,18 @@ export const Category = styled.div`
 `;
 
 export const PostTitle = styled.p`
-  color: ${({ theme: { colors } }) => {
-    return colors.gray['100'];
+  color: ${({ $pageName, theme: { colors } }) => {
+    return $pageName === 'myComments' ? colors.gray['70'] : colors.gray['100'];
   }};
   font-size: ${({ $pageName, theme: { typo } }) => {
     return $pageName === 'home' ? typo.size.md : typo.size.xs;
   }};
   font-weight: ${({ $pageName, theme: { typo } }) => {
-    return $pageName === 'home' ? typo.weight.regular : typo.weight.medium;
+    return $pageName === 'home'
+      ? typo.weight.regular
+      : $pageName === 'myComments'
+        ? typo.weight.semiBold
+        : typo.weight.medium;
   }};
   width: ${({ $pageName }) => {
     return $pageName === 'home'
@@ -92,7 +125,11 @@ export const DescriptionBox = styled.div`
   width: 85px;
   margin-right: '15px';
   margin-left: ${({ $pageName }) => {
-    return $pageName === 'home' ? '15px' : '17px';
+    return $pageName === 'home'
+      ? '15px'
+      : $pageName === 'myComments'
+        ? '100px'
+        : '17px';
   }};
 `;
 

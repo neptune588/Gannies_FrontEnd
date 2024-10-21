@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import Positive from '@/components/Instruction/Positive';
 import Instruction from '@/components/Instruction';
@@ -12,69 +12,63 @@ import {
   EyeSlashIcon,
 } from '@/pages/SignUp/Info/Inputs/Password/style';
 import { useOutletContext } from 'react-router-dom';
-import { useInputBorder } from '@/hooks/useInputBorder';
+import { useInputValid } from '@/hooks/useInputValid';
+import { preventEnterKey } from '@/utils/PreventEnterKey';
 
-function Password({ handleAllow }) {
+function Password({ allow, handleAllow }) {
   const [password, setPassword] = useState('');
   const { handleDataToSend } = useOutletContext();
   const [showPassword, setShowPassword] = useState(false);
   const regex =
     /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$^&*?_])[A-Za-z\d!@#$^&*?_]{8,16}$/;
-  const validate = (password) => regex.test(password) && password.length >= 8;
+  const validate = (password) => regex.test(password);
   const instruction = [
     '사용 가능한 비밀번호입니다',
     '필수 정보입니다',
     '유효하지 않은 비밀번호 형식입니다',
   ];
-  const [instructionIndex, setInstructionIndex] = useState(2);
-
-  const {
-    isFocused,
-    isValid,
-    handleIsFocused,
-    handleIsValid,
-    handleInputBlur,
-  } = useInputBorder(undefined, validate);
-
-  useEffect(() => {
-    handleInstruction();
-    handleAllow(2, isValid ? true : false);
-  }, [isValid]);
+  const [instructionIndex, setInstructionIndex] = useState(undefined);
+  const { isFocused, focusIfEmpty, blurIfEmpty, setIsFocused, checkIsValid } =
+    useInputValid(undefined, validate);
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
-  const handlePassword = (e) => {
-    const password = e.target.value.slice(0, 16);
+  const handlePassword = async (e) => {
+    const password = e.target.value;
     setPassword(password);
     handleDataToSend('password', password);
-  };
+    const allow = await checkIsValid(password);
+    setInstructionIndex(allow);
 
-  const handleInstruction = () => {
-    if (!password) {
-      setInstructionIndex(1);
-    } else {
-      setInstructionIndex(2);
-    }
+    handleAllow(2, allow === 0 ? true : false);
   };
 
   return (
     <InputSection $margin='37px' title='비밀번호*'>
-      <InputWrapper $isFocused={isFocused} $isValid={isValid}>
+      <InputWrapper $isFocused={isFocused} $isValid={allow[2]}>
         <InputBox
           type={showPassword ? 'text' : 'password'}
           placeholder='비밀번호를 입력해주세요'
           value={password}
           onChange={handlePassword}
-          onFocus={() => handleIsFocused(true)}
-          onBlur={() => {
-            handleIsFocused(false);
-            handleInputBlur(password);
-            handleInstruction();
-            if (!password) {
-              handleIsValid(false);
+          onFocus={() => {
+            setIsFocused(true);
+            if (allow[2] === undefined) {
+              const instructionIndex = focusIfEmpty(2, handleAllow);
+              setInstructionIndex(instructionIndex);
             }
+          }}
+          onBlur={() => {
+            setIsFocused(false);
+            if (!allow[2] && !password) {
+              const instructionIndex = blurIfEmpty(2, handleAllow);
+              setInstructionIndex(instructionIndex);
+            }
+          }}
+          onKeyDown={(e) => {
+            preventEnterKey(e);
           }}
         />
         {showPassword ? (
@@ -83,15 +77,13 @@ function Password({ handleAllow }) {
           <EyeSlashIcon onClick={handleShowPassword} />
         )}
       </InputWrapper>
-      {isValid ? (
-        <Positive text={instruction[0]} />
+      {allow[2] ? (
+        <Positive text={instruction[instructionIndex]} />
       ) : (
         <>
           <Instruction text='*영문 대문자, 소문자, 숫자, 특수문자 하나씩을 포함한 8-16자' />
           <Instruction text="*특수문자는 '!@#$%^&*?_'만 가능" />
-          {isValid === false && (
-            <Negative text={instruction[instructionIndex]} />
-          )}
+          <Negative text={instruction[instructionIndex]} />
         </>
       )}
     </InputSection>

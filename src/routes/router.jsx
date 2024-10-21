@@ -28,6 +28,7 @@ import EmailVerification from '@/pages/EmailVerification';
 import PostSearch from '@/pages/PostSearch';
 import PrivateRoute from '@/routes/PrivateRoute';
 import SignOutRoute from '@/routes/SignOutRoute';
+import MyPage from '@/pages/MyPage';
 import AdminSignIn from '@/pages/Admin/AdminSignIn';
 
 export const router = createBrowserRouter([
@@ -39,9 +40,21 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
+        path: '/community/:boardType',
+        element: <Community />,
+      },
+      {
+        path: '/post/search/:keyword',
+        element: <PostSearch />,
+      },
+      {
         path: '/community',
         element: (
-          <PrivateRoute minStatus='email_verified' blockSuspended={true} />
+          <PrivateRoute
+            minStatus='approved_member'
+            blockSuspended={true}
+            blockMember={true}
+          />
         ),
         children: [
           {
@@ -51,12 +64,14 @@ export const router = createBrowserRouter([
         ],
       },
       {
-        path: '/post/search/:keyword',
-        element: <PostSearch />,
-      },
-      {
-        path: '/community/:boardType/post/:postId',
-        element: <PostDetail />,
+        path: '/community',
+        element: <PrivateRoute minStatus='approved_member' />,
+        children: [
+          {
+            path: ':boardType/post/:postId',
+            element: <PostDetail />,
+          },
+        ],
       },
     ],
   },
@@ -92,24 +107,30 @@ export const router = createBrowserRouter([
         element: <MypageLayout />,
         children: [
           {
-            path: '/mypage/profile/edit',
-            element: <PersonalInfo />,
-          },
-          {
-            path: '/mypage/profile/change-password',
-            element: <PasswordChange />,
-          },
-          {
-            path: '/mypage/written-posts',
-            element: <WrittenPost />,
-          },
-          {
-            path: '/mypage/scrap-posts',
-            element: <ScrappedPost />,
-          },
-          {
-            path: '/mypage/written-comment',
-            element: <WrittenComment />,
+            path: '/mypage',
+            element: <MyPage />,
+            children: [
+              {
+                path: 'profile/edit',
+                element: <PersonalInfo />,
+              },
+              {
+                path: 'profile/change-password',
+                element: <PasswordChange />,
+              },
+              {
+                path: 'written-posts',
+                element: <WrittenPost />,
+              },
+              {
+                path: 'scrap-posts',
+                element: <ScrappedPost />,
+              },
+              {
+                path: 'written-comment',
+                element: <WrittenComment />,
+              },
+            ],
           },
         ],
       },

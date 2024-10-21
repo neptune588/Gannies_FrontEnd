@@ -10,12 +10,14 @@ import {
   EyeSlashIcon,
 } from '@/pages/SignUp/Info/Inputs/Password/style';
 import Negative from '@/components/Instruction/Negative';
-import { useInputBorder } from '@/hooks/useInputBorder';
 import { useOutletContext } from 'react-router-dom';
+import { useInputValid } from '@/hooks/useInputValid';
+import { preventEnterKey } from '@/utils/PreventEnterKey';
 
 function PasswordCheck({ allow, handleAllow }) {
   const [passwordCheck, setPasswordCheck] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const validate = (passwordCheck, password) => passwordCheck === password;
 
   const instruction = [
     '비밀번호가 일치합니다',
@@ -23,52 +25,63 @@ function PasswordCheck({ allow, handleAllow }) {
     '비밀번호가 일치하지 않습니다',
   ];
   const [instructionIndex, setInstructionIndex] = useState(undefined);
+  const { isFocused, focusIfEmpty, blurIfEmpty, setIsFocused, checkIsValid } =
+    useInputValid(undefined, validate);
 
-  const { isFocused, handleIsFocused } = useInputBorder(undefined);
   const { dataToSend } = useOutletContext();
   const password = dataToSend.password;
 
+  const handlePassword = async () => {
+    if (passwordCheck) {
+      const allow = await checkIsValid(passwordCheck, password);
+      setInstructionIndex(allow);
+
+      handleAllow(3, allow === 0 ? true : false);
+    }
+  };
+
   useEffect(() => {
-    handleValidate();
+    handlePassword();
   }, [password]);
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
-  const handlePasswordCheck = (e) => {
+  const handlePasswordCheck = async (e) => {
     const passwordCheck = e.target.value.slice(0, 16);
     setPasswordCheck(passwordCheck);
-  };
 
-  const handleInstruction = () => {
-    if (!passwordCheck) {
-      setInstructionIndex(1);
-    } else {
-      setInstructionIndex(2);
-    }
-  };
+    const allow = await checkIsValid(passwordCheck, password);
+    setInstructionIndex(allow);
 
-  const handleValidate = () => {
-    handleAllow(3, !!passwordCheck && password === passwordCheck);
+    handleAllow(3, allow === 0 ? true : false);
   };
 
   return (
     <InputSection $margin='37px' title='비밀번호 확인*'>
-      <InputWrapper
-        $isFocused={isFocused}
-        $isValid={instructionIndex === undefined || allow[3]}
-      >
+      <InputWrapper $isFocused={isFocused} $isValid={allow[3]}>
         <InputBox
           type={showPassword ? 'text' : 'password'}
           placeholder='확인을 위해 비밀번호를 입력해주세요'
           value={passwordCheck}
           onChange={handlePasswordCheck}
-          onFocus={() => handleIsFocused(true)}
+          onFocus={() => {
+            setIsFocused(true);
+            if (allow[3] === undefined) {
+              const instructionIndex = focusIfEmpty(3, handleAllow);
+              setInstructionIndex(instructionIndex);
+            }
+          }}
           onBlur={() => {
-            handleIsFocused(false);
-            handleInstruction();
-            handleValidate();
+            setIsFocused(false);
+            if (!allow[3] && !passwordCheck) {
+              const instructionIndex = blurIfEmpty(3, handleAllow);
+              setInstructionIndex(instructionIndex);
+            }
+          }}
+          onKeyDown={(e) => {
+            preventEnterKey(e);
           }}
         />
         {showPassword ? (
@@ -77,11 +90,11 @@ function PasswordCheck({ allow, handleAllow }) {
           <EyeSlashIcon onClick={handleShowPassword} />
         )}
       </InputWrapper>
-      {allow[3] && passwordCheck ? (
+      {allow[3] ? (
         <Positive text={instruction[0]} />
-      ) : instructionIndex !== 0 ? (
+      ) : (
         <Negative text={instruction[instructionIndex]} />
-      ) : null}
+      )}
     </InputSection>
   );
 }

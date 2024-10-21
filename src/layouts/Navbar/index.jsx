@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import uuid from 'react-uuid';
@@ -14,7 +14,6 @@ import useSelectorList from '@/hooks/useSelectorList';
 
 function Navbar() {
   const dispatch = useDispatch();
-  const loacation = useLocation();
   const navigate = useNavigate();
 
   const [navBarMenus] = useState(navBarMenuData);

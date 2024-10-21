@@ -2,14 +2,10 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isLogin: false,
-  isSuspended: null,
-  membershipStatus: null,
-  rejected: null,
   userId: null,
   nickname: null,
   isAdmin: false,
 };
-
 const authSlice = createSlice({
   name: 'auth',
   initialState,

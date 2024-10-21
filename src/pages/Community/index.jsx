@@ -36,7 +36,6 @@ import Modal from '@/components/Modal';
 import useUserState from '@/hooks/useUserState';
 
 export default function Community({ isSearch, searchKeyword }) {
-  const navigate = useNavigate();
   const { boardType } = useParams();
 
   const firstRunBlockToSetCurPageNumberEffect = useRef(true);

@@ -4,24 +4,13 @@ export default function useSelectorList() {
   const navBarOptions = useSelector((state) => state.navBarOptions);
   const auth = useSelector((state) => state.auth);
   const modalsControl = useSelector((state) => state.modalsControl);
+  const modalState = useSelector((state) => state.modalState);
+
   const locations = useSelector((state) => state.locations);
 
   const { currentActiveMenuNumber, currentBoardType, bannerTitle, bannerDesc } =
     navBarOptions;
-
-  const {
-    isLogin,
-    userId,
-    membershipStatus,
-    isSuspended,
-    isAdmin,
-    nickname,
-    rejected,
-    rejectedReason,
-    suspensionDuration,
-    suspensionEndDate,
-    suspensionReason,
-  } = auth;
+  const { isLogin, userId, membershipStatus, nickname, isAdmin } = auth;
 
   const {
     isHospitalSearchModal,
@@ -36,6 +25,7 @@ export default function useSelectorList() {
     scrollLocation,
   } = modalsControl;
 
+  const { isApproval, isTempPassword, isSuspended, rejected } = modalState;
   const { comentWrapperLocation } = locations;
 
   return {
@@ -48,12 +38,10 @@ export default function useSelectorList() {
     nickname,
     isAdmin,
     membershipStatus,
+    isApproval,
+    isTempPassword,
     isSuspended,
     rejected,
-    rejectedReason,
-    suspensionDuration,
-    suspensionEndDate,
-    suspensionReason,
     isHospitalSearchModal,
     isUserBanModal,
     isPostDeleteModal,

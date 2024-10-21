@@ -10,6 +10,7 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [text, setText] = useState('');
 
   return (
     <>
@@ -21,12 +22,17 @@ function Login() {
         password={password}
         setPassword={setPassword}
         loginError={loginError}
+        setLoginError={setLoginError}
+        setIsLoading={setIsLoading}
+        text={text}
+        setText={setText}
       />
       <Buttons
         email={email}
         password={password}
         setLoginError={setLoginError}
         setIsLoading={setIsLoading}
+        setText={setText}
       />
     </>
   );

@@ -49,7 +49,17 @@ export default function WrittenPost() {
   };
 
   useEffect(() => {
-    getDataAndSetPageNumbers(() => getUserPosts(query));
+    const fetchData = async () => {
+      try {
+        await getDataAndSetPageNumbers(() => getUserPosts(query));
+      } catch (error) {
+        alert(
+          '게시글을 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
+        );
+      }
+    };
+
+    fetchData();
   }, []);
 
   useEffect(() => {

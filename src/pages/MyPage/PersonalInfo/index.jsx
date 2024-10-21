@@ -1,5 +1,4 @@
 import { changeUserNickname, getUserInfo } from '@/api/userApi';
-import IsApproval from '@/components/Modal/IsApproval';
 import IsWithdrawal from '@/components/Modal/IsWithdrawal';
 import {
   Title,
@@ -9,7 +8,6 @@ import {
   EditSaveAndAccountDeleteBox,
 } from '@/pages/MyPage/PersonalInfo/style';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 
 export default function PersonalInfo() {
   const [nickname, setNickname] = useState('');
@@ -20,7 +18,6 @@ export default function PersonalInfo() {
     email: '',
   });
   const [isEditable, setIsEditable] = useState(false);
-  const modalState = useSelector((state) => state.modalState);
   const [openWithdrawalModal, setOpenWithdrawalModal] = useState(false);
 
   useEffect(() => {
@@ -37,7 +34,7 @@ export default function PersonalInfo() {
           setNickname(response.data.nickname);
         }
       } catch (error) {
-        console.log(error);
+        alert('정보를 가져오는 중 오류가 발생했습니다. 다시 시도해주세요.');
       }
     };
 
@@ -59,13 +56,16 @@ export default function PersonalInfo() {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    const response = await changeUserNickname({ newNickname: nickname });
-    setInfo((prev) => ({
-      ...prev,
-      nickname: nickname,
-    }));
-    setIsEditable(!isEditable);
-    console.log(response);
+    try {
+      await changeUserNickname({ newNickname: nickname });
+      setInfo((prev) => ({
+        ...prev,
+        nickname: nickname,
+      }));
+      setIsEditable(!isEditable);
+    } catch (error) {
+      alert('닉네임 변경 중 오류가 발생했습니다. 다시 시도해주세요.');
+    }
   };
 
   const handleWithdrawal = async (e) => {
@@ -78,7 +78,6 @@ export default function PersonalInfo() {
       {openWithdrawalModal && (
         <IsWithdrawal setOpenModal={setOpenWithdrawalModal} />
       )}
-      {modalState.isApproval && <IsApproval />}
       <Title>회원정보수정</Title>
       <PersonalInfoWrapper>
         <form>
@@ -91,6 +90,11 @@ export default function PersonalInfo() {
                 onChange={handleNickname}
                 maxLength={10}
                 disabled={!isEditable}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                  }
+                }}
               />
               <button onClick={handleModify}>
                 {!isEditable ? '수정하기' : '취소하기'}

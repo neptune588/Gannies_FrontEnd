@@ -10,7 +10,12 @@ import { useAuthAllow } from '@/hooks/useAuthAllow';
 import { useOutletContext } from 'react-router-dom';
 
 function Identity() {
-  const { allow, handleAllow } = useAuthAllow([false, false, false, false]);
+  const { allow, handleAllow } = useAuthAllow([
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+  ]);
   const { stepsIcon, handleSteps } = useOutletContext();
 
   const handleNextButton = () => {

@@ -11,6 +11,10 @@ import {
   h4_600,
 } from '@/styles/commonStyle/localTextStyle';
 
+const Container = styled.div`
+  position: relative;
+`;
+
 const Title = styled.h2`
   ${h4_600}
   padding: 0 10px;
@@ -103,6 +107,7 @@ const EditSaveAndAccountDeleteBox = styled.section`
   }
 `;
 export {
+  Container,
   Title,
   PersonalInfoWrapper,
   PersonalInfoBox,

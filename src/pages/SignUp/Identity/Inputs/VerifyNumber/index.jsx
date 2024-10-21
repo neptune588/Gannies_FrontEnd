@@ -14,24 +14,24 @@ import {
   DisabledButton,
 } from '@/pages/SignUp/Identity/Inputs/VerifyNumber/style';
 import { useTimer } from '@/hooks/useTimer';
-import { useInputBorder } from '@/hooks/useInputBorder';
 import { sendPhoneNumberVerify } from '@/api/authApi';
 import { useOutletContext } from 'react-router-dom';
-// import { useSelector } from 'react-redux';
-// import axios from 'axios';
+import { useInputValid } from '@/hooks/useInputValid';
+import { preventEnterKey } from '@/utils/PreventEnterKey';
 
 function VerifyNumber({ allow, handleAllow }) {
   const [verifyNumber, setVerifyNumber] = useState('');
-  const [buttonAllow, setButtonAllow] = useState(false);
-  const timerTime = 180;
+  const [allowButton, setAllowButton] = useState(undefined);
+  const timerTime = 600;
   const { time, start, stop, reset } = useTimer(timerTime);
   const instruction = [
+    '인증이 완료되었습니다',
     '필수 정보입니다',
     '인증번호가 일치하지 않습니다',
     '최대 인증 시도 횟수(5회)에 도달했습니다. 인증을 처음부터 다시 시도해주세요.',
   ];
   const [instructionIndex, setInstructionIndex] = useState(undefined);
-  const { isFocused, handleIsFocused } = useInputBorder(undefined);
+  const { isFocused, setIsFocused } = useInputValid(undefined);
   const { dataToSend } = useOutletContext();
 
   useEffect(() => {
@@ -40,16 +40,10 @@ function VerifyNumber({ allow, handleAllow }) {
     else reset();
   }, [allow, start, stop, reset]);
 
-  const handleVerifyNumber = (e) => {
+  const handleVerifyNumber = async (e) => {
     const verifyNumber = e.target.value;
     setVerifyNumber(verifyNumber);
-    setButtonAllow(!!verifyNumber);
-  };
-
-  const handleInstruction = () => {
-    if (!verifyNumber) {
-      setInstructionIndex(0);
-    }
+    setAllowButton(!!verifyNumber);
   };
 
   const handleActiveButton = async () => {
@@ -60,14 +54,15 @@ function VerifyNumber({ allow, handleAllow }) {
       });
       if (response.status === 200) {
         handleAllow(2, true);
+        setInstructionIndex(0);
       }
     } catch (error) {
       if (error.response.data.statusCode === 429) {
         handleAllow(2, false);
-        setInstructionIndex(2);
+        setInstructionIndex(3);
       } else {
         handleAllow(2, false);
-        setInstructionIndex(1);
+        setInstructionIndex(2);
       }
     }
   };
@@ -79,7 +74,7 @@ function VerifyNumber({ allow, handleAllow }) {
           <InfoWrapper>
             <InputWrapper
               $isFocused={isFocused}
-              $isValid={instructionIndex === undefined || allow[2]}
+              $isValid={allowButton && (allow[2] === undefined || allow[2])}
             >
               <InputBox
                 type='text'
@@ -87,15 +82,27 @@ function VerifyNumber({ allow, handleAllow }) {
                 value={verifyNumber}
                 onChange={handleVerifyNumber}
                 disabled={allow[2]}
-                onFocus={() => handleIsFocused(true)}
+                onFocus={() => {
+                  setIsFocused(true);
+                  if (allowButton === undefined) {
+                    setAllowButton(false);
+                    setInstructionIndex(1);
+                  }
+                }}
                 onBlur={() => {
-                  handleIsFocused(false);
-                  handleInstruction();
+                  setIsFocused(false);
+                  if (!allowButton && !verifyNumber) {
+                    setAllowButton(undefined);
+                    setInstructionIndex(undefined);
+                  }
+                }}
+                onKeyDown={(e) => {
+                  preventEnterKey(e);
                 }}
               />
               <Clock time={time} />
             </InputWrapper>
-            {!buttonAllow ? (
+            {!allowButton ? (
               <InactiveButton>인증확인</InactiveButton>
             ) : allow[2] ? (
               <DisabledButton>인증번호 발송</DisabledButton>
@@ -103,10 +110,10 @@ function VerifyNumber({ allow, handleAllow }) {
               <ActiveButton onClick={handleActiveButton}>인증확인</ActiveButton>
             )}
           </InfoWrapper>
-          {allow[2] === false && (
+          {(!allowButton || allow[2] === false) && (
             <Negative text={instruction[instructionIndex]} />
           )}
-          {allow[2] && <Positive text='인증이 완료되었습니다' />}
+          {allow[2] && <Positive text={instruction[instructionIndex]} />}
         </InputSection>
       )}
     </>

@@ -49,10 +49,10 @@ function VerifyNumber({ phoneNumber, allow, handleAllow }) {
         handleAllow(2, true);
         setInstructionState(true);
       }
-      console.log(response);
     } catch (error) {
       handleAllow(2, false);
       setInstructionState(false);
+      alert('인증번호 발급 확인 에러');
     }
   };
 
@@ -71,6 +71,11 @@ function VerifyNumber({ phoneNumber, allow, handleAllow }) {
                 onFocus={() => handleIsFocused(true)}
                 onBlur={() => {
                   handleIsFocused(false);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                  }
                 }}
               />
               <Clock time={time} />

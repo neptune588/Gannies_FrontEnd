@@ -40,22 +40,10 @@ export const ActiveInputBox = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    line-height: normal;
   }
 `;
 
 export const InputBox = styled.input`
   display: none;
-`;
-
-export const PreviewBox = styled.div`
-  width: 100px;
-  height: 100px;
-  border-radius: 4px;
-  margin-top: 10px;
-  overflow: hidden;
-  > img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
 `;

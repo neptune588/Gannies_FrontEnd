@@ -10,24 +10,80 @@ import {
   SignUpButton,
 } from '@/pages/SignIn/Buttons/style';
 import { userSignIn } from '@/api/authApi';
-// import { handleModal } from '@/store/modalState';
-// import axios from 'axios';
 
 import { setLogin } from '@/store/auth';
 import { handleModal } from '@/store/modalState';
 
-function Buttons({ email, password, setLoginError, setIsLoading }) {
+function Buttons({ email, password, setLoginError, setIsLoading, setText }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [autoLogin, setAutoLogin] = useState(false);
+  let loadingTimer;
 
   const handleAutoLogin = () => {
     setAutoLogin(!autoLogin);
   };
 
+  const setModal = (
+    isSuspended,
+    isTempPasswordSignIn,
+    rejected,
+    membershipStatus,
+    rejectedReason,
+    suspensionDuration,
+    suspensionEndDate,
+    suspensionReason
+  ) => {
+    dispatch(
+      handleModal({
+        field: 'isApproval',
+        value: { status: membershipStatus === 'email_verified' && !rejected },
+      })
+    );
+    dispatch(
+      handleModal({
+        field: 'isTempPassword',
+        value: { status: isTempPasswordSignIn },
+      })
+    );
+    dispatch(
+      handleModal({
+        field: 'isSuspended',
+        value: {
+          status: isSuspended,
+          duration: suspensionDuration,
+          endDate: suspensionEndDate,
+          reason: suspensionReason,
+        },
+      })
+    );
+    dispatch(
+      handleModal({
+        field: 'rejected',
+        value: { status: rejected, reason: rejectedReason },
+      })
+    );
+  };
+
+  const loadingTimeout = () => {
+    loadingTimer = setTimeout(() => {
+      setIsLoading(true);
+    }, 8);
+  };
+
   const handleLogin = async () => {
     try {
-      setIsLoading(true);
+      if (!email) {
+        setText('이메일을 입력해주세요.');
+        setLoginError(true);
+        return;
+      } else if (!password) {
+        setText('비밀번호를 입력해주세요.');
+        setLoginError(true);
+        return;
+      }
+
+      loadingTimeout();
       const response = await userSignIn({ email: email, password: password });
       const {
         isSuspended,
@@ -43,35 +99,34 @@ function Buttons({ email, password, setLoginError, setIsLoading }) {
       } = response.data.user;
       dispatch(
         setLogin({
-          isSuspended,
           nickname,
           userId,
-          rejected,
-          membershipStatus,
-          rejectedReason,
-          ...(rejectedReason && { rejectedReason }),
-          ...(suspensionDuration && { suspensionDuration }),
-          ...(suspensionEndDate && { suspensionEndDate }),
-          ...(suspensionReason && { suspensionReason }),
         })
       );
-      dispatch(
-        handleModal({ field: 'isTempPassword', value: isTempPasswordSignIn })
+      setModal(
+        isSuspended,
+        isTempPasswordSignIn,
+        rejected,
+        membershipStatus,
+        rejectedReason,
+        suspensionDuration,
+        suspensionEndDate,
+        suspensionReason
       );
-      dispatch(handleModal({ field: 'rejected', value: rejected }));
-      dispatch(handleModal({ field: 'isSuspended', value: isSuspended }));
-      // handleAuth({
-      //   field: 'membershipStatus',
-      //   value: response.data.user.membershipStatus,
-      // })
-      // if (response.data.user.membershipStatus === 'email_verified') {
-      //   dispatch(handleModal({ field: 'isApproval', value: true }));
-      //   navigate('/mypage/profile/edit');
-      // }
+      clearTimeout(loadingTimer);
       navigate('/');
     } catch (error) {
+      clearTimeout(loadingTimer);
       setIsLoading(false);
       setLoginError(true);
+
+      if (!error.response) {
+        alert('서버에 연결할 수 없습니다.');
+      } else if (error.response.status === 400) {
+        setText('이메일 또는 비밀번호를 다시 확인해주세요.');
+      } else {
+        alert('로그인 요청 중 에러가 발생하였습니다.');
+      }
     }
   };
   return (

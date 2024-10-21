@@ -7,8 +7,6 @@ import { myPageAlignSelectOptions } from '@/components/AlignSelectMenu/data';
 
 import { TitleBox, Title, PageWrapper } from '@/pages/MyPage/WrittenPost/style';
 
-// import { posts } from '@/pages/Home/data';
-
 import { getUserScraps } from '@/api/userApi';
 import { communityPostMaxLimit } from '@/utils/itemLimit';
 import { pageViewLimit } from '@/utils/itemLimit';
@@ -51,7 +49,17 @@ export default function WrittenPost() {
   };
 
   useEffect(() => {
-    getDataAndSetPageNumbers(() => getUserScraps(query));
+    const fetchData = async () => {
+      try {
+        await getDataAndSetPageNumbers(() => getUserScraps(query));
+      } catch (error) {
+        alert(
+          '게시글을 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
+        );
+      }
+    };
+
+    fetchData();
   }, []);
 
   useEffect(() => {

@@ -11,14 +11,16 @@ import {
   ActiveInputBox,
   InactiveInputBox,
   InputBox,
-  PreviewBox,
 } from '@/pages/SignUp/Department/Inputs/Document/style';
+import Modal from '@/pages/SignUp/Department/Inputs/Document/Modal';
+import { preventEnterKey } from '@/utils/PreventEnterKey';
 
 function Document({ allow, handleAllow, file, setFile }) {
   const inputRef = useRef();
   const fileTypes = ['image/jpeg', 'image/png', 'image/gif'];
-  const maxSize = 1048576; // 1MB in bytes
+  const maxSize = 1048576;
   const [valid, setValid] = useState(undefined);
+  const [modalState, setModalState] = useState('');
 
   const uploadFile = (event) => {
     const file = event.target.files[0];
@@ -51,7 +53,7 @@ function Document({ allow, handleAllow, file, setFile }) {
       {allow[0] && (
         <InputSection $margin='37px' title='인증서류 업로드*'>
           {file.name ? (
-            <ActiveInputBox onClick={handleBoxClick}>
+            <ActiveInputBox onClick={() => setModalState(true)}>
               <Clip />
               <div>{file.name}</div>
               <Close onClick={deleteFile} />
@@ -69,16 +71,17 @@ function Document({ allow, handleAllow, file, setFile }) {
             accept='.png, .jpeg, .jpg, .gif'
             onChange={uploadFile}
             ref={inputRef}
+            onKeyDown={(e) => {
+              preventEnterKey(e);
+            }}
           />
           <Instruction text='*졸업증명서, 재학증면서만 가능 (최대 1MB 이내)' />
           <Instruction text='*JPG / JPEG / PNG / GIF (이미지만)' />
           {valid === false && (
             <Negative text='파일 형식 또는 크기를 확인해주세요' />
           )}
-          {file && (
-            <PreviewBox>
-              <img alt='img' src={URL.createObjectURL(file)} />
-            </PreviewBox>
+          {file && modalState && (
+            <Modal file={file} setModalState={setModalState} />
           )}
         </InputSection>
       )}

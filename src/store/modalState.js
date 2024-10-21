@@ -1,13 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+export const initialState = {
+  isApproval: { status: false },
+  isTempPassword: { status: false },
+  isSuspended: {
+    status: false,
+    duration: '',
+    endDate: '',
+    reason: '',
+  },
+  rejected: {
+    status: false,
+    reason: '',
+  },
+};
+
 const modalState = createSlice({
   name: 'modalState',
-  initialState: {
-    isApproval: false,
-    isSuspended: false,
-    isTempPassword: false,
-    rejected: false,
-  },
+  initialState: initialState,
   reducers: {
     handleModal(state, action) {
       state[action.payload.field] = action.payload.value;

@@ -12,7 +12,12 @@ import { useAuthAllow } from '@/hooks/useAuthAllow';
 function Info() {
   const navigate = useNavigate();
   const { steps, stepsIcon, handleSteps } = useOutletContext();
-  const { allow, handleAllow } = useAuthAllow([false, false, false, false]);
+  const { allow, handleAllow } = useAuthAllow([
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+  ]);
 
   useEffect(() => {
     steps[0] && !steps[1]
@@ -24,9 +29,6 @@ function Info() {
     handleSteps(1, true);
   };
 
-  useEffect(() => {
-    console.log(allow);
-  }, [allow]);
   return (
     <>
       <Title title='회원가입' />

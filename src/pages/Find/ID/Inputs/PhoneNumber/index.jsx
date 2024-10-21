@@ -28,7 +28,7 @@ function PhoneNumber({ phoneNumber, setPhoneNumber, allow, handleAllow }) {
   }, [prefix]);
 
   const handleSuffix = (e) => {
-    const suffix = e.target.value.slice(0, 8);
+    const suffix = e.target.value.replace(/\D/g, '').slice(0, 8);
     setSuffix(suffix);
     setPhoneNumber(`${prefix}${suffix}`);
     handleAllow(1, false);
@@ -37,10 +37,9 @@ function PhoneNumber({ phoneNumber, setPhoneNumber, allow, handleAllow }) {
   const handleSendButton = async () => {
     try {
       handleAllow(1, true);
-      const response = await sendPhoneNumber({ phoneNumber: phoneNumber });
-      console.log(response);
+      await sendPhoneNumber({ phoneNumber: phoneNumber });
     } catch (error) {
-      alert('error');
+      alert('휴대폰 인증번호 발급 에러');
     }
   };
 
@@ -63,6 +62,11 @@ function PhoneNumber({ phoneNumber, setPhoneNumber, allow, handleAllow }) {
             onFocus={() => handleIsFocused(true)}
             onBlur={() => {
               handleIsFocused(false);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+              }
             }}
           />
         </InputWrapper>

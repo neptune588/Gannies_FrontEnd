@@ -40,36 +40,26 @@ function Department() {
   };
 
   const setCertificationUrl = async (s3Url) => {
-    await handleDataToSend('certificationDocumentUrl', s3Url);
+    handleDataToSend('certificationDocumentUrl', s3Url);
   };
 
   const setUsername = async (username) => {
-    await handleDataToSend('username', username);
+    handleDataToSend('username', username);
   };
 
   useEffect(() => {
     if (dataToSend.certificationDocumentUrl && dataToSend.username) {
       const signUpProcess = async () => {
         try {
-          const data = {
-            nickname: '마마미',
-            email: 'kseng11@naver.com',
-            phoneNumber: '01094238723',
-            password: 'Qqwer1234!',
-            status: 'current_student',
-            certificationDocumentUrl:
-              'https://caugannies.s3.ap-northeast-2.amazonaws.com…24/10/14/71c96f52-1492-4b68-b97f-f7b807281a38.png',
-            username: '박뀨스',
-          };
-          await userSignUp(data);
+          await userSignUp(dataToSend);
           await userSignUpEmail({
-            email: data.email,
+            email: dataToSend.email,
           });
           navigate('/sign-up/success', {
-            state: { email: data.email },
+            state: { email: dataToSend.email },
           });
         } catch (error) {
-          console.error('Error during signup:', error);
+          alert('회원가입 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
         }
       };
       signUpProcess();
@@ -90,7 +80,7 @@ function Department() {
       });
       setUsername(ocr.data.name);
     } catch (error) {
-      console.log(error.response);
+      alert('회원가입 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
     }
   };
 
