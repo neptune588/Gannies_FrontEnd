@@ -310,7 +310,6 @@ export default function PostDetail() {
         top: comentWrapperLocation.bottom,
         left: 0,
       });
-      setActionType('');
     }
 
     if (actionType === 'pageMove') {
@@ -318,8 +317,8 @@ export default function PostDetail() {
         top: comentWrapperLocation.top,
         left: 0,
       });
-      setActionType('');
     }
+    setActionType('');
   }, [comentWrapperLocation]);
 
   return (

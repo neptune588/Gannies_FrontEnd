@@ -41,14 +41,14 @@ export default memo(function PostCommentArea({
 }) {
   const dispatch = useDispatch();
 
-  const commentAreaYLocation = useRef(null);
   const listRefs = useRef([]);
+  const commentAreaYLocation = useRef(null);
 
   useEffect(() => {
     if (commentAreaYLocation.current) {
       dispatch(
         setCommentWrapperLocation({
-          top: commentAreaYLocation.current.scrollTop,
+          top: commentAreaYLocation.current.getBoundingClientRect().top,
         })
       );
     }
@@ -56,12 +56,16 @@ export default memo(function PostCommentArea({
 
   useEffect(() => {
     if (listRefs.current.length > 0) {
+      //그전 comments의 length 갯수만큼  listrefs.current의 갯수가 정해져있기 때문에
+      //listrefs.current === 10인데 렌더링되는 list가 1개뿐이면 나머지는 null로 채워진다.
+      //따라서 렌더링 된 리스트만 필터링 하기 위해 filter사용
+      listRefs.current = listRefs.current.filter((list) => list);
       listRefs.current.forEach((list, idx) => {
+        //console.log(listRefs.current);
         if (list && idx === listRefs.current.length - 1) {
           dispatch(
             setCommentWrapperLocation({
-              top: commentAreaYLocation.current.scrollTop,
-              bottom: list.offsetTop,
+              bottom: window.scrollY + list.getBoundingClientRect().top,
             })
           );
         }
@@ -75,7 +79,7 @@ export default memo(function PostCommentArea({
         {comments?.length > 0 ? (
           comments.map((comment, idx) => {
             return (
-              <Fragment key={comment.commentId}>
+              <Fragment key={uuid()}>
                 <PostCommentList
                   ref={(list) => {
                     listRefs.current[idx] = list;
@@ -101,9 +105,6 @@ export default memo(function PostCommentArea({
                     return (
                       <PostCommentList
                         key={uuid()}
-                        ref={(list) => {
-                          listRefs.current[idx] = list;
-                        }}
                         isReplyComment={true}
                         commenter={replyComment.nickname}
                         content={replyComment.content}
