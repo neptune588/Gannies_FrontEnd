@@ -81,8 +81,8 @@ const ConfirmButton = styled(ButtonDefaultStyle)`
     return $isDisabled ? colors.gray['20'] : colors.primary;
   }};
   &:hover {
-    background-color: ${({ $isDisabled }) => {
-      return $isDisabled ? null : '#2d6ab7';
+    background-color: ${({ $isDisabled, theme: { colors } }) => {
+      return $isDisabled ? colors.gray['20'] : '#2d6ab7';
     }};
   }
 `;

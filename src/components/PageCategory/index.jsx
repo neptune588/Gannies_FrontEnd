@@ -38,7 +38,6 @@ export default function PageCategory({ currentBoardType }) {
   useEffect(() => {
     const url = location.pathname.split('/');
 
-    console.log(url);
     url[3] && url[3].startsWith('post')
       ? setCurrentCategory(`게시글 #${url[4]}`)
       : setCurrentCategory(`게시글 작성`);

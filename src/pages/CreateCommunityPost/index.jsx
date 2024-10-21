@@ -40,6 +40,9 @@ import { navBarMenuData } from '@/layouts/Navbar/data';
 import { createPost } from '@/api/postApi';
 import { checkAdminStatus } from '@/api/authApi';
 
+import { isOnlyWhiteSpaceCheck } from '@/utils/whiteSpaceCheck';
+import { errorAlert } from '@/utils/sweetAlert';
+
 export default function CreateCommunityPost({
   title,
   content,
@@ -91,7 +94,7 @@ export default function CreateCommunityPost({
     editorValue,
     editorRef,
     imageButtonRef,
-    imageExtensionCheck,
+    urlExtraction,
     handleImageUploadClick,
     handleImageUploadRequest,
     handleImagePaste,
@@ -114,17 +117,11 @@ export default function CreateCommunityPost({
     }
 
     try {
-      const condition01 =
-        titleValue.trim() === '' ||
-        titleValue.trim() === undefined ||
-        titleValue.trim() === null;
-      const condition02 =
-        editorValue.trim() === '' ||
-        editorValue.trim() === undefined ||
-        editorValue.trim() === null;
+      const condition01 = isOnlyWhiteSpaceCheck(titleValue);
+      const condition02 = isOnlyWhiteSpaceCheck(editorValue);
 
       if (condition01 || condition02) {
-        alert('제목 혹은 내용을 입력 해주세요!');
+        errorAlert('제목 혹은 내용을 입력 해주세요!');
         return;
       }
 
@@ -136,14 +133,22 @@ export default function CreateCommunityPost({
       const postData = {
         title,
         content: editorValue,
-        hospitalNames: hospitalName === '병원찾기' ? null : hospitalName,
       };
 
-      /*       const imageExtension = imageExtensionCheck();
-      if (imageExtension.length > 0) {
-        postData.imageTypes = imageExtension;
-      } */
+      if (
+        selectedBoardTitle === '취업정보' ||
+        selectedBoardTitle === '실습정보'
+      ) {
+        postData.hospitalNames =
+          hospitalName === '병원찾기' ? null : hospitalName;
+      }
 
+      const imageSrc = urlExtraction();
+      if (imageSrc.length > 0) {
+        postData.fileUrls = imageSrc;
+      }
+
+      console.log(editRequest, postData);
       const res = editRequest
         ? await editRequest(selectedBoardType, postId, postData)
         : await createPost(selectedBoardType, postData);
@@ -152,10 +157,10 @@ export default function CreateCommunityPost({
 
       window.scroll({ top: 0, left: 0 });
       navigate(`/community/${selectedBoardType}/post/${newPostId}`);
-
-      setIsSubmit(false);
     } catch (error) {
-      console.error('작성 실패', error);
+      errorAlert('작성 실패');
+    } finally {
+      setIsSubmit(false);
     }
   };
 

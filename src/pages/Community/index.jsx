@@ -7,6 +7,7 @@ import CommunityBanner from '@/components/CommunityBanner';
 import CommunityBannerText from '@/components/CommunityBannerText';
 import Pagination from '@/components/Pagination';
 import AlignSelectMenu from '@/components/AlignSelectMenu';
+import Modal from '@/components/Modal';
 
 import brush from '@/assets/icons/etc/brush.svg';
 
@@ -25,6 +26,7 @@ import {
 } from '@/components/AlignSelectMenu/data';
 
 import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
+import useUserState from '@/hooks/useUserState';
 
 import { getPosts } from '@/api/postApi';
 import { checkAdminStatus } from '@/api/authApi';
@@ -32,8 +34,6 @@ import { checkAdminStatus } from '@/api/authApi';
 import { formatDateToPost } from '@/utils/dateFormatting';
 import { communityPostMaxLimit } from '@/utils/itemLimit';
 import { pageViewLimit } from '@/utils/itemLimit';
-import Modal from '@/components/Modal';
-import useUserState from '@/hooks/useUserState';
 
 export default function Community({ isSearch, searchKeyword }) {
   const { boardType } = useParams();
