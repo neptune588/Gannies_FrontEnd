@@ -23,8 +23,11 @@ import {
   ContentsWrapper,
   PostHeaderBox,
   Nickname,
+  NicknameBox,
+  HospitalName,
   PostContentBox,
   IconBox,
+  LikeButton,
   CommentArea,
   CommentLengthView,
   CommentCreateBox,
@@ -372,7 +375,12 @@ export default function PostDetail() {
                 }}
                 handleEditOpen={handleEditOpen}
               />
-              <Nickname>{post.nickname}</Nickname>
+              <NicknameBox>
+                <Nickname>{post.nickname}</Nickname>
+                {post.hospitalNames && (
+                  <HospitalName>{post.hospitalNames[0]}</HospitalName>
+                )}
+              </NicknameBox>
               <PostInfo
                 postViewCount={post.viewCounts}
                 likeCount={post.likeCounts}
@@ -393,10 +401,7 @@ export default function PostDetail() {
                 handleScrapOrLikeClick('like');
               }}
             >
-              <img
-                src={post.isLiked ? heartActive : heartInActive}
-                alt='like-button'
-              />
+              <LikeButton $isLikeClick={post.isLiked} />
               <p>공감해요</p>
             </IconBox>
             <CommentArea>

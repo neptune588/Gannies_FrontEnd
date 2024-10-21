@@ -140,7 +140,7 @@ export default function CreateCommunityPost({
         selectedBoardTitle === '실습정보'
       ) {
         postData.hospitalNames =
-          hospitalName === '병원찾기' ? null : hospitalName;
+          hospitalName === '병원찾기' ? null : [hospitalName];
       }
 
       const imageSrc = urlExtraction();
@@ -148,7 +148,6 @@ export default function CreateCommunityPost({
         postData.fileUrls = imageSrc;
       }
 
-      console.log(editRequest, postData);
       const res = editRequest
         ? await editRequest(selectedBoardType, postId, postData)
         : await createPost(selectedBoardType, postData);
@@ -241,7 +240,7 @@ export default function CreateCommunityPost({
                       type='button'
                       onClick={() => {
                         handleModalOpen({
-                          modalName: 'isHospitalModal',
+                          modalName: 'isHospitalSearchModal',
                         });
                       }}
                     >

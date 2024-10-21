@@ -37,7 +37,8 @@
     "styled-reset": "^4.5.2",
     "sweetalert2": "^11.14.4",
     "tinymce-i18n": "^24.7.29",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "vite-plugin-svgr": "^4.2.0"
   },
   "devDependencies": {
     "@hookform/devtools": "^4.3.1",

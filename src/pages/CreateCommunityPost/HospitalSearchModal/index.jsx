@@ -122,7 +122,7 @@ export default function HospitalSearchModal({
         <ModalCloseButton
           type='button'
           onClick={() => {
-            handleModalClose({ modalName: 'isHospitalModal' });
+            handleModalClose({ modalName: 'isHospitalSearchModal' });
             dataReset();
           }}
         >
@@ -160,7 +160,7 @@ export default function HospitalSearchModal({
                         onClick={() => {
                           setHospitalName(hospital.place_name);
                           handleModalClose({
-                            modalName: 'isHospitalModal',
+                            modalName: 'isHospitalSearchModal',
                           });
                           dataReset();
                         }}
@@ -207,7 +207,7 @@ export default function HospitalSearchModal({
       </ModalWrapper>
       <ModalCloseArea
         handleModalClose={() => {
-          handleModalClose({ modalName: 'isHospitalModal' });
+          handleModalClose({ modalName: 'isHospitalSearchModal' });
           dataReset();
         }}
       />
