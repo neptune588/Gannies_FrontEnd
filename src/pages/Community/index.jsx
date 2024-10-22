@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import uuid from 'react-uuid';
 
 import CommunityPost from '@/pages/Community/CommunityPost';
@@ -25,6 +25,7 @@ import {
 } from '@/components/AlignSelectMenu/data';
 
 import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
+import useUserState from '@/hooks/useUserState';
 
 import { getPosts } from '@/api/postApi';
 import { checkAdminStatus } from '@/api/authApi';
@@ -32,7 +33,6 @@ import { checkAdminStatus } from '@/api/authApi';
 import { formatDateToPost } from '@/utils/dateFormatting';
 import { communityPostMaxLimit } from '@/utils/itemLimit';
 import { pageViewLimit } from '@/utils/itemLimit';
-import useUserState from '@/hooks/useUserState';
 
 export default function Community({ isSearch, searchKeyword }) {
   const { boardType } = useParams();
@@ -47,7 +47,6 @@ export default function Community({ isSearch, searchKeyword }) {
     isLoading,
     currentPageNumber,
     groupedPageNumbers: pageNumbers,
-    setIsLoading,
     getDataAndSetPageNumbers,
     handlePageNumberClick,
     handlePrevPageClick,
@@ -239,7 +238,7 @@ export default function Community({ isSearch, searchKeyword }) {
                     <p>제목</p>
                   </th>
                   <th>
-                    <p>닉네임/날짜/조회수/좋아요 수</p>
+                    <p>닉네임/날짜/조회 수/좋아요 수</p>
                   </th>
                 </TableHeader>
               </thead>

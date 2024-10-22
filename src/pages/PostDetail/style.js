@@ -1,10 +1,13 @@
 import styled from 'styled-components';
 
+import Heart from '@/assets/icons/hearts/heart_active.svg?react';
+
 import {
   small_600,
   medium_400,
   medium_600,
   body,
+  small_400,
 } from '@/styles/commonStyle/localTextStyle';
 
 const PageCategorySection = styled.section`
@@ -28,12 +31,25 @@ const PostHeaderBox = styled.div`
     }};
 `;
 
+const NicknameBox = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 32px;
+`;
+
 const Nickname = styled.p`
   ${medium_400}
   color: ${({ theme: { colors } }) => {
     return colors.gray['100'];
   }};
-  margin-bottom: 32px;
+`;
+
+const HospitalName = styled.p`
+  ${small_400}
+  color: ${({ theme: { colors } }) => {
+    return colors.gray['70'];
+  }};
+  margin-left: 10px;
 `;
 
 const PostContentBox = styled.div`
@@ -65,9 +81,15 @@ const IconBox = styled.div`
     }};
     margin-left: 10px;
   }
-  > img {
-    cursor: pointer;
-  }
+`;
+
+const LikeButton = styled(Heart)`
+  cursor: pointer;
+  fill: ${({ $isLikeClick, theme: { colors } }) =>
+    $isLikeClick ? colors.highlight : 'transparent'};
+  transition:
+    fill 0.1s ease-in-out,
+    transform 0.1s ease-in-out;
 `;
 
 const CommentArea = styled.div`
@@ -95,9 +117,12 @@ export {
   PageCategorySection,
   ContentsWrapper,
   PostHeaderBox,
+  NicknameBox,
   Nickname,
+  HospitalName,
   PostContentBox,
   IconBox,
+  LikeButton,
   CommentArea,
   CommentLengthView,
   CommentCreateBox,

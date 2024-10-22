@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import useEventHandler from '@/hooks/useEventHandler';
 
 import { getPresignedUrl, s3ImageUpload } from '@/api/authApi';
+import { errorAlert } from '@/utils/sweetAlert';
 
 export default function useTinyMceImageUpload({
   initialTitle,
@@ -33,7 +34,7 @@ export default function useTinyMceImageUpload({
     const uploadFile = e.target.files[0];
 
     if (!uploadFile.type.startsWith('image/')) {
-      alert('이미지 파일만 업로드 가능합니다!');
+      errorAlert('이미지 파일만 업로드 가능합니다!');
       return;
     }
 
@@ -56,9 +57,24 @@ export default function useTinyMceImageUpload({
       await s3ImageUpload(presignedUrl, formData);
       setPreviewImage(`${presignedUrl}${fields['key']}`);
     } catch (error) {
-      alert('이미지 업로드에 실패 하였습니다!');
-      console.error('업로드 error:', error);
+      errorAlert('이미지 업로드에 실패 하였습니다!');
     }
+  };
+
+  const filenameConvert = (mimeType) => {
+    const imageExtensions = {
+      'image/png': 'image.png',
+      'image/jpg': 'image.jpg',
+      'image/jpeg': 'image.jpeg',
+      'image/gif': 'image.gif',
+      'image/bmp': 'image.bmp',
+      'image/tiff': 'image.tiff',
+      'image/webp': 'image.webp',
+      'image/heif': 'image.heif',
+      'image/svg+xml': 'image.svg',
+    };
+
+    return imageExtensions[mimeType];
   };
 
   const pastImageS3Upload = async (blob) => {
@@ -72,7 +88,7 @@ export default function useTinyMceImageUpload({
         fileType: file.type,
       });
     } catch (error) {
-      console.error('url 받기 실패');
+      errorAlert('url 받기 실패');
       return;
     }
 
@@ -90,9 +106,32 @@ export default function useTinyMceImageUpload({
       await s3ImageUpload(presignedUrl, formData);
       return `${presignedUrl}${fields['key']}`;
     } catch (error) {
-      console.error('s3 업로드 실패');
+      errorAlert('s3 업로드 실패');
       return;
     }
+  };
+
+  const base64UrlFileObjectConvert = (base64Url) => {
+    // BASE64 URL에서 메타데이터를 제거하고, BASE64 문자열만 추출
+    const arr = base64Url.split(',');
+    const mimeType = arr[0].match(/:(.*?);/)[1]; // MIME 타입 추출
+    const filename = filenameConvert(mimeType);
+    const base64String = arr[1]; // BASE64 문자열 추출
+
+    // BASE64 문자열을 바이너리로 변환
+    const byteCharacters = atob(base64String);
+    const byteNumbers = new Array(byteCharacters.length);
+
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+
+    // 직접 File 객체 생성
+    const file = new File([byteArray], filename, { type: mimeType });
+
+    return file; // File 객체 반환
   };
 
   const handleImagePaste = async (plugin, args) => {
@@ -122,41 +161,23 @@ export default function useTinyMceImageUpload({
               image.src = s3Url;
             })();
         }
+
         setPreviewImage(image.src);
       }
     }
   };
 
-  const imageExtensionCheck = () => {
+  const urlExtraction = () => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(editorValue, 'text/html');
-    const htmlEl = doc.body.querySelectorAll('img');
-    const imageExtensions = [
-      'jpg',
-      'jpeg',
-      'png',
-      'gif',
-      'bmp',
-      'tiff',
-      'webp',
-      'heif',
-      'svg',
-    ];
+    const images = doc.querySelectorAll('img');
 
-    const types = [];
-
-    htmlEl.forEach((imgEl) => {
-      imageExtensions.forEach((extesion) => {
-        const type1 = imgEl.src.includes(`.${extesion}`);
-        const type2 = imgEl.src.includes(`/${extesion}`);
-
-        if (type1 || type2) {
-          types.push(`image/${extesion}`);
-        }
-      });
+    const urls = [];
+    images.forEach((image) => {
+      urls.push(image.src);
     });
 
-    return types;
+    return urls;
   };
 
   useEffect(() => {
@@ -172,7 +193,7 @@ export default function useTinyMceImageUpload({
     editorRef,
     imageButtonRef,
     previewImage,
-    imageExtensionCheck,
+    urlExtraction,
     handleImageUploadClick,
     handleImageUploadRequest,
     handleImagePaste,
