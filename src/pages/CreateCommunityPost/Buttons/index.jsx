@@ -34,7 +34,7 @@ const SubmitButton = styled.button`
   user-select: none;
 `;
 
-export default function Buttons({ currentBoardType, handleEditCancel }) {
+export default function Buttons({ currentBoardType, type, prevPostId }) {
   const navigate = useNavigate();
 
   return (
@@ -42,8 +42,9 @@ export default function Buttons({ currentBoardType, handleEditCancel }) {
       <CansleButton
         type='button'
         onClick={() => {
-          if (handleEditCancel) {
-            handleEditCancel();
+          window.scroll({ top: 0, left: 0 });
+          if (type === 'isEdit') {
+            navigate(`/community/${currentBoardType}/post/${prevPostId}`);
           } else {
             navigate(`/community/${currentBoardType}`);
           }

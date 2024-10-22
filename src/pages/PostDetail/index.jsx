@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import DOMPurify from 'dompurify';
 
@@ -14,9 +14,6 @@ import OtherPosts from '@/pages/PostDetail/OtherPosts';
 import CreateCommunityPost from '@/pages/CreateCommunityPost';
 import { PostDeleteModal } from '@/pages/PostDetail/Modals';
 import { ReportModal } from '@/pages/PostDetail/Modals';
-
-import heartActive from '@/assets/icons/hearts/heart_active.svg';
-import heartInActive from '@/assets/icons/hearts/heart_inactive.svg';
 
 import {
   PageCategorySection,
@@ -321,9 +318,25 @@ export default function PostDetail() {
     setActionType('');
   }, [comentWrapperLocation]);
 
+  if (isEditOn) {
+    return (
+      <Navigate
+        to={`/community/${post.category}/create-community-post`}
+        state={{
+          type: 'isEdit',
+          title: post.title,
+          content: post.content,
+          boardTitle: bannerTitle,
+          boardType: post.category,
+          hospitalNames: post.hospitalNames,
+          postId: post.postId,
+        }}
+      />
+    );
+  }
   return (
     <>
-      {isEditOn ? (
+      {/*       {isEditOn ? (
         <CreateCommunityPost
           title={post.title}
           content={post.content}
@@ -334,133 +347,132 @@ export default function PostDetail() {
           handleEditCancel={handleEditCancel}
           editRequest={editPost}
         />
-      ) : (
-        <>
-          {isPostDeleteModal && (
-            <PostDeleteModal
-              handlePostDelete={handlePostDelete}
+      ) : ( */}
+      <>
+        {isPostDeleteModal && (
+          <PostDeleteModal
+            handlePostDelete={handlePostDelete}
+            setIsMorePopup={setIsMorePopup}
+          />
+        )}
+        {isPostOrCommentReportModal && (
+          <ReportModal
+            contentType={contentType}
+            reportedContent={reportedContent}
+            curruentReportData={curruentReportData}
+            setIsMorePopup={setIsMorePopup}
+          />
+        )}
+        <CommunityBanner>
+          <CommunityBannerText />
+        </CommunityBanner>
+        <PageCategorySection>
+          <PageCategory currentBoardType={boardType} />
+        </PageCategorySection>
+        <ContentsWrapper>
+          <PostHeaderBox>
+            <PostTitleSection
+              postId={post.postId}
+              postTitle={post.title}
+              currentPosterId={post.posterId}
+              isScraped={post.isScraped}
+              isMorePopup={isMorePopup}
               setIsMorePopup={setIsMorePopup}
-            />
-          )}
-          {isPostOrCommentReportModal && (
-            <ReportModal
-              contentType={contentType}
-              reportedContent={reportedContent}
-              curruentReportData={curruentReportData}
-              setIsMorePopup={setIsMorePopup}
-            />
-          )}
-          <CommunityBanner>
-            <CommunityBannerText />
-          </CommunityBanner>
-          <PageCategorySection>
-            <PageCategory currentBoardType={boardType} />
-          </PageCategorySection>
-          <ContentsWrapper>
-            <PostHeaderBox>
-              <PostTitleSection
-                postId={post.postId}
-                postTitle={post.title}
-                currentPosterId={post.posterId}
-                isScraped={post.isScraped}
-                isMorePopup={isMorePopup}
-                setIsMorePopup={setIsMorePopup}
-                setReportedContent={setReportedContent}
-                setContentType={setContentType}
-                setCurrentReportData={setCurrentReportData}
-                handleScrapClick={() => {
-                  handleScrapOrLikeClick('scrap');
-                }}
-                handleEditOpen={handleEditOpen}
-              />
-              <NicknameBox>
-                <Nickname>{post.nickname}</Nickname>
-                {post.hospitalNames && (
-                  <HospitalName>{post.hospitalNames[0]}</HospitalName>
-                )}
-              </NicknameBox>
-              <PostInfo
-                postViewCount={post.viewCounts}
-                likeCount={post.likeCounts}
-                commentCount={post.numberOfComments}
-                postCreateDate={post.createDate}
-                postUpdateDate={post.updateDate}
-              />
-            </PostHeaderBox>
-            <PostContentBox>
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: DOMPurify.sanitize(post.content),
-                }}
-              />
-            </PostContentBox>
-            <IconBox
-              onClick={() => {
-                handleScrapOrLikeClick('like');
-              }}
-            >
-              <LikeButton $isLikeClick={post.isLiked} />
-              <p>공감해요</p>
-            </IconBox>
-            <CommentArea>
-              <CommentLengthView>
-                댓글 {post.numberOfComments}개
-              </CommentLengthView>
-              <CommentCreateBox>
-                <CommentCreate
-                  requestType={'create'}
-                  postId={post.postId}
-                  value={changeValue}
-                  lastNumberCalc={() => {
-                    return (
-                      commentPageTotalNumbers?.length > 0 &&
-                      commentPageTotalNumbers.at(-1).at(-1)
-                    );
-                  }}
-                  commentLengthCalc={() => {
-                    //items length로 하지않는 이유는
-                    //items는 현재 활성화 페이지 기준으로 들어오는것인데
-                    //내가 댓글을 작성했을시 항상 마지막 페이지 기준으로 들어가므로
-                    //예컨데 1페이지는 10개지만 2페이지는 9개인경우는?
-                    //item 갯수를 commentLength로 해버리면 안되기때문에
-                    //나머지로 계산
-                    return totalCommentsLength % commentViewMaxLimit;
-                  }}
-                  commentPageGroupReCalc={commentPageGroupReCalc}
-                  dataReset={dataReset}
-                  setActionType={setActionType}
-                  handleChange={handleChange}
-                />
-              </CommentCreateBox>
-            </CommentArea>
-            <PostCommentArea
-              comments={comments}
-              pageNumbers={commentPageNumbers}
-              currentPageNumber={currentCommentPageNumber}
-              setContentType={setContentType}
               setReportedContent={setReportedContent}
+              setContentType={setContentType}
               setCurrentReportData={setCurrentReportData}
-              setActionType={setActionType}
-              commentPageGroupReCalc={commentPageGroupReCalc}
-              dataReset={dataReset}
-              handlePageNumberClick={handlePageNumberClick}
-              handlePrevPageClick={handlePrevPageClick}
-              handleNextPageClick={handleNextPageClick}
+              handleScrapClick={() => {
+                handleScrapOrLikeClick('scrap');
+              }}
+              handleEditOpen={handleEditOpen}
             />
-            <OtherPosts
-              currentPostId={postId}
-              currentBoardType={boardType}
-              posts={otherPosts}
-              pageNumbers={otherPostsPageNumbers}
-              currentPageNumber={otherPostsCurrentPageNumber}
-              otherPageTotalNumbers={otherPageTotalNumbers}
-              handlePrevPageClick={handleOtherPostsPrevPageClick}
-              handleNextPageClick={handleOtherPostsNextPageClick}
-              handlePageNumberClick={handleOtherPostsPageNumberClick}
+            <NicknameBox>
+              <Nickname>{post.nickname}</Nickname>
+              {post.hospitalNames && (
+                <HospitalName>{post.hospitalNames[0]}</HospitalName>
+              )}
+            </NicknameBox>
+            <PostInfo
+              postViewCount={post.viewCounts}
+              likeCount={post.likeCounts}
+              commentCount={post.numberOfComments}
+              postCreateDate={post.createDate}
+              postUpdateDate={post.updateDate}
             />
-          </ContentsWrapper>
-        </>
-      )}
+          </PostHeaderBox>
+          <PostContentBox>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(post.content),
+              }}
+            />
+          </PostContentBox>
+          <IconBox
+            onClick={() => {
+              handleScrapOrLikeClick('like');
+            }}
+          >
+            <LikeButton $isLikeClick={post.isLiked} />
+            <p>공감해요</p>
+          </IconBox>
+          <CommentArea>
+            <CommentLengthView>
+              댓글 {post.numberOfComments}개
+            </CommentLengthView>
+            <CommentCreateBox>
+              <CommentCreate
+                requestType={'create'}
+                postId={post.postId}
+                value={changeValue}
+                lastNumberCalc={() => {
+                  return (
+                    commentPageTotalNumbers?.length > 0 &&
+                    commentPageTotalNumbers.at(-1).at(-1)
+                  );
+                }}
+                commentLengthCalc={() => {
+                  //items length로 하지않는 이유는
+                  //items는 현재 활성화 페이지 기준으로 들어오는것인데
+                  //내가 댓글을 작성했을시 항상 마지막 페이지 기준으로 들어가므로
+                  //예컨데 1페이지는 10개지만 2페이지는 9개인경우는?
+                  //item 갯수를 commentLength로 해버리면 안되기때문에
+                  //나머지로 계산
+                  return totalCommentsLength % commentViewMaxLimit;
+                }}
+                commentPageGroupReCalc={commentPageGroupReCalc}
+                dataReset={dataReset}
+                setActionType={setActionType}
+                handleChange={handleChange}
+              />
+            </CommentCreateBox>
+          </CommentArea>
+          <PostCommentArea
+            comments={comments}
+            pageNumbers={commentPageNumbers}
+            currentPageNumber={currentCommentPageNumber}
+            setContentType={setContentType}
+            setReportedContent={setReportedContent}
+            setCurrentReportData={setCurrentReportData}
+            setActionType={setActionType}
+            commentPageGroupReCalc={commentPageGroupReCalc}
+            dataReset={dataReset}
+            handlePageNumberClick={handlePageNumberClick}
+            handlePrevPageClick={handlePrevPageClick}
+            handleNextPageClick={handleNextPageClick}
+          />
+          <OtherPosts
+            currentPostId={postId}
+            currentBoardType={boardType}
+            posts={otherPosts}
+            pageNumbers={otherPostsPageNumbers}
+            currentPageNumber={otherPostsCurrentPageNumber}
+            otherPageTotalNumbers={otherPageTotalNumbers}
+            handlePrevPageClick={handleOtherPostsPrevPageClick}
+            handleNextPageClick={handleOtherPostsNextPageClick}
+            handlePageNumberClick={handleOtherPostsPageNumberClick}
+          />
+        </ContentsWrapper>
+      </>
     </>
   );
 }

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import CommunityBanner from '@/components/CommunityBanner';
@@ -33,50 +33,39 @@ import useEventHandler from '@/hooks/useEventHandler';
 import useModalsControl from '@/hooks/useModalsControl';
 import useTinyMceImageUpload from '@/hooks/useTinyMceImageUpload';
 
-import { setBoardType } from '@/store/navBarOptions';
-
-import { navBarMenuData } from '@/layouts/Navbar/data';
-
-import { createPost } from '@/api/postApi';
+import { createPost, editPost } from '@/api/postApi';
 import { checkAdminStatus } from '@/api/authApi';
 
 import { isOnlyWhiteSpaceCheck } from '@/utils/whiteSpaceCheck';
 import { errorAlert } from '@/utils/sweetAlert';
 
-export default function CreateCommunityPost({
-  title,
-  content,
-  propsBoardType,
-  propsBoardTypeTitle,
-  postId,
-  hospitalNames,
-  editRequest,
-  handleEditCancel,
-}) {
+export default function CreateCommunityPost() {
   //제목 - 한글 1글자 이상은 최소로 있어야 한다. 최대는 50자 이하
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
+
   const { boardType } = useParams();
 
   const firstRunBlockToSetSelectOptionEffect = useRef(true);
 
+  const [editData] = useState(location.state ? location.state : null);
+
   const [isSubmit, setIsSubmit] = useState(false);
-  const [hospitalName, setHospitalName] = useState(hospitalNames || '병원찾기');
+  const [hospitalName, setHospitalName] = useState('병원찾기');
   const [categorySelectOptions, setCategorySelectOptions] = useState(
     defaultCategorySelectOptions
   );
 
   const { bannerTitle } = useSelectorList();
   //select box에 띄워주는 용도로만 사용
-  const [selectedBoardTitle, setSelectedBoardTitle] = useState(
-    propsBoardTypeTitle || bannerTitle
-  );
+  const [selectedBoardTitle, setSelectedBoardTitle] = useState(bannerTitle);
 
   const {
     changeValue: selectedBoardType,
     handleChange: handleBoardTypeChange,
   } = useEventHandler({
-    changeDefaultValue: propsBoardType || boardType,
+    changeDefaultValue: editData ? editData.boardType : boardType,
   });
 
   const { isHospitalSearchModal, handleModalOpen, handleModalClose } =
@@ -101,8 +90,8 @@ export default function CreateCommunityPost({
     handleTitleValueChange,
     handleEditorValueChange,
   } = useTinyMceImageUpload({
-    initialTitle: title || '',
-    initialContent: content || '',
+    initialTitle: editData ? editData.title : '',
+    initialContent: editData ? editData.content : '',
   });
 
   const [isEditorLoading, setIsEditorLoading] = useState(true);
@@ -140,7 +129,7 @@ export default function CreateCommunityPost({
         selectedBoardTitle === '실습정보'
       ) {
         postData.hospitalNames =
-          hospitalName === '병원찾기' ? null : [hospitalName];
+          hospitalName === '병원찾기' ? [] : [hospitalName];
       }
 
       const imageSrc = urlExtraction();
@@ -148,9 +137,18 @@ export default function CreateCommunityPost({
         postData.fileUrls = imageSrc;
       }
 
-      const res = editRequest
-        ? await editRequest(selectedBoardType, postId, postData)
-        : await createPost(selectedBoardType, postData);
+      if (editData && editData.boardType !== selectedBoardType) {
+        postData.afterBoardType = selectedBoardType;
+      }
+
+      const res =
+        editData && editData.type === 'isEdit'
+          ? await editPost(
+              editData && editData.boardType,
+              editData.postId,
+              postData
+            )
+          : await createPost(selectedBoardType, postData);
 
       const { postId: newPostId } = res.data;
 
@@ -253,7 +251,7 @@ export default function CreateCommunityPost({
             </DataInputWrapper>
             <PostCreateEditor
               editorRef={editorRef}
-              initialContent={content}
+              initialContent={editData ? editData.content : ''}
               imageButtonRef={imageButtonRef}
               editorValue={editorValue}
               isEditorLoading={isEditorLoading}
@@ -267,8 +265,13 @@ export default function CreateCommunityPost({
           {!isEditorLoading && (
             <ButtonBox>
               <Buttons
-                currentBoardType={boardType}
-                handleEditCancel={handleEditCancel}
+                type={editData && editData.type}
+                prevPostId={editData && editData.postId}
+                currentBoardType={
+                  editData && editData.type === 'isEdit'
+                    ? editData.boardType
+                    : boardType
+                }
               />
             </ButtonBox>
           )}
