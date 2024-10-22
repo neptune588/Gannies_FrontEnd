@@ -17,7 +17,7 @@ export const links = [
     },
     {
       path: 'https://www.instagram.com/nurly_cau/',
-      title: '널디',
+      title: '널리',
       subtitle: '중앙대 간호학과 홍보대사',
       icon: link2,
     },
