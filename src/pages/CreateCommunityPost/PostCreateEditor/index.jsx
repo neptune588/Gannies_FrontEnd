@@ -3,9 +3,11 @@ import styled from 'styled-components';
 
 import EditorLoadingCircle from '@/components/Loading/EditorLoadingCircle';
 
+import { isOnlyWhiteSpaceCheck } from '@/utils/whiteSpaceCheck';
+
 const EditorStylingBox = styled.div`
   .tox {
-    margin: 30px 0 95px;
+    margin: 30px 0 15px;
     min-height: 490px;
     .tox-edit-area {
       &::before {
@@ -29,11 +31,24 @@ const ImageUploadInput = styled.input`
   display: none;
 `;
 
+const EditorValueLength = styled.p`
+  text-align: right;
+  font-size: ${({ theme: { typo } }) => {
+    return typo.size.sm;
+  }};
+  color: ${({ theme: { colors } }) => {
+    return colors.gray['70'];
+  }};
+  margin-bottom: 60px;
+`;
+
 export default function PostCreateEditor({
   editorRef,
   initialContent,
   imageButtonRef,
   editorValue,
+  textContentLength,
+  textContentLengthCalc,
   isEditorLoading,
   setIsEditorLoading,
   handleEditorValueChange,
@@ -48,6 +63,13 @@ export default function PostCreateEditor({
         initialValue={initialContent}
         value={editorValue}
         onEditorChange={(value) => {
+          // wordcount 플러그인에 접근
+          const wordcount = editorRef.current.plugins.wordcount;
+          // 전체 단어 수
+          const totalWordCount = wordcount.body.getCharacterCount();
+
+          //console.log(totalWordCount);
+          textContentLengthCalc(totalWordCount);
           handleEditorValueChange(value);
         }}
         onInit={(_, editor) => {
@@ -109,6 +131,9 @@ export default function PostCreateEditor({
         accept='image/*'
         onChange={handleImageUploadRequest}
       />
+      {!isEditorLoading && (
+        <EditorValueLength>현재 {textContentLength}/5000 자</EditorValueLength>
+      )}
     </EditorStylingBox>
   );
 }

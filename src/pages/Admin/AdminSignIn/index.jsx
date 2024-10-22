@@ -87,7 +87,6 @@ export default function AdminSignIn() {
         user: { userId, nickname },
       } = res.data;
 
-      console.log(res);
       dispatch(setAdminLogin({ userId, nickname }));
       navigate('/admin/report-history');
     } catch (error) {

@@ -56,6 +56,12 @@ export default function CreateCommunityPost() {
   const [categorySelectOptions, setCategorySelectOptions] = useState(
     defaultCategorySelectOptions
   );
+  const {
+    changeValue: textContentLength,
+    handleChange: textContentLengthCalc,
+  } = useEventHandler({
+    changeDefaultValue: 0,
+  });
 
   const { bannerTitle } = useSelectorList();
   //select box에 띄워주는 용도로만 사용
@@ -110,7 +116,12 @@ export default function CreateCommunityPost() {
       const condition02 = isOnlyWhiteSpaceCheck(editorValue);
 
       if (condition01 || condition02) {
-        errorAlert('제목 혹은 내용을 입력 해주세요!');
+        alert('제목 혹은 내용을 입력 해주세요!');
+        return;
+      }
+
+      if (textContentLength > 5000) {
+        alert('입력 가능한 최대 글자 수는 5000자입니다!');
         return;
       }
 
@@ -129,7 +140,7 @@ export default function CreateCommunityPost() {
         selectedBoardTitle === '실습정보'
       ) {
         postData.hospitalNames =
-          hospitalName === '병원찾기' ? [] : [hospitalName];
+          hospitalName === '병원찾기' ? null : [hospitalName];
       }
 
       const imageSrc = urlExtraction();
@@ -254,6 +265,8 @@ export default function CreateCommunityPost() {
               initialContent={editData ? editData.content : ''}
               imageButtonRef={imageButtonRef}
               editorValue={editorValue}
+              textContentLength={textContentLength}
+              textContentLengthCalc={textContentLengthCalc}
               isEditorLoading={isEditorLoading}
               setIsEditorLoading={setIsEditorLoading}
               handleImageUploadClick={handleImageUploadClick}
