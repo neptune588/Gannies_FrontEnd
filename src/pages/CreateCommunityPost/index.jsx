@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import CommunityBanner from '@/components/CommunityBanner';
@@ -33,47 +33,39 @@ import useEventHandler from '@/hooks/useEventHandler';
 import useModalsControl from '@/hooks/useModalsControl';
 import useTinyMceImageUpload from '@/hooks/useTinyMceImageUpload';
 
-import { setBoardType } from '@/store/navBarOptions';
-
-import { navBarMenuData } from '@/layouts/Navbar/data';
-
-import { createPost } from '@/api/postApi';
+import { createPost, editPost } from '@/api/postApi';
 import { checkAdminStatus } from '@/api/authApi';
 
-export default function CreateCommunityPost({
-  title,
-  content,
-  propsBoardType,
-  propsBoardTypeTitle,
-  postId,
-  hospitalNames,
-  editRequest,
-  handleEditCancel,
-}) {
+import { isOnlyWhiteSpaceCheck } from '@/utils/whiteSpaceCheck';
+import { errorAlert } from '@/utils/sweetAlert';
+
+export default function CreateCommunityPost() {
   //제목 - 한글 1글자 이상은 최소로 있어야 한다. 최대는 50자 이하
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
+
   const { boardType } = useParams();
 
   const firstRunBlockToSetSelectOptionEffect = useRef(true);
 
+  const [editData] = useState(location.state ? location.state : null);
+
   const [isSubmit, setIsSubmit] = useState(false);
-  const [hospitalName, setHospitalName] = useState(hospitalNames || '병원찾기');
+  const [hospitalName, setHospitalName] = useState('병원찾기');
   const [categorySelectOptions, setCategorySelectOptions] = useState(
     defaultCategorySelectOptions
   );
 
   const { bannerTitle } = useSelectorList();
   //select box에 띄워주는 용도로만 사용
-  const [selectedBoardTitle, setSelectedBoardTitle] = useState(
-    propsBoardTypeTitle || bannerTitle
-  );
+  const [selectedBoardTitle, setSelectedBoardTitle] = useState(bannerTitle);
 
   const {
     changeValue: selectedBoardType,
     handleChange: handleBoardTypeChange,
   } = useEventHandler({
-    changeDefaultValue: propsBoardType || boardType,
+    changeDefaultValue: editData ? editData.boardType : boardType,
   });
 
   const { isHospitalSearchModal, handleModalOpen, handleModalClose } =
@@ -91,15 +83,15 @@ export default function CreateCommunityPost({
     editorValue,
     editorRef,
     imageButtonRef,
-    imageExtensionCheck,
+    urlExtraction,
     handleImageUploadClick,
     handleImageUploadRequest,
     handleImagePaste,
     handleTitleValueChange,
     handleEditorValueChange,
   } = useTinyMceImageUpload({
-    initialTitle: title || '',
-    initialContent: content || '',
+    initialTitle: editData ? editData.title : '',
+    initialContent: editData ? editData.content : '',
   });
 
   const [isEditorLoading, setIsEditorLoading] = useState(true);
@@ -114,17 +106,11 @@ export default function CreateCommunityPost({
     }
 
     try {
-      const condition01 =
-        titleValue.trim() === '' ||
-        titleValue.trim() === undefined ||
-        titleValue.trim() === null;
-      const condition02 =
-        editorValue.trim() === '' ||
-        editorValue.trim() === undefined ||
-        editorValue.trim() === null;
+      const condition01 = isOnlyWhiteSpaceCheck(titleValue);
+      const condition02 = isOnlyWhiteSpaceCheck(editorValue);
 
       if (condition01 || condition02) {
-        alert('제목 혹은 내용을 입력 해주세요!');
+        errorAlert('제목 혹은 내용을 입력 해주세요!');
         return;
       }
 
@@ -136,26 +122,42 @@ export default function CreateCommunityPost({
       const postData = {
         title,
         content: editorValue,
-        hospitalNames: hospitalName === '병원찾기' ? null : hospitalName,
       };
 
-      /*       const imageExtension = imageExtensionCheck();
-      if (imageExtension.length > 0) {
-        postData.imageTypes = imageExtension;
-      } */
+      if (
+        selectedBoardTitle === '취업정보' ||
+        selectedBoardTitle === '실습정보'
+      ) {
+        postData.hospitalNames =
+          hospitalName === '병원찾기' ? [] : [hospitalName];
+      }
 
-      const res = editRequest
-        ? await editRequest(selectedBoardType, postId, postData)
-        : await createPost(selectedBoardType, postData);
+      const imageSrc = urlExtraction();
+      if (imageSrc.length > 0) {
+        postData.fileUrls = imageSrc;
+      }
+
+      if (editData && editData.boardType !== selectedBoardType) {
+        postData.afterBoardType = selectedBoardType;
+      }
+
+      const res =
+        editData && editData.type === 'isEdit'
+          ? await editPost(
+              editData && editData.boardType,
+              editData.postId,
+              postData
+            )
+          : await createPost(selectedBoardType, postData);
 
       const { postId: newPostId } = res.data;
 
       window.scroll({ top: 0, left: 0 });
       navigate(`/community/${selectedBoardType}/post/${newPostId}`);
-
-      setIsSubmit(false);
     } catch (error) {
-      console.error('작성 실패', error);
+      errorAlert('작성 실패');
+    } finally {
+      setIsSubmit(false);
     }
   };
 
@@ -236,7 +238,7 @@ export default function CreateCommunityPost({
                       type='button'
                       onClick={() => {
                         handleModalOpen({
-                          modalName: 'isHospitalModal',
+                          modalName: 'isHospitalSearchModal',
                         });
                       }}
                     >
@@ -249,7 +251,7 @@ export default function CreateCommunityPost({
             </DataInputWrapper>
             <PostCreateEditor
               editorRef={editorRef}
-              initialContent={content}
+              initialContent={editData ? editData.content : ''}
               imageButtonRef={imageButtonRef}
               editorValue={editorValue}
               isEditorLoading={isEditorLoading}
@@ -263,8 +265,13 @@ export default function CreateCommunityPost({
           {!isEditorLoading && (
             <ButtonBox>
               <Buttons
-                currentBoardType={boardType}
-                handleEditCancel={handleEditCancel}
+                type={editData && editData.type}
+                prevPostId={editData && editData.postId}
+                currentBoardType={
+                  editData && editData.type === 'isEdit'
+                    ? editData.boardType
+                    : boardType
+                }
               />
             </ButtonBox>
           )}

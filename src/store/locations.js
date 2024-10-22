@@ -21,13 +21,8 @@ const locationsSlice = createSlice({
           : top;
       state.comentWrapperLocation.bottom =
         bottom === undefined || bottom === null
-          ? state.comentWrapperLocation.top
+          ? state.comentWrapperLocation.bottom
           : bottom;
-
-      state.comentWrapperLocation.bottom = console.log(
-        state.comentWrapperLocation.top,
-        state.comentWrapperLocation.bottom
-      );
     },
   },
 });
