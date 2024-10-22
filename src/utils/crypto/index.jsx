@@ -12,7 +12,7 @@ export const encryptData = (data) => {
     const salt = generateSalt();
     const iv = generateSalt();
 
-    const iterations = 10000;
+    const iterations = Number(import.meta.env.VITE_ENCRYPT_ITERATIONS);
 
     const key512Bits10000Iterations = CryptoJS.PBKDF2(
       CRYPTO_JS_KEY,
@@ -47,23 +47,20 @@ export const decryptData = (combinedData) => {
       CryptoJS.enc.Utf8
     );
     const [salt, iv, encryptedData] = decodedData.split(':');
+    const iterations = Number(import.meta.env.VITE_ENCRYPT_ITERATIONS);
 
-    const key512Bits10000Iterations = CryptoJS.PBKDF2(
+    const key512BitsIterations = CryptoJS.PBKDF2(
       CRYPTO_JS_KEY,
       CryptoJS.enc.Hex.parse(salt),
       {
         keySize: 512 / 32,
-        iterations: 10000,
+        iterations: iterations,
       }
     );
 
-    const bytes = CryptoJS.AES.decrypt(
-      encryptedData,
-      key512Bits10000Iterations,
-      {
-        iv: CryptoJS.enc.Hex.parse(iv),
-      }
-    );
+    const bytes = CryptoJS.AES.decrypt(encryptedData, key512BitsIterations, {
+      iv: CryptoJS.enc.Hex.parse(iv),
+    });
 
     const decrypted = bytes.toString(CryptoJS.enc.Utf8);
 
