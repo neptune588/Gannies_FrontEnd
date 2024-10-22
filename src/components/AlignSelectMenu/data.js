@@ -3,25 +3,25 @@
 
 export const communityPageAlignSelectOptions = [
   {
-    label: '최신 순',
+    label: '최신순',
     query: {
       sortType: 'DATE',
     },
   },
   {
-    label: '좋아요 순',
+    label: '좋아요순',
     query: {
       sortType: 'LIKES',
     },
   },
   {
-    label: '오름차 순',
+    label: '오름차순',
     query: {
       sortOrder: 'ASC',
     },
   },
   {
-    label: '내림차 순',
+    label: '내림차순',
     query: {
       sortOrder: 'DESC',
     },

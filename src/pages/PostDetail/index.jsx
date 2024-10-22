@@ -413,7 +413,7 @@ export default function PostDetail() {
             }}
           >
             <LikeButton $isLikeClick={post.isLiked} />
-            <p>공감해요</p>
+            <p>좋아요</p>
           </IconBox>
           <CommentArea>
             <CommentLengthView>
