@@ -29,8 +29,8 @@ export default function PostContents({
           <PostsHeaderRightBox $pageName={pageName}>
             {pageName === 'myPosts' && (
               <>
-                <p>조회수</p>
-                <p>공감수</p>
+                <p>조회 수</p>
+                <p>좋아요 수</p>
                 <p>작성일</p>
               </>
             )}
