@@ -240,7 +240,7 @@ export default function Community({ isSearch, searchKeyword }) {
                     <p>제목</p>
                   </th>
                   <th>
-                    <p>닉네임/날짜/조회수/좋아요 수</p>
+                    <p>닉네임/날짜/조회 수/좋아요 수</p>
                   </th>
                 </TableHeader>
               </thead>
