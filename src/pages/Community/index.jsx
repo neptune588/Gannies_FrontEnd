@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import uuid from 'react-uuid';
 
 import CommunityPost from '@/pages/Community/CommunityPost';
@@ -7,7 +7,6 @@ import CommunityBanner from '@/components/CommunityBanner';
 import CommunityBannerText from '@/components/CommunityBannerText';
 import Pagination from '@/components/Pagination';
 import AlignSelectMenu from '@/components/AlignSelectMenu';
-import Modal from '@/components/Modal';
 
 import brush from '@/assets/icons/etc/brush.svg';
 
@@ -48,7 +47,6 @@ export default function Community({ isSearch, searchKeyword }) {
     isLoading,
     currentPageNumber,
     groupedPageNumbers: pageNumbers,
-    setIsLoading,
     getDataAndSetPageNumbers,
     handlePageNumberClick,
     handlePrevPageClick,
@@ -244,7 +242,7 @@ export default function Community({ isSearch, searchKeyword }) {
                   </th>
                 </TableHeader>
               </thead>
-              <tbody>
+              <tbody height={currentPosts.length === 0 ? '669px' : 'auto'}>
                 {currentPosts?.map((post, idx) => {
                   return (
                     <CommunityPost

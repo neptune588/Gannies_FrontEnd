@@ -39,7 +39,7 @@ const useUserState = () => {
       suspensionDuration,
       suspensionEndDate,
       suspensionReason,
-    } = await checkState();
+    } = (await checkState()) || {};
     const numStatus = statusToNumber(membershipStatus);
     if (numStatus < numMinStatus) {
       if (numStatus === 1) {

@@ -11,6 +11,12 @@ export const PostWrapper = styled.li`
   display: flex;
   flex-direction: column;
   cursor: pointer;
+
+  &:hover {
+    background-color: ${({ theme: { colors } }) => {
+      return colors.gray['10'];
+    }};
+  }
 `;
 
 export const PostUpperContainer = styled.div`
@@ -101,7 +107,7 @@ export const PostTitle = styled.p`
   }};
   width: ${({ $pageName }) => {
     return $pageName === 'home'
-      ? '423px'
+      ? '413px'
       : $pageName === 'myPosts'
         ? '331px'
         : '415px';

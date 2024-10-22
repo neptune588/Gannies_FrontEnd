@@ -44,7 +44,7 @@ export default function PostCreateEditor({
   return (
     <EditorStylingBox>
       <Editor
-        apiKey='jhptdx4ycuiptf3whpa2htycwg916lsei466lbf6p2jos9jh'
+        apiKey={import.meta.env.VITE_TINYMCE_KEY}
         initialValue={initialContent}
         value={editorValue}
         onEditorChange={(value) => {
