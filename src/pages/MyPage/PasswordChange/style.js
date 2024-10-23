@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 
-import { primaryColorBoxStyle } from '@/styles/commonStyle/box';
+import {
+  inactiveColorBoxStyle,
+  primaryColorBoxStyle,
+} from '@/styles/commonStyle/box';
 import {
   xsmall_500,
   xsmall_600,
@@ -75,12 +78,21 @@ const NoticeMent = styled.p`
 
 const EditSaveBox = styled.section`
   padding-top: 70px;
-  > button {
-    ${primaryColorBoxStyle}
-    height: 50px;
-    padding: 10px 35px;
-    ${medium_400}
-  }
+`;
+
+const ActiveButton = styled.button`
+  ${primaryColorBoxStyle}
+  height: 50px;
+  padding: 10px 35px;
+  ${medium_400}
+`;
+
+const InactiveButton = styled.button`
+  ${inactiveColorBoxStyle}
+  height: 50px;
+  padding: 10px 35px;
+  ${medium_400}
+  cursor: default;
 `;
 
 export {
@@ -90,4 +102,6 @@ export {
   InputBox,
   NoticeMent,
   EditSaveBox,
+  ActiveButton,
+  InactiveButton,
 };

@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   Title,
   PasswordChangeWrapper,
   EditSaveBox,
+  ActiveButton,
+  InactiveButton,
 } from '@/pages/MyPage/PasswordChange/style';
 
 import { changeUserPassword } from '@/api/userApi';
@@ -23,6 +25,7 @@ export default function PasswordChange() {
   const [newPassword, setNewPassword] = useState('');
   const [newPasswordCheck, setNewPasswordCheck] = useState('');
   const [newPasswordInstrIdx, setNewPasswordInstrIdx] = useState(undefined);
+  const [allow, setAllow] = useState(false);
   const errorMessage = [
     '현재 비밀번호가 저장된 비밀번호와 일치하지 않습니다.',
     '현재 비밀번호와 새 비밀번호는 서로 달라야 합니다.',
@@ -33,6 +36,10 @@ export default function PasswordChange() {
     undefined,
     undefined,
   ]);
+
+  useEffect(() => {
+    setAllow(currentPassword && newPassword && newPasswordCheck);
+  }, [currentPassword, newPassword, newPasswordCheck]);
 
   const initState = () => {
     setCurrentPassword('');
@@ -120,7 +127,13 @@ export default function PasswordChange() {
             handleClickChange={handleClickChange}
           />
           <EditSaveBox>
-            <button onClick={handleModify}>비밀번호 변경하기</button>
+            {allow ? (
+              <ActiveButton onClick={handleModify}>
+                비밀번호 변경하기
+              </ActiveButton>
+            ) : (
+              <InactiveButton disabled>비밀번호 변경하기</InactiveButton>
+            )}
           </EditSaveBox>
         </form>
       </PasswordChangeWrapper>
