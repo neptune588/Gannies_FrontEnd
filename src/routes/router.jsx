@@ -184,11 +184,11 @@ export const router = createBrowserRouter([
             path: '/sign-up/email',
             element: <EmailVerification />,
           },
-          {
-            path: '/404',
-            element: <Error404 />,
-          },
         ],
+      },
+      {
+        path: '/404',
+        element: <Error404 />,
       },
       {
         path: '/sign-up/success',

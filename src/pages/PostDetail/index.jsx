@@ -185,10 +185,11 @@ export default function PostDetail() {
         commentReqeust(commentRequestPage),
         otherPostsRequest(),
       ]);
-
       itemChangeToPost(res[0].data);
     } catch (error) {
-      console.error(error);
+      if (error.response.status === 404) {
+        navigate('/404');
+      }
     }
   };
 
