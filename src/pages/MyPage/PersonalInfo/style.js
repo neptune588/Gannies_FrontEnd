@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import {
+  inactiveColorBoxStyle,
   primaryBorderBoxStyle,
   primaryColorBoxStyle,
 } from '@/styles/commonStyle/box';
@@ -33,17 +34,20 @@ const PersonalInfoBox = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 35px;
-  &:nth-child(4n) {
-    margin-bottom: 0;
+
+  &:nth-child(2) {
+    margin-top: 35px;
   }
-  >p: first-child {
+
+  > p:first-child {
     width: 100px;
     color: ${({ theme: { colors } }) => {
       return colors.gray['80'];
     }};
     ${xsmall_500}
   }
-  >p: last-child {
+
+  > p:last-child {
     color: ${({ theme: { colors } }) => {
       return colors.gray['100'];
     }};
@@ -52,6 +56,8 @@ const PersonalInfoBox = styled.div`
 `;
 
 const NicknameEditBox = styled(PersonalInfoBox)`
+  margin-bottom: 0;
+
   > div {
     display: flex;
     align-items: center;
@@ -89,11 +95,6 @@ const EditSaveAndAccountDeleteBox = styled.section`
   justify-content: space-between;
   margin-top: 70px;
 
-  >button: first-child {
-    ${primaryColorBoxStyle}
-    padding: 10px 70px;
-    ${medium_400}
-  }
   >button: last-child {
     border-bottom: 1px solid
       ${({ theme: { colors } }) => {
@@ -106,6 +107,25 @@ const EditSaveAndAccountDeleteBox = styled.section`
     margin-top: auto;
   }
 `;
+
+const InactiveButton = styled.button`
+  ${inactiveColorBoxStyle}
+  padding: 10px 70px;
+  ${medium_400}
+  cursor: default;
+`;
+
+const ActiveButton = styled.button`
+  ${primaryColorBoxStyle}
+  padding: 10px 70px;
+  ${medium_400}
+`;
+
+const InstructionBox = styled.div`
+  margin-left: 100px;
+  margin-bottom: 35px;
+`;
+
 export {
   Container,
   Title,
@@ -113,4 +133,7 @@ export {
   PersonalInfoBox,
   NicknameEditBox,
   EditSaveAndAccountDeleteBox,
+  InstructionBox,
+  InactiveButton,
+  ActiveButton,
 };

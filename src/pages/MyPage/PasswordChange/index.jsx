@@ -1,55 +1,101 @@
-import { useState } from 'react';
-
-import Eye from '@/components/Icons/Eye';
-import EyeSlash from '@/components/Icons/EyeSlash';
+import { useEffect, useState } from 'react';
 
 import {
   Title,
   PasswordChangeWrapper,
-  PasswordChangeBox,
-  InputBox,
-  NoticeMent,
   EditSaveBox,
+  ActiveButton,
+  InactiveButton,
 } from '@/pages/MyPage/PasswordChange/style';
 
 import { changeUserPassword } from '@/api/userApi';
+import CurrentPassword from '@/pages/MyPage/PasswordChange/CurrentPassword';
+import NewPassword from '@/pages/MyPage/PasswordChange/NewPassword';
+import NewPasswordCheck from '@/pages/MyPage/PasswordChange/NewPasswordCheck';
 import useEventHandler from '@/hooks/useEventHandler';
 
 export default function PasswordChange() {
   const { clickChangeState: passwordView, handleClickChange } = useEventHandler(
-    { clickChangeDefaultValue: [false, false, false], isArray: true }
+    {
+      clickChangeDefaultValue: [false, false, false],
+      isArray: true,
+    }
   );
-
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newPasswordCheck, setNewPasswordCheck] = useState('');
+  const [newPasswordInstrIdx, setNewPasswordInstrIdx] = useState(undefined);
+  const [allow, setAllow] = useState(false);
+  const errorMessage = [
+    '현재 비밀번호가 저장된 비밀번호와 일치하지 않습니다.',
+    '현재 비밀번호와 새 비밀번호는 서로 달라야 합니다.',
+    'newPassword must match /^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*?_])[A-Za-z\\d!@#$%^&*?_]{8,16}$/ regular expression',
+  ];
+  const [instruction, setInstruction] = useState([
+    undefined,
+    undefined,
+    undefined,
+  ]);
 
-  const handleCurrentPassword = (e) => {
-    const currentPassword = e.target.value;
-    setCurrentPassword(currentPassword);
+  useEffect(() => {
+    setAllow(currentPassword && newPassword && newPasswordCheck);
+  }, [currentPassword, newPassword, newPasswordCheck]);
+
+  const initState = () => {
+    setCurrentPassword('');
+    setNewPassword('');
+    setNewPasswordCheck('');
+    handleInstruction(0, undefined);
+    handleInstruction(1, undefined);
+    setNewPasswordInstrIdx(undefined);
+    handleInstruction(2, undefined);
+    handleClickChange(0, false);
+    handleClickChange(1, false);
+    handleClickChange(2, false);
   };
 
-  const handleNewPassword = (e) => {
-    const newPassword = e.target.value;
-    setNewPassword(newPassword);
-  };
-
-  const handleNewPasswordCheck = (e) => {
-    const newPasswordCheck = e.target.value;
-    setNewPasswordCheck(newPasswordCheck);
+  const handleInstruction = (index, value) => {
+    setInstruction((prev) =>
+      prev.map((item, idx) => (idx === index ? value : item))
+    );
   };
 
   const handleModify = async (e) => {
     e.preventDefault();
-
+    if (newPassword !== newPasswordCheck) {
+      handleInstruction(2, true);
+      return;
+    } else {
+      handleInstruction(2, undefined);
+    }
     try {
       await changeUserPassword({
         oldPassword: currentPassword,
         newPassword: newPassword,
       });
+      alert('비밀번호가 성공적으로 변경되었습니다.');
+      initState();
     } catch (error) {
-      console.log(error.response);
-      alert('비밀번호 변경 중 오류가 발생했습니다. 다시 시도해주세요.');
+      handleInstruction(0, undefined);
+      handleInstruction(1, undefined);
+      setNewPasswordInstrIdx(undefined);
+      handleInstruction(2, undefined);
+      const status = error.response.status;
+      const message = error.response.data.message;
+
+      if (status === 400) {
+        if (message === errorMessage[0]) {
+          handleInstruction(0, true);
+        } else if (message === errorMessage[1]) {
+          handleInstruction(1, true);
+          setNewPasswordInstrIdx(0);
+        } else if (message[0] === errorMessage[2]) {
+          handleInstruction(1, true);
+          setNewPasswordInstrIdx(1);
+        }
+      } else {
+        alert('비밀번호 변경 중 에러 발생');
+      }
     }
   };
 
@@ -58,111 +104,36 @@ export default function PasswordChange() {
       <Title>비밀번호 변경</Title>
       <PasswordChangeWrapper>
         <form>
-          <PasswordChangeBox>
-            <p>현재 비밀번호</p>
-            <InputBox>
-              <input
-                maxLength={16}
-                value={currentPassword}
-                onChange={handleCurrentPassword}
-                type={passwordView[0] ? 'text' : 'password'}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                  }
-                }}
-              />
-              {passwordView[0] ? (
-                <div>
-                  <Eye
-                    handlePasswordViewClick={() => {
-                      handleClickChange(0, false);
-                    }}
-                  />
-                </div>
-              ) : (
-                <div>
-                  <EyeSlash
-                    handlePasswordViewClick={() => {
-                      handleClickChange(0, true);
-                    }}
-                  />
-                </div>
-              )}
-            </InputBox>
-          </PasswordChangeBox>
-          <PasswordChangeBox>
-            <p>새 비밀번호</p>
-            <InputBox>
-              <input
-                maxLength={15}
-                value={newPassword}
-                onChange={handleNewPassword}
-                type={passwordView[1] ? 'text' : 'password'}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                  }
-                }}
-              />
-              {passwordView[1] ? (
-                <div>
-                  <Eye
-                    handlePasswordViewClick={() => {
-                      handleClickChange(1, false);
-                    }}
-                  />
-                </div>
-              ) : (
-                <div>
-                  <EyeSlash
-                    handlePasswordViewClick={() => {
-                      handleClickChange(1, true);
-                    }}
-                  />
-                </div>
-              )}
-            </InputBox>
-          </PasswordChangeBox>
-          <NoticeMent>
-            *영문 대문자, 소문자, 숫자, 특수문자 하나씩을 포함한 8-16자
-          </NoticeMent>
-          <NoticeMent>*특수문자는 '!@#$%^&*?_'만 가능</NoticeMent>
-          <PasswordChangeBox>
-            <p>새 비밀번호 확인</p>
-            <InputBox>
-              <input
-                maxLength={15}
-                value={newPasswordCheck}
-                onChange={handleNewPasswordCheck}
-                type={passwordView[2] ? 'text' : 'password'}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                  }
-                }}
-              />
-              {passwordView[2] ? (
-                <div>
-                  <Eye
-                    handlePasswordViewClick={() => {
-                      handleClickChange(2, false);
-                    }}
-                  />
-                </div>
-              ) : (
-                <div>
-                  <EyeSlash
-                    handlePasswordViewClick={() => {
-                      handleClickChange(2, true);
-                    }}
-                  />
-                </div>
-              )}
-            </InputBox>
-          </PasswordChangeBox>
+          <CurrentPassword
+            currentPassword={currentPassword}
+            setCurrentPassword={setCurrentPassword}
+            instruction={instruction[0]}
+            passwordView={passwordView[0]}
+            handleClickChange={handleClickChange}
+          />
+          <NewPassword
+            newPassword={newPassword}
+            setNewPassword={setNewPassword}
+            instruction={instruction[1]}
+            passwordView={passwordView[1]}
+            handleClickChange={handleClickChange}
+            newPasswordInstrIdx={newPasswordInstrIdx}
+          />
+          <NewPasswordCheck
+            newPasswordCheck={newPasswordCheck}
+            setNewPasswordCheck={setNewPasswordCheck}
+            instruction={instruction[2]}
+            passwordView={passwordView[2]}
+            handleClickChange={handleClickChange}
+          />
           <EditSaveBox>
-            <button onClick={handleModify}>비밀번호 변경하기</button>
+            {allow ? (
+              <ActiveButton onClick={handleModify}>
+                비밀번호 변경하기
+              </ActiveButton>
+            ) : (
+              <InactiveButton disabled>비밀번호 변경하기</InactiveButton>
+            )}
           </EditSaveBox>
         </form>
       </PasswordChangeWrapper>

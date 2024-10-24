@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import {
-  defaultBorderBoxStyle,
+  inactiveColorBoxStyle,
   primaryColorBoxStyle,
 } from '@/styles/commonStyle/box';
 import {
@@ -10,6 +10,7 @@ import {
   medium_400,
   h4_600,
 } from '@/styles/commonStyle/localTextStyle';
+import { inputBorderStyle } from '@/styles/commonStyle/input';
 
 const Title = styled.h2`
   ${h4_600}
@@ -28,10 +29,10 @@ const PasswordChangeWrapper = styled.div`
 const PasswordChangeBox = styled.section`
   display: flex;
   align-items: center;
-  margin-bottom: 35px;
-  &:nth-child(2n),
-  &:nth-child(3n) {
-    margin-bottom: 0;
+  margin-top: 35px;
+
+  &:first-of-type {
+    margin-top: 0;
   }
 
   > p {
@@ -44,18 +45,13 @@ const PasswordChangeBox = styled.section`
 `;
 
 const InputBox = styled.label`
-  ${defaultBorderBoxStyle}
   display: flex;
   justify-content: space-between;
   padding: 3px 25px;
   width: 455px;
   height: 50px;
-  border: ${(props) =>
-    props.isFocused
-      ? `1px solid ${props.theme.colors.primary}`
-      : props.isFocused === undefined
-        ? defaultBorderBoxStyle.border
-        : `1px solid ${props.theme.colors.negative}`};
+  border: ${(props) => inputBorderStyle(props)};
+  border-radius: 4px;
 
   > input {
     width: 90%;
@@ -65,15 +61,15 @@ const InputBox = styled.label`
     display: flex;
     align-items: center;
     user-select: none;
-    cursor: pointer;
+
+    > div {
+      cursor: pointer;
+    }
   }
 `;
 
 const NoticeMent = styled.p`
   margin: 10px 0 0 120px;
-  &:nth-child(2n) {
-    margin-bottom: 35px;
-  }
   color: ${({ theme: { colors } }) => {
     return colors.gray['60'];
   }};
@@ -82,12 +78,21 @@ const NoticeMent = styled.p`
 
 const EditSaveBox = styled.section`
   padding-top: 70px;
-  > button {
-    ${primaryColorBoxStyle}
-    height: 50px;
-    padding: 10px 35px;
-    ${medium_400}
-  }
+`;
+
+const ActiveButton = styled.button`
+  ${primaryColorBoxStyle}
+  height: 50px;
+  padding: 10px 35px;
+  ${medium_400}
+`;
+
+const InactiveButton = styled.button`
+  ${inactiveColorBoxStyle}
+  height: 50px;
+  padding: 10px 35px;
+  ${medium_400}
+  cursor: default;
 `;
 
 export {
@@ -97,4 +102,6 @@ export {
   InputBox,
   NoticeMent,
   EditSaveBox,
+  ActiveButton,
+  InactiveButton,
 };
