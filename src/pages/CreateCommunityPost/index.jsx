@@ -84,10 +84,11 @@ export default function CreateCommunityPost() {
     editorRef,
     imageButtonRef,
     textContentLength,
+    isUpload,
     urlExtraction,
     textContentLengthCalc,
     handleImageUploadClick,
-    handleImageUploadRequest,
+    handleImageUpload,
     handleImagePaste,
     handleTitleValueChange,
     handleEditorValueChange,
@@ -262,12 +263,13 @@ export default function CreateCommunityPost() {
               imageButtonRef={imageButtonRef}
               editorValue={editorValue}
               textContentLength={textContentLength}
+              isUpload={isUpload}
               textContentLengthCalc={textContentLengthCalc}
               isEditorLoading={isEditorLoading}
               setIsEditorLoading={setIsEditorLoading}
               handleImageUploadClick={handleImageUploadClick}
               handleEditorValueChange={handleEditorValueChange}
-              handleImageUploadRequest={handleImageUploadRequest}
+              handleImageUpload={handleImageUpload}
               handleImagePaste={handleImagePaste}
             />
           </ContentsWrapper>

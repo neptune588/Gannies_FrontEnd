@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import imageCompression from 'browser-image-compression';
 
 import useEventHandler from '@/hooks/useEventHandler';
 
@@ -9,10 +10,17 @@ export default function useTinyMceImageUpload({
   initialTitle,
   initialContent,
 }) {
+  const imageCompressionOptions = {
+    maxSizeMB: 1, // 최대 파일 크기 (MB)
+    maxWidthOrHeight: 1920, // 최대 너비 또는 높이
+    useWebWorker: true, // 웹 워커 사용 여부
+  };
+
   const editorRef = useRef(null);
   const imageButtonRef = useRef(null);
 
   const [previewImage, setPreviewImage] = useState('');
+  const [isUpload, setIsUpload] = useState(false);
   const { changeValue: titleValue, handleChange: handleTitleValueChange } =
     useEventHandler({
       changeDefaultValue: initialTitle,
@@ -112,13 +120,35 @@ export default function useTinyMceImageUpload({
     return file;
   };
 
+  const s3UploadRequest = async (file) => {
+    //업로드, 붙여넣기 두곳에서 쓰이기 때문에 호출 단에서 오류 정의하는게 나을듯
+    const formData = new FormData();
+    const res = await getPresignedUrl({
+      fileType: file.type,
+    });
+
+    const { url: presignedUrl, fields } = res.data;
+
+    formData.append('Content-Type', file.type);
+    for (let key in fields) {
+      formData.append(key, fields[key]);
+    }
+    formData.append('file', file);
+
+    await s3ImageUpload(presignedUrl, formData);
+    return `${presignedUrl}${fields['key']}`;
+  };
+
   const handleImageUploadClick = () => {
     imageButtonRef.current.value = '';
     imageButtonRef.current && imageButtonRef.current.click();
   };
 
-  const handleImageUploadRequest = async (e) => {
-    //console.log('업로드 발동');
+  const handleImageUpload = async (e) => {
+    if (isUpload) {
+      return;
+    }
+
     const uploadFile = e.target.files[0];
 
     if (!uploadFile.type.startsWith('image/')) {
@@ -126,66 +156,31 @@ export default function useTinyMceImageUpload({
       return;
     }
 
+    //업로드 성공 시 -> content 업데이트
+    //업로드 실패 시 -> alert 띄우고 업데이트x
     try {
-      const formData = new FormData();
+      setIsUpload(true);
+      const compression = await imageCompression(
+        uploadFile,
+        imageCompressionOptions
+      );
 
-      const res = await getPresignedUrl({
-        fileType: uploadFile.type,
+      const compressedFile = blobObjectToFileObjectConvert({
+        blob: compression,
+        filename: compression.type,
       });
 
-      const { url: presignedUrl, fields } = res.data;
-
-      formData.append('Content-Type', uploadFile.type);
-
-      for (let key in fields) {
-        formData.append(key, fields[key]);
-      }
-      formData.append('file', uploadFile);
-
-      await s3ImageUpload(presignedUrl, formData);
-      setPreviewImage(`${presignedUrl}${fields['key']}`);
+      const s3Url = await s3UploadRequest(compressedFile);
+      setPreviewImage(s3Url);
     } catch (error) {
-      errorAlert('이미지 업로드에 실패 하였습니다!');
+      errorAlert(error.message);
+    } finally {
+      setIsUpload(false);
     }
   };
 
-  /*   const pastImageS3Upload = async (blob) => {
-    const file = new File([blob], `image.${blob.type.split('/').at(-1)}`, {
-      type: blob.type,
-    });
-
-    try {
-      const res = await getPresignedUrl({
-        fileType: file.type,
-      });
-      
-      if()
-    } catch (error) {
-      errorAlert('url 받기 실패');
-      return;
-    }
-
-    try {
-      const formData = new FormData();
-
-      const { url: presignedUrl, fields } = res.data;
-      formData.append('Content-Type', file.type);
-
-      for (let key in fields) {
-        formData.append(key, fields[key]);
-      }
-      formData.append('file', file);
-
-      await s3ImageUpload(presignedUrl, formData);
-      return `${presignedUrl}${fields['key']}`;
-    } catch (error) {
-      errorAlert('s3 업로드 실패');
-      return;
-    }
-  }; */
-
   const handleImagePaste = async (plugin, args) => {
-    //args.preventDefault();
+    args.preventDefault();
     const content = args.content;
 
     //1) TEXT 5000자 넘는지 검증
@@ -212,29 +207,55 @@ export default function useTinyMceImageUpload({
 
     //1. 이미지가 맞냐?
     //2. 이미지가 맞으면 src 형식 확인
-    //3.
     if (images.length > 0) {
       for (let image of images) {
         const isBlob = image.src.startsWith('blob:');
         const isBase64 = image.src.startsWith('data:');
+        const base64DataPattern = /^data:([^;]+);base64,(.+)$/;
+        //배열 or NULL
+        const matchArr = image.src.match(base64DataPattern);
 
+        let blob;
+        let filename;
         if (isBlob) {
           try {
-            const response = await fetch(image.src);
-            const blob = await response.blob();
-
-            const file = blobObjectToFileObjectConvert({
-              blob,
-              filename: filenameConvert(blob.type),
-            });
+            //올바르지 않은 url이면 not image
+            const res = await fetch(image.src);
+            blob = await res.blob();
+            filename = filenameConvert(blob.type);
           } catch (error) {
-            errorAlert('올바른 형식의 image가 아닙니다.');
-          }
-
-          if (isBase64) {
+            image.src = '';
           }
         }
-        //setPreviewImage(image.src);
+
+        if (isBase64 && matchArr) {
+          const convertedBlob = base64UrlFileObjectConvert(image.src);
+          blob = convertedBlob.blob;
+          filename = convertedBlob.filename;
+        }
+
+        try {
+          //image 압축과정
+          const file = blobObjectToFileObjectConvert({
+            blob,
+            filename,
+          });
+          const compression = await imageCompression(
+            file,
+            imageCompressionOptions
+          );
+          const compressedFile = blobObjectToFileObjectConvert({
+            blob: compression,
+            filename: compression.type,
+          });
+
+          const s3Url = await s3UploadRequest(compressedFile);
+          image.src = s3Url;
+        } catch (error) {
+          image.src = '';
+        } finally {
+          setPreviewImage(image.src);
+        }
       }
     }
   };
@@ -312,10 +333,11 @@ export default function useTinyMceImageUpload({
     imageButtonRef,
     previewImage,
     textContentLength,
+    isUpload,
     urlExtraction,
     textContentLengthCalc,
     handleImageUploadClick,
-    handleImageUploadRequest,
+    handleImageUpload,
     handleImagePaste,
     handleTitleValueChange,
     handleEditorValueChange,
