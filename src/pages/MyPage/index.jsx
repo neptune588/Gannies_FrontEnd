@@ -7,8 +7,11 @@ import { statusToNumber } from '@/utils/statusToNumber';
 import IsSuspended from '@/components/Toast/IsSuspended';
 import IsTempPassword from '@/components/Toast/IsTempPassword';
 import Rejected from '@/components/Toast/Rejected';
+import { useDispatch } from 'react-redux';
+import { setBoardType } from '@/store/navBarOptions';
 
 function MyPage() {
+  const dispatch = useDispatch();
   const { checkState } = useUserState();
   const [toastState, setToastState] = useState({
     isApproval: { status: false },
@@ -58,7 +61,7 @@ function MyPage() {
         console.log(error.response);
       }
     };
-
+    dispatch(setBoardType({}));
     fetch();
   }, []);
 

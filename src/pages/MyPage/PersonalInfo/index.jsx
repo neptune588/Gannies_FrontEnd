@@ -1,13 +1,21 @@
+import { checkNicknameDuplicate } from '@/api/authApi';
 import { changeUserNickname, getUserInfo } from '@/api/userApi';
+import Instruction from '@/components/Instruction';
+import Negative from '@/components/Instruction/Negative';
+import Positive from '@/components/Instruction/Positive';
 import IsWithdrawal from '@/components/Modal/IsWithdrawal';
+import { useInputValid } from '@/hooks/useInputValid';
 import {
   Title,
   PersonalInfoWrapper,
   PersonalInfoBox,
   NicknameEditBox,
   EditSaveAndAccountDeleteBox,
+  InstructionBox,
+  ActiveButton,
+  InactiveButton,
 } from '@/pages/MyPage/PersonalInfo/style';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function PersonalInfo() {
   const [nickname, setNickname] = useState('');
@@ -17,8 +25,21 @@ export default function PersonalInfo() {
     phoneNumber: '',
     email: '',
   });
+  const [allow, setAllow] = useState(undefined);
+  const regex = /^[a-zA-Z가-힣]{2,8}$/;
+  const validate = (nickname) => regex.test(nickname);
+  const instruction = [
+    '사용 가능한 닉네임입니다',
+    '필수 정보입니다',
+    '유효하지 않은 닉네임 형식입니다',
+    '중복된 닉네임입니다',
+    '현재 닉네임과 동일합니다',
+  ];
+  const [instructionIndex, setInstructionIndex] = useState(undefined);
+  const { checkIsValid } = useInputValid(undefined, validate);
   const [isEditable, setIsEditable] = useState(false);
   const [openWithdrawalModal, setOpenWithdrawalModal] = useState(false);
+  const timeoutIdRef = useRef(null);
 
   useEffect(() => {
     const getInfo = async () => {
@@ -39,11 +60,41 @@ export default function PersonalInfo() {
     };
 
     getInfo();
+
+    return () => {
+      clearTimeout(timeoutIdRef.current);
+    };
   }, []);
 
-  const handleNickname = (e) => {
+  useEffect(() => {
+    if (!isEditable) {
+      setAllow(undefined);
+      setInstructionIndex(undefined);
+    }
+  }, [isEditable]);
+
+  const handleNickname = async (e) => {
     const nickname = e.target.value;
     setNickname(nickname);
+    if (timeoutIdRef.current) {
+      clearTimeout(timeoutIdRef.current);
+    }
+
+    if (nickname === info.nickname) {
+      timeoutIdRef.current = setTimeout(() => {
+        setInstructionIndex(4);
+        setAllow(false);
+      }, 0);
+      return;
+    }
+
+    const allow = await checkIsValid(
+      nickname,
+      'nickname',
+      checkNicknameDuplicate
+    );
+    setInstructionIndex(allow);
+    setAllow(allow === 0);
   };
 
   const handleModify = (e) => {
@@ -101,6 +152,17 @@ export default function PersonalInfo() {
               </button>
             </div>
           </NicknameEditBox>
+          {isEditable && (
+            <InstructionBox>
+              <Instruction text='*한글 또는 영문 2-8자' />
+              <Instruction text='*숫자 및 특수문자 불가' />
+              {allow ? (
+                <Positive text={instruction[instructionIndex]} />
+              ) : (
+                <Negative text={instruction[instructionIndex]} />
+              )}
+            </InstructionBox>
+          )}
           <PersonalInfoBox>
             <p>이름</p>
             <p>{info.name}</p>
@@ -114,7 +176,11 @@ export default function PersonalInfo() {
             <p>{info.email}</p>
           </PersonalInfoBox>
           <EditSaveAndAccountDeleteBox>
-            <button onClick={handleSave}>저장하기</button>
+            {isEditable && allow ? (
+              <ActiveButton onClick={handleSave}>저장하기</ActiveButton>
+            ) : (
+              <InactiveButton disabled>저장하기</InactiveButton>
+            )}
             <button onClick={handleWithdrawal}>회원탈퇴</button>
           </EditSaveAndAccountDeleteBox>
         </form>
