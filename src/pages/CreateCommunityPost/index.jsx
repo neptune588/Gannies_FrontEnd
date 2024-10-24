@@ -56,12 +56,6 @@ export default function CreateCommunityPost() {
   const [categorySelectOptions, setCategorySelectOptions] = useState(
     defaultCategorySelectOptions
   );
-  const {
-    changeValue: textContentLength,
-    handleChange: textContentLengthCalc,
-  } = useEventHandler({
-    changeDefaultValue: 0,
-  });
 
   const { bannerTitle } = useSelectorList();
   //select box에 띄워주는 용도로만 사용
@@ -89,7 +83,9 @@ export default function CreateCommunityPost() {
     editorValue,
     editorRef,
     imageButtonRef,
+    textContentLength,
     urlExtraction,
+    textContentLengthCalc,
     handleImageUploadClick,
     handleImageUploadRequest,
     handleImagePaste,

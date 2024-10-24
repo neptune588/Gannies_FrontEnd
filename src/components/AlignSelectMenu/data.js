@@ -9,21 +9,15 @@ export const communityPageAlignSelectOptions = [
     },
   },
   {
-    label: '좋아요순',
+    label: '공감순',
     query: {
       sortType: 'LIKES',
     },
   },
   {
-    label: '오름차순',
+    label: '작성순',
     query: {
       sortOrder: 'ASC',
-    },
-  },
-  {
-    label: '내림차순',
-    query: {
-      sortOrder: 'DESC',
     },
   },
 ];

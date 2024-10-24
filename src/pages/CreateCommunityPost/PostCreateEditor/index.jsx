@@ -31,15 +31,29 @@ const ImageUploadInput = styled.input`
   display: none;
 `;
 
-const EditorValueLength = styled.p`
-  text-align: right;
-  font-size: ${({ theme: { typo } }) => {
-    return typo.size.sm;
-  }};
-  color: ${({ theme: { colors } }) => {
-    return colors.gray['70'];
-  }};
+const NoticeBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 60px;
+
+  > p {
+    font-size: ${({ theme: { typo } }) => {
+      return typo.size.sm;
+    }};
+    color: ${({ theme: { colors } }) => {
+      return colors.gray['70'];
+    }};
+
+    > span {
+      font-weight: ${({ theme: { typo } }) => {
+        return typo.weight.semiBold;
+      }};
+      color: ${({ theme: { colors } }) => {
+        return colors.gray['80'];
+      }};
+    }
+  }
 `;
 
 export default function PostCreateEditor({
@@ -75,6 +89,8 @@ export default function PostCreateEditor({
         onInit={(_, editor) => {
           setIsEditorLoading(false);
           editorRef.current = editor;
+
+          //handleImagePaste(editor);
         }}
         init={{
           menubar: false,
@@ -108,6 +124,7 @@ export default function PostCreateEditor({
           paste_preprocess: (plugin, args) => {
             handleImagePaste(plugin, args);
           },
+          image_file_types: 'gif,jpg,jpeg,png',
           //외부iframe이라 내부 css로 컨트롤불가능
           content_style: `
         html {
@@ -132,7 +149,13 @@ export default function PostCreateEditor({
         onChange={handleImageUploadRequest}
       />
       {!isEditorLoading && (
-        <EditorValueLength>현재 {textContentLength}/5000 자</EditorValueLength>
+        <NoticeBox>
+          <p>
+            이미지 업로드 밑 붙여넣기 가능 확장자:
+            <span> gif, jpg, jpeg, png</span>
+          </p>
+          <p>현재 {textContentLength}/5000 자</p>
+        </NoticeBox>
       )}
     </EditorStylingBox>
   );
