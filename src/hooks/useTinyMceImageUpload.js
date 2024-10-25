@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import imageCompression from 'browser-image-compression';
+import Resizer from 'react-image-file-resizer';
 
 import useEventHandler from '@/hooks/useEventHandler';
 
@@ -10,14 +11,21 @@ export default function useTinyMceImageUpload({
   initialTitle,
   initialContent,
 }) {
+  const editorRef = useRef(null);
+  const imageButtonRef = useRef(null);
+
   const imageCompressionOptions = {
     maxSizeMB: 1, // 최대 파일 크기 (MB)
     maxWidthOrHeight: 1920, // 최대 너비 또는 높이
     useWebWorker: true, // 웹 워커 사용 여부
   };
-
-  const editorRef = useRef(null);
-  const imageButtonRef = useRef(null);
+  const imageWidthStandard = 860;
+  const acceptImageTypes = [
+    'image/gif',
+    'image/png',
+    'image/jpg',
+    'image/jpeg',
+  ];
 
   const [previewImage, setPreviewImage] = useState('');
   const [isUpload, setIsUpload] = useState(false);
@@ -75,17 +83,51 @@ export default function useTinyMceImageUpload({
 
   //지원되는 확장자 형식으로 바꾸기 위한 convert
   const imageTypeConvert = (type) => {
-    const typeCondition =
-      type === 'image/gif' ||
-      type === 'image/jpg' ||
-      type === 'image/jpeg' ||
-      type === 'image/png';
-
-    if (!typeCondition) {
+    if (!acceptImageTypes.includes(type)) {
       return 'image/jpeg';
     }
 
     return type;
+  };
+
+  const getImageSize = (src) => {
+    const img = new Image();
+    img.src = src;
+
+    return new Promise((res, rej) => {
+      img.onload = () => {
+        res({ width: img.naturalWidth, height: img.naturalHeight });
+      };
+
+      img.onerror = () => {
+        rej(new Error('image failed to load'));
+      };
+    });
+  };
+
+  const imageResize = ({ file, imgWidth, imgHeight }) => {
+    const heightRatioCalc = imgWidth / imgHeight;
+    const resizeWidth = imageWidthStandard * 0.8;
+    //픽셀은 소숫점허용x
+    const resizeHeight = Math.round(resizeWidth * heightRatioCalc);
+
+    return new Promise((res, rej) => {
+      Resizer.imageFileResizer(
+        file,
+        resizeWidth,
+        resizeHeight, // 원하는 높이
+        file.type, // 포맷 (JPEG, PNG, WEBP 등)
+        70, // 품질 (0-100)
+        0, // 회전 각도 (0-360)
+        (result) => {
+          res(result);
+        },
+        'file', // 반환 형식 (base64, file, blob 등)
+        () => {
+          rej(new Error('resize failed'));
+        }
+      );
+    });
   };
 
   //base64URL -> blob 변경하기 위한 convert
@@ -149,17 +191,54 @@ export default function useTinyMceImageUpload({
       return;
     }
 
-    const uploadFile = e.target.files[0];
+    let uploadFile = e.target.files[0];
 
     if (!uploadFile.type.startsWith('image/')) {
       errorAlert('이미지 파일만 업로드 가능합니다!');
       return;
     }
 
+    //console.log(uploadFile.type);
+
+    if (!acceptImageTypes.includes(uploadFile.type)) {
+      errorAlert('지원하지 않는 이미지 파일입니다!');
+      return;
+    }
+
     //업로드 성공 시 -> content 업데이트
     //업로드 실패 시 -> alert 띄우고 업데이트x
+    let imgWidth;
+    let imgHeight;
+    let convertUrl;
+
     try {
       setIsUpload(true);
+      try {
+        convertUrl = URL.createObjectURL(uploadFile);
+        const size = await getImageSize(convertUrl);
+
+        imgWidth = size.width;
+        imgHeight = size.height;
+      } catch (error) {
+        imgWidth = null;
+        imgHeight = null;
+        //console.error(error);
+      } finally {
+        URL.revokeObjectURL(convertUrl);
+      }
+
+      if (imgWidth && imgWidth > imageWidthStandard) {
+        try {
+          uploadFile = await imageResize({
+            file: uploadFile,
+            imgWidth,
+            imgHeight,
+          });
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
       const compression = await imageCompression(
         uploadFile,
         imageCompressionOptions
@@ -206,26 +285,31 @@ export default function useTinyMceImageUpload({
     }
 
     //1. 이미지가 맞냐?
-    //2. 이미지가 맞으면 src 형식 확인
     if (images.length > 0) {
       for (let image of images) {
-        const isBlob = image.src.startsWith('blob:');
+        //2. 이미지가 맞으면 src 형식 확인
+        //3. 이미지의 SIZE 확인
+        //4. 조건에 맞게 압축 후 업로드
+        let blob;
+        let filename;
+        let file;
+        let imgWidth;
+        let imgHeight;
+
         const isBase64 = image.src.startsWith('data:');
         const base64DataPattern = /^data:([^;]+);base64,(.+)$/;
         //배열 or NULL
         const matchArr = image.src.match(base64DataPattern);
 
-        let blob;
-        let filename;
-        if (isBlob) {
-          try {
-            //올바르지 않은 url이면 not image
-            const res = await fetch(image.src);
-            blob = await res.blob();
-            filename = filenameConvert(blob.type);
-          } catch (error) {
-            image.src = '';
-          }
+        try {
+          const size = await getImageSize(image.src);
+          imgWidth = size.width;
+          imgHeight = size.height;
+        } catch (error) {
+          imgWidth = null;
+          imgHeight = null;
+
+          //console.error(error);
         }
 
         if (isBase64 && matchArr) {
@@ -235,11 +319,26 @@ export default function useTinyMceImageUpload({
         }
 
         try {
+          //올바르지 않은 url이거나 네트워크 오류인경우 not image
+          const res = await fetch(image.src);
+          blob = await res.blob();
+          filename = filenameConvert(blob.type);
+
           //image 압축과정
-          const file = blobObjectToFileObjectConvert({
+          file = blobObjectToFileObjectConvert({
             blob,
             filename,
           });
+
+          if (imgWidth && imgWidth > imageWidthStandard) {
+            try {
+              //resize 성공했을때만 재 할당
+              file = await imageResize({ file, imgWidth, imgHeight });
+            } catch (error) {
+              console.error(error);
+            }
+          }
+
           const compression = await imageCompression(
             file,
             imageCompressionOptions
@@ -272,52 +371,6 @@ export default function useTinyMceImageUpload({
 
     return urls;
   };
-
-  /*   const handleImagePaste = async (editor) => {
-    editor.on('paste', (e) => {
-      e.preventDefault();
-      const clipboardData = e.clipboardData;
-
-      //들어올수 있는 파일 종류
-      const clipboardText = clipboardData.getData('text/plain');
-      //파일 객체가아닌 image url 기본적으로 2개이상일때
-      const clipboardImageTags = clipboardData.getData('text/html');
-      //이미지가 1개만복사될땐 파일형태로 들어옴
-      const clipboardFiles = clipboardData.files;
-
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(clipboardImageTags, 'text/html');
-      const images = doc.querySelectorAll('img');
-
-      const totalNodes = parser.parseFromString(
-        editorRef.current.getContent(),
-        'text/html'
-      );
-      const totalImages = totalNodes.querySelectorAll('img');
-
-      //검증
-      if (clipboardText && textContentLength > 5000) {
-        return;
-      }
-
-      if (images && totalImages.length >= 1) {
-        errorAlert('이미지는 최대 50개 까지만 본문에 실을 수 있습니다.');
-        clipboardData.setData('text/html', '');
-        return;
-      }
-      if (clipboardFiles[0]) {
-      }
-
-      if (images.length > 0) {
-      }
-
-      //2개 이상의 이미지일때는 clipboardText & clipboardFiles에 안 들어감.
-      console.log('clipboardText: ', clipboardText);
-      console.log('clipboardFiles: ', clipboardFiles[0]);
-      console.log('pasteImageNode: ', images);
-      console.log('totalImage: ', totalImages.length);
-    });
-  }; */
 
   useEffect(() => {
     if (editorRef.current && previewImage !== '') {
