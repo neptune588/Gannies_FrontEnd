@@ -36,9 +36,21 @@ export const myPageAlignSelectOptions = [
     },
   },
   {
-    label: '조회순',
+    label: '공감순',
     query: {
       sort: 'popular',
+    },
+  },
+  {
+    label: '조회순',
+    query: {
+      sort: 'viewCounts',
+    },
+  },
+  {
+    label: '작성순',
+    query: {
+      sort: 'oldest',
     },
   },
 ];

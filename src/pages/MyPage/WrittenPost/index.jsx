@@ -17,7 +17,6 @@ export default function WrittenPost() {
   const [selectedOption, setSelectedOption] = useState(optionList[0].label);
 
   const firstRunBlockToSetCurPageNumberEffect = useRef(true);
-  const firstRunBlockToSetSelectOptionEffect = useRef(true);
   const firstRunBlockToSetQueryEffect = useRef(true);
 
   const {
@@ -67,17 +66,8 @@ export default function WrittenPost() {
       firstRunBlockToSetQueryEffect.current = false;
       return;
     }
-
     getDataAndSetPageNumbers(() => getUserPosts(query));
   }, [query]);
-
-  useEffect(() => {
-    if (firstRunBlockToSetSelectOptionEffect.current) {
-      firstRunBlockToSetSelectOptionEffect.current = false;
-      return;
-    }
-    getDataAndSetPageNumbers(() => getUserPosts(query));
-  }, [selectedOption]);
 
   useEffect(() => {
     if (firstRunBlockToSetCurPageNumberEffect.current) {

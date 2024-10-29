@@ -187,9 +187,7 @@ export default function PostDetail() {
       ]);
       itemChangeToPost(res[0].data);
     } catch (error) {
-      if (error.response.status === 404) {
-        navigate('/404');
-      }
+      console.log(error);
     }
   };
 
