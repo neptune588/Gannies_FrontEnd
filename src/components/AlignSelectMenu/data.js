@@ -28,7 +28,7 @@ export const communityPageAlignSelectOptions = [
   },
 ];
 
-export const myPageAlignSelectOptions = [
+export const myPostsAlignSelectOptions = [
   {
     label: '최신순',
     query: {
@@ -45,6 +45,21 @@ export const myPageAlignSelectOptions = [
     label: '조회순',
     query: {
       sort: 'viewCounts',
+    },
+  },
+  {
+    label: '작성순',
+    query: {
+      sort: 'oldest',
+    },
+  },
+];
+
+export const myScrapsAndCommentsAlignSelectOptions = [
+  {
+    label: '최신순',
+    query: {
+      sort: 'latest',
     },
   },
   {

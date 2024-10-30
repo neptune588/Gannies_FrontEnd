@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import PostContents from '@/pages/MyPage/PostContents';
 import AlignSelectMenu from '@/components/AlignSelectMenu';
 import Pagination from '@/components/Pagination';
-import { myPageAlignSelectOptions } from '@/components/AlignSelectMenu/data';
+import { myScrapsAndCommentsAlignSelectOptions } from '@/components/AlignSelectMenu/data';
 
 import { TitleBox, Title, PageWrapper } from '@/pages/MyPage/WrittenPost/style';
 
@@ -13,7 +13,7 @@ import { pageViewLimit } from '@/utils/itemLimit';
 import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
 
 export default function WrittenPost() {
-  const optionList = myPageAlignSelectOptions;
+  const optionList = myScrapsAndCommentsAlignSelectOptions;
   const [selectedOption, setSelectedOption] = useState(optionList[0].label);
 
   const firstRunBlockToSetCurPageNumberEffect = useRef(true);
