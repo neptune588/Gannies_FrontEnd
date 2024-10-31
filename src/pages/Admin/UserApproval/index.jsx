@@ -222,7 +222,7 @@ export default function UserApproval() {
                       <td>{String(idx + 1).padStart(2, '0')}</td>
                       <td>{user.nickname}</td>
                       <td>{user.email}</td>
-                      <td>{formatDateToPost(user.createdAt)}</td>
+                      <td>{formatDateToPost({ date: user.createdAt })}</td>
                       <td>
                         {user.studentStatus === 'current_student'
                           ? '재학생'
@@ -261,9 +261,9 @@ export default function UserApproval() {
                                     user.studentStatus === 'current_student'
                                       ? '재학생'
                                       : '졸업생',
-                                  userSignUpDate: formatDateToPost(
-                                    user.createdAt
-                                  ),
+                                  userSignUpDate: formatDateToPost({
+                                    date: user.createdAt,
+                                  }),
                                 });
                                 handleModalOpen({
                                   modalName: 'isUserRejectReasonModal',

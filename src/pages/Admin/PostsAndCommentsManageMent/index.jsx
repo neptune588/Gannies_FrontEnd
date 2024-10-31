@@ -497,7 +497,7 @@ export default function PostsAndCommentsManageMent() {
                   </td>
                   <td>{item.nickname}</td>
                   <td>
-                    {formatDateToPost(item.createdAt)}
+                    {formatDateToPost({ date: item.createdAt })}
                     {isDeleteButtonActive && (
                       <PostDeletetSelectButton
                         $isSelected={item.deleteSelectState}
@@ -521,7 +521,7 @@ export default function PostsAndCommentsManageMent() {
                     onClick={() => {
                       setDetailModalInfo({
                         creator: item.nickname,
-                        createDate: formatDateToPost(item.createdAt),
+                        createDate: formatDateToPost({ date: item.createdAt }),
                         boardType: item.boardType,
                         itemId: item.itemId,
                         titleOrContent: item.itemTitleOrContent,

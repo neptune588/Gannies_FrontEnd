@@ -260,7 +260,7 @@ export default function Community({ isSearch, searchKeyword }) {
                         `<span>${searchKeyword}</span>`
                       )}
                       nickname={post.user.nickname}
-                      createDate={formatDateToPost(post.createdAt)}
+                      createDate={formatDateToPost({ date: post.createdAt })}
                       postViewCount={parseInt(post.viewCounts, 10)}
                       likeCount={parseInt(post.likeCounts, 10)}
                       numberOfCommentsAndReplies={parseInt(

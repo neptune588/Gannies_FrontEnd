@@ -8,7 +8,11 @@ import useEventHandler from '@/hooks/useEventHandler';
 import { getPresignedUrl, s3Upload, deleteS3Url } from '@/api/authApi';
 import { errorAlert, questionAlert, confirmAlert } from '@/utils/sweetAlert';
 
-export default function useTinyMceUpload({ initialTitle, initialContent }) {
+export default function useTinyMceUpload({
+  initialTitle,
+  initialContent,
+  initialFiles,
+}) {
   const editorRef = useRef(null);
   const imageButtonRef = useRef(null);
   const uploadedFilesRef = useRef();
@@ -360,7 +364,7 @@ export default function useTinyMceUpload({ initialTitle, initialContent }) {
 
     let uploadFile = e.target.files[0];
     const totalImages = totalImageConvert();
-    const totalFiles = uploadedFiles.filter((file) => file.type === 'file');
+    const totalFiles = uploadedFiles.files;
     let sizeConvertToMegaByte;
 
     //image -> 단일업로드
@@ -459,7 +463,7 @@ export default function useTinyMceUpload({ initialTitle, initialContent }) {
             {
               type: 'image',
               presignedUrl,
-              src: s3Url,
+              s3Url,
               fileSize: parseFloat(sizeConvertToMegaByte).toFixed(2),
             },
           ],
@@ -489,7 +493,7 @@ export default function useTinyMceUpload({ initialTitle, initialContent }) {
     const doc = parser.parseFromString(content, 'text/html');
     const images = doc.querySelectorAll('img');
     const totalImages = totalImageConvert();
-    const totalFiles = uploadedFiles.filter((file) => file.type === 'file');
+    const totalFiles = uploadedFiles.files;
 
     //console.log('image 갯수: ', images.length + totalImages.length);
     //console.log(images);
@@ -604,7 +608,7 @@ export default function useTinyMceUpload({ initialTitle, initialContent }) {
                 {
                   type: 'image',
                   presignedUrl,
-                  src: s3Url,
+                  s3Url,
                   fileSize: parseFloat(sizeConvertToMegaByte).toFixed(2),
                 },
               ],
@@ -650,7 +654,7 @@ export default function useTinyMceUpload({ initialTitle, initialContent }) {
     }
   };
 
-  const urlExtraction = async () => {
+  const imageFileUrlsUpdated = async () => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(editorValue, 'text/html');
     const images = doc.querySelectorAll('img');
@@ -659,29 +663,42 @@ export default function useTinyMceUpload({ initialTitle, initialContent }) {
     //2. uploadedFiles에 존재하는 object의 src가 image src와 하나도 일치하지 않는 경우
     //3. 즉  object src o image src x (이미지가 삭제 된 경우)인 경우 해당 object src 삭제 요청 밑 해당 오브젝트 제거
     //4. 그렇게 해서 남은 object의 src만 배열에 담기
-    const deleteImageSearch = uploadedFiles.images.map((file) =>
+    const deleteImageSearch = uploadedFiles.images.map((file, idx) =>
       (async () => {
         const imageNodes = Array.from(images);
-        const srcSearch = imageNodes.filter((image) => image.src === file.src);
+        const isImageSrcContainedInFile = imageNodes.find(
+          (image) => image.src === file.s3Url
+        );
 
-        if (srcSearch.length === 0) {
-          try {
-            await deleteS3Url(encodeURIComponent(file.src));
-          } catch (error) {
-            errorAlert('이미지 삭제 실패');
-          }
+        if (!isImageSrcContainedInFile) {
+          await deleteS3Url(encodeURIComponent(file.s3Url));
+          setUploadedFiles((prev) => {
+            const arrSplice = [...prev.images];
+            arrSplice.splice(idx, 1);
+            uploadedFilesRef.current = {
+              ...prev,
+              images: arrSplice,
+            };
+            return uploadedFilesRef.current;
+          });
         }
       })()
     );
 
     await axios.all(deleteImageSearch);
-    const urls = [];
-    images.forEach((image) => {
-      urls.push(image.src);
-    });
-
-    return urls;
   };
+
+  const urlExtraction = () => {
+    return [...uploadedFiles.files, ...uploadedFiles.images].map(
+      (file) => file.s3Url
+    );
+  };
+
+  useEffect(() => {
+    if (initialFiles && initialFiles?.length > 0) {
+      console.log(initialFiles);
+    }
+  }, []);
 
   useEffect(() => {
     if (editorRef.current && Object.keys(previewImage).length !== 0) {
@@ -708,6 +725,7 @@ export default function useTinyMceUpload({ initialTitle, initialContent }) {
     cumSize,
     uploadedFiles,
     urlExtraction,
+    imageFileUrlsUpdated,
     textContentLengthCalc,
     handleImageUploadClick,
     handleFileUploadClick,

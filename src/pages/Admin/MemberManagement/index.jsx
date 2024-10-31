@@ -336,7 +336,7 @@ export default function MemberManagement() {
                   <td>{user.email}</td>
                   <td>{user.postCount}</td>
                   <td>{user.commentCount}</td>
-                  <td>{formatDateToPost(user.createdAt)}</td>
+                  <td>{formatDateToPost({ date: user.createdAt })}</td>
                   <td>
                     {/* 1) 해당없음 -> 해당없음/정지/탈퇴
                     2) 탈퇴 -> X

@@ -86,6 +86,7 @@ export default function CreateCommunityPost() {
     cumSize,
     uploadedFiles,
     urlExtraction,
+    imageFileUrlsUpdated,
     textContentLengthCalc,
     handleImageUploadClick,
     handleFileUploadClick,
@@ -99,6 +100,7 @@ export default function CreateCommunityPost() {
   } = useTinyMceUpload({
     initialTitle: editData ? editData.title : '',
     initialContent: editData ? editData.content : '',
+    initialFiles: editData ? editData.fileUrls : '',
   });
 
   const [isEditorLoading, setIsEditorLoading] = useState(true);
@@ -112,47 +114,54 @@ export default function CreateCommunityPost() {
       return;
     }
 
+    const condition01 = isOnlyWhiteSpaceCheck(titleValue);
+    const condition02 = isOnlyWhiteSpaceCheck(editorValue);
+
+    if (condition01 || condition02) {
+      alert('제목 혹은 내용을 입력 해주세요!');
+      return;
+    }
+
+    if (textContentLength > 5000) {
+      alert('입력 가능한 최대 글자 수는 5000자입니다!');
+      return;
+    }
+
+    setIsSubmit(true);
+
+    const splitByWhitespace = titleValue.trim().split(' ');
+    const title = splitByWhitespace.filter((str) => str !== '').join(' ');
+
+    const postData = {
+      title,
+      content: editorValue,
+    };
+
+    if (
+      selectedBoardTitle === '취업정보' ||
+      selectedBoardTitle === '실습정보'
+    ) {
+      postData.hospitalNames =
+        hospitalName === '병원찾기' ? null : [hospitalName];
+    }
+
     try {
-      const condition01 = isOnlyWhiteSpaceCheck(titleValue);
-      const condition02 = isOnlyWhiteSpaceCheck(editorValue);
+      await imageFileUrlsUpdated();
+    } catch (error) {
+      errorAlert('이미지 갱신에 실패하였습니다.');
+      return;
+    }
 
-      if (condition01 || condition02) {
-        alert('제목 혹은 내용을 입력 해주세요!');
-        return;
-      }
+    const fileUrls = urlExtraction();
+    if (fileUrls.length > 0) {
+      postData.fileUrls = fileUrls;
+    }
 
-      if (textContentLength > 5000) {
-        alert('입력 가능한 최대 글자 수는 5000자입니다!');
-        return;
-      }
+    if (editData && editData.boardType !== selectedBoardType) {
+      postData.afterBoardType = selectedBoardType;
+    }
 
-      setIsSubmit(true);
-
-      const splitByWhitespace = titleValue.trim().split(' ');
-      const title = splitByWhitespace.filter((str) => str !== '').join(' ');
-
-      const postData = {
-        title,
-        content: editorValue,
-      };
-
-      if (
-        selectedBoardTitle === '취업정보' ||
-        selectedBoardTitle === '실습정보'
-      ) {
-        postData.hospitalNames =
-          hospitalName === '병원찾기' ? null : [hospitalName];
-      }
-
-      const imageSrc = urlExtraction();
-      if (imageSrc.length > 0) {
-        postData.fileUrls = imageSrc;
-      }
-
-      if (editData && editData.boardType !== selectedBoardType) {
-        postData.afterBoardType = selectedBoardType;
-      }
-
+    try {
       const res =
         editData && editData.type === 'isEdit'
           ? await editPost(
@@ -161,16 +170,17 @@ export default function CreateCommunityPost() {
               postData
             )
           : await createPost(selectedBoardType, postData);
-
       const { postId: newPostId } = res.data;
 
+      console.log(postData);
       window.scroll({ top: 0, left: 0 });
       navigate(`/community/${selectedBoardType}/post/${newPostId}`);
     } catch (error) {
-      errorAlert('작성 실패');
-    } finally {
-      setIsSubmit(false);
+      console.error(error.message);
+      errorAlert('게시글 작성 실패');
     }
+
+    setIsSubmit(false);
   };
 
   useEffect(() => {

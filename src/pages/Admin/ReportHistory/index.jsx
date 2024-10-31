@@ -212,7 +212,7 @@ export default function ReportHistory() {
                   <td>{list.content}</td>
                   <td>{list.creator}</td>
                   <td>{list.reporter}</td>
-                  <td>{formatDateToPost(list.reportDate)}</td>
+                  <td>{formatDateToPost({ date: list.reportDate })}</td>
                   <td>
                     {list.otherReportedReason
                       ? list.otherReportedReason
@@ -312,7 +312,7 @@ export default function ReportHistory() {
                         creator: list.creator,
                         category: list.postCategory,
                         reporter: list.reporter,
-                        reportDate: formatDateToPost(list.reportDate),
+                        reportDate: formatDateToPost({ date: list.reportDate }),
                         reportReason: list.reportReason,
                         otherReportedReason: list.otherReportedReason,
                       });
