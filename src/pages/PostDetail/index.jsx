@@ -398,7 +398,7 @@ export default function PostDetail() {
           }}
         >
           <LikeButton $isLikeClick={post.isLiked} />
-          <p>좋아요</p>
+          <p>공감해요</p>
         </IconBox>
         <CommentArea>
           <CommentLengthView>댓글 {post.numberOfComments}개</CommentLengthView>

@@ -233,13 +233,11 @@ export default function Community({ isSearch, searchKeyword }) {
             <table>
               <thead>
                 <TableHeader>
-                  <th>
-                    <p>번호</p>
-                    <p>제목</p>
-                  </th>
-                  <th>
-                    <p>닉네임/날짜/조회 수/좋아요 수</p>
-                  </th>
+                  <th>번호</th>
+                  <th>제목</th>
+                  <th>작성자</th>
+                  <th>작성날짜</th>
+                  <th>조회 수/공감 수</th>
                 </TableHeader>
               </thead>
               <tbody height={currentPosts.length === 0 ? '669px' : 'auto'}>
