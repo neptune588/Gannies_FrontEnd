@@ -261,10 +261,10 @@ export default function Community({ isSearch, searchKeyword }) {
                       createDate={formatDateToPost({ date: post.createdAt })}
                       postViewCount={parseInt(post.viewCounts, 10)}
                       likeCount={parseInt(post.likeCounts, 10)}
-                      numberOfCommentsAndReplies={parseInt(
-                        post.numberOfCommentsAndReplies,
-                        10
-                      )}
+                      numberOfCommentsAndReplies={
+                        post.numberOfCommentsAndReplies > 0 &&
+                        parseInt(post.numberOfCommentsAndReplies, 10)
+                      }
                     />
                   );
                 })}

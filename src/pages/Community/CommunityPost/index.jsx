@@ -34,7 +34,9 @@ export default function CommunityPost({
             __html: DOMPurify.sanitize(title),
           }}
         ></p>
-        <CommentLength>{numberOfCommentsAndReplies}</CommentLength>
+        {numberOfCommentsAndReplies && (
+          <CommentLength>{numberOfCommentsAndReplies}</CommentLength>
+        )}
       </PostTitleBox>
       <PostNicknameBox>{nickname}</PostNicknameBox>
       <PostDateBox>{createDate}</PostDateBox>

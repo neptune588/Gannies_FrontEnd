@@ -19,6 +19,7 @@ import {
   OptionListBox,
   OptionList,
   OptionListOpenButton,
+  CommentLength,
 } from '@/pages/Admin/ReportHistory/style';
 
 import {
@@ -209,7 +210,18 @@ export default function ReportHistory() {
               return (
                 <TableBodyRow key={uuid()} currentActiveTab={'신고내역'}>
                   <td>{list.contentId}</td>
-                  <td>{list.content}</td>
+                  <td>
+                    {list.numberOfCommentsAndReplies &&
+                      list.numberOfCommentsAndReplies > 0 && (
+                        <>
+                          {list.content}
+                          <CommentLength>
+                            {list.numberOfCommentsAndReplies}
+                          </CommentLength>
+                        </>
+                      )}
+                    {list.content}
+                  </td>
                   <td>{list.creator}</td>
                   <td>{list.reporter}</td>
                   <td>{formatDateToPost({ date: list.reportDate })}</td>
