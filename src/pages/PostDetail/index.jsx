@@ -234,11 +234,6 @@ export default function PostDetail() {
     setIsEditOn((prev) => !prev);
   };
 
-  const handleEditCancel = () => {
-    window.scroll({ top: 0, left: 0 });
-    setIsEditOn((prev) => !prev);
-  };
-
   const commentPageGroupReCalc = useCallback(
     (number) => {
       let changeGroupOrder = null;

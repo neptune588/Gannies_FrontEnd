@@ -31,7 +31,7 @@ import useLoginCheck from '@/hooks/useLoginCheck';
 import useSelectorList from '@/hooks/useSelectorList';
 import useEventHandler from '@/hooks/useEventHandler';
 import useModalsControl from '@/hooks/useModalsControl';
-import useTinyMceImageUpload from '@/hooks/useTinyMceImageUpload';
+import useTinyMceUpload from '@/hooks/useTinyMceUpload';
 
 import { createPost, editPost } from '@/api/postApi';
 import { checkAdminStatus } from '@/api/authApi';
@@ -42,12 +42,9 @@ import { errorAlert } from '@/utils/sweetAlert';
 export default function CreateCommunityPost() {
   //제목 - 한글 1글자 이상은 최소로 있어야 한다. 최대는 50자 이하
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const location = useLocation();
 
   const { boardType } = useParams();
-
-  const firstRunBlockToSetSelectOptionEffect = useRef(true);
 
   const [editData] = useState(location.state ? location.state : null);
 
@@ -83,16 +80,23 @@ export default function CreateCommunityPost() {
     editorValue,
     editorRef,
     imageButtonRef,
+    fileUploadButtonRef,
     textContentLength,
     isUpload,
+    cumSize,
+    uploadedFiles,
     urlExtraction,
     textContentLengthCalc,
     handleImageUploadClick,
+    handleFileUploadClick,
     handleImageUpload,
     handleImagePaste,
     handleTitleValueChange,
     handleEditorValueChange,
-  } = useTinyMceImageUpload({
+    handleKeydown,
+    handleFileUpload,
+    handleUploadFileDelete,
+  } = useTinyMceUpload({
     initialTitle: editData ? editData.title : '',
     initialContent: editData ? editData.content : '',
   });
@@ -183,16 +187,6 @@ export default function CreateCommunityPost() {
       }
     })();
   }, []);
-
-  /*   useEffect(() => {
-    if (firstRunBlockToSetSelectOptionEffect.current) {
-      firstRunBlockToSetSelectOptionEffect.current = false;
-      return;
-    }
-
-    setSelectedOption(setCategorySelectOptions[0].content);
-  }, [categorySelectOptions]); */
-
   return (
     <>
       {isHospitalSearchModal && (
@@ -261,16 +255,23 @@ export default function CreateCommunityPost() {
               editorRef={editorRef}
               initialContent={editData ? editData.content : ''}
               imageButtonRef={imageButtonRef}
+              fileUploadButtonRef={fileUploadButtonRef}
               editorValue={editorValue}
               textContentLength={textContentLength}
               isUpload={isUpload}
+              cumSize={cumSize}
+              uploadedFiles={uploadedFiles}
               textContentLengthCalc={textContentLengthCalc}
               isEditorLoading={isEditorLoading}
               setIsEditorLoading={setIsEditorLoading}
               handleImageUploadClick={handleImageUploadClick}
+              handleFileUploadClick={handleFileUploadClick}
               handleEditorValueChange={handleEditorValueChange}
               handleImageUpload={handleImageUpload}
               handleImagePaste={handleImagePaste}
+              handleKeydown={handleKeydown}
+              handleFileUpload={handleFileUpload}
+              handleUploadFileDelete={handleUploadFileDelete}
             />
           </ContentsWrapper>
           {!isEditorLoading && (

@@ -1,76 +1,39 @@
 import { Editor } from '@tinymce/tinymce-react';
-import styled from 'styled-components';
+import uuid from 'react-uuid';
 
 import EditorLoadingCircle from '@/components/Loading/EditorLoadingCircle';
 import CommonLoadingCircle from '@/components/Loading/CommonLoadingCircle';
+import UploadFileList from '@/pages/CreateCommunityPost/PostCreateEditor/UploadFileList';
 
-import { isOnlyWhiteSpaceCheck } from '@/utils/whiteSpaceCheck';
-
-const EditorStylingBox = styled.div`
-  .tox {
-    margin: 30px 0 15px;
-    min-height: 490px;
-    .tox-edit-area {
-      &::before {
-        border: none !important;
-      }
-    }
-    .tox-toolbar__group {
-      user-select: none;
-      button,
-      span {
-        cursor: pointer;
-      }
-    }
-    .tox-edit-area__iframe {
-      overflow: hidden;
-    }
-  }
-`;
-
-const ImageUploadInput = styled.input`
-  display: none;
-`;
-
-const NoticeBox = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 60px;
-
-  > p {
-    font-size: ${({ theme: { typo } }) => {
-      return typo.size.sm;
-    }};
-    color: ${({ theme: { colors } }) => {
-      return colors.gray['70'];
-    }};
-
-    > span {
-      font-weight: ${({ theme: { typo } }) => {
-        return typo.weight.semiBold;
-      }};
-      color: ${({ theme: { colors } }) => {
-        return colors.gray['80'];
-      }};
-    }
-  }
-`;
+import {
+  EditorStylingBox,
+  UploadInput,
+  NoticeBox,
+  SubTitle,
+  UploadFilesBox,
+} from '@/pages/CreateCommunityPost/PostCreateEditor/style';
 
 export default function PostCreateEditor({
   editorRef,
   initialContent,
   imageButtonRef,
+  fileUploadButtonRef,
   editorValue,
   textContentLength,
   isUpload,
+  cumSize,
+  uploadedFiles,
   textContentLengthCalc,
   isEditorLoading,
   setIsEditorLoading,
   handleEditorValueChange,
   handleImageUploadClick,
+  handleFileUploadClick,
   handleImageUpload,
   handleImagePaste,
+  handleKeydown,
+  handleFileUpload,
+  handleUploadFileDelete,
 }) {
   return (
     <>
@@ -93,8 +56,6 @@ export default function PostCreateEditor({
           onInit={(_, editor) => {
             setIsEditorLoading(false);
             editorRef.current = editor;
-
-            //handleImagePaste(editor);
           }}
           init={{
             menubar: false,
@@ -102,27 +63,36 @@ export default function PostCreateEditor({
             language: 'ko_KR',
             plugins: [
               'image',
-              'wordcount',
               'autolink',
+              'wordcount',
               'charmap',
               'link',
               'lists',
               'preview',
               'searchreplace',
-              //'media',
               'table',
               //'paste',
               'help',
             ],
             toolbar:
-              'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | charmap | link customImageButton | preview | wordcount | searchreplace | help',
+              'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | charmap | customFileUploadButton customImageButton | link | preview | searchreplace | help',
 
-            setup: (editor) => {
+            setup: async (editor) => {
+              editor.ui.registry.addIcon(
+                'uploadIcon',
+                '<svg height="45px" width="60px" version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve"><g><g><g><g><g><path fill="#231815" d="M23,16.5c-0.1,0-0.3,0-0.4-0.1L20,13.7l-2.6,2.6c-0.2,0.2-0.5,0.2-0.7,0s-0.2-0.5,0-0.7l3-3c0.2-0.2,0.5-0.2,0.7,0l3,3c0.2,0.2,0.2,0.5,0,0.7C23.3,16.5,23.1,16.5,23,16.5z"/></g><g><path fill="#231815" d="M20,22c-0.3,0-0.5-0.2-0.5-0.5v-8c0-0.3,0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5v8C20.5,21.8,20.3,22,20,22z"/></g></g><g><path fill="#231815" d="M25,27.5H15c-1.4,0-2.5-1.1-2.5-2.5v-2c0-0.3,0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5v2c0,0.8,0.7,1.5,1.5,1.5h10c0.8,0,1.5-0.7,1.5-1.5v-2c0-0.3,0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5v2C27.5,26.4,26.4,27.5,25,27.5z"/></g></g></g></g></g></svg>'
+              );
               editor.ui.registry.addButton('customImageButton', {
                 icon: 'image',
                 tooltip: '이미지 업로드',
                 onAction: handleImageUploadClick,
               });
+              editor.ui.registry.addButton('customFileUploadButton', {
+                icon: 'uploadIcon',
+                tooltip: '파일 업로드',
+                onAction: handleFileUploadClick,
+              });
+              //editor.on('keydown', (e) => handleKeydown(e));
             },
             //붙여넣기 했을 시 동작 지정
             paste_preprocess: (plugin, args) => {
@@ -131,14 +101,14 @@ export default function PostCreateEditor({
             image_file_types: 'gif,jpg,jpeg,png',
             //외부iframe이라 내부 css로 컨트롤불가능
             content_style: `
-        html {
-          font-size: 10px; 
-        }
-        body {
-          font-family: Pretendard, Arial, sans-serif;
-          font-size: 1.4rem;
-          min-height: 415px;
-        }
+              html {
+                font-size: 10px; 
+              }
+              body {
+                font-family: Pretendard, Arial, sans-serif;
+                font-size: 1.4rem;
+                min-height: 415px;
+              }
         `,
             valid_elements:
               'img[src|alt|title|width|height],p,strong,em,b,i,u,a[href|target=_blank],table[border|cellpadding|cellspacing|width|height],thead,tbody,tr,td[colspan|rowspan],th',
@@ -146,20 +116,52 @@ export default function PostCreateEditor({
           }}
         />
         {isEditorLoading && <EditorLoadingCircle />}
-        <ImageUploadInput
+        <UploadInput
           ref={imageButtonRef}
           type='file'
           accept='image/*'
           onChange={handleImageUpload}
         />
+        <UploadInput
+          ref={fileUploadButtonRef}
+          type='file'
+          onChange={handleFileUpload}
+        />
         {!isEditorLoading && (
-          <NoticeBox>
-            <p>
-              이미지 업로드 밑 붙여넣기 가능 확장자:
-              <span> gif, jpg, jpeg, png</span>
-            </p>
-            <p>현재 {textContentLength}/5000 자</p>
-          </NoticeBox>
+          <>
+            <SubTitle>Notice</SubTitle>
+            <NoticeBox>
+              <div>
+                <p>
+                  첨부, 붙여넣기 가능한 파일 밑 이미지 최대 갯수:{' '}
+                  <span>50개</span>
+                </p>
+                <p>현재: {textContentLength}자/5000자</p>
+              </div>
+              {/* <p>현재 업로드 가능한 용량: {cumSize.currentSize}MB/500MB</p> */}
+            </NoticeBox>
+            {uploadedFiles.files.length > 0 && (
+              <>
+                <SubTitle>Uploaded Files</SubTitle>
+                <UploadFilesBox>
+                  {uploadedFiles.files.map((file, idx) => {
+                    return (
+                      <UploadFileList
+                        key={uuid()}
+                        fileName={file.fileName}
+                        isLoading={file.isLoading}
+                        isFailed={file.isFailed}
+                        progress={file.progress}
+                        handleUploadFileDelete={() => {
+                          handleUploadFileDelete(idx);
+                        }}
+                      />
+                    );
+                  })}
+                </UploadFilesBox>
+              </>
+            )}
+          </>
         )}
       </EditorStylingBox>
     </>
