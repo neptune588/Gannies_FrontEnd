@@ -72,6 +72,7 @@ export default function ReportHistory() {
     withReplies: true,
   });
   const [reviewModalProps, setReviewModalProps] = useState({});
+  const [actionType, setActionType] = useState('');
 
   const handleOptionListToggle = (listNumber) => {
     const toggleFnc = (arr) => {
@@ -109,6 +110,22 @@ export default function ReportHistory() {
     }
   };
 
+  const setItemProperties = (item) => {
+    if (curActiveCategory === '게시글') {
+      return {
+        contentId: String(item.postId).padStart(2, '0'),
+        content: item.postTitle,
+        creator: item.postAuthor,
+      };
+    } else {
+      return {
+        contentId: String(item.commentId).padStart(2, '0'),
+        content: item.commentContent,
+        creator: item.commentAuthor,
+      };
+    }
+  };
+
   useEffect(() => {
     if (curActiveCategory === '게시글') {
       //console.log('카테고리 -> 게시글');
@@ -117,17 +134,26 @@ export default function ReportHistory() {
       //console.log('카테고리 -> 댓글');
       setHearderColumns(reportedCommentsHeaderColumns);
     }
-    setCurrentPageNumber(1);
-  }, [curActiveCategory]);
 
-  useEffect(() => {
-    window.scroll({ top: 0, left: 0 });
+    setCurrentPageNumber(1);
+    setActionType('');
     setQuery({
       page: currentPageNumber,
       limit: communityPostMaxLimit,
       withReplies: true,
     });
-  }, [currentPageNumber, curActiveCategory]);
+  }, [curActiveCategory]);
+
+  useEffect(() => {
+    if (actionType === 'pageMove') {
+      window.scroll({ top: 0, left: 0 });
+      setQuery({
+        page: currentPageNumber,
+        limit: communityPostMaxLimit,
+        withReplies: true,
+      });
+    }
+  }, [currentPageNumber]);
 
   useEffect(() => {
     (async () => {
@@ -147,11 +173,12 @@ export default function ReportHistory() {
         //key값 다르면 렌더링할때 undfiend => 바뀐값 이런식으로 나옴
         //key를 통일시켜서 tablelist 값이 바껴도 그전값 -> 바뀐값으로 표기하자.
         return prev.map((list) => {
+          const { contentId, content, creator } = setItemProperties(list);
           return {
             ...list,
-            contentId: String(list.postId || list.commentId).padStart(2, '0'),
-            content: list.postTitle || list.commentContent,
-            creator: list.postAuthor || list.commentAuthor,
+            contentId,
+            content,
+            creator,
           };
         });
       });
@@ -212,15 +239,16 @@ export default function ReportHistory() {
                   <td>{list.contentId}</td>
                   <td>
                     {list.numberOfCommentsAndReplies &&
-                      list.numberOfCommentsAndReplies > 0 && (
-                        <>
-                          {list.content}
-                          <CommentLength>
-                            {list.numberOfCommentsAndReplies}
-                          </CommentLength>
-                        </>
-                      )}
-                    {list.content}
+                    list.numberOfCommentsAndReplies > 0 ? (
+                      <>
+                        {list.content}
+                        <CommentLength>
+                          {`[${list.numberOfCommentsAndReplies}]`}
+                        </CommentLength>
+                      </>
+                    ) : (
+                      list.content
+                    )}
                   </td>
                   <td>{list.creator}</td>
                   <td>{list.reporter}</td>
@@ -228,7 +256,17 @@ export default function ReportHistory() {
                   <td>
                     {list.otherReportedReason
                       ? list.otherReportedReason
-                      : list.reportReason}
+                      : (() => {
+                          if (list.reportReason === 'pornography') {
+                            return '음란한 컨텐츠';
+                          } else if (
+                            list.reportReason === 'slander/profanity'
+                          ) {
+                            return '비방/욕설';
+                          } else if (list.reportReason === 'spam') {
+                            return '스팸/도배';
+                          }
+                        })()}
                   </td>
                   <td>
                     {list.isOptionListOpen && (
@@ -343,6 +381,7 @@ export default function ReportHistory() {
         <PaginationWrapper>
           <Pagination
             pageNumbers={pageNumbers}
+            setActionType={setActionType}
             currentPageNumber={currentPageNumber}
             handlePageNumberClick={handlePageNumberClick}
             handlePrevPageClick={handlePrevPageClick}

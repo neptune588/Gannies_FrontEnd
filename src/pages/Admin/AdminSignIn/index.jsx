@@ -108,7 +108,6 @@ export default function AdminSignIn() {
         });
       }
     }
-
     setIsSubmit(false);
   };
 
@@ -143,7 +142,13 @@ export default function AdminSignIn() {
                 <input
                   placeholder='이메일'
                   type='text'
-                  {...register('adminEmail')}
+                  {...register('adminEmail', {
+                    onChange: () => {
+                      if (errors.formError) {
+                        clearErrors('formError');
+                      }
+                    },
+                  })}
                 />
               </div>
               <p>{errors.adminEmail?.message}</p>
@@ -154,7 +159,13 @@ export default function AdminSignIn() {
                   id='password-input'
                   placeholder='비밀번호'
                   type={isPasswordView ? 'text' : 'password'}
-                  {...register('adminPassword')}
+                  {...register('adminPassword', {
+                    onChange: () => {
+                      if (errors.formError) {
+                        clearErrors('formError');
+                      }
+                    },
+                  })}
                 />
                 {isPasswordView ? (
                   <Eye handlePasswordViewClick={handlePasswordViewClick} />

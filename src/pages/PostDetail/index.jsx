@@ -32,6 +32,7 @@ import {
 import useEventHandler from '@/hooks/useEventHandler';
 import useSelectorList from '@/hooks/useSelectorList';
 import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
+import useModalsControl from '@/hooks/useModalsControl';
 
 import { getPost, getPosts, deletePost } from '@/api/postApi';
 import { getComments } from '@/api/commentApi';
@@ -59,6 +60,8 @@ export default function PostDetail() {
     bannerTitle,
     comentWrapperLocation,
   } = useSelectorList();
+
+  const { handleModalClose } = useModalsControl();
 
   const {
     items: comments,
@@ -225,7 +228,9 @@ export default function PostDetail() {
       await deletePost(boardType, postId);
       alert('해당 글이 삭제되었습니다.');
       navigate(`/community/${boardType}`);
+      handleModalClose({ modalName: 'isPostDeleteModal' });
     } catch (error) {
+      alert('게시글을 삭제하는데 실패 하였습니다.');
       console.error(error);
     }
   };
