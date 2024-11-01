@@ -46,7 +46,8 @@ export default function AdminSideTab() {
   return (
     <TabContainer>
       <ProfileBox>
-        <MainLogo to={'/'}>
+        {/* 관리자 페이지와 일반 페이지를 함께 보며 관리하기 위해 새창 띄우기 */}
+        <MainLogo href='/' target='_blank' rel='noopener noreferrer'>
           <img src={mainLogo} alt='main-logo' />
         </MainLogo>
         <p>
@@ -70,6 +71,7 @@ export default function AdminSideTab() {
               $ownMenu={tab.label}
               onClick={() => {
                 activeTabChange(tab.label);
+                window.scroll({ top: 0, left: 0 });
                 navigate(tab.path);
               }}
             >

@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 
 import { medium_600, medium_700 } from '@/styles/commonStyle/localTextStyle';
 
@@ -27,7 +26,7 @@ const ProfileBox = styled.div`
   }
 `;
 
-const MainLogo = styled(Link)`
+const MainLogo = styled.a`
   display: block;
   width: 130px;
   margin-bottom: 20px;

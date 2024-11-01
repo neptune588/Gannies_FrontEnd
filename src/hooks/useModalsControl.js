@@ -21,6 +21,7 @@ export default function useModalsControl() {
     isItemDeleteModal,
     isUserRejectReasonModal,
     isPostOrCommentDetailModal,
+    isMemberManagementDetailModal,
     scrollLocation,
   } = useSelectorList();
 
@@ -59,6 +60,12 @@ export default function useModalsControl() {
     dispatch(
       setModal({ modalName: 'isUserRejectReasonModal', modalState: false })
     );
+    dispatch(
+      setModal({
+        modalName: 'isMemberManagementDetailModal',
+        modalState: false,
+      })
+    );
     document.body.style.overflow = 'auto';
   }, [location]);
 
@@ -72,6 +79,7 @@ export default function useModalsControl() {
     isItemDeleteModal,
     isUserRejectReasonModal,
     isPostOrCommentDetailModal,
+    isMemberManagementDetailModal,
     handleModalOpen,
     handleModalClose,
   };

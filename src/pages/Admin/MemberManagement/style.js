@@ -94,10 +94,20 @@ const ResetButton = styled.button`
   }
 `;
 
+const DummyClickBox = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% - 410px);
+  height: 100%;
+  cursor: pointer;
+`;
+
 export {
   SearchBox,
   OptionListBox,
   OptionList,
   OptionListOpenButton,
   ResetButton,
+  DummyClickBox,
 };

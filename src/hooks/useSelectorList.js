@@ -22,6 +22,7 @@ export default function useSelectorList() {
     isItemDeleteModal,
     isUserRejectReasonModal,
     isPostOrCommentDetailModal,
+    isMemberManagementDetailModal,
     scrollLocation,
   } = modalsControl;
 
@@ -51,6 +52,7 @@ export default function useSelectorList() {
     isItemDeleteModal,
     isUserRejectReasonModal,
     isPostOrCommentDetailModal,
+    isMemberManagementDetailModal,
     scrollLocation,
     comentWrapperLocation,
   };

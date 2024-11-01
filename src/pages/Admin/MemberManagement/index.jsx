@@ -14,6 +14,7 @@ import PaginationWrapper from '@/pages/Admin/PaginationWrapper';
 import Pagination from '@/components/Pagination';
 import UserBanModal from '@/pages/Admin/Modals/UserBanModal';
 import UserWithdrawModal from '@/pages/Admin/Modals/UserWithdrawModal';
+import MemberManagementModal from '@/pages/Admin/Modals/MemberManagementModal';
 import AlignSelectMenu from '@/components/AlignSelectMenu';
 
 import arrow from '@/assets/icons/arrows/chevron_down.svg';
@@ -25,6 +26,7 @@ import {
   OptionListOpenButton,
   SearchBox,
   ResetButton,
+  DummyClickBox,
 } from '@/pages/Admin/MemberManagement/style';
 
 import useEventHandler from '@/hooks/useEventHandler';
@@ -71,6 +73,7 @@ export default function MemberManagement() {
   const {
     handleModalOpen,
     handleModalClose,
+    isMemberManagementDetailModal,
     isUserBanModal,
     isUserWithdrawModal,
   } = useModalsControl();
@@ -92,6 +95,10 @@ export default function MemberManagement() {
   const [selectedSearchTypeQuery, setSelectedSearchTypeQuery] = useState(
     adminPageUserSearchTypes[0].query
   );
+  const [
+    memberManagementDetailModalProps,
+    setMemberManagementDetailModalProps,
+  ] = useState({});
 
   const { changeValue: selectedUserBanWeek, handleChange: handleWeekSelect } =
     useEventHandler({
@@ -269,6 +276,16 @@ export default function MemberManagement() {
 
   return (
     <>
+      {isMemberManagementDetailModal && (
+        <MemberManagementModal
+          memberManagementDetailModalProps={memberManagementDetailModalProps}
+          handleModalClose={() => {
+            handleModalClose({
+              modalName: 'isMemberManagementDetailModal',
+            });
+          }}
+        />
+      )}
       {isUserBanModal && (
         <UserBanModal
           userBanOptions={userBanOptions}
@@ -416,6 +433,25 @@ export default function MemberManagement() {
                     </OptionListOpenButton>
                   </td>
                   <td>{user.managementReason}</td>
+                  <DummyClickBox
+                    onClick={() => {
+                      setMemberManagementDetailModalProps({
+                        userId: String(user.userId).padStart(2, '0'),
+                        nickname: user.nickname,
+                        postCount: user.postCount,
+                        commentCount: user.commentCount,
+                        createDate: formatDateToPost({
+                          date: user.createdAt,
+                          type: 'edit',
+                        }),
+                        managementStatus: user.managementStatus,
+                        managementReason: user.managementReason,
+                      });
+                      handleModalOpen({
+                        modalName: 'isMemberManagementDetailModal',
+                      });
+                    }}
+                  />
                 </TableBodyRow>
               );
             })}

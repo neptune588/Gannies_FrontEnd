@@ -48,6 +48,7 @@ ${reset}
     resize: none !important; 
     outline: none !important;
   }
+
 `;
 
 export default GlobalStyles;

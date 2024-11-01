@@ -487,13 +487,17 @@ export default function PostsAndCommentsManageMent() {
                   <td>{String(item.itemId).padStart(2, '0')}</td>
                   <td>{boardTypeFormatting(item.boardType)}</td>
                   <td>
-                    {item.itemTitleOrContent}
                     {item.numberOfCommentsAndReplies &&
-                      item.numberOfCommentsAndReplies > 0 && (
+                    item.numberOfCommentsAndReplies > 0 ? (
+                      <>
+                        {item.itemTitleOrContent}
                         <CommentLength>
                           {`[${item.numberOfCommentsAndReplies}]`}
                         </CommentLength>
-                      )}
+                      </>
+                    ) : (
+                      item.itemTitleOrContent
+                    )}
                   </td>
                   <td>{item.nickname}</td>
                   <td>
