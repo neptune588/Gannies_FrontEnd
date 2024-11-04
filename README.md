@@ -4,6 +4,7 @@
 ## 👥 팀 소개
 
 #### 🎨 FrontEnd
+|   FrontEnd    |   FrontEnd     |
 | :------------: | :------------: |
 | 김*현 |  윤*환      |
 
@@ -37,6 +38,14 @@
 - 내 정보 수정 및 비밀번호 찾기
 
 ----
+## 📑 담당 페이지
+
+- 메인 페이지
+- 로그인 / 회원가입
+- 아이디 / 비밀번호 찾기
+- 마이페이지
+  
+----
 
 ## 🔍 담당 업무
 - 담당 페이지 UI 및 기능 구현
@@ -58,26 +67,16 @@
 
 ## 🎞 웹 페이지 화면
 #### 메인 화면
-![](https://github.com/VaIice/Capstone/assets/141003473/cdd1c098-1632-4f73-a45d-86ef32dc78e7)
+![image](https://github.com/user-attachments/assets/9e5c5f8e-3582-408b-bbd7-f9be17a48b35)
 
 ---
 #### 회원가입
-![](https://github.com/VaIice/Capstone/assets/141003473/ce558ae8-e03c-44b9-929b-a13a044b206d)
+![image](https://github.com/user-attachments/assets/5fc10be8-1d67-42ff-bdac-cee9fdd81503)
 
 ---
-#### 로그인 연장
-![](https://github.com/VaIice/Capstone/assets/141003473/de732636-95a6-4c22-8b1a-db07c58e1fc9)
+#### 마이페이지
+![image](https://github.com/user-attachments/assets/52c772e9-d294-4d56-8f44-580ad2aa32d9)
 
 ---
-#### 비밀번호 찾기
-<img src="https://github.com/VaIice/Capstone/assets/141003473/9dd02206-7fbf-451e-ba5d-46e94f9da60a" width="800"/>
-
----
-#### 게시물 검색
-![](https://github.com/VaIice/Capstone/assets/141003473/3ac026f7-6a69-4989-b5e4-022049fe4ee5)
-
-
----
-#### 웹 시연
-<img src="https://github.com/VaIice/Capstone/assets/141003473/42ccac85-6e6f-433c-9782-f77fdced3099" width="800"/>
-<img src="https://github.com/VaIice/Capstone/assets/141003473/5082e859-6288-43d7-960c-ea1cb1d43659" width="800"/>
+#### 상세 게시글
+![image](https://github.com/user-attachments/assets/2d229749-8d55-40ea-ba1b-5cf69c87bf49)
