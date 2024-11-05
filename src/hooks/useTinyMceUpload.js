@@ -199,7 +199,7 @@ export default function useTinyMceUpload({
     return file;
   };
 
-  const s3UploadRequest = async (file) => {
+  const s3UploadRequest = async ({ file, requestType }) => {
     //업로드, 붙여넣기 두곳에서 쓰이기 때문에 호출 단에서 오류 정의하는게 나을듯
     const formData = new FormData();
     const res = await getPresignedUrl({
@@ -214,7 +214,7 @@ export default function useTinyMceUpload({
     }
     formData.append('file', file);
 
-    await s3Upload(presignedUrl, formData, {
+    const fileProgressOption = {
       onUploadProgress: (progressEvent) => {
         setUploadedFiles((prev) => {
           uploadedFilesRef.current = {
@@ -224,7 +224,6 @@ export default function useTinyMceUpload({
                 return {
                   ...innerFile,
                   progress: (progressEvent.loaded / progressEvent.total) * 100,
-                  isLoading: true,
                 };
               } else {
                 return innerFile;
@@ -234,9 +233,33 @@ export default function useTinyMceUpload({
           return uploadedFilesRef.current;
         });
       },
-    });
+    };
+    await s3Upload(
+      presignedUrl,
+      formData,
+      requestType === 'fileUpload' && fileProgressOption
+    );
     //console.log(presignedUrl, fields['key'], file.type);
     return { presignedUrl, s3Url: `${presignedUrl}${fields['key']}` };
+  };
+
+  const totalFileSizeCalc = ({ type, currentFileSize }) => {
+    const sizeConvertToMegaByte = parseFloat(currentSizeCalc(currentFileSize));
+    setCumSize((prev) => {
+      const currentSize = parseFloat(prev.currentSize);
+      let totalSize =
+        type === 'upload'
+          ? currentSize + sizeConvertToMegaByte
+          : currentSize - sizeConvertToMegaByte;
+
+      totalSize = totalSize === 0 ? 0 : totalSize.toFixed(2);
+
+      cumSizeRef.current = {
+        prevSize: prev.currentSize,
+        currentSize: totalSize,
+      };
+      return cumSizeRef.current;
+    });
   };
 
   const handleImageUploadClick = () => {
@@ -295,7 +318,7 @@ export default function useTinyMceUpload({
             {
               type: 'file',
               fileName: uploadFile.name,
-              fileSize: parseFloat(curUploadFileSize).toFixed(2),
+              fileSize: curUploadFileSize,
               isLoading: true,
               progress: 0,
             },
@@ -304,7 +327,10 @@ export default function useTinyMceUpload({
         return uploadedFilesRef.current;
       });
 
-      const { presignedUrl, s3Url } = await s3UploadRequest(uploadFile);
+      const { presignedUrl, s3Url } = await s3UploadRequest({
+        file: uploadFile,
+        requestType: 'fileUpload',
+      });
 
       setUploadedFiles((prev) => {
         uploadedFilesRef.current = {
@@ -323,15 +349,7 @@ export default function useTinyMceUpload({
         };
         return uploadedFilesRef.current;
       });
-      setCumSize((prev) => {
-        cumSizeRef.current = {
-          prevSize: prev.currentSize,
-          currentSize: (
-            parseFloat(prev.currentSize) + parseFloat(curUploadFileSize)
-          ).toFixed(2),
-        };
-        return cumSizeRef.current;
-      });
+      totalFileSizeCalc({ type: 'upload', currentFileSize: curUploadFileSize });
     } catch (error) {
       setUploadedFiles((prev) => {
         uploadedFilesRef.current = {
@@ -381,16 +399,11 @@ export default function useTinyMceUpload({
           };
           return uploadedFilesRef.current;
         });
-        setCumSize((prev) => {
-          cumSizeRef.current = {
-            prevSize: prev.currentSize,
-            currentSize: (
-              parseFloat(prev.currentSize) -
-              parseFloat(uploadedFiles.files[deleteFileIdx].fileSize)
-            ).toFixed(2),
-          };
-          return cumSizeRef.current;
+        totalFileSizeCalc({
+          type: 'delete',
+          currentFileSize: uploadedFiles.files[deleteFileIdx].fileSize,
         });
+
         confirmAlert('파일이 삭제 되었습니다!');
       } catch (error) {
         //console.error(error);
@@ -485,16 +498,13 @@ export default function useTinyMceUpload({
         return;
       }
 
-      const { presignedUrl, s3Url } = await s3UploadRequest(uploadFile);
+      const { presignedUrl, s3Url } = await s3UploadRequest({
+        file: uploadFile,
+      });
       setPreviewImage({ src: s3Url, alt: '업로드 된 이미지' });
-      setCumSize((prev) => {
-        cumSizeRef.current = {
-          prevSize: prev.currentSize,
-          currentSize: (
-            parseFloat(prev.currentSize) + parseFloat(sizeConvertToMegaByte)
-          ).toFixed(2),
-        };
-        return cumSizeRef.current;
+      totalFileSizeCalc({
+        type: 'upload',
+        currentFileSize: sizeConvertToMegaByte,
       });
 
       setUploadedFiles((prev) => {
@@ -634,7 +644,7 @@ export default function useTinyMceUpload({
             return;
           }
 
-          const { presignedUrl, s3Url } = await s3UploadRequest(file);
+          const { presignedUrl, s3Url } = await s3UploadRequest({ file });
           image.src = s3Url;
           image.alt = image.alt ? image.alt : '복사 된 이미지';
           setUploadedFiles((prev) => {
@@ -650,14 +660,9 @@ export default function useTinyMceUpload({
             };
             return uploadedFilesRef.current;
           });
-          setCumSize((prev) => {
-            cumSizeRef.current = {
-              prevSize: prev.currentSize,
-              currentSize: (
-                parseFloat(prev.currentSize) + parseFloat(sizeConvertToMegaByte)
-              ).toFixed(2),
-            };
-            return cumSizeRef.current;
+          totalFileSizeCalc({
+            type: 'upload',
+            currentFileSize: sizeConvertToMegaByte,
           });
         } catch (error) {
           errorAlert('이미지를 불러오는 데 실패 하였습니다.');
@@ -750,29 +755,70 @@ export default function useTinyMceUpload({
     }
   };
 
-  /*   useEffect(() => {
-    if (initialFiles.fileUrls) {
-      const { fileUrls } = initialFiles;
-      setUploadedFiles(() => {
-        const images = fileUrls.images.map((s3Url) => {
-          return {
-            type: 'image',
-            s3Url,
+  useEffect(() => {
+    if (initialFiles) {
+      (async () => {
+        const { images, attachments } = initialFiles;
+        const urlToFileConvert = async (url, fileName = '') => {
+          const res = await fetch(url);
+          const blob = await res.blob();
+          const filename = filenameConvert(fileName);
+
+          return blobObjectToFileObjectConvert({
+            blob,
+            filename,
+          });
+        };
+
+        const uploadedImages = await Promise.all(
+          images.map(async (s3Url) => {
+            const convertedFile = await urlToFileConvert(s3Url);
+
+            totalFileSizeCalc({
+              type: 'upload',
+              currentFileSize: convertedFile.size,
+            });
+
+            return {
+              type: 'image',
+              s3Url,
+            };
+          })
+        );
+        const uploadedFiles = await Promise.all(
+          attachments.map(async (file) => {
+            const convertedFile = await urlToFileConvert(
+              file.fileUrl,
+              file.fileName
+            );
+
+            totalFileSizeCalc({
+              type: 'upload',
+              currentFileSize: convertedFile.size,
+            });
+
+            const sizeConvertToMegaByte = currentSizeCalc(convertedFile.size);
+            return {
+              type: 'file',
+              fileName: file.fileName,
+              fileSize: sizeConvertToMegaByte === 0 ? 0 : sizeConvertToMegaByte,
+              s3Url: file.fileUrl,
+              isLoading: false,
+              progress: 100,
+            };
+          })
+        );
+
+        setUploadedFiles(() => {
+          uploadedFilesRef.current = {
+            images: uploadedImages,
+            files: uploadedFiles,
           };
-        });
-        const files = fileUrls.attachments.map((file) => {
-          return {
-            type: 'file',
-            fileName: file.fileName,
-            fileSize: parseFloat().toFixed(2),
-            s3Url: file.fileUrl,
-            isLoading: false,
-            progress: 100,
-          };
-        });
-      });
+          return uploadedFilesRef.current
+        })
+      })();
     }
-  }, []); */
+  }, []);
 
   useEffect(() => {
     if (editorRef.current && Object.keys(previewImage).length !== 0) {
