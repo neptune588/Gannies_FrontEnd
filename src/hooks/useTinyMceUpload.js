@@ -15,6 +15,7 @@ export default function useTinyMceUpload({
 }) {
   const editorRef = useRef(null);
   const imageButtonRef = useRef(null);
+  const totalWordsRef = useRef();
   const uploadedFilesRef = useRef();
   const fileUploadButtonRef = useRef(null);
   const imageCompressionOptions = {
@@ -32,9 +33,13 @@ export default function useTinyMceUpload({
 
   const imageWidthStandard = 860;
   const imageCompressStandardSize = 1;
+  //upload size
   const imageUploadMaxSize = 5;
-  const fileUploadMaxLength = 50;
-  const uploadMaxSize = 500;
+  const fileUploadMaxSize = 10;
+  const totalUploadMaxSize = 350;
+  //upload length
+  const imageUploadMaxLength = 50;
+  const fileUploadMaxLength = 10;
 
   const [previewImage, setPreviewImage] = useState({});
   const [isUpload, setIsUpload] = useState(false);
@@ -61,15 +66,25 @@ export default function useTinyMceUpload({
     return tempDiv.textContent || tempDiv.innerText;
   };
 
-  const {
-    changeValue: textContentLength,
-    handleChange: textContentLengthCalc,
-  } = useEventHandler({
-    changeDefaultValue: (() => {
-      const totalText = totalTextConvert(initialContent);
-      return totalText.length > 0 ? totalText.length : 0;
-    })(),
-  });
+  const { changeValue: totalWordsLength, handleChange: setTotalWordsLength } =
+    useEventHandler({
+      changeDefaultValue: (() => {
+        const totalText = totalTextConvert(initialContent);
+        totalWordsRef.current = totalText.length > 0 ? totalText.length : 0;
+        return totalWordsRef.current;
+      })(),
+    });
+
+  const totalWordsCalc = () => {
+    const wordcount = editorRef.current.plugins.wordcount;
+    // 전체 단어 수
+    const totalWordCount = wordcount.body.getCharacterCount();
+
+    setTotalWordsLength(() => {
+      totalWordsRef.current = totalWordCount;
+      return totalWordsRef.current;
+    });
+  };
 
   const currentSizeCalc = (size) => {
     //소숫점 2번째자리 까지 표기
@@ -240,21 +255,33 @@ export default function useTinyMceUpload({
     }
 
     const uploadFile = e.target.files[0];
-    const totalImages = totalImageConvert();
-    const uploadFileSize = currentSizeCalc(uploadFile.size);
+    const curUploadFileType = uploadFile.type;
+    const curUploadFileSize = currentSizeCalc(uploadFile.size);
 
-    if (
-      totalImages.length + uploadedFiles.files.length + 1 >
-      fileUploadMaxLength
-    ) {
-      errorAlert(
-        '첨부, 붙여넣기 할 수 있는 파일 밑 이미지는 최대 50개 입니다!'
-      );
+    //1. file업로드가 10개를 넘는지 ok
+    //2. image+file 업로드 합산이 60개를 넘는지 ok
+    //3. 이미지 file이면 5mb를 넘는지, 그냥 파일이면 10mb를 넘는지 ok
+    //4. 도합 size가 350mb를 넘는지 ok
+    if (uploadedFiles.files.length + 1 > fileUploadMaxLength) {
+      errorAlert('업로드 가능한 최대 파일 갯수는 10개 입니다!');
       return;
     }
 
-    if (uploadFileSize > uploadMaxSize) {
+    if (
+      curUploadFileType.startsWith('image/') &&
+      curUploadFileSize > imageUploadMaxSize
+    ) {
+      errorAlert('이미지 파일은 5MB를 초과하여 업로드 할 수 없습니다.');
+      return;
+    }
+
+    if (curUploadFileSize > fileUploadMaxSize) {
       errorAlert('파일은 10MB를 초과하여 업로드 할 수 없습니다.');
+      return;
+    }
+
+    if (curUploadFileSize + cumSize.currentSize > totalUploadMaxSize) {
+      errorAlert('업로드 가능한 최대 용량(350MB)을 넘어섰습니다.');
       return;
     }
 
@@ -268,7 +295,7 @@ export default function useTinyMceUpload({
             {
               type: 'file',
               fileName: uploadFile.name,
-              fileSize: parseFloat(uploadFileSize).toFixed(2),
+              fileSize: parseFloat(curUploadFileSize).toFixed(2),
               isLoading: true,
               progress: 0,
             },
@@ -286,7 +313,6 @@ export default function useTinyMceUpload({
             if (idx === prev.files.length - 1) {
               return {
                 ...innerFile,
-                presignedUrl,
                 s3Url,
                 isLoading: false,
               };
@@ -296,6 +322,15 @@ export default function useTinyMceUpload({
           }),
         };
         return uploadedFilesRef.current;
+      });
+      setCumSize((prev) => {
+        cumSizeRef.current = {
+          prevSize: prev.currentSize,
+          currentSize: (
+            parseFloat(prev.currentSize) + parseFloat(curUploadFileSize)
+          ).toFixed(2),
+        };
+        return cumSizeRef.current;
       });
     } catch (error) {
       setUploadedFiles((prev) => {
@@ -346,6 +381,16 @@ export default function useTinyMceUpload({
           };
           return uploadedFilesRef.current;
         });
+        setCumSize((prev) => {
+          cumSizeRef.current = {
+            prevSize: prev.currentSize,
+            currentSize: (
+              parseFloat(prev.currentSize) -
+              parseFloat(uploadedFiles.files[deleteFileIdx].fileSize)
+            ).toFixed(2),
+          };
+          return cumSizeRef.current;
+        });
         confirmAlert('파일이 삭제 되었습니다!');
       } catch (error) {
         //console.error(error);
@@ -364,14 +409,11 @@ export default function useTinyMceUpload({
 
     let uploadFile = e.target.files[0];
     const totalImages = totalImageConvert();
-    const totalFiles = uploadedFiles.files;
     let sizeConvertToMegaByte;
 
     //image -> 단일업로드
-    if (totalImages.length + totalFiles.length + 1 > fileUploadMaxLength) {
-      errorAlert(
-        '첨부, 붙여넣기 할 수 있는 파일 밑 이미지는 최대 50개 입니다!'
-      );
+    if (totalImages.length + 1 > imageUploadMaxLength) {
+      errorAlert('업로드, 붙여넣기 할 수 있는 이미지는 최대 50개 입니다!');
       return;
     }
 
@@ -438,8 +480,8 @@ export default function useTinyMceUpload({
         return;
       }
 
-      if (sizeConvertToMegaByte + cumSize > uploadMaxSize) {
-        errorAlert('업로드 가능한 최대 용량을 넘어섰습니다.');
+      if (sizeConvertToMegaByte + cumSize.currentSize > totalUploadMaxSize) {
+        errorAlert('업로드 가능한 최대 용량(350MB)을 넘어섰습니다.');
         return;
       }
 
@@ -447,9 +489,9 @@ export default function useTinyMceUpload({
       setPreviewImage({ src: s3Url, alt: '업로드 된 이미지' });
       setCumSize((prev) => {
         cumSizeRef.current = {
-          prevSize: prev.prevSize,
+          prevSize: prev.currentSize,
           currentSize: (
-            parseFloat(prev.prevSize) + parseFloat(sizeConvertToMegaByte)
+            parseFloat(prev.currentSize) + parseFloat(sizeConvertToMegaByte)
           ).toFixed(2),
         };
         return cumSizeRef.current;
@@ -462,9 +504,7 @@ export default function useTinyMceUpload({
             ...prev.images,
             {
               type: 'image',
-              presignedUrl,
               s3Url,
-              fileSize: parseFloat(sizeConvertToMegaByte).toFixed(2),
             },
           ],
         };
@@ -477,13 +517,22 @@ export default function useTinyMceUpload({
     }
   };
 
-  const handleImagePaste = async (plugin, args) => {
+  const handlePaste = async (plugin, args) => {
+    //이벤트 핸들러 -> 값 갱신 시키기 위해 ref사용해야함.
     args.preventDefault();
     const content = args.content;
 
     //1) TEXT 5000자 넘는지 검증
     const textCheck = totalTextConvert(content);
-    if (textCheck && textCheck.length + textContentLength > 5000) {
+    /*     console.log('current editor words length: ', totalWordsRef.current);
+    console.log('paste words length: ', textCheck.length);
+    console.log(
+      'total words length: ',
+      totalWordsRef.current + textCheck.length,
+      '/MAX: 5000'
+    ); */
+
+    if (textCheck && textCheck.length + totalWordsRef.current > 5000) {
       errorAlert('최대 글자를 초과하여 붙여 넣을 수 없습니다!');
       return;
     }
@@ -493,19 +542,13 @@ export default function useTinyMceUpload({
     const doc = parser.parseFromString(content, 'text/html');
     const images = doc.querySelectorAll('img');
     const totalImages = totalImageConvert();
-    const totalFiles = uploadedFiles.files;
 
     //console.log('image 갯수: ', images.length + totalImages.length);
     //console.log(images);
 
     //IMAGE 갯수 CHECK
-    if (
-      images.length + totalImages.length + totalFiles.length >
-      fileUploadMaxLength
-    ) {
-      errorAlert(
-        '첨부, 붙여넣기 할 수 있는 파일 밑 이미지는 최대 50개 입니다!'
-      );
+    if (images.length + totalImages.length > imageUploadMaxLength) {
+      errorAlert('업로드, 붙여넣기 할 수 있는 이미지는 최대 50개 입니다!');
       return;
     }
 
@@ -583,23 +626,17 @@ export default function useTinyMceUpload({
             return;
           }
 
-          if (sizeConvertToMegaByte + cumSize > uploadMaxSize) {
-            errorAlert('업로드 가능한 최대 용량을 넘어섰습니다.');
+          if (
+            sizeConvertToMegaByte + cumSize.currentSize >
+            totalUploadMaxSize
+          ) {
+            errorAlert('업로드 가능한 최대 용량(350MB)을 넘어섰습니다.');
             return;
           }
 
           const { presignedUrl, s3Url } = await s3UploadRequest(file);
           image.src = s3Url;
           image.alt = image.alt ? image.alt : '복사 된 이미지';
-          setCumSize((prev) => {
-            cumSizeRef.current = {
-              prevSize: prev.prevSize,
-              currentSize: (
-                parseFloat(prev.prevSize) + parseFloat(sizeConvertToMegaByte)
-              ).toFixed(2),
-            };
-            return cumSizeRef.current;
-          });
           setUploadedFiles((prev) => {
             uploadedFilesRef.current = {
               ...prev,
@@ -607,13 +644,20 @@ export default function useTinyMceUpload({
                 ...prev.images,
                 {
                   type: 'image',
-                  presignedUrl,
                   s3Url,
-                  fileSize: parseFloat(sizeConvertToMegaByte).toFixed(2),
                 },
               ],
             };
             return uploadedFilesRef.current;
+          });
+          setCumSize((prev) => {
+            cumSizeRef.current = {
+              prevSize: prev.currentSize,
+              currentSize: (
+                parseFloat(prev.currentSize) + parseFloat(sizeConvertToMegaByte)
+              ).toFixed(2),
+            };
+            return cumSizeRef.current;
           });
         } catch (error) {
           errorAlert('이미지를 불러오는 데 실패 하였습니다.');
@@ -624,6 +668,9 @@ export default function useTinyMceUpload({
         }
       }
     }
+
+    //2. 그외
+    editorRef.current.insertContent(content);
   };
 
   const handleKeydown = async (e) => {
@@ -689,16 +736,43 @@ export default function useTinyMceUpload({
   };
 
   const urlExtraction = () => {
-    return [...uploadedFiles.files, ...uploadedFiles.images].map(
-      (file) => file.s3Url
-    );
+    const { images, files } = uploadedFiles;
+    //fileUrls fields images: [], attachments: [{fileName, fileUrl}]
+    if (images.length > 0 || files.length > 0) {
+      const fileUrls = {};
+
+      fileUrls.images = [...images].map((image) => image.s3Url);
+      fileUrls.attachments = [...files].map((file) => {
+        return { fileName: file.fileName, fileUrl: file.s3Url };
+      });
+
+      return fileUrls;
+    }
   };
 
-  useEffect(() => {
-    if (initialFiles && initialFiles?.length > 0) {
-      console.log(initialFiles);
+  /*   useEffect(() => {
+    if (initialFiles.fileUrls) {
+      const { fileUrls } = initialFiles;
+      setUploadedFiles(() => {
+        const images = fileUrls.images.map((s3Url) => {
+          return {
+            type: 'image',
+            s3Url,
+          };
+        });
+        const files = fileUrls.attachments.map((file) => {
+          return {
+            type: 'file',
+            fileName: file.fileName,
+            fileSize: parseFloat().toFixed(2),
+            s3Url: file.fileUrl,
+            isLoading: false,
+            progress: 100,
+          };
+        });
+      });
     }
-  }, []);
+  }, []); */
 
   useEffect(() => {
     if (editorRef.current && Object.keys(previewImage).length !== 0) {
@@ -720,17 +794,17 @@ export default function useTinyMceUpload({
     editorRef,
     imageButtonRef,
     fileUploadButtonRef,
-    textContentLength,
+    totalWordsLength,
     isUpload,
     cumSize,
     uploadedFiles,
     urlExtraction,
     imageFileUrlsUpdated,
-    textContentLengthCalc,
+    totalWordsCalc,
     handleImageUploadClick,
     handleFileUploadClick,
     handleImageUpload,
-    handleImagePaste,
+    handlePaste,
     handleTitleValueChange,
     handleEditorValueChange,
     handleKeydown,

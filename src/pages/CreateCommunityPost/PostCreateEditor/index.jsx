@@ -19,18 +19,18 @@ export default function PostCreateEditor({
   imageButtonRef,
   fileUploadButtonRef,
   editorValue,
-  textContentLength,
+  totalWordsLength,
   isUpload,
   cumSize,
   uploadedFiles,
-  textContentLengthCalc,
+  totalWordsCalc,
   isEditorLoading,
   setIsEditorLoading,
   handleEditorValueChange,
   handleImageUploadClick,
   handleFileUploadClick,
   handleImageUpload,
-  handleImagePaste,
+  handlePaste,
   handleKeydown,
   handleFileUpload,
   handleUploadFileDelete,
@@ -44,13 +44,7 @@ export default function PostCreateEditor({
           initialValue={initialContent}
           value={editorValue}
           onEditorChange={(value) => {
-            // wordcount 플러그인에 접근
-            const wordcount = editorRef.current.plugins.wordcount;
-            // 전체 단어 수
-            const totalWordCount = wordcount.body.getCharacterCount();
-
-            //console.log(totalWordCount);
-            textContentLengthCalc(totalWordCount);
+            totalWordsCalc();
             handleEditorValueChange(value);
           }}
           onInit={(_, editor) => {
@@ -96,7 +90,7 @@ export default function PostCreateEditor({
             },
             //붙여넣기 했을 시 동작 지정
             paste_preprocess: (plugin, args) => {
-              handleImagePaste(plugin, args);
+              handlePaste(plugin, args);
             },
             image_file_types: 'gif,jpg,jpeg,png',
             //외부iframe이라 내부 css로 컨트롤불가능
@@ -133,12 +127,14 @@ export default function PostCreateEditor({
             <NoticeBox>
               <div>
                 <p>
-                  첨부, 붙여넣기 가능한 파일 밑 이미지 최대 갯수:{' '}
-                  <span>50개</span>
+                  업로드, 붙여넣기 가능한 이미지 최대 갯수: <span>50개</span>
                 </p>
-                <p>현재: {textContentLength}자/5000자</p>
+                <p>현재: {totalWordsLength}자/5000자</p>
               </div>
-              {/* <p>현재 업로드 가능한 용량: {cumSize.currentSize}MB/500MB</p> */}
+              <p>
+                첨부 가능한 파일 최대 갯수: <span>10개</span>
+              </p>
+              <p>최대 업로드 가능한 용량: 350MB</p>
             </NoticeBox>
             {uploadedFiles.files.length > 0 && (
               <>

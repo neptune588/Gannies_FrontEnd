@@ -38,14 +38,14 @@ const NoticeBox = styled.div`
   }
 
   p {
-    text-align: right;
+    text-align: left;
     font-size: ${({ theme: { typo } }) => {
       return typo.size.sm;
     }};
     color: ${({ theme: { colors } }) => {
       return colors.gray['70'];
     }};
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     > span {
       font-weight: ${({ theme: { typo } }) => {
         return typo.weight.semiBold;

@@ -81,17 +81,17 @@ export default function CreateCommunityPost() {
     editorRef,
     imageButtonRef,
     fileUploadButtonRef,
-    textContentLength,
+    totalWordsLength,
     isUpload,
     cumSize,
     uploadedFiles,
     urlExtraction,
     imageFileUrlsUpdated,
-    textContentLengthCalc,
+    totalWordsCalc,
     handleImageUploadClick,
     handleFileUploadClick,
     handleImageUpload,
-    handleImagePaste,
+    handlePaste,
     handleTitleValueChange,
     handleEditorValueChange,
     handleKeydown,
@@ -122,7 +122,7 @@ export default function CreateCommunityPost() {
       return;
     }
 
-    if (textContentLength > 5000) {
+    if (totalWordsLength > 5000) {
       alert('입력 가능한 최대 글자 수는 5000자입니다!');
       return;
     }
@@ -153,7 +153,7 @@ export default function CreateCommunityPost() {
     }
 
     const fileUrls = urlExtraction();
-    if (fileUrls.length > 0) {
+    if (fileUrls) {
       postData.fileUrls = fileUrls;
     }
 
@@ -267,18 +267,18 @@ export default function CreateCommunityPost() {
               imageButtonRef={imageButtonRef}
               fileUploadButtonRef={fileUploadButtonRef}
               editorValue={editorValue}
-              textContentLength={textContentLength}
+              totalWordsLength={totalWordsLength}
               isUpload={isUpload}
               cumSize={cumSize}
               uploadedFiles={uploadedFiles}
-              textContentLengthCalc={textContentLengthCalc}
+              totalWordsCalc={totalWordsCalc}
               isEditorLoading={isEditorLoading}
               setIsEditorLoading={setIsEditorLoading}
               handleImageUploadClick={handleImageUploadClick}
               handleFileUploadClick={handleFileUploadClick}
               handleEditorValueChange={handleEditorValueChange}
               handleImageUpload={handleImageUpload}
-              handleImagePaste={handleImagePaste}
+              handlePaste={handlePaste}
               handleKeydown={handleKeydown}
               handleFileUpload={handleFileUpload}
               handleUploadFileDelete={handleUploadFileDelete}
