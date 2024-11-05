@@ -4,7 +4,7 @@
 ----
 
 ## 🌏 주소
-##### <caugannies.com>
+##### <https://www.caugannies.com>
 
 ----
 ## 👥 팀 소개
