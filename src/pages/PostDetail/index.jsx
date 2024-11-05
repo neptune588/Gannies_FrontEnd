@@ -8,6 +8,7 @@ import CommunityBannerText from '@/components/CommunityBannerText';
 import PageCategory from '@/components/PageCategory';
 import PostTitleSection from '@/pages/PostDetail/PostHeader/PostTitleSection';
 import PostInfo from '@/pages/PostDetail/PostHeader/PostInfo';
+import Attachments from '@/pages/PostDetail/PostHeader/Attachments';
 import CommentCreate from '@/pages/PostDetail/CommentCreate';
 import PostCommentArea from '@/pages/PostDetail/PostCommentArea';
 import OtherPosts from '@/pages/PostDetail/OtherPosts';
@@ -389,6 +390,9 @@ export default function PostDetail() {
             postCreateDate={post.createDate}
             postUpdateDate={post.updateDate}
           />
+          {post.fileUrls?.attachments.length > 0 && (
+            <Attachments attachments={post.fileUrls.attachments} />
+          )}
         </PostHeaderBox>
         <PostContentBox>
           <div

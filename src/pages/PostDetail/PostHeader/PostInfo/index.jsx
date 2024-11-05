@@ -69,7 +69,7 @@ export default function PostInfo({
         <HeartInactive likeCount={likeCount} />
         <Message commentCount={commentCount} />
       </PostMetricBox>
-      <PostDate>{dateCalc}</PostDate>
+      {postCreateDate && <PostDate>{dateCalc}</PostDate>}
     </PostInfoSection>
   );
 }
