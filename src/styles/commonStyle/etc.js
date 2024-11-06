@@ -45,6 +45,7 @@ const adminPageHeaderRowStyle = css`
 const adminPageCellStyle = css`
   display: flex;
   align-items: center;
+  text-align: left;
   color: ${({ theme: { colors } }) => {
     return colors.gray['90'];
   }};
@@ -118,9 +119,7 @@ const adminPageCellStyle = css`
 
   &:nth-child(6) {
     ${ellipsisStyle}
-    display: ${({ $currentActiveTab }) => {
-      $currentActiveTab === '회원관리' ? 'flex' : 'inline-blcok';
-    }};
+    display: inline-block;
     align-items: ${({ $currentActiveTab }) => {
       $currentActiveTab === '회원관리' && 'center';
     }};

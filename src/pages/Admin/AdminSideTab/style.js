@@ -14,23 +14,24 @@ const TabContainer = styled.div`
 
 const ProfileBox = styled.div`
   display: flex;
+  flex-flow: column nowrap;
   align-items: center;
-  margin-bottom: 40px;
-  > div {
-    width: 80px;
-    height: 80px;
-    margin-right: 40px;
-    background-color: ${({ theme: { colors } }) => {
-      return colors.gray['30'];
-    }};
-    border-radius: 50%;
-  }
+  margin-bottom: 50px;
 
   > p {
     color: ${({ theme: { colors } }) => {
       return colors.white;
     }};
     ${medium_600}
+  }
+`;
+
+const MainLogo = styled.a`
+  display: block;
+  width: 130px;
+  margin-bottom: 20px;
+  > img {
+    width: 100%;
   }
 `;
 
@@ -64,4 +65,4 @@ const TabMenuList = styled.li`
   }
 `;
 
-export { TabContainer, ProfileBox, TabMenuList };
+export { MainLogo, TabContainer, ProfileBox, TabMenuList };

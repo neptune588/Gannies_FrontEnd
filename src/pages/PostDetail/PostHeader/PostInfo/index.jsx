@@ -6,6 +6,8 @@ import Message from '@/components/Icons/Message';
 
 import { small_400 } from '@/styles/commonStyle/localTextStyle';
 
+import { formatDateToPost, splitDateToYMDHMS } from '@/utils/dateFormatting';
+
 const PostInfoSection = styled.section`
   display: flex;
   justify-content: space-between;
@@ -32,6 +34,34 @@ export default function PostInfo({
   postCreateDate,
   postUpdateDate,
 }) {
+  const dateCalc = (() => {
+    if (postUpdateDate) {
+      const {
+        year: createYear,
+        month: createMonth,
+        day: createDay,
+      } = splitDateToYMDHMS(postCreateDate);
+      const {
+        year: updateYear,
+        month: updateMonth,
+        day: updateDay,
+        hours,
+        minutes,
+        seconds,
+      } = splitDateToYMDHMS(postUpdateDate);
+
+      const condition =
+        createYear !== updateYear ||
+        createMonth !== updateMonth ||
+        createDay !== updateDay;
+
+      return condition
+        ? `${formatDateToPost({ date: postCreateDate })} (${formatDateToPost({ date: postUpdateDate, type: 'edit' })} 수정 됨)`
+        : `${formatDateToPost({ date: postCreateDate })} (${hours}시 ${minutes}분 ${seconds}초 수정 됨)`;
+    }
+    return formatDateToPost({ date: postCreateDate });
+  })();
+
   return (
     <PostInfoSection>
       <PostMetricBox>
@@ -39,11 +69,7 @@ export default function PostInfo({
         <HeartInactive likeCount={likeCount} />
         <Message commentCount={commentCount} />
       </PostMetricBox>
-      <PostDate>
-        {postCreateDate === postUpdateDate
-          ? postCreateDate
-          : `${postUpdateDate}(수정됨)`}
-      </PostDate>
+      {postCreateDate && <PostDate>{dateCalc}</PostDate>}
     </PostInfoSection>
   );
 }

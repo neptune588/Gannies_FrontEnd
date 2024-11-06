@@ -2,10 +2,13 @@ import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import uuid from 'react-uuid';
 
+import mainLogo from '@/assets/images/admin_page_logo.png';
+
 import {
   TabContainer,
   ProfileBox,
   TabMenuList,
+  MainLogo,
 } from '@/pages/Admin/AdminSideTab/style';
 
 import { adminTabMenuData } from '@/pages/Admin/data';
@@ -18,9 +21,10 @@ export default function AdminSideTab() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { changeValue: currentActiveTabMenu, handleChange } = useEventHandler({
-    changeDefaultValue: null,
-  });
+  const { changeValue: currentActiveTabMenu, handleChange: activeTabChange } =
+    useEventHandler({
+      changeDefaultValue: null,
+    });
   const { isLogin, isAdmin, nickname } = useSelectorList();
 
   const [tabData] = useState(adminTabMenuData);
@@ -29,20 +33,23 @@ export default function AdminSideTab() {
     const path = location.pathname.split('/admin')[1];
 
     if (path === '/report-history') {
-      handleChange('신고내역');
+      activeTabChange('신고내역');
     } else if (path === '/member-management') {
-      handleChange('회원관리');
+      activeTabChange('회원관리');
     } else if (path === '/user-approval') {
-      handleChange('회원 가입승인');
+      activeTabChange('회원 가입승인');
     } else if (path === '/item-management') {
-      handleChange('게시물&댓글 관리');
+      activeTabChange('게시물&댓글 관리');
     }
   }, []);
 
   return (
     <TabContainer>
       <ProfileBox>
-        <div></div>
+        {/* 관리자 페이지와 일반 페이지를 함께 보며 관리하기 위해 새창 띄우기 */}
+        <MainLogo href='/' target='_blank' rel='noopener noreferrer'>
+          <img src={mainLogo} alt='main-logo' />
+        </MainLogo>
         <p>
           {(() => {
             if (isLogin && isAdmin) {
@@ -63,7 +70,8 @@ export default function AdminSideTab() {
               $currentActiveTabMenu={currentActiveTabMenu}
               $ownMenu={tab.label}
               onClick={() => {
-                handleChange(tab.label);
+                activeTabChange(tab.label);
+                window.scroll({ top: 0, left: 0 });
                 navigate(tab.path);
               }}
             >

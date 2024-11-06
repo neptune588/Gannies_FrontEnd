@@ -49,18 +49,19 @@ const TableHeader = styled.tr`
   ${small_500}
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 15px 20px 15px;
   text-align: left;
-  > th:first-child {
-    display: flex;
-    align-items: center;
-    > p:first-child {
-      flex: 0 0 8.5rem;
-    }
-    > p:last-child {
-      flex: 0 0 50rem;
-    }
+  > th:nth-child(1) {
+    flex: 0 0 8.5rem;
+  }
+  > th:nth-child(2) {
+    flex: 0 0 50rem;
+  }
+  > th:nth-child(3) {
+    flex: 0 0 10rem;
+  }
+  > th:nth-child(4) {
+    flex: 0 0 14.5rem;
   }
 `;
 

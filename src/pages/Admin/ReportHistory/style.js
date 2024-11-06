@@ -94,10 +94,21 @@ const OptionListOpenButton = styled.button`
   }
 `;
 
+const CommentLength = styled.span`
+  color: ${({ theme: { colors } }) => {
+    return colors.highlight;
+  }};
+  font-weight: ${({ theme: { typo } }) => {
+    return typo.weight.semibold;
+  }};
+  margin-left: 3px;
+`;
+
 export {
   TitleCategory,
   DummyClickBox,
   OptionListBox,
   OptionList,
   OptionListOpenButton,
+  CommentLength,
 };

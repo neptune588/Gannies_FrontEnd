@@ -57,7 +57,7 @@ export default function PostContents({
                   comment={list.numberOfCommentsAndReplies}
                   views={list.viewCounts}
                   likes={list.likeCounts}
-                  date={formatDateToPost(list.createdAt)}
+                  date={formatDateToPost({ date: list.createdAt })}
                   pageName={pageName}
                   scrapViewState={scrapViewState}
                   postId={list.postId}

@@ -23,7 +23,7 @@ import useEventHandler from '@/hooks/useEventHandler';
 import useSelectorList from '@/hooks/useSelectorList';
 
 import { deleteComment, deleteReplyComment } from '@/api/commentApi';
-import { formatDateToPost } from '@/utils/dateFormatting';
+import { formatDateToPost, splitDateToYMDHMS } from '@/utils/dateFormatting';
 
 export default forwardRef(function PostCommentList(
   {
@@ -60,6 +60,37 @@ export default forwardRef(function PostCommentList(
     useEventHandler({
       changeDefaultValue: '',
     });
+
+  const dateCalc = (() => {
+    if (!deleteDate) {
+      if (updateDate) {
+        const {
+          year: createYear,
+          month: createMonth,
+          day: createDay,
+        } = splitDateToYMDHMS(createDate);
+        const {
+          year: updateYear,
+          month: updateMonth,
+          day: updateDay,
+          hours,
+          minutes,
+          seconds,
+        } = splitDateToYMDHMS(updateDate);
+
+        const condition =
+          createYear !== updateYear ||
+          createMonth !== updateMonth ||
+          createDay !== updateDay;
+
+        return condition
+          ? `${formatDateToPost({ date: createDate })} (${formatDateToPost({ date: updateDate, type: 'edit' })} 수정 됨)`
+          : `${formatDateToPost({ date: createDate })} (${hours}시 ${minutes}분 ${seconds}초 수정 됨)`;
+      }
+      return formatDateToPost({ date: createDate });
+    }
+    return `${formatDateToPost({ date: deleteDate })} 삭제 됨`;
+  })();
 
   const handleEditOpen = () => {
     setIsReplyCreateOpen(false);
@@ -128,16 +159,7 @@ export default forwardRef(function PostCommentList(
           <CommentContent>{content}</CommentContent>
           <CommentMetricBox>
             <Clock isVerify={false} />
-            <CommentCreateDateView>
-              {(() => {
-                if (!deleteDate) {
-                  return createDate === updateDate
-                    ? createDate
-                    : `${formatDateToPost(createDate)}(${formatDateToPost(updateDate)} 수정 됨)`;
-                }
-                return `${formatDateToPost(deleteDate)} 삭제 됨`;
-              })()}
-            </CommentCreateDateView>
+            <CommentCreateDateView>{dateCalc}</CommentCreateDateView>
             {!isReplyComment && !deleteDate && (
               <ReplyCommentCreateButton
                 $isReplyCreateOpen={isReplyCreateOpen}
