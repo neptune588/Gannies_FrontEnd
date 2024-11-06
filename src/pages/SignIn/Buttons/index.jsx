@@ -13,6 +13,7 @@ import { userSignIn } from '@/api/authApi';
 
 import { setLogin } from '@/store/auth';
 import { handleModal } from '@/store/modalState';
+import { useSocket } from '@/hooks/useSocket';
 
 function Buttons({ email, password, setLoginError, setIsLoading, setText }) {
   const navigate = useNavigate();
@@ -71,6 +72,8 @@ function Buttons({ email, password, setLoginError, setIsLoading, setText }) {
     }, 8);
   };
 
+  const { connectSocket } = useSocket();
+
   const handleLogin = async () => {
     try {
       if (!email) {
@@ -84,7 +87,13 @@ function Buttons({ email, password, setLoginError, setIsLoading, setText }) {
       }
 
       loadingTimeout();
-      const response = await userSignIn({ email: email, password: password });
+      const response = await userSignIn(
+        { email: email, password: password },
+        autoLogin ? { params: { autoLogin } } : {}
+      );
+      const newSocket = await connectSocket(3);
+      console.log(newSocket);
+
       const {
         isSuspended,
         isTempPasswordSignIn,

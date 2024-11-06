@@ -30,9 +30,9 @@ export const userDelete = async () => {
 };
 
 //로그인
-export const userSignIn = async (signInData) => {
+export const userSignIn = async (signInData, autoLogin = {}) => {
   const url = '/auth/sign-in';
-  const response = await cookieApi.post(url, signInData);
+  const response = await cookieApi.post(url, signInData, autoLogin);
   return response;
 };
 
