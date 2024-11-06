@@ -17,6 +17,7 @@ const PostTitle = styled.h2`
 
 const IconBox = styled.div`
   display: flex;
+  align-items: center;
   position: relative;
   width: 80px;
   justify-content: space-between;

@@ -113,8 +113,15 @@ export const getPresignedUrl = async (fileTypeData) => {
 };
 
 //받아온 URL에 IMAGE url 보내기
-export const s3ImageUpload = async (url, formData) => {
-  const response = await axios.post(url, formData);
+export const s3Upload = async (url, formData, optios) => {
+  const response = await axios.post(url, formData, optios);
+  return response;
+};
+
+//s3url 삭제
+export const deleteS3Url = async (s3Url) => {
+  const url = `/files/${s3Url}`;
+  const response = await cookieApi.delete(url);
   return response;
 };
 

@@ -31,7 +31,7 @@ import useLoginCheck from '@/hooks/useLoginCheck';
 import useSelectorList from '@/hooks/useSelectorList';
 import useEventHandler from '@/hooks/useEventHandler';
 import useModalsControl from '@/hooks/useModalsControl';
-import useTinyMceImageUpload from '@/hooks/useTinyMceImageUpload';
+import useTinyMceUpload from '@/hooks/useTinyMceUpload';
 
 import { createPost, editPost } from '@/api/postApi';
 import { checkAdminStatus } from '@/api/authApi';
@@ -42,12 +42,9 @@ import { errorAlert } from '@/utils/sweetAlert';
 export default function CreateCommunityPost() {
   //제목 - 한글 1글자 이상은 최소로 있어야 한다. 최대는 50자 이하
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const location = useLocation();
 
   const { boardType } = useParams();
-
-  const firstRunBlockToSetSelectOptionEffect = useRef(true);
 
   const [editData] = useState(location.state ? location.state : null);
 
@@ -83,15 +80,27 @@ export default function CreateCommunityPost() {
     editorValue,
     editorRef,
     imageButtonRef,
+    fileUploadButtonRef,
+    totalWordsLength,
+    isUpload,
+    cumSize,
+    uploadedFiles,
     urlExtraction,
+    imageFileUrlsUpdated,
+    totalWordsCalc,
     handleImageUploadClick,
-    handleImageUploadRequest,
-    handleImagePaste,
+    handleFileUploadClick,
+    handleImageUpload,
+    handlePaste,
     handleTitleValueChange,
     handleEditorValueChange,
-  } = useTinyMceImageUpload({
+    handleKeydown,
+    handleFileUpload,
+    handleUploadFileDelete,
+  } = useTinyMceUpload({
     initialTitle: editData ? editData.title : '',
     initialContent: editData ? editData.content : '',
+    initialFiles: editData ? editData.fileUrls : '',
   });
 
   const [isEditorLoading, setIsEditorLoading] = useState(true);
@@ -105,42 +114,54 @@ export default function CreateCommunityPost() {
       return;
     }
 
+    const condition01 = isOnlyWhiteSpaceCheck(titleValue);
+    const condition02 = isOnlyWhiteSpaceCheck(editorValue);
+
+    if (condition01 || condition02) {
+      alert('제목 혹은 내용을 입력 해주세요!');
+      return;
+    }
+
+    if (totalWordsLength > 5000) {
+      alert('입력 가능한 최대 글자 수는 5000자입니다!');
+      return;
+    }
+
+    setIsSubmit(true);
+
+    const splitByWhitespace = titleValue.trim().split(' ');
+    const title = splitByWhitespace.filter((str) => str !== '').join(' ');
+
+    const postData = {
+      title,
+      content: editorValue,
+    };
+
+    if (
+      selectedBoardTitle === '취업정보' ||
+      selectedBoardTitle === '실습정보'
+    ) {
+      postData.hospitalNames =
+        hospitalName === '병원찾기' ? null : [hospitalName];
+    }
+
     try {
-      const condition01 = isOnlyWhiteSpaceCheck(titleValue);
-      const condition02 = isOnlyWhiteSpaceCheck(editorValue);
+      await imageFileUrlsUpdated();
+    } catch (error) {
+      errorAlert('이미지 갱신에 실패하였습니다.');
+      return;
+    }
 
-      if (condition01 || condition02) {
-        errorAlert('제목 혹은 내용을 입력 해주세요!');
-        return;
-      }
+    const fileUrls = urlExtraction();
+    if (fileUrls) {
+      postData.fileUrls = fileUrls;
+    }
 
-      setIsSubmit(true);
+    if (editData && editData.boardType !== selectedBoardType) {
+      postData.afterBoardType = selectedBoardType;
+    }
 
-      const splitByWhitespace = titleValue.trim().split(' ');
-      const title = splitByWhitespace.filter((str) => str !== '').join(' ');
-
-      const postData = {
-        title,
-        content: editorValue,
-      };
-
-      if (
-        selectedBoardTitle === '취업정보' ||
-        selectedBoardTitle === '실습정보'
-      ) {
-        postData.hospitalNames =
-          hospitalName === '병원찾기' ? [] : [hospitalName];
-      }
-
-      const imageSrc = urlExtraction();
-      if (imageSrc.length > 0) {
-        postData.fileUrls = imageSrc;
-      }
-
-      if (editData && editData.boardType !== selectedBoardType) {
-        postData.afterBoardType = selectedBoardType;
-      }
-
+    try {
       const res =
         editData && editData.type === 'isEdit'
           ? await editPost(
@@ -149,16 +170,17 @@ export default function CreateCommunityPost() {
               postData
             )
           : await createPost(selectedBoardType, postData);
-
       const { postId: newPostId } = res.data;
 
+      console.log(postData);
       window.scroll({ top: 0, left: 0 });
       navigate(`/community/${selectedBoardType}/post/${newPostId}`);
     } catch (error) {
-      errorAlert('작성 실패');
-    } finally {
-      setIsSubmit(false);
+      console.error(error.message);
+      errorAlert('게시글 작성 실패');
     }
+
+    setIsSubmit(false);
   };
 
   useEffect(() => {
@@ -175,16 +197,6 @@ export default function CreateCommunityPost() {
       }
     })();
   }, []);
-
-  /*   useEffect(() => {
-    if (firstRunBlockToSetSelectOptionEffect.current) {
-      firstRunBlockToSetSelectOptionEffect.current = false;
-      return;
-    }
-
-    setSelectedOption(setCategorySelectOptions[0].content);
-  }, [categorySelectOptions]); */
-
   return (
     <>
       {isHospitalSearchModal && (
@@ -253,13 +265,23 @@ export default function CreateCommunityPost() {
               editorRef={editorRef}
               initialContent={editData ? editData.content : ''}
               imageButtonRef={imageButtonRef}
+              fileUploadButtonRef={fileUploadButtonRef}
               editorValue={editorValue}
+              totalWordsLength={totalWordsLength}
+              isUpload={isUpload}
+              cumSize={cumSize}
+              uploadedFiles={uploadedFiles}
+              totalWordsCalc={totalWordsCalc}
               isEditorLoading={isEditorLoading}
               setIsEditorLoading={setIsEditorLoading}
               handleImageUploadClick={handleImageUploadClick}
+              handleFileUploadClick={handleFileUploadClick}
               handleEditorValueChange={handleEditorValueChange}
-              handleImageUploadRequest={handleImageUploadRequest}
-              handleImagePaste={handleImagePaste}
+              handleImageUpload={handleImageUpload}
+              handlePaste={handlePaste}
+              handleKeydown={handleKeydown}
+              handleFileUpload={handleFileUpload}
+              handleUploadFileDelete={handleUploadFileDelete}
             />
           </ContentsWrapper>
           {!isEditorLoading && (

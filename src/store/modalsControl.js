@@ -6,6 +6,7 @@ const initialState = {
   isPostDeleteModal: false,
   isPostOrCommentReportModal: false,
   isReportedCotentModal: false,
+  isMemberManagementDetailModal: false,
   isUserWithdrawModal: false,
   isItemDeleteModal: false,
   isUserRejectReasonModal: false,
