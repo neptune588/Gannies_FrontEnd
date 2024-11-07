@@ -254,28 +254,21 @@ export default function PostsAndCommentsManageMent() {
     });
   };
 
-  const handleSearch = async (e) => {
-    if (e.key === 'Enter') {
-      if (isOnlyWhiteSpaceCheck(searchValue)) {
-        errorAlert('검색어를 입력 해주세요!');
-        return;
-      }
+  const handleSearch = () => {
+    clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      setActionType('');
+      setCurrentPageNumber(1);
 
-      clearTimeout(debounceRef.current);
-      debounceRef.current = setTimeout(() => {
-        setActionType('');
-        setCurrentPageNumber(1);
-
-        setQuery(
-          checkCurrentCategory({
-            page: 1,
-            limit: communityPostMaxLimit,
-            type: selectedSearchTypeQuery,
-            search: searchValue,
-          })
-        );
-      }, 100);
-    }
+      setQuery(
+        checkCurrentCategory({
+          page: 1,
+          limit: communityPostMaxLimit,
+          type: selectedSearchTypeQuery,
+          search: searchValue,
+        })
+      );
+    }, 100);
   };
 
   const checkIsSelected = ({ listId, commentId }) => {

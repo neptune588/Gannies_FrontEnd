@@ -226,25 +226,18 @@ export default function MemberManagement() {
     }
   };
 
-  const handleSearch = async (e) => {
-    if (e.key === 'Enter') {
-      if (isIncludesWhiteSpaceCheck(searchValue)) {
-        errorAlert('검색어 사이에 공백이 들어갈 수 없습니다!');
-        return;
-      }
-
-      clearTimeout(debounceRef.current);
-      debounceRef.current = setTimeout(() => {
-        setActionType('');
-        setCurrentPageNumber(1);
-        setQuery({
-          page: 1,
-          limit: communityPostMaxLimit,
-          type: selectedSearchTypeQuery,
-          search: searchValue,
-        });
-      }, 100);
-    }
+  const handleSearch = () => {
+    clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      setActionType('');
+      setCurrentPageNumber(1);
+      setQuery({
+        page: 1,
+        limit: communityPostMaxLimit,
+        type: selectedSearchTypeQuery,
+        search: searchValue,
+      });
+    }, 100);
   };
 
   useEffect(() => {
