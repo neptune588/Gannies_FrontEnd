@@ -11,6 +11,7 @@ function Login() {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [text, setText] = useState('');
+  const [autoLogin, setAutoLogin] = useState(false);
 
   return (
     <>
@@ -26,6 +27,7 @@ function Login() {
         setIsLoading={setIsLoading}
         text={text}
         setText={setText}
+        autoLogin={autoLogin}
       />
       <Buttons
         email={email}
@@ -33,6 +35,8 @@ function Login() {
         setLoginError={setLoginError}
         setIsLoading={setIsLoading}
         setText={setText}
+        autoLogin={autoLogin}
+        setAutoLogin={setAutoLogin}
       />
     </>
   );

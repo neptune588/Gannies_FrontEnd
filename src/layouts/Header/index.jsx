@@ -20,11 +20,10 @@ import usePostSearch from '@/hooks/usePostSearch';
 import useSelectorList from '@/hooks/useSelectorList';
 
 import { setBoardType } from '@/store/navBarOptions';
-import { handleModal } from '@/store/modalState';
-import { setLogout } from '@/store/auth';
 
-import { userSignOut } from '@/api/authApi';
+import { getSessionStatus, userSignOut } from '@/api/authApi';
 import useUserState from '@/hooks/useUserState';
+import useLoginCheck from '@/hooks/useLoginCheck';
 
 function Header() {
   const navigate = useNavigate();
@@ -36,6 +35,7 @@ function Header() {
   const { searchValue, searchBarRef, handleSearchValueChange, handleSearch } =
     usePostSearch();
   const { navigateBasedOnState } = useUserState();
+  const { logout } = useLoginCheck();
 
   const handleMyPage = () => {
     navigateBasedOnState('/mypage/profile/edit', 'email_verified');
@@ -43,10 +43,15 @@ function Header() {
 
   const handleLogout = async () => {
     try {
+      const resSessionStatus = await getSessionStatus();
+      const { expires } = resSessionStatus.data;
+      if (expires) {
+        logout();
+        return;
+      }
       const response = await userSignOut();
       if (response.status === 200) {
-        dispatch(handleModal({ field: 'isApproval', value: false }));
-        dispatch(setLogout());
+        logout();
       } else {
         alert('로그아웃에 실패했습니다. 다시 시도해주세요.');
       }

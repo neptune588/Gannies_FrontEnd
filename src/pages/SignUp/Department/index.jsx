@@ -15,6 +15,7 @@ import {
   userSignUp,
   userSignUpEmail,
 } from '@/api/authApi';
+import CommonLoadingCircle from '@/components/Loading/CommonLoadingCircle';
 
 function Department() {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ function Department() {
     useOutletContext();
   const { allow, handleAllow } = useAuthAllow([false, false]);
   const [file, setFile] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     steps[0] && steps[1]
@@ -69,6 +71,7 @@ function Department() {
   const signUp = async () => {
     try {
       handleSteps(2, true);
+      setIsLoading(true);
       const resPresignedUrl = await getPresignedUrl({ fileType: file.type });
       const { url, fields } = resPresignedUrl.data;
       const formData = setFormData({ fields });
@@ -81,11 +84,13 @@ function Department() {
       setUsername(ocr.data.name);
     } catch (error) {
       alert('회원가입 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      setIsLoading(false);
     }
   };
 
   return (
     <>
+      {isLoading && <CommonLoadingCircle />}
       <Title title='회원가입' />
       <Icons
         identity={identity}
@@ -104,7 +109,6 @@ function Department() {
           $margin='80px'
           active={allow.every((element) => element === true)}
           text='다음'
-          // to='/sign-up/success'
           onClick={signUp}
         />
       )}

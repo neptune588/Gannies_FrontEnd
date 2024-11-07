@@ -13,6 +13,7 @@ import {
   small_400,
   h4_600,
   medium_400,
+  large_500,
 } from '@/styles/commonStyle/localTextStyle';
 import { Link } from 'react-router-dom';
 import { centerAlignStyle } from '@/styles/commonStyle/etc';
@@ -33,6 +34,12 @@ export const ModalBox = styled.div`
   > h6 {
     margin-top: 12px;
     ${small_400}
+    color: ${(props) => props.theme.colors.gray[100]};
+  }
+
+  > h5 {
+    margin-top: 12px;
+    ${large_500}
     color: ${(props) => props.theme.colors.gray[100]};
   }
 

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import PostContents from '@/pages/MyPage/PostContents';
 import AlignSelectMenu from '@/components/AlignSelectMenu';
 import Pagination from '@/components/Pagination';
-import { myPageAlignSelectOptions } from '@/components/AlignSelectMenu/data';
+import { myPostsAlignSelectOptions } from '@/components/AlignSelectMenu/data';
 
 import { TitleBox, Title, PageWrapper } from '@/pages/MyPage/WrittenPost/style';
 
@@ -13,11 +13,10 @@ import { pageViewLimit } from '@/utils/itemLimit';
 import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
 
 export default function WrittenPost() {
-  const optionList = myPageAlignSelectOptions;
+  const optionList = myPostsAlignSelectOptions;
   const [selectedOption, setSelectedOption] = useState(optionList[0].label);
 
   const firstRunBlockToSetCurPageNumberEffect = useRef(true);
-  const firstRunBlockToSetSelectOptionEffect = useRef(true);
   const firstRunBlockToSetQueryEffect = useRef(true);
 
   const {
@@ -67,17 +66,8 @@ export default function WrittenPost() {
       firstRunBlockToSetQueryEffect.current = false;
       return;
     }
-
     getDataAndSetPageNumbers(() => getUserPosts(query));
   }, [query]);
-
-  useEffect(() => {
-    if (firstRunBlockToSetSelectOptionEffect.current) {
-      firstRunBlockToSetSelectOptionEffect.current = false;
-      return;
-    }
-    getDataAndSetPageNumbers(() => getUserPosts(query));
-  }, [selectedOption]);
 
   useEffect(() => {
     if (firstRunBlockToSetCurPageNumberEffect.current) {

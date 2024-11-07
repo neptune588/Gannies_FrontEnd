@@ -83,10 +83,8 @@ function PostList({
           )}
           {category && <Category $pageName={pageName}>{category}</Category>}
           <PostTitle $pageName={pageName}>
-            {title ? title : '삭제된 게시글입니다.'}
-            {title && comment > 0 && <CommentLength>{comment}</CommentLength>}
-            {/* {title}
-            {comment > 0 && <CommentLength>{comment}</CommentLength>} */}
+            {title}
+            {comment > 0 && <CommentLength>{comment}</CommentLength>}
           </PostTitle>
         </PostLeftBox>
         <PostRightBox>

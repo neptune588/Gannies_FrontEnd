@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import PostContents from '@/pages/MyPage/PostContents';
 import AlignSelectMenu from '@/components/AlignSelectMenu';
 import Pagination from '@/components/Pagination';
-import { myPageAlignSelectOptions } from '@/components/AlignSelectMenu/data';
+import { myScrapsAndCommentsAlignSelectOptions } from '@/components/AlignSelectMenu/data';
 
 import { TitleBox, Title, PageWrapper } from '@/pages/MyPage/WrittenPost/style';
 
@@ -13,11 +13,10 @@ import useFetchAndPaginate from '@/hooks/useFetchAndPaginate';
 import { getUserComments } from '@/api/userApi';
 
 export default function WrittenComment() {
-  const optionList = myPageAlignSelectOptions;
+  const optionList = myScrapsAndCommentsAlignSelectOptions;
   const [selectedOption, setSelectedOption] = useState(optionList[0].label);
 
   const firstRunBlockToSetCurPageNumberEffect = useRef(true);
-  const firstRunBlockToSetSelectOptionEffect = useRef(true);
   const firstRunBlockToSetQueryEffect = useRef(true);
 
   const {
@@ -70,14 +69,6 @@ export default function WrittenComment() {
 
     getDataAndSetPageNumbers(() => getUserComments(query));
   }, [query]);
-
-  useEffect(() => {
-    if (firstRunBlockToSetSelectOptionEffect.current) {
-      firstRunBlockToSetSelectOptionEffect.current = false;
-      return;
-    }
-    getDataAndSetPageNumbers(() => getUserComments(query));
-  }, [selectedOption]);
 
   useEffect(() => {
     if (firstRunBlockToSetCurPageNumberEffect.current) {

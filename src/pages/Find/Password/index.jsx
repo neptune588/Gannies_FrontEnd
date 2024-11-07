@@ -11,6 +11,7 @@ import Modal from '@/pages/Find/Modal';
 import Email from '@/pages/Find/Password/Inputs/Email';
 import Name from '@/pages/Find/ID/Inputs/Name';
 import { findPassWord } from '@/api/authApi';
+import CommonLoadingCircle from '@/components/Loading/CommonLoadingCircle';
 
 function Password() {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ function Password() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const openModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -26,6 +28,7 @@ function Password() {
 
   const findPassword = async () => {
     try {
+      setIsLoading(true);
       const response = await findPassWord({
         username: name,
         email: email,
@@ -34,31 +37,36 @@ function Password() {
         state: { email: response.data.maskedEmail },
       });
     } catch (error) {
+      setIsLoading(false);
       openModal();
     }
   };
 
   return (
-    <Wrapper>
-      <FindBox $margin='30px'>
-        <Inactive type='id' text={'이메일 찾기'} />
-        <Active type='password' text={'비밀번호 찾기'} />
-      </FindBox>
-      <Name
-        name={name}
-        setName={setName}
-        allow={allow}
-        handleAllow={handleAllow}
-      />
-      <Email email={email} setEmail={setEmail} handleAllow={handleAllow} />
-      <NextButton
-        $margin='80px'
-        text='다음'
-        active={allow[0] && allow[1]}
-        onClick={findPassword}
-      />
-      {isModalOpen && <Modal openModal={openModal} />}
-    </Wrapper>
+    <>
+      {isLoading && <CommonLoadingCircle />}
+
+      <Wrapper>
+        <FindBox $margin='30px'>
+          <Inactive type='id' text={'이메일 찾기'} />
+          <Active type='password' text={'비밀번호 찾기'} />
+        </FindBox>
+        <Name
+          name={name}
+          setName={setName}
+          allow={allow}
+          handleAllow={handleAllow}
+        />
+        <Email email={email} setEmail={setEmail} handleAllow={handleAllow} />
+        <NextButton
+          $margin='80px'
+          text='다음'
+          active={allow[0] && allow[1]}
+          onClick={findPassword}
+        />
+        {isModalOpen && <Modal openModal={openModal} />}
+      </Wrapper>
+    </>
   );
 }
 

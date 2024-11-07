@@ -26,7 +26,8 @@ export default function useSelectorList() {
     scrollLocation,
   } = modalsControl;
 
-  const { isApproval, isTempPassword, isSuspended, rejected } = modalState;
+  const { isApproval, isTempPassword, isSuspended, rejected, extendSession } =
+    modalState;
   const { comentWrapperLocation } = locations;
 
   return {
@@ -43,6 +44,7 @@ export default function useSelectorList() {
     isTempPassword,
     isSuspended,
     rejected,
+    extendSession,
     isHospitalSearchModal,
     isUserBanModal,
     isPostDeleteModal,
