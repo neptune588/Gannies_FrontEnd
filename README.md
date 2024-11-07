@@ -1,22 +1,26 @@
 ## 📝 중간이들 (4人 프로젝트)
-##### 중앙대학교 간호학과 전용 커뮤니티 플랫폼 
 
-----
+##### 중앙대학교 간호학과 전용 커뮤니티 플랫폼
+
+---
 
 ## 🌏 주소
+
 ##### <https://www.caugannies.com>
 
-----
+---
+
 ## 👥 팀 소개
 
 #### 🎨 FrontEnd
-|   FrontEnd    |   FrontEnd     |
-| :------------: | :------------: |
-| 김*현 |  윤*환      |
+
+| FrontEnd | FrontEnd |
+| :------: | :------: |
+|  김\*현  |  윤\*환  |
 
 🛠️ **Tools and Technologies :** <br><br>
 ![React](https://img.shields.io/badge/React-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
-![React Hook Form](https://img.shields.io/badge/React-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![React Hook Form](https://img.shields.io/badge/react--hook--form-EC5990?style=for-the-badge&logo=reacthookform&logoColor=white)
 ![Redux](https://img.shields.io/badge/Redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white)
 ![Redux Persist](https://img.shields.io/badge/Redux_Persist-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white)
 ![Socket.IO](https://img.shields.io/badge/Socket.io-black?style=for-the-badge&logo=socket.io&badgeColor=010101)
@@ -26,19 +30,26 @@
 ![Amazon S3](https://img.shields.io/badge/Amazon%20S3-569A31?style=for-the-badge&logo=amazon-s3&logoColor=white)
 ![Amazon Route 53](https://img.shields.io/badge/Amazon%20Route%2053-4053D6?style=for-the-badge&logo=amazon-aws&logoColor=white)
 
-----
+---
+
 #### 🖥 BackEnd
-|   BackEnd |
-| :------------: |
-| 이*린|
-----
+
+| BackEnd |
+| :-----: |
+| 이\*린  |
+
+---
+
 #### 🖌️ Design
-|   Design |
-| :------------: |
-| 엽*정|
-----
+
+| Design |
+| :----: |
+| 엽\*정 |
+
+---
 
 ## 🔑 핵심 기능
+
 - 회원가입 및 세션 기반 로그인
 - 정회원 인증
 - CRUD 게시판
@@ -46,17 +57,19 @@
 - 내 정보 수정 및 비밀번호 찾기
 - 관리자 기능
 
-----
+---
+
 ## 📑 담당 페이지
 
 - 메인 페이지
 - 로그인 / 회원가입
 - 아이디 / 비밀번호 찾기
 - 마이페이지
-  
-----
+
+---
 
 ## 🔍 구현 사항
+
 - 담당 페이지 UI 및 기능 구현
 - 디렉토리 구조화
 - 모듈화된 API 통신 시스템 구축
@@ -74,24 +87,34 @@
 - Debounce를 활용한 검색 성능 개선
 - Git 브랜치 관리 및 PR을 이용한 협업 시스템 구축
 
-----
+---
+
 ## 📅 프로젝트 기간
+
 2024.08-2024.11
 
-----
+---
 
 ## 🎞 웹 페이지 화면
+
 #### 메인 화면
+
 ![image](https://github.com/user-attachments/assets/9e5c5f8e-3582-408b-bbd7-f9be17a48b35)
 
 ---
+
 #### 회원가입
+
 ![image](https://github.com/user-attachments/assets/5fc10be8-1d67-42ff-bdac-cee9fdd81503)
 
 ---
+
 #### 마이페이지
+
 ![image](https://github.com/user-attachments/assets/52c772e9-d294-4d56-8f44-580ad2aa32d9)
 
 ---
+
 #### 상세 게시글
+
 ![image](https://github.com/user-attachments/assets/2d229749-8d55-40ea-ba1b-5cf69c87bf49)
