@@ -24,6 +24,7 @@ function App() {
           const remainingTime = parseInt(
             sessionStatus.data.remainingTime.split(' ')[0]
           );
+          console.log(sessionStatus);
           if (remainingTime < 30 || sessionStatus.data?.expires) {
             dispatch(setLogout());
             dispatch(initialModalState());
