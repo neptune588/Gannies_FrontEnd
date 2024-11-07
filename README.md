@@ -16,6 +16,7 @@
 
 🛠️ **Tools and Technologies :** <br><br>
 ![React](https://img.shields.io/badge/React-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![React Hook Form](https://img.shields.io/badge/React-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![Redux](https://img.shields.io/badge/Redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white)
 ![Redux Persist](https://img.shields.io/badge/Redux_Persist-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white)
 ![Socket.IO](https://img.shields.io/badge/Socket.io-black?style=for-the-badge&logo=socket.io&badgeColor=010101)
@@ -55,17 +56,22 @@
   
 ----
 
-## 🔍 담당 업무
+## 🔍 구현 사항
 - 담당 페이지 UI 및 기능 구현
+- 디렉토리 구조화
 - 모듈화된 API 통신 시스템 구축
-- Redux Persist를 활용한 상태 영속성 관리
 - Styled-components를 활용한 컴포넌트 단위 스타일링 구현
+- Redux Toolkit을 이용한 전역 상태 관리
+- React Hook Form 이용한 보다 깔끔한 Form 처리
+- Redux Persist를 활용한 상태 영속성 관리
 - Private router를 통한 인증 상태에 따른 라우팅 접근 제어
 - 정규식을 활용한 유효성 검사
 - Socket.IO를 활용한 실시간 세션 만료 알림 구현
 - Vercel 배포 및 AWS Route 53 도메인 관리
-- S3 Presigned URL 이미지 업로드
+- S3 Presigned URL 이미지, 파일 업로드
 - 이메일 인증 프로세스 구현
+- TinyMce Edtior를 활용한 Creact, Put 기능
+- Debounce를 활용한 검색 성능 개선
 - Git 브랜치 관리 및 PR을 이용한 협업 시스템 구축
 
 ----
