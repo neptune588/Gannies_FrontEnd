@@ -13,6 +13,7 @@ export const initialState = {
     status: false,
     reason: '',
   },
+  extendSession: { status: false },
 };
 
 const modalState = createSlice({
@@ -22,8 +23,11 @@ const modalState = createSlice({
     handleModal(state, action) {
       state[action.payload.field] = action.payload.value;
     },
+    initialModalState() {
+      return initialState;
+    },
   },
 });
 
 export default modalState.reducer;
-export const { handleModal } = modalState.actions;
+export const { handleModal, initialModalState } = modalState.actions;

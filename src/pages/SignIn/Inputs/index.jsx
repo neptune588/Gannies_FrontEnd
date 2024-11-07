@@ -14,7 +14,9 @@ import { userSignIn } from '@/api/authApi';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setLogin } from '@/store/auth';
-import { handleModal } from '@/store/modalState';
+import { getSocket } from '@/utils/socket';
+import { setModal } from '@/store/modalsControl';
+import { useSocket } from '@/hooks/useSocket';
 function Inputs({
   email,
   setEmail,
@@ -25,6 +27,7 @@ function Inputs({
   text,
   setText,
   setIsLoading,
+  autoLogin,
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const { isFocused: isFocusedEmail, handleIsFocused: handleIsFocusedEmail } =
@@ -38,6 +41,7 @@ function Inputs({
   const dispatch = useDispatch();
   const [showAutoComplete, setShowAutoComplete] = useState(false);
   let loadingTimer;
+  const { connectSocket, handleSessionExpiryWarning } = useSocket();
 
   useEffect(() => {
     emailRef.current?.focus();
@@ -75,7 +79,17 @@ function Inputs({
       }
 
       loadingTimeout();
-      const response = await userSignIn({ email: email, password: password });
+      const response = await userSignIn(
+        { email: email, password: password },
+        autoLogin ? { params: { autoLogin } } : {}
+      );
+      const newSocket = await connectSocket(3);
+
+      newSocket.on('sessionExpiryWarning', handleSessionExpiryWarning);
+      newSocket.on('notification', (message) =>
+        console.log('서버로부터 받은 알림:', message)
+      );
+
       const {
         isSuspended,
         isTempPasswordSignIn,
@@ -94,34 +108,15 @@ function Inputs({
           userId,
         })
       );
-      dispatch(
-        handleModal({
-          field: 'isApproval',
-          value: { status: membershipStatus === 'email_verified' },
-        })
-      );
-      dispatch(
-        handleModal({
-          field: 'isTempPassword',
-          value: { status: isTempPasswordSignIn },
-        })
-      );
-      dispatch(
-        handleModal({
-          field: 'isSuspended',
-          value: {
-            status: isSuspended,
-            duration: suspensionDuration,
-            endDate: suspensionEndDate,
-            reason: suspensionReason,
-          },
-        })
-      );
-      dispatch(
-        handleModal({
-          field: 'rejected',
-          value: { status: rejected, reason: rejectedReason },
-        })
+      setModal(
+        isSuspended,
+        isTempPasswordSignIn,
+        rejected,
+        membershipStatus,
+        rejectedReason,
+        suspensionDuration,
+        suspensionEndDate,
+        suspensionReason
       );
       clearTimeout(loadingTimer);
       navigate('/');
@@ -136,6 +131,11 @@ function Inputs({
         setText('이메일 또는 비밀번호를 다시 확인해주세요.');
       } else {
         alert('로그인 요청 중 에러가 발생하였습니다.');
+      }
+
+      const socket = getSocket();
+      if (socket) {
+        socket.disconnect();
       }
     }
   };

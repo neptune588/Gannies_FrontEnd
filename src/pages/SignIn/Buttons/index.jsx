@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,11 +13,19 @@ import { userSignIn } from '@/api/authApi';
 import { setLogin } from '@/store/auth';
 import { handleModal } from '@/store/modalState';
 import { useSocket } from '@/hooks/useSocket';
+import { getSocket } from '@/utils/socket';
 
-function Buttons({ email, password, setLoginError, setIsLoading, setText }) {
+function Buttons({
+  email,
+  password,
+  setLoginError,
+  setIsLoading,
+  setText,
+  autoLogin,
+  setAutoLogin,
+}) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [autoLogin, setAutoLogin] = useState(false);
   let loadingTimer;
 
   const handleAutoLogin = () => {
@@ -72,7 +79,7 @@ function Buttons({ email, password, setLoginError, setIsLoading, setText }) {
     }, 8);
   };
 
-  const { connectSocket } = useSocket();
+  const { connectSocket, handleSessionExpiryWarning } = useSocket();
 
   const handleLogin = async () => {
     try {
@@ -92,7 +99,11 @@ function Buttons({ email, password, setLoginError, setIsLoading, setText }) {
         autoLogin ? { params: { autoLogin } } : {}
       );
       const newSocket = await connectSocket(3);
-      console.log(newSocket);
+
+      newSocket.on('sessionExpiryWarning', handleSessionExpiryWarning);
+      newSocket.on('notification', (message) =>
+        console.log('서버로부터 받은 알림:', message)
+      );
 
       const {
         isSuspended,
@@ -135,6 +146,11 @@ function Buttons({ email, password, setLoginError, setIsLoading, setText }) {
         setText('이메일 또는 비밀번호를 다시 확인해주세요.');
       } else {
         alert('로그인 요청 중 에러가 발생하였습니다.');
+      }
+
+      const socket = getSocket();
+      if (socket) {
+        socket.disconnect();
       }
     }
   };

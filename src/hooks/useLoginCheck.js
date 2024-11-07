@@ -6,7 +6,7 @@ import { setLogout } from '@/store/auth';
 
 import useSelectorList from '@/hooks/useSelectorList';
 
-import { userSignOut } from '@/api/authApi';
+import { initialModalState } from '@/store/modalState';
 
 const useLoginCheck = () => {
   const navigate = useNavigate();
@@ -19,16 +19,14 @@ const useLoginCheck = () => {
       const response = await getSessionStatus();
       const { expires } = response.data;
       if (expires) {
-        dispatch(setLogout());
-
+        logout();
         alert('접속이 만료되었습니다. 다시 로그인 해주세요.');
         isAdminPage ? navigate('/admin/sign-in') : navigate('/sign-in');
       } else {
         return true;
       }
     } catch (error) {
-      console.error('Login status check failed', error);
-      dispatch(setLogout());
+      logout();
     }
   };
 
@@ -47,9 +45,15 @@ const useLoginCheck = () => {
     return true;
   };
 
+  const logout = () => {
+    dispatch(setLogout());
+    dispatch(initialModalState());
+  };
+
   return {
     checkIsLogin,
     boolIsLogin,
+    logout,
   };
 };
 
