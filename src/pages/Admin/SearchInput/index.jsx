@@ -1,11 +1,11 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 
 import searchGray from '@/assets/icons/search/search_default.svg';
 
-import useEventHandler from '@/hooks/useEventHandler';
-
 import { placeholderTextStyle } from '@/styles/commonStyle/text';
+
+import { isIncludesWhiteSpaceCheck } from '@/utils/whiteSpaceCheck';
+import { errorAlert } from '@/utils/sweetAlert';
 
 const SearchBox = styled.label`
   display: flex;
@@ -48,8 +48,15 @@ export default function SearchInput({
           onChange={(e) => {
             handleSearchValueChange(e.target.value);
           }}
+          onClick={handleSearch}
           onKeyUp={(e) => {
-            handleSearch(e);
+            if (e.key === 'Enter') {
+              if (isIncludesWhiteSpaceCheck(searchValue)) {
+                errorAlert('검색어 사이에 공백이 들어갈 수 없습니다!');
+                return;
+              }
+              handleSearch();
+            }
           }}
         />
         <img src={searchGray} alt='serach-icon' />

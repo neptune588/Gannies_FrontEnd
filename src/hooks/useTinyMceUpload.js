@@ -168,7 +168,7 @@ export default function useTinyMceUpload({
   };
 
   //base64URL -> blob 변경하기 위한 convert
-  const base64UrlFileObjectConvert = (base64Url) => {
+  const base64UrlBlobObjectConvert = (base64Url) => {
     // BASE64 URL에서 메타데이터를 제거하고, BASE64 문자열만 추출
     const arr = base64Url.split(',');
     const mimeType = arr[0].match(/:(.*?);/)[1]; // MIME 타입 추출
@@ -592,7 +592,7 @@ export default function useTinyMceUpload({
         }
 
         if (isBase64 && matchArr) {
-          const convertedBlob = base64UrlFileObjectConvert(image.src);
+          const convertedBlob = base64UrlBlobObjectConvert(image.src);
           blob = convertedBlob.blob;
           filename = convertedBlob.filename;
         }
@@ -814,8 +814,8 @@ export default function useTinyMceUpload({
             images: uploadedImages,
             files: uploadedFiles,
           };
-          return uploadedFilesRef.current
-        })
+          return uploadedFilesRef.current;
+        });
       })();
     }
   }, []);
