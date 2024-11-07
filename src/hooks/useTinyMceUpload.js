@@ -672,10 +672,9 @@ export default function useTinyMceUpload({
           setPreviewImage({ src: image.src, alt: image.alt });
         }
       }
+    } else {
+      editorRef.current.insertContent(content);
     }
-
-    //2. 그외
-    editorRef.current.insertContent(content);
   };
 
   const handleKeydown = async (e) => {
