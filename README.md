@@ -62,6 +62,7 @@
 - Styled-components를 활용한 컴포넌트 단위 스타일링 구현
 - Private router를 통한 인증 상태에 따른 라우팅 접근 제어
 - 정규식을 활용한 유효성 검사
+- Socket.IO를 활용한 실시간 세션 만료 알림 구현
 - Vercel 배포 및 AWS Route 53 도메인 관리
 - S3 Presigned URL 이미지 업로드
 - 이메일 인증 프로세스 구현
