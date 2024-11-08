@@ -23,15 +23,14 @@ export default function PostCreateEditor({
   isUpload,
   cumSize,
   uploadedFiles,
-  totalWordsCalc,
   isEditorLoading,
   setIsEditorLoading,
-  handleEditorValueChange,
+  handleEditorChangeWithValidation,
   handleImageUploadClick,
   handleFileUploadClick,
   handleImageUpload,
   handlePaste,
-  handleKeydown,
+  handleKeyUp,
   handleFileUpload,
   handleUploadFileDelete,
 }) {
@@ -44,8 +43,7 @@ export default function PostCreateEditor({
           initialValue={initialContent}
           value={editorValue}
           onEditorChange={(value) => {
-            totalWordsCalc();
-            handleEditorValueChange(value);
+            handleEditorChangeWithValidation(value);
           }}
           onInit={(_, editor) => {
             setIsEditorLoading(false);
@@ -65,7 +63,6 @@ export default function PostCreateEditor({
               'preview',
               'searchreplace',
               'table',
-              'fontselect',
               //'paste',
               'help',
             ],
