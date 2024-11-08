@@ -43,7 +43,9 @@ function App() {
           };
         }
       } catch (error) {
-        alert('접속 에러');
+        dispatch(setLogout());
+        dispatch(initialModalState());
+        alert('접속이 만료되었습니다. 다시 로그인해주세요.');
       }
     };
 
