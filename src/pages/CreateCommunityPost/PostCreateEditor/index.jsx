@@ -66,13 +66,16 @@ export default function PostCreateEditor({
               'searchreplace',
               'table',
               'fontselect',
-              'fontsizeselect',
               //'paste',
               'help',
             ],
             toolbar:
-              'undo redo | formatselect | bold italic underline | forecolor backcolor | fontsizeselect | alignleft aligncenter alignright alignjustify | outdent indent | customFileUploadButton customImageButton | preview | searchreplace | link | numlist bullist',
-            fontsize_formats: '8pt 10pt 12pt 14pt 18pt 24pt 36pt',
+              'undo redo | formatselect | bold italic underline | forecolor backcolor | fontsize fontsizeinput | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | customFileUploadButton customImageButton | link searchreplace | preview ',
+            font_family_formats:
+              'Arial=arial,helvetica,sans-serif; Courier New=courier new,courier,monospace; AkrutiKndPadmini=Akpdmi-n',
+            font_size_formats: '8px 10px 12px 14px 18px 24px 36px',
+            font_size_input_default_unit: 'px',
+            toolbar_mode: 'wrap',
             setup: async (editor) => {
               editor.ui.registry.addIcon(
                 'uploadIcon',
@@ -102,7 +105,7 @@ export default function PostCreateEditor({
               }
               body {
                 font-family: Pretendard, Arial, sans-serif;
-                font-size: 1.4rem;
+                font-size: 14px;
                 min-height: 415px;
               }
         `,
