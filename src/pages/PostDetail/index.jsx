@@ -395,7 +395,7 @@ export default function PostDetail() {
         <PostContentBox>
           <div
             dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(post.content),
+              __html: post.content,
             }}
           />
         </PostContentBox>

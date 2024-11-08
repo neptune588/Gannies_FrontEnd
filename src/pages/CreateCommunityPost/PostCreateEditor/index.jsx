@@ -65,12 +65,14 @@ export default function PostCreateEditor({
               'preview',
               'searchreplace',
               'table',
+              'fontselect',
+              'fontsizeselect',
               //'paste',
               'help',
             ],
             toolbar:
-              'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | charmap | customFileUploadButton customImageButton | link | preview | searchreplace | help',
-
+              'undo redo | formatselect | bold italic underline | forecolor backcolor | fontsizeselect | alignleft aligncenter alignright alignjustify | outdent indent | customFileUploadButton customImageButton | preview | searchreplace | link | numlist bullist',
+            fontsize_formats: '8pt 10pt 12pt 14pt 18pt 24pt 36pt',
             setup: async (editor) => {
               editor.ui.registry.addIcon(
                 'uploadIcon',
@@ -104,8 +106,7 @@ export default function PostCreateEditor({
                 min-height: 415px;
               }
         `,
-            valid_elements:
-              'img[src|alt|title|width|height],p,strong,em,b,i,u,a[href|target=_blank],table[border|cellpadding|cellspacing|width|height],thead,tbody,tr,td[colspan|rowspan],th',
+            valid_elements: '*[*]',
             statusbar: false,
           }}
         />

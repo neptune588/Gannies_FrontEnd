@@ -137,6 +137,7 @@ export default function CreateCommunityPost() {
       content: editorValue,
     };
 
+    console.log(postData);
     if (
       selectedBoardTitle === '취업정보' ||
       selectedBoardTitle === '실습정보'

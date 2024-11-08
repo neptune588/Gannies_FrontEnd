@@ -49,6 +49,7 @@ ${reset}
     outline: none !important;
   }
 
+
 `;
 
 export default GlobalStyles;

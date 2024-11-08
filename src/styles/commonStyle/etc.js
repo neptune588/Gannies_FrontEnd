@@ -163,6 +163,30 @@ const modalCloseButtonStyle = css`
   user-select: none;
 `;
 
+const styleRefresh = css`
+  ol {
+    list-style-type: decimal;
+    padding-left: 1.2em;
+  }
+
+  ul {
+    list-style-type: disc;
+    padding-left: 1.2em;
+  }
+
+  li {
+    list-style-type: inherit;
+  }
+
+  em {
+    font-style: italic;
+  }
+
+  strong {
+    font-weight: bold;
+  }
+`;
+
 export {
   ellipsisStyle,
   centerAlignStyle,
@@ -170,4 +194,5 @@ export {
   adminPageHeaderRowStyle,
   adminPageCellStyle,
   modalCloseButtonStyle,
+  styleRefresh,
 };
