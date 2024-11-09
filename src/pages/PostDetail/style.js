@@ -9,6 +9,7 @@ import {
   body,
   small_400,
 } from '@/styles/commonStyle/localTextStyle';
+import { styleRefresh } from '@/styles/commonStyle/etc';
 
 const PageCategorySection = styled.section`
   margin: 65px 0px 15px 65px;
@@ -57,11 +58,15 @@ const PostContentBox = styled.div`
   margin-bottom: 100px;
   > div {
     ${body}
+    ${styleRefresh}
     color: ${({ theme: { colors } }) => {
       return colors.gray['100'];
     }};
-    line-height: 35px;
+    line-height: 25px;
     margin-bottom: 100px;
+    > * {
+      min-height: 20px;
+    }
   }
 `;
 

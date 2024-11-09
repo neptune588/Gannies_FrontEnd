@@ -23,15 +23,14 @@ export default function PostCreateEditor({
   isUpload,
   cumSize,
   uploadedFiles,
-  totalWordsCalc,
   isEditorLoading,
   setIsEditorLoading,
-  handleEditorValueChange,
+  handleEditorChangeWithValidation,
   handleImageUploadClick,
   handleFileUploadClick,
   handleImageUpload,
   handlePaste,
-  handleKeydown,
+  handleKeyUp,
   handleFileUpload,
   handleUploadFileDelete,
 }) {
@@ -44,8 +43,7 @@ export default function PostCreateEditor({
           initialValue={initialContent}
           value={editorValue}
           onEditorChange={(value) => {
-            totalWordsCalc();
-            handleEditorValueChange(value);
+            handleEditorChangeWithValidation(value);
           }}
           onInit={(_, editor) => {
             setIsEditorLoading(false);
@@ -69,8 +67,12 @@ export default function PostCreateEditor({
               'help',
             ],
             toolbar:
-              'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | charmap | customFileUploadButton customImageButton | link | preview | searchreplace | help',
-
+              'undo redo | formatselect | bold italic underline | forecolor backcolor | fontsize fontsizeinput | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | customFileUploadButton customImageButton | link searchreplace | preview ',
+            font_family_formats:
+              'Arial=arial,helvetica,sans-serif; Courier New=courier new,courier,monospace; AkrutiKndPadmini=Akpdmi-n',
+            font_size_formats: '8px 10px 12px 14px 18px 24px 36px',
+            font_size_input_default_unit: 'px',
+            toolbar_mode: 'wrap',
             setup: async (editor) => {
               editor.ui.registry.addIcon(
                 'uploadIcon',
@@ -100,12 +102,11 @@ export default function PostCreateEditor({
               }
               body {
                 font-family: Pretendard, Arial, sans-serif;
-                font-size: 1.4rem;
+                font-size: 14px;
                 min-height: 415px;
               }
         `,
-            valid_elements:
-              'img[src|alt|title|width|height],p,strong,em,b,i,u,a[href|target=_blank],table[border|cellpadding|cellspacing|width|height],thead,tbody,tr,td[colspan|rowspan],th',
+            valid_elements: '*[*]',
             statusbar: false,
           }}
         />

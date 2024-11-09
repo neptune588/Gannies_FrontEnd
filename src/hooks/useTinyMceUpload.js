@@ -75,11 +75,16 @@ export default function useTinyMceUpload({
       })(),
     });
 
-  const totalWordsCalc = () => {
+  const handleEditorChangeWithValidation = (value) => {
     const wordcount = editorRef.current.plugins.wordcount;
-    // 전체 단어 수
     const totalWordCount = wordcount.body.getCharacterCount();
 
+    if (totalWordCount > 5000) {
+      errorAlert('작성 가능한 최대 글자를 초과하였습니다!');
+      return;
+    }
+
+    handleEditorValueChange(value);
     setTotalWordsLength(() => {
       totalWordsRef.current = totalWordCount;
       return totalWordsRef.current;
@@ -845,13 +850,12 @@ export default function useTinyMceUpload({
     uploadedFiles,
     urlExtraction,
     imageFileUrlsUpdated,
-    totalWordsCalc,
+    handleEditorChangeWithValidation,
     handleImageUploadClick,
     handleFileUploadClick,
     handleImageUpload,
     handlePaste,
     handleTitleValueChange,
-    handleEditorValueChange,
     handleKeydown,
     handleFileUpload,
     handleUploadFileDelete,

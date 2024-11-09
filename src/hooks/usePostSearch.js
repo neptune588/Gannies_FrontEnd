@@ -8,6 +8,7 @@ export default function usePostSearch() {
   const navigate = useNavigate();
   const { keyword } = useParams();
   const location = useLocation();
+  const searchDebounceRef = useRef(null);
   const searchBarRef = useRef(null);
 
   const { changeValue: searchValue, handleChange: handleSearchValueChange } =
@@ -17,18 +18,18 @@ export default function usePostSearch() {
 
   const handleSearch = (e) => {
     if (e.key === 'Enter') {
-      const condition =
-        searchValue === '' ||
-        searchValue === null ||
-        searchValue === undefined ||
-        isOnlyWhiteSpaceCheck(searchValue);
+      if (isOnlyWhiteSpaceCheck(searchValue)) {
+        alert('검색어를 한 글자 이상 입력해주세요.');
+        return;
+      }
 
-      condition
-        ? alert('검색어를 한 글자 이상 입력해주세요.')
-        : navigate(`/post/search/${searchValue}`);
-      handleSearchValueChange('');
+      clearTimeout(searchDebounceRef.current);
+      searchDebounceRef.current = setTimeout(() => {
+        navigate(`/post/search/${searchValue}`);
+        handleSearchValueChange('');
+        searchBarRef.current && searchBarRef.current.focus();
+      }, 100);
     }
-    searchBarRef.current && searchBarRef.current.focus();
   };
 
   const handleSearchButtonClick = () => {
@@ -47,6 +48,10 @@ export default function usePostSearch() {
 
   useEffect(() => {
     searchBarRef.current && searchBarRef.current.focus();
+    return () => {
+      clearTimeout(searchDebounceRef.current);
+      searchDebounceRef.current = null;
+    };
   }, []);
 
   useEffect(() => {
