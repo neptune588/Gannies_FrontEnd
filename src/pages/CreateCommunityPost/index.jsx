@@ -87,13 +87,12 @@ export default function CreateCommunityPost() {
     uploadedFiles,
     urlExtraction,
     imageFileUrlsUpdated,
-    totalWordsCalc,
+    handleEditorChangeWithValidation,
     handleImageUploadClick,
     handleFileUploadClick,
     handleImageUpload,
     handlePaste,
     handleTitleValueChange,
-    handleEditorValueChange,
     handleKeydown,
     handleFileUpload,
     handleUploadFileDelete,
@@ -271,12 +270,13 @@ export default function CreateCommunityPost() {
               isUpload={isUpload}
               cumSize={cumSize}
               uploadedFiles={uploadedFiles}
-              totalWordsCalc={totalWordsCalc}
               isEditorLoading={isEditorLoading}
               setIsEditorLoading={setIsEditorLoading}
               handleImageUploadClick={handleImageUploadClick}
               handleFileUploadClick={handleFileUploadClick}
-              handleEditorValueChange={handleEditorValueChange}
+              handleEditorChangeWithValidation={
+                handleEditorChangeWithValidation
+              }
               handleImageUpload={handleImageUpload}
               handlePaste={handlePaste}
               handleKeydown={handleKeydown}

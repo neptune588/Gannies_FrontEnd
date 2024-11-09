@@ -59,7 +59,6 @@ export default function KakaoMap({ isListSelected, keyword, setIsMapSearch }) {
           placeSearch.keywordSearch(keyword, placesSearchCB);
         } catch (error) {
           console.error(error);
-          setIsError(true);
         }
       });
     }

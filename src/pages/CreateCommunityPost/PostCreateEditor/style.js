@@ -5,7 +5,7 @@ import { h4_500 } from '@/styles/commonStyle/localTextStyle';
 const EditorStylingBox = styled.div`
   .tox {
     margin: 30px 0 15px;
-    min-height: 490px;
+    min-height: 630px;
     .tox-edit-area {
       &::before {
         border: none !important;
