@@ -73,6 +73,7 @@ const PostContentBox = styled.div`
 const IconBox = styled.div`
   display: flex;
   align-items: center;
+  user-select: none;
   padding: 0 0 20px 15px;
   border-bottom: 1px solid
     ${({ theme: { colors } }) => {

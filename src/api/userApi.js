@@ -31,11 +31,11 @@ export const getUserPosts = async (params) => {
 //본인 댓글 페이지 단위로 조회
 export const getUserComments = async (params) => {
   const url = '/me/comments';
-  console.log('---' + params.sort + '---');
+  //console.log('---' + params.sort + '---');
   const response = await cookieApi.get(url, { params });
-  response.data.items.map((item) => {
+  /*   response.data.items.map((item) => {
     console.log(item.createdAt);
-  });
+  }); */
   return response;
 };
 
