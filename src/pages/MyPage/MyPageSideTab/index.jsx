@@ -23,7 +23,7 @@ export default function MyPageSideTab() {
 
   useEffect(() => {
     const path = location.pathname.split('/mypage')[1];
-    console.log(path);
+    //console.log(path);
 
     if (path === '/profile/edit') {
       handleChange(tabMenuData[0].label);

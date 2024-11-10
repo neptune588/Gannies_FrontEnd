@@ -86,7 +86,7 @@ export default function CreateCommunityPost() {
     cumSize,
     uploadedFiles,
     urlExtraction,
-    imageFileUrlsUpdated,
+    imageAndFilesUrlsUpdated,
     handleEditorChangeWithValidation,
     handleImageUploadClick,
     handleFileUploadClick,
@@ -144,12 +144,7 @@ export default function CreateCommunityPost() {
         hospitalName === '병원찾기' ? null : [hospitalName];
     }
 
-    try {
-      await imageFileUrlsUpdated();
-    } catch (error) {
-      errorAlert('이미지 갱신에 실패하였습니다.');
-      return;
-    }
+    await imageAndFilesUrlsUpdated();
 
     const fileUrls = urlExtraction();
     if (fileUrls) {
@@ -171,7 +166,6 @@ export default function CreateCommunityPost() {
           : await createPost(selectedBoardType, postData);
       const { postId: newPostId } = res.data;
 
-      console.log(postData);
       window.scroll({ top: 0, left: 0 });
       navigate(`/community/${selectedBoardType}/post/${newPostId}`);
     } catch (error) {
