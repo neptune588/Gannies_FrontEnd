@@ -13,7 +13,7 @@ import brush from '@/assets/icons/etc/brush.svg';
 import {
   ContentsAlignBox,
   PostCreateButton,
-  TableWrapper,
+  Wrapper,
   TableHeader,
   PageWrapper,
   NoSearchResults,
@@ -195,6 +195,16 @@ export default function Community({ isSearch, searchKeyword }) {
 
   return (
     <>
+      <Wrapper>
+        <AlignSelectMenu
+          isSearch={isSearch}
+          pageType={'search'}
+          searchedListLength={postsTotalLength}
+          optionList={boardTypeOptionList}
+          selectedOption={selectedBoardOption.label}
+          setSelectedOption={setSelectedBoardOption}
+        />
+      </Wrapper>
       {!isLoading && currentPosts?.length === 0 ? (
         <NoSearchResults>작성 된 게시물이 없습니다.</NoSearchResults>
       ) : (
@@ -204,18 +214,9 @@ export default function Community({ isSearch, searchKeyword }) {
               <CommunityBannerText />
             </CommunityBanner>
           )}
-          <TableWrapper>
+          <Wrapper>
             <ContentsAlignBox>
-              {isSearch ? (
-                <AlignSelectMenu
-                  isSearch={isSearch}
-                  pageType={'search'}
-                  searchedListLength={postsTotalLength}
-                  optionList={boardTypeOptionList}
-                  selectedOption={selectedBoardOption.label}
-                  setSelectedOption={setSelectedBoardOption}
-                />
-              ) : (
+              {!isSearch && (
                 <>
                   <PostCreateButton onClick={handlePostCreateClick}>
                     <img src={brush} alt='create-button' />
@@ -270,7 +271,7 @@ export default function Community({ isSearch, searchKeyword }) {
                 })}
               </tbody>
             </table>
-          </TableWrapper>
+          </Wrapper>
           {pageNumbers?.length > 0 && (
             <PageWrapper>
               <Pagination
