@@ -363,10 +363,6 @@ export default function PostsAndCommentsManageMent() {
     })();
   }, [query]);
 
-  useEffect(() => {
-    console.log(tableItems);
-  }, [tableItems]);
-
   return (
     <>
       {isItemDeleteModal && (

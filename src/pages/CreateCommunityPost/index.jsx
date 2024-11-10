@@ -171,7 +171,6 @@ export default function CreateCommunityPost() {
           : await createPost(selectedBoardType, postData);
       const { postId: newPostId } = res.data;
 
-      console.log(postData);
       window.scroll({ top: 0, left: 0 });
       navigate(`/community/${selectedBoardType}/post/${newPostId}`);
     } catch (error) {
