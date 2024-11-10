@@ -34,6 +34,38 @@ export default function PostCreateEditor({
   handleFileUpload,
   handleUploadFileDelete,
 }) {
+  const isFileUploaded = () => {
+    const renderFiles = uploadedFiles?.files?.some((file) => file.isRender);
+
+    //index를 활용하여 isRender 속성을 false시키고
+    //true인것만 보내기 떄문에
+    if (renderFiles) {
+      return (
+        <>
+          <SubTitle>Uploaded Files</SubTitle>
+          <UploadFilesBox>
+            {uploadedFiles.files.map((file, idx) => {
+              return (
+                file.isRender && (
+                  <UploadFileList
+                    key={uuid()}
+                    fileName={file.fileName}
+                    isLoading={file.isLoading}
+                    isFailed={file.isFailed}
+                    progress={file.progress}
+                    handleUploadFileDelete={() => {
+                      handleUploadFileDelete(idx);
+                    }}
+                  />
+                )
+              );
+            })}
+          </UploadFilesBox>
+        </>
+      );
+    }
+  };
+
   return (
     <>
       {isUpload && <CommonLoadingCircle />}
@@ -137,29 +169,7 @@ export default function PostCreateEditor({
               </p>
               <p>최대 업로드 가능한 용량: 350MB</p>
             </NoticeBox>
-            {uploadedFiles.files.length > 0 && (
-              <>
-                <SubTitle>Uploaded Files</SubTitle>
-                <UploadFilesBox>
-                  {uploadedFiles.files.map((file, idx) => {
-                    return (
-                      file.isRender && (
-                        <UploadFileList
-                          key={uuid()}
-                          fileName={file.fileName}
-                          isLoading={file.isLoading}
-                          isFailed={file.isFailed}
-                          progress={file.progress}
-                          handleUploadFileDelete={() => {
-                            handleUploadFileDelete(idx);
-                          }}
-                        />
-                      )
-                    );
-                  })}
-                </UploadFilesBox>
-              </>
-            )}
+            {isFileUploaded()}
           </>
         )}
       </EditorStylingBox>

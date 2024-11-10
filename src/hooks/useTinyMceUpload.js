@@ -389,7 +389,7 @@ export default function useTinyMceUpload({
     if (isFileDelete) {
       setUploadedFiles((prev) => {
         const files = prev.files.map((file, idx) => {
-          idx === deleteFileIdx ? { ...file, isRender: false } : file;
+          return idx === deleteFileIdx ? { ...file, isRender: false } : file;
         });
 
         uploadedFilesRef.current = {
@@ -850,7 +850,7 @@ export default function useTinyMceUpload({
     cumSize,
     uploadedFiles,
     urlExtraction,
-    imageFileUrlsUpdated,
+    imageAndFilesUrlsUpdated,
     handleEditorChangeWithValidation,
     handleImageUploadClick,
     handleFileUploadClick,

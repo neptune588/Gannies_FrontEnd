@@ -86,7 +86,7 @@ export default function CreateCommunityPost() {
     cumSize,
     uploadedFiles,
     urlExtraction,
-    imageFileUrlsUpdated,
+    imageAndFilesUrlsUpdated,
     handleEditorChangeWithValidation,
     handleImageUploadClick,
     handleFileUploadClick,
@@ -144,12 +144,7 @@ export default function CreateCommunityPost() {
         hospitalName === '병원찾기' ? null : [hospitalName];
     }
 
-    try {
-      await imageFileUrlsUpdated();
-    } catch (error) {
-      errorAlert('이미지 갱신에 실패하였습니다.');
-      return;
-    }
+    await imageAndFilesUrlsUpdated();
 
     const fileUrls = urlExtraction();
     if (fileUrls) {
