@@ -143,16 +143,18 @@ export default function PostCreateEditor({
                 <UploadFilesBox>
                   {uploadedFiles.files.map((file, idx) => {
                     return (
-                      <UploadFileList
-                        key={uuid()}
-                        fileName={file.fileName}
-                        isLoading={file.isLoading}
-                        isFailed={file.isFailed}
-                        progress={file.progress}
-                        handleUploadFileDelete={() => {
-                          handleUploadFileDelete(idx);
-                        }}
-                      />
+                      file.isRender && (
+                        <UploadFileList
+                          key={uuid()}
+                          fileName={file.fileName}
+                          isLoading={file.isLoading}
+                          isFailed={file.isFailed}
+                          progress={file.progress}
+                          handleUploadFileDelete={() => {
+                            handleUploadFileDelete(idx);
+                          }}
+                        />
+                      )
                     );
                   })}
                 </UploadFilesBox>

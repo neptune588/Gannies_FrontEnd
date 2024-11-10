@@ -324,6 +324,7 @@ export default function useTinyMceUpload({
               type: 'file',
               fileName: uploadFile.name,
               fileSize: curUploadFileSize,
+              isRender: true,
               isLoading: true,
               progress: 0,
             },
@@ -386,34 +387,21 @@ export default function useTinyMceUpload({
     });
 
     if (isFileDelete) {
-      const deleteFile = uploadedFiles.files[deleteFileIdx];
-
-      if (!deleteFile) {
-        errorAlert('파일을 찾을 수 없습니다.');
-        return;
-      }
-
-      try {
-        await deleteS3Url(encodeURIComponent(deleteFile.s3Url));
-        setUploadedFiles((prev) => {
-          const arrSplice = [...prev.files];
-          arrSplice.splice(deleteFileIdx, 1);
-          uploadedFilesRef.current = {
-            ...prev,
-            files: arrSplice,
-          };
-          return uploadedFilesRef.current;
-        });
-        totalFileSizeCalc({
-          type: 'delete',
-          currentFileSize: uploadedFiles.files[deleteFileIdx].fileSize,
+      setUploadedFiles((prev) => {
+        const files = prev.files.map((file, idx) => {
+          idx === deleteFileIdx ? { ...file, isRender: false } : file;
         });
 
-        confirmAlert('파일이 삭제 되었습니다!');
-      } catch (error) {
-        //console.error(error);
-        errorAlert(error.message);
-      }
+        uploadedFilesRef.current = {
+          ...prev,
+          files,
+        };
+        return uploadedFilesRef.current;
+      });
+      totalFileSizeCalc({
+        type: 'delete',
+        currentFileSize: uploadedFiles.files[deleteFileIdx].fileSize,
+      });
     }
   };
 
@@ -710,7 +698,7 @@ export default function useTinyMceUpload({
     }
   };
 
-  const imageFileUrlsUpdated = async () => {
+  const imageAndFilesUrlsUpdated = async () => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(editorValue, 'text/html');
     const images = doc.querySelectorAll('img');
@@ -742,6 +730,16 @@ export default function useTinyMceUpload({
     );
 
     await axios.all(deleteImageSearch);
+
+    const deleteFilesSearch = uploadedFiles.files
+      .filter((file) => !file.isRender)
+      .map((file) => {
+        (async () => {
+          await deleteS3Url(encodeURIComponent(file.s3Url));
+        })();
+      });
+
+    await axios.all(deleteFilesSearch);
   };
 
   const urlExtraction = () => {
@@ -750,10 +748,12 @@ export default function useTinyMceUpload({
     if (images.length > 0 || files.length > 0) {
       const fileUrls = {};
 
-      fileUrls.images = [...images].map((image) => image.s3Url);
-      fileUrls.attachments = [...files].map((file) => {
-        return { fileName: file.fileName, fileUrl: file.s3Url };
-      });
+      fileUrls.images = images.map((image) => image.s3Url);
+      fileUrls.attachments = files
+        .filter((file) => file.isRender)
+        .map((file) => {
+          return { fileName: file.fileName, fileUrl: file.s3Url };
+        });
 
       return fileUrls;
     }
@@ -808,6 +808,7 @@ export default function useTinyMceUpload({
               fileSize: sizeConvertToMegaByte === 0 ? 0 : sizeConvertToMegaByte,
               s3Url: file.fileUrl,
               isLoading: false,
+              isRender: true,
               progress: 100,
             };
           })
