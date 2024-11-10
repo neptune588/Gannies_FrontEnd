@@ -399,12 +399,13 @@ export default function PostDetail() {
             }}
           />
         </PostContentBox>
-        <IconBox
-          onClick={() => {
-            handleScrapOrLikeClick('like');
-          }}
-        >
-          <LikeButton $isLikeClick={post.isLiked} />
+        <IconBox>
+          <LikeButton
+            onClick={() => {
+              handleScrapOrLikeClick('like');
+            }}
+            $isLikeClick={post.isLiked}
+          />
           <p>공감해요</p>
         </IconBox>
         <CommentArea>
