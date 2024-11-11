@@ -121,7 +121,9 @@ export default function AlignSelectMenu({
       <button onClick={toggleDropdown}>
         <p>
           {`${selectedOption} `}
-          {searchedListLength && <span>({searchedListLength})</span>}
+          {(searchedListLength || searchedListLength === 0) && (
+            <span>{`(${searchedListLength})`}</span>
+          )}
         </p>
         <img src={isOpen ? upArrow : bottomArrow} alt='select-arrow' />
       </button>

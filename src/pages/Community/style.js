@@ -32,10 +32,10 @@ const PostCreateButton = styled.button`
   }
 `;
 
-const TableWrapper = styled.div`
+const Wrapper = styled.div`
   width: 1042px;
   margin: 0 auto;
-  > table {
+  table {
     width: 100%;
 
     > tbody {
