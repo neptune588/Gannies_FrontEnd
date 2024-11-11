@@ -25,10 +25,9 @@ const SearchBox = styled.label`
       ${placeholderTextStyle}
     }
   }
-  > img {
+  > button {
     width: 24px;
     height: 24px;
-    cursor: pointer;
   }
 `;
 
@@ -48,7 +47,6 @@ export default function SearchInput({
           onChange={(e) => {
             handleSearchValueChange(e.target.value);
           }}
-          onClick={handleSearch}
           onKeyUp={(e) => {
             if (e.key === 'Enter') {
               if (isIncludesWhiteSpaceCheck(searchValue)) {
@@ -59,7 +57,9 @@ export default function SearchInput({
             }
           }}
         />
-        <img src={searchGray} alt='serach-icon' />
+        <button type='button' onClick={handleSearch}>
+          <img src={searchGray} alt='serach-icon' />
+        </button>
       </SearchBox>
     </>
   );

@@ -135,10 +135,10 @@ export default function ReportHistory() {
       setHearderColumns(reportedCommentsHeaderColumns);
     }
 
-    setCurrentPageNumber(1);
     setActionType('');
+    setCurrentPageNumber(1);
     setQuery({
-      page: currentPageNumber,
+      page: 1,
       limit: communityPostMaxLimit,
       withReplies: true,
     });
