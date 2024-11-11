@@ -9,7 +9,6 @@ import {
   LinkBox,
   LinkContainer,
 } from '@/pages/Home/Link/style';
-import { getSocket } from '@/utils/socket';
 
 function Link() {
   const handleClick = (path) => {
@@ -38,7 +37,6 @@ function Link() {
           </LinkContainer>
         ))}
       </LowerWrapper>
-      <button onClick={() => console.log(getSocket())}>뀨</button>
     </Wrapper>
   );
 }

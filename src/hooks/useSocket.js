@@ -42,6 +42,7 @@ export const useSocket = () => {
   };
 
   const handleSessionExpiryWarning = () => {
+    console.log('세션 만료 알림');
     dispatch(
       handleModal({
         field: 'extendSession',

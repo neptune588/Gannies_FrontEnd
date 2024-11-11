@@ -24,12 +24,15 @@ function App() {
           const remainingTime = parseInt(
             sessionStatus.data.remainingTime.split(' ')[0]
           );
-          if (remainingTime < 30 || sessionStatus.data?.expires) {
+          console.log(remainingTime);
+          console.log(sessionStatus.data);
+          if (sessionStatus.data?.expires) {
             dispatch(setLogout());
             dispatch(initialModalState());
             return;
+          } else if (remainingTime < 30) {
+            console.log(remainingTime);
           }
-
           const newSocket = await connectSocket(3);
           newSocket.on('sessionExpiryWarning', handleSessionExpiryWarning);
           newSocket.on('notification', (message) => {
@@ -40,7 +43,9 @@ function App() {
           };
         }
       } catch (error) {
-        alert('접속 에러');
+        dispatch(setLogout());
+        dispatch(initialModalState());
+        alert('접속이 만료되었습니다. 다시 로그인해주세요.');
       }
     };
 

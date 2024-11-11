@@ -13,11 +13,11 @@ export const categoryOptions = [
   },
   {
     label: '취업정보',
-    boardType: 'employment',
+    boardType: 'job',
   },
   {
     label: '구인구직',
-    boardType: 'job',
+    boardType: 'employment',
   },
   {
     label: '이벤트',
