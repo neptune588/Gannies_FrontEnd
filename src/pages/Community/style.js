@@ -80,7 +80,7 @@ const NoSearchResults = styled.p`
 export {
   ContentsAlignBox,
   PostCreateButton,
-  TableWrapper,
+  Wrapper,
   TableHeader,
   PageWrapper,
   NoSearchResults,
