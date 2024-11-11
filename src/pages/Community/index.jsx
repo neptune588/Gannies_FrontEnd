@@ -195,16 +195,18 @@ export default function Community({ isSearch, searchKeyword }) {
 
   return (
     <>
-      <Wrapper>
-        <AlignSelectMenu
-          isSearch={isSearch}
-          pageType={'search'}
-          searchedListLength={postsTotalLength}
-          optionList={boardTypeOptionList}
-          selectedOption={selectedBoardOption.label}
-          setSelectedOption={setSelectedBoardOption}
-        />
-      </Wrapper>
+      {isSearch && (
+        <Wrapper>
+          <AlignSelectMenu
+            isSearch={isSearch}
+            pageType={'search'}
+            searchedListLength={postsTotalLength}
+            optionList={boardTypeOptionList}
+            selectedOption={selectedBoardOption.label}
+            setSelectedOption={setSelectedBoardOption}
+          />
+        </Wrapper>
+      )}
       {!isLoading && currentPosts?.length === 0 ? (
         <NoSearchResults>작성 된 게시물이 없습니다.</NoSearchResults>
       ) : (
